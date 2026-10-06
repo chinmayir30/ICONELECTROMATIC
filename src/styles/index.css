@@ -7083,7 +7083,7 @@ html[data-theme="light"],
 }
 
 [data-theme="light"] .oem-card-logo-showcase {
-  background: #F1F5F9;
+  background: #ffffff !important;
   border-bottom-color: #E2E8F0;
 }
 [data-theme="light"] .oem-card-logo-container,
@@ -8145,11 +8145,11 @@ html[data-theme="light"],
    ═══════════════════════════════════════════════════════════════════════════ */
 [data-theme="light"] .oem-card {
   position: relative !important;
-  background: #fff8f8 !important;
-  border: 1px solid rgba(227, 39, 38, 0.25) !important;
+  background: #ffffff !important;
+  border: 1px solid rgba(227, 39, 38, 0.2) !important;
   border-top: 3.5px solid #e32726 !important;
   border-radius: 16px !important;
-  box-shadow: 0 4px 18px rgba(227, 39, 38, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.03) !important;
   transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
               border-color 0.3s ease, 
               box-shadow 0.3s ease,
@@ -8173,35 +8173,50 @@ html[data-theme="light"],
   background: #ffffff !important;
   transform: translateY(-5px) !important;
   border-color: #e32726 !important;
-  box-shadow: 0 16px 36px rgba(227, 39, 38, 0.16), 
-              0 0 24px rgba(227, 39, 38, 0.12) !important;
+  box-shadow: 0 16px 36px rgba(227, 39, 38, 0.14), 
+              0 0 24px rgba(227, 39, 38, 0.1) !important;
 }
 
 [data-theme="light"] .oem-card:hover .oem-card-accent-bar {
   box-shadow: 0 0 14px rgba(227, 39, 38, 0.7) !important;
 }
 
-/* Logo Showcase Pod */
+/* Logo Showcase Pod - Pure White */
 [data-theme="light"] .oem-card-logo-showcase {
-  background: #fff8f8 !important;
+  background: #ffffff !important;
   border-bottom: 1px solid rgba(227, 39, 38, 0.12) !important;
 }
 
 [data-theme="light"] .oem-card-logo-container,
 [data-theme="light"] .oem-logo-badge-pod {
-  background: #091527 !important;
-  border: 1px solid rgba(227, 39, 38, 0.2) !important;
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
   border-radius: 12px !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
   transition: all 0.28s ease !important;
 }
 
 [data-theme="light"] .oem-card:hover .oem-card-logo-container,
 [data-theme="light"] .oem-card:hover .oem-logo-badge-pod {
-  background: #091527 !important;
+  background: #ffffff !important;
   border-color: #e32726 !important;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25), 0 0 16px rgba(227, 39, 38, 0.2) !important;
+  box-shadow: 0 4px 16px rgba(227, 39, 38, 0.16), 0 0 16px rgba(227, 39, 38, 0.1) !important;
   transform: scale(1.02) !important;
+}
+
+/* SVG logo text contrast on white pod */
+[data-theme="light"] .oem-card-logo-container svg text[fill="#FFFFFF"],
+[data-theme="light"] .oem-logo-badge-pod svg text[fill="#FFFFFF"],
+[data-theme="light"] .catalog-oem-banner-logo-box svg text[fill="#FFFFFF"] {
+  fill: #0F172A !important;
+}
+
+/* Invert solid black background logo so it sits seamlessly on white pod */
+[data-theme="light"] .oem-card-logo-container img[src*="Fortify_Logo_Black_Bg"],
+[data-theme="light"] .oem-logo-badge-pod img[src*="Fortify_Logo_Black_Bg"],
+[data-theme="light"] .catalog-oem-banner-logo-box img[src*="Fortify_Logo_Black_Bg"] {
+  filter: invert(1);
+  mix-blend-mode: multiply;
 }
 
 /* Card Body & Title */
@@ -8245,7 +8260,7 @@ html[data-theme="light"],
 
 /* Categories Preview Box */
 [data-theme="light"] .oem-card-categories-preview {
-  background: #ffffff !important;
+  background: #f8fafc !important;
   border: 1px solid rgba(227, 39, 38, 0.15) !important;
   border-radius: 10px !important;
   padding: 12px 14px !important;
@@ -8303,9 +8318,9 @@ html[data-theme="light"],
   color: #e32726 !important;
 }
 
-/* Interactive Card CTA Footer */
+/* Interactive Card CTA Footer - Pure White */
 [data-theme="light"] .oem-card-cta {
-  background: #fff8f8 !important;
+  background: #ffffff !important;
   border-top: 1px solid rgba(227, 39, 38, 0.12) !important;
   color: #0F172A !important;
   font-weight: 700 !important;
@@ -8323,7 +8338,7 @@ html[data-theme="light"],
 }
 
 [data-theme="light"] .oem-card:hover .oem-card-cta {
-  background: rgba(227, 39, 38, 0.06) !important;
+  background: rgba(227, 39, 38, 0.04) !important;
   color: #e32726 !important;
 }
 
@@ -8333,13 +8348,13 @@ html[data-theme="light"],
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   LEVEL 2: OEM BANNER & CATEGORY CARDS (Consistent Light Red Theme)
+   LEVEL 2: OEM BANNER & CATEGORY CARDS (Consistent Pure White Theme)
    ═══════════════════════════════════════════════════════════════════════════ */
 [data-theme="light"] .catalog-oem-banner {
-  background: #fff8f8 !important;
+  background: #ffffff !important;
   border: 1px solid rgba(227, 39, 38, 0.25) !important;
   border-top: 3.5px solid #e32726 !important;
-  box-shadow: 0 4px 18px rgba(227, 39, 38, 0.06) !important;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05) !important;
   border-radius: 16px !important;
 }
 
@@ -8348,9 +8363,9 @@ html[data-theme="light"],
 }
 
 [data-theme="light"] .catalog-oem-banner-logo-box {
-  background: #091527 !important;
+  background: #ffffff !important;
   border: 1px solid rgba(227, 39, 38, 0.2) !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
 }
 
 [data-theme="light"] .catalog-oem-name {

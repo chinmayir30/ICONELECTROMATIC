@@ -13,6 +13,17 @@
 
 ### **2026-10-06**
 
+* **Category:** Products Page — Light Mode OEM Cards Pure White Background
+  * **Page / Files:** [`src/styles/index.css`](file:///d:/ICON%20ELECTROMATIC/src/styles/index.css)
+  * **Type:** Visual Refinement & Theme Correction
+  * **Details:**
+    * **Eliminated Dark/Black Backgrounds in OEM Cards in Light Mode (`[data-theme="light"]`):**
+      * **OEM Card Container (`.oem-card`):** Changed card background from tinted reddish-pink to pure white (`#ffffff !important;`) with clean red top border accent (`#e32726`) and soft elevation drop shadows.
+      * **OEM Logo Showcase Header & Pod (`.oem-card-logo-showcase`, `.oem-card-logo-container`, `.oem-logo-badge-pod`):** Replaced previous dark navy/black `#091527` container with crisp pure white (`#ffffff !important;`) and subtle slate border (`1px solid #e2e8f0`), allowing all authentic OEM partner logos (including white-backed PNGs like Qorvo, TriTeq, YTTEK, NEE, and transparent SVGs) to display naturally and seamlessly.
+      * **SVG Logos & Dark Logo Assets:** Enhanced SVG text elements with `fill: #0F172A !important;` for strong contrast against the white pod, and inverted solid-black background logo assets (Fortify) to blend flawlessly into white pods.
+      * **Card CTA Footer & Banner Pods:** Converted `.oem-card-cta`, `.catalog-oem-banner`, and `.catalog-oem-banner-logo-box` to pure white (`#ffffff !important;`).
+
+
 * **Category:** Services Page — Light Mode Light Blue Badge & Capability Block Backgrounds
   * **Page / Files:** [`src/styles/index.css`](file:///d:/ICON%20ELECTROMATIC/src/styles/index.css)
   * **Type:** Visual Refinement & Color Harmonization
