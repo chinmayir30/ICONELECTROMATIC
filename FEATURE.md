@@ -13,6 +13,30 @@
 
 ### **2026-10-06**
 
+* **Category:** Products Page — Specialty Filter Command Center Redesign & Light Mode Filter Fix
+  * **Page / Files:** [`src/pages/Products.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Products.js), [`src/styles/index.css`](file:///d:/ICON%20ELECTROMATIC/src/styles/index.css)
+  * **Type:** UX/UI Redesign & Critical Bug Fix (Dark & Light Themes)
+  * **Details:**
+    * **Resolved Unprofessional 4-Row Ragged Wrapping:**
+      * Replaced the cluttered, unaligned 4-line wrapping of 15 long specialty pills with a sleek, unified **Filter Command Center** (`.catalog-filter-panel`).
+      * Integrated a **Search & Quick Specialty Toolbar** (`.catalog-filter-toolbar`):
+        * Full-featured search input with instant clear button.
+        * Custom quick-select dropdown (`#oem-specialty-select`) styled cleanly with slider icon and chevron, enabling instant selection without hunting through pills.
+        * Dynamic "Reset" button (`#catalog-reset-filters-btn`) that appears whenever a filter or search query is active to reset back to "All Specialties (15)" in 1 click.
+      * Integrated a **Single-Row Horizontal Chips Carousel Track** (`.catalog-chips-carousel-wrapper`):
+        * Smooth scrolling carousel track (`#catalog-chips-track`) with left (`#chips-scroll-prev`) and right (`#chips-scroll-next`) circular chevron scroll buttons.
+        * All 15 specialty pills now sit cleanly on a single, perfectly aligned horizontal baseline with individual count badges (`.pill-badge`).
+        * Full two-way synchronization: selecting a specialty from the dropdown automatically highlights and scrolls the corresponding chip into center view, and clicking any chip updates the dropdown selector.
+    * **Fixed Light Mode Filter Bug (Cards Not Hiding When Filtered):**
+      * **Root Cause:** In `src/styles/index.css`, `[data-theme="light"] .oem-card` had `display: flex !important;`. When JavaScript's `applyFilters()` set `card.style.display = 'none'`, the CSS `!important` rule overrode it, preventing non-matching cards (e.g. Mini-Circuits, Qorvo) from hiding in light mode despite the counter showing "Showing 1 Global OEMs".
+      * **Resolution:**
+        1. Removed `!important` from `display: flex` on `[data-theme="light"] .oem-card`.
+        2. Added `.oem-card.is-hidden { display: none !important; }` for both default and light themes.
+        3. Enhanced `applyFilters()` in `src/pages/Products.js` to toggle `card.classList.toggle('is-hidden')` AND set `card.style.setProperty('display', 'none' / 'flex', 'important')`.
+      * Verified that clicking any specialty filter (e.g., *"High Frequency Laminates & Prepregs"*, *"Tunable Filters"*, *"PCB Fabrication"*) accurately isolates only the matching OEM partner(s) in both Dark and Light themes.
+
+
+
 * **Category:** Products Page — Excel "Speciales in" Dynamic Filter Pills
   * **Page / Files:** [`src/pages/Products.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Products.js), [`src/data/catalogData.js`](file:///d:/ICON%20ELECTROMATIC/src/data/catalogData.js)
   * **Type:** Feature Enhancement & Excel Synchronization (Dark & Light Themes)

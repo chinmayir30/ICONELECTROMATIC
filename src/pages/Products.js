@@ -165,36 +165,82 @@ function renderOEMsLevel() {
   });
 
   return `
-    <!-- Search and Specialty Filter Controls -->
-    <div class="catalog-controls-bar">
-      <div class="catalog-search-wrap">
-        <i class="fa-solid fa-magnifying-glass catalog-search-icon"></i>
-        <input 
-          type="text" 
-          id="oem-search-input" 
-          class="catalog-search-input" 
-          placeholder="Search by company, specialty, category, or product..."
-          value="${navState.searchQuery || ''}"
-        />
-        ${navState.searchQuery ? `
-          <button class="catalog-search-clear" id="catalog-search-clear" title="Clear search">
-            <i class="fa-solid fa-xmark"></i>
+    <!-- Search and Specialty Filter Command Center -->
+    <div class="catalog-filter-panel" id="catalog-filter-panel">
+      <!-- Top Row: Unified Search Bar & Quick Specialty Selector -->
+      <div class="catalog-filter-toolbar">
+        <div class="catalog-search-wrap">
+          <i class="fa-solid fa-magnifying-glass catalog-search-icon"></i>
+          <input 
+            type="text" 
+            id="oem-search-input" 
+            class="catalog-search-input" 
+            placeholder="Search by company, specialty, category, or product..."
+            value="${navState.searchQuery || ''}"
+          />
+          ${navState.searchQuery ? `
+            <button class="catalog-search-clear" id="catalog-search-clear" title="Clear search">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          ` : ''}
+        </div>
+
+        <div class="catalog-toolbar-actions">
+          <div class="catalog-select-wrap">
+            <i class="fa-solid fa-sliders select-icon"></i>
+            <select id="oem-specialty-select" class="catalog-specialty-select" aria-label="Filter by OEM Specialty">
+              <option value="all" ${(!navState.activeFilter || navState.activeFilter === 'all') ? 'selected' : ''}>
+                All Specialties (${oems.length})
+              </option>
+              ${specialties.map(spec => {
+                const count = oems.filter(o => o.specialty === spec).length;
+                return `
+                  <option value="${spec}" ${navState.activeFilter === spec ? 'selected' : ''}>
+                    ${spec} (${count})
+                  </option>
+                `;
+              }).join('')}
+            </select>
+            <i class="fa-solid fa-chevron-down select-arrow"></i>
+          </div>
+
+          <button 
+            class="catalog-reset-filters-btn" 
+            id="catalog-reset-filters-btn" 
+            title="Reset active filters"
+            style="display: ${(navState.activeFilter && navState.activeFilter !== 'all') || navState.searchQuery ? 'inline-flex' : 'none'};"
+          >
+            <i class="fa-solid fa-rotate-left"></i>
+            <span>Reset</span>
           </button>
-        ` : ''}
+        </div>
       </div>
 
-      <div class="oem-domain-filters" id="oem-domain-filters">
-        <button class="domain-filter-pill ${(!navState.activeFilter || navState.activeFilter === 'all') ? 'active' : ''}" data-specialty="all">
-          All Specialties (${oems.length})
+      <!-- Bottom Row: Sleek Horizontal Specialty Carousel Track -->
+      <div class="catalog-chips-carousel-wrapper">
+        <button class="chips-scroll-btn chips-scroll-prev" id="chips-scroll-prev" aria-label="Scroll specialties left" title="Scroll left">
+          <i class="fa-solid fa-chevron-left"></i>
         </button>
-        ${specialties.map(spec => {
-          const count = oems.filter(o => o.specialty === spec).length;
-          return `
-            <button class="domain-filter-pill ${navState.activeFilter === spec ? 'active' : ''}" data-specialty="${spec}">
-              ${spec} (${count})
-            </button>
-          `;
-        }).join('')}
+
+        <div class="catalog-chips-track" id="catalog-chips-track">
+          <button class="domain-filter-pill ${(!navState.activeFilter || navState.activeFilter === 'all') ? 'active' : ''}" data-specialty="all">
+            <span class="pill-title">All Specialties</span>
+            <span class="pill-badge">${oems.length}</span>
+          </button>
+          ${specialties.map(spec => {
+            const count = oems.filter(o => o.specialty === spec).length;
+            return `
+              <button class="domain-filter-pill ${navState.activeFilter === spec ? 'active' : ''}" data-specialty="${spec}" title="${spec}">
+                <span class="pill-title">${spec}</span>
+                <span class="pill-badge">${count}</span>
+              </button>
+            `;
+          }).join('')}
+        </div>
+
+        <button class="chips-scroll-btn chips-scroll-next" id="chips-scroll-next" aria-label="Scroll specialties right" title="Scroll right">
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
       </div>
     </div>
 
@@ -638,6 +684,28 @@ function attachCatalogEvents() {
       return;
     }
 
+    // Reset filters button
+    const resetBtn = e.target.closest('#catalog-reset-filters-btn');
+    if (resetBtn) {
+      resetAllFilters();
+      return;
+    }
+
+    // Horizontal Chips Track Scroll Buttons
+    const prevBtn = e.target.closest('#chips-scroll-prev');
+    if (prevBtn) {
+      const track = document.getElementById('catalog-chips-track');
+      if (track) track.scrollBy({ left: -260, behavior: 'smooth' });
+      return;
+    }
+
+    const nextBtn = e.target.closest('#chips-scroll-next');
+    if (nextBtn) {
+      const track = document.getElementById('catalog-chips-track');
+      if (track) track.scrollBy({ left: 260, behavior: 'smooth' });
+      return;
+    }
+
     // View toggle buttons
     const cardsBtn = e.target.closest('#view-toggle-cards');
     if (cardsBtn) {
@@ -664,6 +732,13 @@ function attachCatalogEvents() {
     }
   });
 
+  // Delegated change listener for Specialty Select
+  page.addEventListener('change', (e) => {
+    if (e.target && e.target.id === 'oem-specialty-select') {
+      filterOEMsBySpecialty(e.target.value);
+    }
+  });
+
   // Search input typing
   const searchInput = document.getElementById('oem-search-input');
   if (searchInput) {
@@ -678,11 +753,44 @@ function attachCatalogEvents() {
 function filterOEMsBySpecialty(specialty) {
   navState.activeFilter = specialty;
 
-  // Update pill active classes
+  // Sync Select Dropdown
+  const select = document.getElementById('oem-specialty-select');
+  if (select && select.value !== specialty) {
+    select.value = specialty;
+  }
+
+  // Update pill active classes & center active pill
   const pills = document.querySelectorAll('.domain-filter-pill');
   pills.forEach(p => {
-    if (p.getAttribute('data-specialty') === specialty) p.classList.add('active');
-    else p.classList.remove('active');
+    if (p.getAttribute('data-specialty') === specialty) {
+      p.classList.add('active');
+      p.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    } else {
+      p.classList.remove('active');
+    }
+  });
+
+  applyFilters();
+}
+
+function resetAllFilters() {
+  navState.activeFilter = 'all';
+  navState.searchQuery = '';
+
+  const searchInput = document.getElementById('oem-search-input');
+  if (searchInput) searchInput.value = '';
+
+  const select = document.getElementById('oem-specialty-select');
+  if (select) select.value = 'all';
+
+  const pills = document.querySelectorAll('.domain-filter-pill');
+  pills.forEach(p => {
+    if (p.getAttribute('data-specialty') === 'all') {
+      p.classList.add('active');
+      p.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    } else {
+      p.classList.remove('active');
+    }
   });
 
   applyFilters();
@@ -706,15 +814,24 @@ function applyFilters() {
     const matchesQuery = (!query) || text.includes(query);
 
     if (matchesSpecialty && matchesQuery) {
-      card.style.display = 'flex';
+      card.classList.remove('is-hidden');
+      card.style.setProperty('display', 'flex', 'important');
       visibleCount++;
     } else {
-      card.style.display = 'none';
+      card.classList.add('is-hidden');
+      card.style.setProperty('display', 'none', 'important');
     }
   });
 
   const counter = document.getElementById('visible-oem-count');
   if (counter) counter.textContent = visibleCount;
+
+  // Toggle Reset Button Visibility
+  const resetBtn = document.getElementById('catalog-reset-filters-btn');
+  if (resetBtn) {
+    const isFiltered = (filter !== 'all') || Boolean(query);
+    resetBtn.style.display = isFiltered ? 'inline-flex' : 'none';
+  }
 }
 
 function refreshProductsView() {
