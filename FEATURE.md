@@ -13,6 +13,27 @@
 
 ### **2026-10-06**
 
+* **Category:** Services Page — Primary Title & Secondary Subtitle Typographic Hierarchy
+  * **Page / Files:** [`src/pages/Services.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Services.js), [`src/styles/index.css`](file:///d:/ICON%20ELECTROMATIC/src/styles/index.css)
+  * **Type:** UX/UI Typographic Hierarchy & Visual Balancing (Dark & Light Themes)
+  * **Details:**
+    * **Elevated Primary Domain Titles to Prominent Display Size:**
+      * Updated all 4 core services blocks to make the broad capability domain the primary, large display title (`.service-primary-title` with `font-size: clamp(1.85rem, 2.8vw, 2.35rem); font-weight: 800;`):
+        1. **Global Distribution & Sourcing**
+        2. **Supply Chain & Logistics**
+        3. **RF Engineering & Advisory**
+        4. **Strategic Partnerships**
+    * **Secondary Service Subtitles Positioned Proportionally Smaller:**
+      * Positioned the specific service offerings directly below the primary heading as secondary subtitles (`.service-secondary-title` with `font-size: clamp(1.2rem, 1.8vw, 1.45rem); font-weight: 700;`):
+        1. *Representation of Global Leaders* (Blue Accent)
+        2. *Product Supply and Logistics* (Red Accent)
+        3. *Design Services* (Blue Accent)
+        4. *Business Consultancy* (Red Accent)
+    * **Cross-Theme Harmony:**
+      * Styled seamlessly for both Dark mode (crisp white primary headings with soft blue/rose subtitle accents) and Light mode (deep slate `#0F172A` headings with signature navy `#123b7a` and crimson `#e32726` subtitle accents).
+
+
+
 * **Category:** Products Page — Light Red Filter Panel with Blue Hover/Selection & Restored Trust Strip
   * **Page / Files:** [`src/pages/Products.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Products.js), [`src/styles/index.css`](file:///d:/ICON%20ELECTROMATIC/src/styles/index.css)
   * **Type:** Visual Refinement, Theme Correction & State Reversion

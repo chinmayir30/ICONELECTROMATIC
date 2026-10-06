@@ -3939,6 +3939,62 @@ html[data-theme="light"],
 }
 
 /* ==========================================================================
+   Services Page — Primary Titles & Secondary Subtitles Hierarchy
+   ========================================================================== */
+.service-primary-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.85rem, 2.8vw, 2.35rem);
+  font-weight: 800;
+  color: var(--text-white);
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+  line-height: 1.25;
+}
+
+.service-secondary-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 1.8vw, 1.45rem);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-bottom: 18px;
+  line-height: 1.35;
+}
+
+.service-secondary-title.blue-accent {
+  color: #60a5fa;
+}
+
+.service-secondary-title.red-accent {
+  color: #fda4af;
+}
+
+.service-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 14px;
+  border-radius: 20px;
+  margin-bottom: 14px;
+  font-family: var(--font-display);
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.service-badge-blue {
+  background: rgba(37, 99, 235, 0.12);
+  border: 1px solid rgba(37, 99, 235, 0.28);
+  color: var(--logo-blue-light);
+}
+
+.service-badge-red {
+  background: rgba(225, 29, 72, 0.12);
+  border: 1px solid rgba(225, 29, 72, 0.28);
+  color: var(--logo-red-light);
+}
+
+/* ==========================================================================
    Services Page — Auto-Rotating Media Showcase
    ========================================================================== */
 .service-media-showcase {
@@ -4073,13 +4129,40 @@ html[data-theme="light"],
   box-shadow: 0 24px 56px rgba(15, 29, 61, 0.16), 0 10px 24px rgba(227, 39, 38, 0.18), 0 0 24px rgba(227, 39, 38, 0.1) !important;
 }
 
-[data-theme="light"] .service-row-block h2 {
+[data-theme="light"] .service-row-block h2,
+[data-theme="light"] .service-primary-title {
   color: #0F172A !important;
   font-weight: 800 !important;
   transition: color 0.3s ease !important;
 }
 
-[data-theme="light"] .service-row-block:hover h2 {
+[data-theme="light"] .service-row-block:hover h2,
+[data-theme="light"] .service-row-block:hover .service-primary-title {
+  color: #123b7a !important;
+}
+
+[data-theme="light"] .service-secondary-title {
+  font-weight: 700 !important;
+  transition: color 0.3s ease !important;
+}
+
+[data-theme="light"] .service-secondary-title.blue-accent {
+  color: #123b7a !important;
+}
+
+[data-theme="light"] .service-secondary-title.red-accent {
+  color: #e32726 !important;
+}
+
+[data-theme="light"] .service-badge-blue {
+  background: #e8f1fc !important;
+  border: 1.5px solid rgba(18, 59, 122, 0.22) !important;
+  color: #123b7a !important;
+}
+
+[data-theme="light"] .service-badge-red {
+  background: #fee2e2 !important;
+  border: 1.5px solid rgba(227, 39, 38, 0.25) !important;
   color: #e32726 !important;
 }
 

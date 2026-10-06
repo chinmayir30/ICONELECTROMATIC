@@ -49,17 +49,21 @@ export function renderServicesPage() {
         <!-- 4 Core Services Pillars -->
         <div style="display:flex;flex-direction:column;gap:var(--space-16);margin-bottom:0;">
           
-          <!-- Service 1: Representation of Global Leaders -->
+          <!-- Service 1: Global Distribution & Sourcing -->
           <div style="display:grid;grid-template-columns:1.15fr 1fr;gap:var(--space-12);align-items:center;" class="service-row-block">
             <div>
-              <div style="display:inline-flex;align-items:center;gap:8px;padding:4px 12px;background:rgba(37,99,235,0.12);border:1px solid rgba(37,99,235,0.28);border-radius:20px;margin-bottom:12px;">
-                <i class="fa-solid fa-globe" style="color:var(--logo-blue-light);font-size:0.75rem;"></i>
-                <span style="font-family:var(--font-display);font-size:0.72rem;font-weight:700;color:var(--logo-blue-light);text-transform:uppercase;letter-spacing:0.08em;">Global Distribution &amp; Sourcing</span>
+              <div class="service-badge-pill service-badge-blue">
+                <i class="fa-solid fa-globe"></i>
+                <span>Tier-1 Global Representation</span>
               </div>
               
-              <h2 style="font-size:clamp(1.7rem, 2.8vw, 2.2rem);font-weight:800;color:var(--text-white);letter-spacing:-0.02em;margin-bottom:14px;line-height:1.25;">
-                Representation of Global Leaders
+              <h2 class="service-primary-title">
+                Global Distribution &amp; Sourcing
               </h2>
+              
+              <h3 class="service-secondary-title blue-accent">
+                Representation of Global Leaders
+              </h3>
               
               <p style="font-size:1rem;color:var(--text-gray-300);line-height:1.75;margin-bottom:20px;">
                 We represent major RF and Microwave components, mmWave, Semiconductors, Components, Subsystems and Power supplies manufacturers around the world, providing unparalleled support to electronic designers, manufacturers, engineers and researchers.
@@ -115,7 +119,7 @@ export function renderServicesPage() {
             </div>
           </div>
 
-          <!-- Service 2: Product Supply and Logistics -->
+          <!-- Service 2: Supply Chain & Logistics -->
           <div style="display:grid;grid-template-columns:1fr 1.15fr;gap:var(--space-12);align-items:center;" class="service-row-block">
             <div style="order:1;" class="service-img-col">
               <!-- Auto-Changing Media Showcase (Card 2) -->
@@ -144,14 +148,18 @@ export function renderServicesPage() {
             </div>
 
             <div style="order:2;" class="service-text-col">
-              <div style="display:inline-flex;align-items:center;gap:8px;padding:4px 12px;background:rgba(225,29,72,0.12);border:1px solid rgba(225,29,72,0.28);border-radius:20px;margin-bottom:12px;">
-                <i class="fa-solid fa-truck-fast" style="color:var(--logo-red-light);font-size:0.75rem;"></i>
-                <span style="font-family:var(--font-display);font-size:0.72rem;font-weight:700;color:var(--logo-red-light);text-transform:uppercase;letter-spacing:0.08em;">Supply Chain &amp; Logistics</span>
+              <div class="service-badge-pill service-badge-red">
+                <i class="fa-solid fa-truck-fast"></i>
+                <span>End-to-End Fulfillment</span>
               </div>
               
-              <h2 style="font-size:clamp(1.7rem, 2.8vw, 2.2rem);font-weight:800;color:var(--text-white);letter-spacing:-0.02em;margin-bottom:14px;line-height:1.25;">
-                Product Supply and Logistics
+              <h2 class="service-primary-title">
+                Supply Chain &amp; Logistics
               </h2>
+              
+              <h3 class="service-secondary-title red-accent">
+                Product Supply and Logistics
+              </h3>
               
               <p style="font-size:1rem;color:var(--text-gray-300);line-height:1.75;margin-bottom:14px;">
                 We offer end-to-end product supply and logistics support across global shipping locations and multiple currencies, with strong expertise in import and export operations. Our team is experienced across Indian Government tender portals, enabling seamless engagement in public-sector and strategic procurement.
@@ -175,17 +183,21 @@ export function renderServicesPage() {
             </div>
           </div>
 
-          <!-- Service 3: Design Services -->
+          <!-- Service 3: RF Engineering & Advisory -->
           <div style="display:grid;grid-template-columns:1.15fr 1fr;gap:var(--space-12);align-items:center;" class="service-row-block">
             <div>
-              <div style="display:inline-flex;align-items:center;gap:8px;padding:4px 12px;background:rgba(37,99,235,0.12);border:1px solid rgba(37,99,235,0.28);border-radius:20px;margin-bottom:12px;">
-                <i class="fa-solid fa-compass-drafting" style="color:var(--logo-blue-light);font-size:0.75rem;"></i>
-                <span style="font-family:var(--font-display);font-size:0.72rem;font-weight:700;color:var(--logo-blue-light);text-transform:uppercase;letter-spacing:0.08em;">RF Engineering &amp; Advisory</span>
+              <div class="service-badge-pill service-badge-blue">
+                <i class="fa-solid fa-compass-drafting"></i>
+                <span>Technical Simulation &amp; Advisory</span>
               </div>
               
-              <h2 style="font-size:clamp(1.7rem, 2.8vw, 2.2rem);font-weight:800;color:var(--text-white);letter-spacing:-0.02em;margin-bottom:14px;line-height:1.25;">
-                Design Services
+              <h2 class="service-primary-title">
+                RF Engineering &amp; Advisory
               </h2>
+              
+              <h3 class="service-secondary-title blue-accent">
+                Design Services
+              </h3>
               
               <p style="font-size:1rem;color:var(--text-gray-300);line-height:1.75;margin-bottom:20px;">
                 In order to help compliment our partners, we at Icon provide design services for designers and engineers looking for information and advice on our products. With our team available on call, we ensure that designers and engineers get all the information they need, when they need it.
@@ -244,7 +256,7 @@ export function renderServicesPage() {
             </div>
           </div>
 
-          <!-- Service 4: Business Consultancy -->
+          <!-- Service 4: Strategic Partnerships -->
           <div style="display:grid;grid-template-columns:1fr 1.15fr;gap:var(--space-12);align-items:center;" class="service-row-block">
             <div style="order:1;" class="service-img-col">
               <!-- Auto-Changing Media Showcase (Card 4) -->
@@ -273,14 +285,18 @@ export function renderServicesPage() {
             </div>
 
             <div style="order:2;" class="service-text-col">
-              <div style="display:inline-flex;align-items:center;gap:8px;padding:4px 12px;background:rgba(225,29,72,0.12);border:1px solid rgba(225,29,72,0.28);border-radius:20px;margin-bottom:12px;">
-                <i class="fa-solid fa-briefcase" style="color:var(--logo-red-light);font-size:0.75rem;"></i>
-                <span style="font-family:var(--font-display);font-size:0.72rem;font-weight:700;color:var(--logo-red-light);text-transform:uppercase;letter-spacing:0.08em;">Strategic Partnerships</span>
+              <div class="service-badge-pill service-badge-red">
+                <i class="fa-solid fa-briefcase"></i>
+                <span>Enterprise Growth &amp; Advisory</span>
               </div>
               
-              <h2 style="font-size:clamp(1.7rem, 2.8vw, 2.2rem);font-weight:800;color:var(--text-white);letter-spacing:-0.02em;margin-bottom:14px;line-height:1.25;">
-                Business Consultancy
+              <h2 class="service-primary-title">
+                Strategic Partnerships
               </h2>
+              
+              <h3 class="service-secondary-title red-accent">
+                Business Consultancy
+              </h3>
               
               <p style="font-size:1rem;color:var(--text-gray-300);line-height:1.75;margin-bottom:20px;">
                 Our leadership collectively carries decades of professional expertise across various business domains. We further diversify this strength through meaningful partnerships with global leaders. We help organisations with Digital Transformation, next-generation Business Process Outsourcing, Make in India initiatives, and many more.
