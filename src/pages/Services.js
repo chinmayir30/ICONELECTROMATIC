@@ -51,7 +51,7 @@ export function renderServicesPage() {
         </div>
 
         <!-- 4 Core Services Pillars -->
-        <div style="display:flex;flex-direction:column;gap:var(--space-16);margin-bottom:var(--space-20);">
+        <div style="display:flex;flex-direction:column;gap:var(--space-16);margin-bottom:0;">
           
           <!-- Service 1: Representation of Global Leaders -->
           <div style="display:grid;grid-template-columns:1.15fr 1fr;gap:var(--space-12);align-items:center;" class="service-row-block">
@@ -228,28 +228,6 @@ export function renderServicesPage() {
             </div>
           </div>
 
-        </div>
-
-        <!-- Call to Action Card -->
-        <div class="services-cta-card" style="background:#080D1A;border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:var(--space-12) var(--space-8);text-align:center;position:relative;overflow:hidden;box-shadow:0 24px 48px -12px rgba(0,0,0,0.8);">
-          <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg, var(--logo-blue), var(--logo-red));"></div>
-          
-          <span class="section-tag-mono services-cta-tag" style="margin-bottom:6px;">DIRECT COLLABORATION</span>
-          <h3 class="services-cta-title" style="font-size:clamp(1.8rem, 3.2vw, 2.4rem);font-weight:800;color:#FFFFFF;letter-spacing:-0.03em;margin-bottom:12px;">
-            Ready to partner on your next mission-critical system?
-          </h3>
-          <p class="services-cta-desc" style="font-size:1rem;color:var(--text-gray-400);max-width:640px;margin:0 auto var(--space-8) auto;line-height:1.6;">
-            Connect with our Bengaluru engineering and global logistics office for component inquiries, government tenders, or bespoke design consulting.
-          </p>
-
-          <div style="display:flex;justify-content:center;gap:14px;flex-wrap:wrap;">
-            <a class="btn-relay-blue services-cta-btn-primary" data-route="/contact">
-              <i class="fa-solid fa-paper-plane"></i> Contact Our Team
-            </a>
-            <a class="btn-relay-dark services-cta-btn-secondary" data-route="/products">
-              Explore Products Catalog
-            </a>
-          </div>
         </div>
 
       </div>

@@ -13,6 +13,13 @@
 
 ### **2026-10-06**
 
+* **Category:** Services Page — Removed Direct Collaboration CTA Section
+  * **Page / Files:** [`src/pages/Services.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Services.js), [`src/styles/index.css`](file:///d:/ICON%20ELECTROMATIC/src/styles/index.css)
+  * **Type:** Content Removal & Cleanup
+  * **Details:**
+    * **Purged CTA Card:** Completely removed the bottom *"DIRECT COLLABORATION — Ready to partner on your next mission-critical system? Connect with our Bengaluru engineering and global logistics office for component inquiries, government tenders, or bespoke design consulting. [Contact Our Team] [Explore Products Catalog]"* card from the Services page across both Light and Dark themes.
+    * **Cleaned Up Obsolete Styles & Spacing:** Adjusted the core services pillars container to `margin-bottom: 0` to preserve uniform bottom padding, and removed unused light theme styles for `.services-cta-card`.
+
 * **Category:** Partners & Products Pages — OEM Flyer Alignment & Lead Text Update
   * **Page / Files:** [`src/pages/Partners.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Partners.js), [`src/data/catalogData.js`](file:///d:/ICON%20ELECTROMATIC/src/data/catalogData.js), [`src/pages/Products.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Products.js)
   * **Type:** Content & Data Reordering
