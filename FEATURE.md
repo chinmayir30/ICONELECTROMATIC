@@ -13,6 +13,18 @@
 
 ### **2026-10-06**
 
+* **Category:** Products Page — OEM Cards Vertical Alignment & Layout Consistency
+  * **Page / Files:** [`src/pages/Products.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Products.js), [`src/styles/index.css`](file:///d:/ICON%20ELECTROMATIC/src/styles/index.css)
+  * **Type:** Layout Alignment & Visual Consistency (Dark & Light Themes)
+  * **Details:**
+    * **Standardized Company Name & Specialty Badge Hierarchy:**
+      * Separated the company title and specialty pill from an irregular wrap-flex row into dedicated vertical lines (`.oem-card-title-header` > `.oem-card-name` on line 1, `.oem-specialty-row` > `.oem-specialty-pill` on line 2).
+      * Resolved inconsistency where short company names (Minicircuits, TecDia, TriTeq) placed the badge on the right while longer names (Rogers Corporation, RFuW Engineering) wrapped below. Now 100% of OEM cards display the specialty badge consistently on line 2.
+    * **Uniform Categories Preview Box & Content Heights:**
+      * Standardized preview category pill selection so total length never exceeds 2 lines (prevents cards like TecDia from inflating to 3 lines while 1-category cards like TriTeq only had 1 line).
+      * Set consistent `min-height: 86px;` on `.oem-card-categories-preview` across all 15 cards in both Dark and Light themes.
+      * Set `min-height: 2.8em;` on `.oem-card-tagline` and `min-height: 5.4em;` with `-webkit-line-clamp: 4;` on `.oem-card-desc` so every section (Title, Specialty Badge, Tagline, Description, Categories Box, and Meta Counters) aligns at the exact same horizontal baseline across adjacent cards in every row.
+
 * **Category:** Products Page — Light Mode OEM Cards Pure White Background
   * **Page / Files:** [`src/styles/index.css`](file:///d:/ICON%20ELECTROMATIC/src/styles/index.css)
   * **Type:** Visual Refinement & Theme Correction

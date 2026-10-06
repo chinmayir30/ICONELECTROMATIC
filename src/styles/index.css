@@ -5050,6 +5050,10 @@ html[data-theme="light"],
   flex: 1;
 }
 
+.oem-card-title-header {
+  margin-bottom: 6px;
+}
+
 .oem-card-title-row {
   display: flex;
   align-items: flex-start;
@@ -5065,7 +5069,15 @@ html[data-theme="light"],
   font-weight: 800;
   color: var(--text-white);
   letter-spacing: -0.02em;
-  margin: 0;
+  margin: 0 0 6px 0;
+  line-height: 1.3;
+}
+
+.oem-specialty-row {
+  display: flex;
+  align-items: center;
+  min-height: 26px;
+  margin-bottom: 6px;
 }
 
 .oem-specialty-pill {
@@ -5074,6 +5086,8 @@ html[data-theme="light"],
   padding: 3px 10px;
   border-radius: 8px;
   white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
 }
 
 .oem-card-tagline {
@@ -5082,6 +5096,7 @@ html[data-theme="light"],
   font-weight: 600;
   margin: 4px 0 10px;
   line-height: 1.4;
+  min-height: 2.8em;
 }
 
 .oem-card-desc {
@@ -5089,7 +5104,11 @@ html[data-theme="light"],
   color: var(--text-gray-400);
   line-height: 1.55;
   margin: 0 0 16px;
-  flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 5.4em;
 }
 
 .oem-card-categories-preview {
@@ -5098,6 +5117,9 @@ html[data-theme="light"],
   padding: 10px 12px;
   border-radius: 10px;
   border: 1px solid rgba(255,255,255,0.05);
+  min-height: 86px;
+  display: flex;
+  flex-direction: column;
 }
 
 .preview-label {
@@ -8225,12 +8247,21 @@ html[data-theme="light"],
   font-weight: 800 !important;
   font-size: 1.25rem !important;
   letter-spacing: -0.02em !important;
+  margin: 0 0 6px 0 !important;
+  line-height: 1.3 !important;
   transition: color 0.25s ease !important;
 }
 
 /* Title turns vibrant red on card hover */
 [data-theme="light"] .oem-card:hover .oem-card-name {
   color: #e32726 !important;
+}
+
+[data-theme="light"] .oem-specialty-row {
+  display: flex !important;
+  align-items: center !important;
+  min-height: 26px !important;
+  margin-bottom: 6px !important;
 }
 
 /* Specialty Pill Badge (Light Blue Background) */
@@ -8243,6 +8274,8 @@ html[data-theme="light"],
   letter-spacing: 0.04em !important;
   padding: 4px 10px !important;
   border-radius: 6px !important;
+  display: inline-flex !important;
+  align-items: center !important;
 }
 
 /* Tagline & Description */
@@ -8250,12 +8283,21 @@ html[data-theme="light"],
   color: #e32726 !important;
   font-weight: 700 !important;
   font-size: 0.82rem !important;
+  min-height: 2.8em !important;
+  line-height: 1.4 !important;
+  margin: 4px 0 10px !important;
 }
 
 [data-theme="light"] .oem-card-desc {
   color: #475569 !important;
   font-size: 0.86rem !important;
   line-height: 1.6 !important;
+  min-height: 5.4em !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 4 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+  margin: 0 0 16px !important;
 }
 
 /* Categories Preview Box */
@@ -8263,8 +8305,11 @@ html[data-theme="light"],
   background: #f8fafc !important;
   border: 1px solid rgba(227, 39, 38, 0.15) !important;
   border-radius: 10px !important;
-  padding: 12px 14px !important;
+  padding: 10px 12px !important;
   margin-bottom: 18px !important;
+  min-height: 86px !important;
+  display: flex !important;
+  flex-direction: column !important;
 }
 
 [data-theme="light"] .preview-label {

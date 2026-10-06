@@ -228,6 +228,14 @@ function renderOEMCard(oem) {
   else if (nameL.includes('fortify') || nameL.includes('yttek')) domain = 'sdr';
   else if (nameL.includes('spellman') || nameL.includes('thermosen') || nameL.includes('tecdia') || nameL.includes('nee') || nameL.includes('transline') || nameL.includes('evans')) domain = 'sensors';
 
+  // Standardize preview categories to maximum 2-line footprint
+  let previewCats = oem.categories.slice(0, 3);
+  const totalLength = previewCats.reduce((sum, c) => sum + c.name.length, 0);
+  if (totalLength > 36 && oem.categories.length > 2) {
+    previewCats = oem.categories.slice(0, 2);
+  }
+  const remainingCount = oem.categories.length - previewCats.length;
+
   return `
     <div class="oem-card" data-nav-params="${params}" data-oem-id="${oem.id}" data-domain="${domain}" style="--oem-accent: ${oem.accentColor}; --oem-glow: ${oem.glowColor};">
       <div class="oem-card-accent-bar"></div>
@@ -240,11 +248,13 @@ function renderOEMCard(oem) {
       </div>
 
       <div class="oem-card-body">
-        <div class="oem-card-title-row">
+        <div class="oem-card-title-header">
           <h3 class="oem-card-name">${oem.name}</h3>
-          <span class="oem-specialty-pill" style="background: ${oem.accentColor}18; color: ${oem.accentColor}; border: 1px solid ${oem.accentColor}40;">
-            ${oem.specialty}
-          </span>
+          <div class="oem-specialty-row">
+            <span class="oem-specialty-pill" style="background: ${oem.accentColor}18; color: ${oem.accentColor}; border: 1px solid ${oem.accentColor}40;">
+              ${oem.specialty}
+            </span>
+          </div>
         </div>
 
         <p class="oem-card-tagline">${oem.tagline}</p>
@@ -254,8 +264,8 @@ function renderOEMCard(oem) {
         <div class="oem-card-categories-preview">
           <span class="preview-label">Categories:</span>
           <div class="preview-pills">
-            ${oem.categories.slice(0, 3).map(c => `<span class="preview-pill">${c.name}</span>`).join('')}
-            ${oem.categories.length > 3 ? `<span class="preview-pill preview-pill-more">+${oem.categories.length - 3} more</span>` : ''}
+            ${previewCats.map(c => `<span class="preview-pill">${c.name}</span>`).join('')}
+            ${remainingCount > 0 ? `<span class="preview-pill preview-pill-more">+${remainingCount} more</span>` : ''}
           </div>
         </div>
 
