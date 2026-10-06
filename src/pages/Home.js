@@ -11,83 +11,73 @@ export function renderHomePage() {
   return `
     <!-- RELAY CINEMATIC HERO -->
     <section class="hero-relay">
-      <!-- Background Video with dark vignette -->
+      <!-- Background Video/Image -->
       <div class="hero-relay-bg">
-        <video 
-          id="hero-bg-video"
-          autoplay 
-          loop 
-          muted 
-          playsinline 
-          preload="auto"
-          poster="/images/hero-amplifier.jpg">
-          <source src="/jbhd-tjzps.mp4" type="video/mp4" />
-          <source src="/videos/hero-bg.mp4" type="video/mp4" />
-          <!-- Fallback image -->
-          <img src="/images/hero-amplifier.jpg" alt="RF Microwave Hardware" />
-        </video>
+        <video id="hero-bg-video" src="/icon-video.mp4" autoplay loop muted playsinline style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;"></video>
         <div class="hero-relay-vignette"></div>
       </div>
 
       <div class="container" style="position:relative;z-index:3;width:100%;">
         <div class="hero-relay-content">
-          <div class="page-eyebrow-pill" style="margin-bottom: var(--space-6);">
-            <span class="hub-dot-pulse"></span>
-            <span>ICON ELECTROMATIC</span>
-            <span style="color:var(--logo-red);margin:0 4px;font-weight:700;">/</span>
-            <span>RF &amp; MICROWAVE OPERATIONS</span>
+          <div class="hero-eyebrow-tag" style="margin-bottom: var(--space-6);">
+            <span class="hero-eyebrow-line" style="display:inline-block; width:24px; height:2px; background:var(--logo-red);"></span> 
+            <span><span class="slash"></span> ICON ELECTROMATIC</span>
           </div>
 
-          <h1 class="hero-title-giant">
-            Precision that moves <br/>
-            mission-critical systems <span class="accent-red">forward.</span>
+          <h1 class="hero-title-giant" style="font-size: clamp(2.2rem, 4.5vw, 4.2rem);">
+            ICON ELECTROMATIC turns 
+            complex high-frequency requirements into <span class="accent-red" style="color: var(--logo-red);">mission-ready hardware.</span>
           </h1>
 
           <p class="hero-description-clean">
-            ICON ELECTROMATIC turns complex high-frequency requirements into mission-ready hardware. 
-            Delivering 4,000+ precision RF, microwave, and electronic components from DC to 86 GHz for 
+            Delivering precision RF, microwave, and electronic components for 
             defense, aerospace, SATCOM, and telecommunications.
           </p>
 
           <div class="hero-actions-row">
-            <a class="btn-relay-blue" data-route="/products">
+            <a class="btn-relay-red" data-route="/products">
               Explore Products <i class="fa-solid fa-arrow-right"></i>
             </a>
-            <a class="btn-relay-dark" data-route="/contact">
+            <a class="btn-relay-dark" style="background:#ffffff; color:#000000;" data-route="/contact">
               Request a Quote
             </a>
           </div>
 
-          <!-- Relay-style Stats Strip -->
-          <div class="hero-stats-strip">
-            <div class="stat-block">
-              <h4>4,000<span>+</span></h4>
-              <p>Products Available</p>
+          <!-- Integrated Stats -->
+          <div class="hero-inline-stats" style="margin-top: 60px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.2); display: flex; justify-content: space-between; align-items: center; max-width: 900px; gap: 20px;">
+            <div class="hero-stat-item" style="flex-direction: column; align-items: flex-start; gap: 4px;">
+              <span class="hero-stat-number" style="color: var(--logo-red);">4,000<span class="hero-stat-suffix" style="color: var(--logo-red);">+</span></span>
+              <span class="hero-stat-label" style="color: #cbd5e1;">PRODUCTS AVAILABLE</span>
             </div>
-            <div class="stat-block">
-              <h4>24<span>+</span></h4>
-              <p>Component Lines</p>
+            
+            <div class="hero-stat-item" style="flex-direction: column; align-items: flex-start; gap: 4px;">
+              <span class="hero-stat-number" style="color: var(--logo-red);">24<span class="hero-stat-suffix" style="color: var(--logo-red);">+</span></span>
+              <span class="hero-stat-label" style="color: #cbd5e1;">COMPONENT LINES</span>
             </div>
-            <div class="stat-block">
-              <h4>86<span> GHz</span></h4>
-              <p>Max Frequency</p>
+
+            <div class="hero-stat-item" style="flex-direction: column; align-items: flex-start; gap: 4px;">
+              <span class="hero-stat-number" style="color: var(--logo-red);">86 <span class="hero-stat-suffix" style="color: var(--logo-red);">GHz</span></span>
+              <span class="hero-stat-label" style="color: #cbd5e1;">MAX FREQUENCY</span>
             </div>
-            <div class="stat-block">
-              <h4>100<span>%</span></h4>
-              <p>RoHS & ISO 9001</p>
+
+            <div class="hero-stat-item" style="flex-direction: column; align-items: flex-start; gap: 4px;">
+              <span class="hero-stat-number" style="color: var(--logo-red);">100<span class="hero-stat-suffix" style="color: var(--logo-red);">%</span></span>
+              <span class="hero-stat-label" style="color: #cbd5e1;">ROHS & ISO 9001</span>
             </div>
           </div>
         </div>
       </div>
     </section>
 
+
+
     <!-- CORE CAPABILITIES (Relay Dark Minimal Cards) -->
     <section class="section-dark">
       <div class="container">
         <div class="section-head-minimal">
-          <span class="section-tag-mono">CORE CAPABILITIES</span>
-          <h2 class="section-h2">Engineered for extreme performance.</h2>
-          <p class="section-lead">
+          <h2 class="section-tag-mono red-section-title" style="text-transform: uppercase; font-size: 2.75rem; font-weight: 800; letter-spacing: 0.05em; margin: 0; line-height: 1.2;">Core Capabilities</h2>
+          <h3 class="section-h2" style="font-size: 2rem; font-weight: 600; line-height: 1.3; margin-top: 8px; margin-bottom: 16px;">Engineered for extreme performance.</h3>
+          <p class="section-lead" style="font-size: 1.25rem; max-width: 800px; margin: 0;">
             From millimeter-wave defense radar to satellite ground infrastructure, we provide the verified hardware engineers depend on.
           </p>
         </div>
@@ -129,12 +119,10 @@ export function renderHomePage() {
       <div class="container">
         <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:var(--space-8);flex-wrap:wrap;gap:var(--space-4);">
           <div>
-            <div class="page-eyebrow-pill" style="margin-bottom:8px;">
-              <span class="hub-dot-pulse"></span>
-              <span>POPULAR HARDWARE &amp; MATERIALS</span>
+            <div class="popular-header" style="margin-bottom: 24px;">
+              <h2 class="section-tag-mono red-section-title" style="text-transform: uppercase; font-size: 2.75rem; font-weight: 800; letter-spacing: 0.05em; margin: 0; line-height: 1.2;">Popular Products &amp; Components</h2>
             </div>
-            <h2 class="section-h2">Popular Products &amp; Components</h2>
-            <p class="section-lead">
+            <p class="section-lead" style="font-size: 1.25rem; max-width: 850px; color: #e2e8f0; margin: 0;">
               High-frequency laminates, precision GaN semiconductors, 3D metamaterial optics, and microwave modules from our global OEM partners.
             </p>
           </div>
@@ -163,114 +151,14 @@ export function renderHomePage() {
       </div>
     </section>
 
-    <!-- TRUSTED BY INDUSTRY LEADERS: What Our Customers Say -->
-    <section class="testimonials-dark-section">
-      <div class="container">
-        <div class="section-head-minimal" style="text-align:center;max-width:700px;margin-left:auto;margin-right:auto;margin-bottom:var(--space-12);">
-          <span class="section-tag-mono" style="color:var(--logo-red-light);">TRUSTED BY INDUSTRY LEADERS</span>
-          <h2 class="section-h2">What Our Customers Say</h2>
-          <p class="section-lead" style="margin-left:auto;margin-right:auto;">
-            Over 14+ years providing mission-critical RF passives and active systems to premier defense laboratories, aerospace contractors, and telecom pioneers.
-          </p>
-        </div>
-
-        <div class="testimonials-grid-dark">
-          <!-- Testimonial 1 -->
-          <div class="testimonial-card-relay">
-            <div class="testimonial-stars">
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-            </div>
-            <p class="testimonial-quote">
-              "Icon Electromatic delivered critical Ku-band low-noise amplifiers and coaxial attenuators within record lead times. Their technical team in Bengaluru verified all S-parameter test reports, ensuring flawless payload integration."
-            </p>
-            <div class="testimonial-author-block">
-              <div class="testimonial-avatar" style="border-color:rgba(37,99,235,0.4);color:#60A5FA;">AV</div>
-              <div class="testimonial-author-details">
-                <h4>Dr. Anand Venkat</h4>
-                <p>Head of RF Payload Systems · Defense Aerospace Lab</p>
-                <span class="testimonial-industry-tag">Aerospace & Defense</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Testimonial 2 -->
-          <div class="testimonial-card-relay">
-            <div class="testimonial-stars">
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-            </div>
-            <p class="testimonial-quote">
-              "Component phase accuracy and batch-to-batch consistency have been exemplary. Their custom cavity bandpass filters solved our stringent out-of-band rejection requirements without any thermal drift."
-            </p>
-            <div class="testimonial-author-block">
-              <div class="testimonial-avatar" style="border-color:rgba(225,29,72,0.4);color:#FDA4AF;">MS</div>
-              <div class="testimonial-author-details">
-                <h4>Marcus Sterling</h4>
-                <p>VP of Hardware Engineering · NextGen SATCOM Networks</p>
-                <span class="testimonial-industry-tag">Satellite Communications</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Testimonial 3 -->
-          <div class="testimonial-card-relay">
-            <div class="testimonial-stars">
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-            </div>
-            <p class="testimonial-quote">
-              "Having direct access to ISO 9001 certified components and verified engineering support in Bengaluru has accelerated our 5G millimeter-wave prototype test bench iterations by weeks."
-            </p>
-            <div class="testimonial-author-block">
-              <div class="testimonial-avatar" style="border-color:rgba(37,99,235,0.4);color:#60A5FA;">KR</div>
-              <div class="testimonial-author-details">
-                <h4>K. Ramanathan</h4>
-                <p>Director of Test & Measurement · Telemetry Systems</p>
-                <span class="testimonial-industry-tag">Test & Telecom</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Industry Verification Trust Strip -->
-        <div class="industry-partners-strip">
-          <div class="partner-logo-item">
-            <i class="fa-solid fa-satellite"></i>
-            <span>AEROSPACE & SATCOM</span>
-          </div>
-          <div class="partner-logo-item">
-            <i class="fa-solid fa-shield-halved" style="color:var(--logo-red);"></i>
-            <span>DEFENSE R&D LABS</span>
-          </div>
-          <div class="partner-logo-item">
-            <i class="fa-solid fa-tower-cell"></i>
-            <span>5G / 6G TELECOM</span>
-          </div>
-          <div class="partner-logo-item">
-            <i class="fa-solid fa-microchip"></i>
-            <span>SEMICONDUCTOR LABS</span>
-          </div>
-        </div>
-      </div>
-    </section>
 
     <!-- INSIGHTS: Latest Blogs -->
     <section class="insights-dark-section">
       <div class="container">
         <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:var(--space-10);flex-wrap:wrap;gap:var(--space-4);">
           <div>
-            <span class="section-tag-mono">INSIGHTS</span>
-            <h2 class="section-h2">Latest Blogs</h2>
+            <h2 class="section-tag-mono red-section-title" style="text-transform: uppercase; font-size: 2.75rem; font-weight: 800; letter-spacing: 0.05em; margin: 0; line-height: 1.2;">Insights</h2>
+            <h3 class="section-h2" style="font-size: 2rem; font-weight: 600; line-height: 1.3; margin-top: 8px; margin-bottom: 0;">Latest Blogs</h3>
             <p class="section-lead">
               Engineering articles, application notes, and microwave design breakthroughs from our technical team.
             </p>
@@ -380,8 +268,8 @@ export function renderHomePage() {
     <section class="contact-relay-section">
       <div class="container">
         <div class="section-head-minimal">
-          <span class="section-tag-mono">CONNECT WITH ENGINEERING</span>
-          <h2 class="section-h2">Initiate an inquiry or request pricing.</h2>
+          <h2 class="section-tag-mono red-section-title" style="text-transform: uppercase; font-size: 2.75rem; font-weight: 800; letter-spacing: 0.05em; margin: 0; line-height: 1.2;">Connect with Engineering</h2>
+          <h3 class="section-h2" style="font-size: 2rem; font-weight: 600; line-height: 1.3; margin-top: 8px; margin-bottom: 16px;">Initiate an inquiry or request pricing.</h3>
           <p class="section-lead">
             Direct access to our senior RF applications team in Bengaluru. Fast turnarounds on quotations and custom requirements.
           </p>
@@ -428,11 +316,21 @@ export function renderHomePage() {
                 <i class="fa-solid fa-bolt" style="color:var(--logo-red);"></i> Quick Requirement Presets
               </h4>
               <p style="font-size:0.85rem;color:var(--text-gray-400);margin-bottom:var(--space-3);">Click any preset to prefill your inquiry message:</p>
-              <div style="display:flex;flex-wrap:wrap;gap:8px;">
-                <button class="filter-chip-dark quick-preset" data-preset="Request quotation and datasheets for Wideband Power Amplifiers (DC to 18 GHz).">RF Amplifiers RFQ</button>
-                <button class="filter-chip-dark quick-preset" data-preset="Inquiring about high-Q cavity bandpass filters for aerospace radar systems.">Cavity Filters Radar</button>
-                <button class="filter-chip-dark quick-preset" data-preset="Requesting volume availability and lead times for 50-ohm attenuators.">Attenuators Stock</button>
-                <button class="filter-chip-dark quick-preset" data-preset="We have a custom frequency requirement and need bespoke RF design services.">Bespoke RF Design</button>
+              <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">
+                <button class="filter-chip-dark quick-preset" data-preset="Inquiring about High Frequency Laminates & Prepregs.">High Frequency Laminates</button>
+                <button class="filter-chip-dark quick-preset" data-preset="Inquiring about Embedded Resistive Film.">Embedded Resistive Film</button>
+                <button class="filter-chip-dark quick-preset" data-preset="Inquiring about 3D Printed Dielectric Parts.">3D Printed Dielectrics</button>
+                <button class="filter-chip-dark quick-preset" data-preset="Inquiring about High Power GaN Device and Beamforming IC.">GaN & Beamforming IC</button>
+                <button class="filter-chip-dark quick-preset" data-preset="Inquiring about High Power Switches and Limiter.">High Power Switches</button>
+                <button class="filter-chip-dark quick-preset" data-preset="Inquiring about RF and MW Components.">RF & MW Components</button>
+                <button class="filter-chip-dark quick-preset" data-preset="Inquiring about Tunable Filters.">Tunable Filters</button>
+                <button class="filter-chip-dark quick-preset" data-preset="Inquiring about Software Defined Radios.">Software Defined Radios</button>
+                <button class="filter-chip-dark quick-preset" data-preset="Inquiring about high voltage power supplies.">HV Power Supplies</button>
+                <button class="filter-chip-dark quick-preset" data-preset="Inquiring about Temperature Sensors.">Temperature Sensors</button>
+                <button class="filter-chip-dark quick-preset" data-preset="Inquiring about Thin Film Capacitors.">Thin Film Capacitors</button>
+                <button class="filter-chip-dark quick-preset" data-preset="Inquiring about Ceramic Capacitors.">Ceramic Capacitors</button>
+                <button class="filter-chip-dark quick-preset" data-preset="Inquiring about PCB Fabrication.">PCB Fabrication</button>
+                <button class="filter-chip-dark quick-preset" data-preset="Inquiring about Perimeter Intrusion Detection System (PIDS).">PIDS</button>
               </div>
             </div>
           </div>
@@ -538,7 +436,7 @@ export function initHomePage() {
         } else if (filter === 'components') {
           filtered = allPopular.filter(p => p.oemId === 'minicircuits' || p.oemId === 'rfuw-engineering' || p.oemId === 'triteq');
         } else if (filter === 'sensors') {
-          filtered = allPopular.filter(p => p.oemId === 'spellman' || p.oemId === 'thermosen' || p.oemId === 'nee' || p.oemId === 'transline-technology');
+          filtered = allPopular.filter(p => p.oemId === 'thermosen' || p.oemId === 'nee' || p.oemId === 'transline-technology');
         }
 
         if (filtered.length === 0) {

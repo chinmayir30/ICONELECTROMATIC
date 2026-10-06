@@ -74,7 +74,7 @@ export function renderProductCard(product, index = 0) {
       <div class="product-card-relay-img">
         <img src="${displayImage}" alt="${name}" loading="lazy" onerror="this.onerror=null; this.src='/images/rf-filter.jpg';" />
         <div class="relay-card-overlay"></div>
-        <div class="relay-oem-pill" style="border: 1px solid ${oemAccent}40; background: rgba(10,15,30,0.85); color: ${oemAccent};">
+        <div class="relay-oem-pill" style="border: 1px solid ${oemAccent}40; background: rgba(10,15,30,0.85); color: ${['qorvo', 'yttek'].includes(oemName.toLowerCase()) ? '#ffffff' : oemAccent};">
           ${oemName}
         </div>
       </div>

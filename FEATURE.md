@@ -13,6 +13,20 @@
 
 ### **2026-10-06**
 
+* **Category:** Pull Request #1 Merge — Collaborator UI Updates (`bhavyasj05:feature/website-ui-updates`)
+  * **Page / Files:** [`src/pages/Home.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Home.js), [`src/components/Header.js`](file:///d:/ICON%20ELECTROMATIC/src/components/Header.js), [`src/components/Footer.js`](file:///d:/ICON%20ELECTROMATIC/src/components/Footer.js), [`src/components/ProductCard.js`](file:///d:/ICON%20ELECTROMATIC/src/components/ProductCard.js), [`index.html`](file:///d:/ICON%20ELECTROMATIC/index.html), [`src/styles/index.css`](file:///d:/ICON%20ELECTROMATIC/src/styles/index.css), `public/icon-video.mp4`, `public/images/hero-new-bg.png`
+  * **Type:** Collaboration Integration & PR Merge
+  * **Details:**
+    * **Integrated GitHub PR #1 (`bhavyasj05:feature/website-ui-updates`):**
+      * Merged collaborator Bhavya's branch into `main` with 0 conflicts, fully preserving all existing product catalog updates, filter panels, and services card hierarchy.
+      * **Home Page Enhancements:** Updated quick requirement inquiry presets to match the 14 authorized OEM categories; refined section titles with signature red accent typography; integrated new hero background media (`hero-new-bg.png`) and company video asset (`icon-video.mp4`).
+      * **Header & Navigation:** Reordered navigation items (`Home`, `About Us`, `Partners`, `Products`, `Services`, `Blogs`, `Contact`) with responsive request quote button and theme toggle.
+      * **Footer Modernization:** Integrated multi-office address directory (Bengaluru India, Singapore, Oklahoma USA) with contact details, social links, fast navigation, and ISO 9001:2015 / RoHS compliance status bar.
+      * **Product Cards Contrast:** Enhanced badge text contrast on OEM pills for Qorvo and YTTEK.
+      * **Typography & Fonts:** Harmonized Google Fonts to load Montserrat along with Plus Jakarta Sans and Inter.
+      * **Zero Regressions:** All earlier today fixes (14 OEMs, Products light red panel with blue hover/active selection, badge numeric simplifications, Services primary/secondary title balance) remain 100% active and verified.
+
+
 * **Category:** Services Page — Primary Title & Secondary Subtitle Typographic Hierarchy
   * **Page / Files:** [`src/pages/Services.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Services.js), [`src/styles/index.css`](file:///d:/ICON%20ELECTROMATIC/src/styles/index.css)
   * **Type:** UX/UI Typographic Hierarchy & Visual Balancing (Dark & Light Themes)

@@ -9,10 +9,10 @@ export function renderHeaderInner(currentRoute) {
 
   const navLinks = [
     { path: '/', label: 'Home' },
-    { path: '/products', label: 'Products' },
     { path: '/about', label: 'About Us' },
-    { path: '/services', label: 'Services' },
     { path: '/partners', label: 'Partners' },
+    { path: '/products', label: 'Products' },
+    { path: '/services', label: 'Services' },
     { path: '/blogs', label: 'Blogs' },
     { path: '/contact', label: 'Contact' },
   ];
@@ -32,12 +32,12 @@ export function renderHeaderInner(currentRoute) {
       </nav>
 
       <div class="header-actions">
-        <button class="theme-toggle-btn" id="theme-toggle-btn" aria-label="Toggle light/dark theme" title="Switch Theme">
-          <i class="fa-solid fa-sun" id="theme-toggle-icon"></i>
-        </button>
         <a class="btn-relay-border" data-route="/contact">
           Request Quote
         </a>
+        <button class="theme-toggle-btn" id="theme-toggle-btn" aria-label="Toggle light/dark theme" title="Switch Theme">
+          <i class="fa-solid fa-sun" id="theme-toggle-icon"></i>
+        </button>
       </div>
 
       <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle navigation">
@@ -103,7 +103,7 @@ export function initHeader() {
       toggleIcon.className = 'fa-solid fa-moon';
     }
   } else {
-    document.documentElement.removeAttribute('data-theme');
+    document.documentElement.setAttribute('data-theme', 'dark');
     if (toggleIcon) {
       toggleIcon.className = 'fa-solid fa-sun';
     }
@@ -113,7 +113,7 @@ export function initHeader() {
     toggleBtn.addEventListener('click', () => {
       const isLight = document.documentElement.getAttribute('data-theme') === 'light';
       if (isLight) {
-        document.documentElement.removeAttribute('data-theme');
+        document.documentElement.setAttribute('data-theme', 'dark');
         localStorage.setItem('icon-theme', 'dark');
         if (toggleIcon) toggleIcon.className = 'fa-solid fa-sun';
       } else {
