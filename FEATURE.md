@@ -13,6 +13,16 @@
 
 ### **2026-10-06**
 
+* **Category:** Services Page — Light Mode Light Blue Badge & Capability Block Backgrounds
+  * **Page / Files:** [`src/styles/index.css`](file:///d:/ICON%20ELECTROMATIC/src/styles/index.css)
+  * **Type:** Visual Refinement & Color Harmonization
+  * **Details:**
+    * **Light Blue Styling Across All 4 Service Cards in Light Mode (`[data-theme="light"]`):**
+      * **Card 1 (Representation Badges):** Applied a soft light-blue background (`#edf5ff`) with subtle blue border (`1px solid rgba(37, 99, 235, 0.22)`), crisp blue icons (`#2563eb`), and deep navy text (`#0f1d3d`) to all capability tags (*"Direct OEM Warranty"*, *"Mil-Spec Screened"*, *"Bengaluru Stock Hub"*, *"Traceable CoCs"*). Hover state transitions to `#e0effe` with elevated blue glow.
+      * **Card 2 (Logistics Chips):** Styled GeM & CPPP Portal Bidding, Customs & Duty Optimization, and Multi-Currency Billing chips with the matching light-blue `#edf5ff` background, blue check icons, and navy text.
+      * **Card 3 (Engineering Feature Blocks):** Replaced plain transparent hover blocks with styled light-blue `#edf5ff` containers, white circular icon badges with blue glyphs, and navy headers for *On-Call Senior RF Engineers* and *Stack-Up & S-Parameter Verification*.
+      * **Card 4 (Consultancy Strategic Focus Blocks):** Styled *Make in India* and *Supply Chain Digitalization* cards with `#edf5ff` background, blue borders, and dark navy headers.
+
 * **Category:** Services Page — Enhanced Light Mode Card Elevation Shadows
   * **Page / Files:** [`src/styles/index.css`](file:///d:/ICON%20ELECTROMATIC/src/styles/index.css)
   * **Type:** Visual Refinement & Depth Enhancement
