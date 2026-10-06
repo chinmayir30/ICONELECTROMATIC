@@ -13,6 +13,32 @@
 
 ### **2026-10-06**
 
+* **Category:** Products Page — Excel "Speciales in" Dynamic Filter Pills
+  * **Page / Files:** [`src/pages/Products.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Products.js), [`src/data/catalogData.js`](file:///d:/ICON%20ELECTROMATIC/src/data/catalogData.js)
+  * **Type:** Feature Enhancement & Excel Synchronization (Dark & Light Themes)
+  * **Details:**
+    * **Replaced Hardcoded Domain Categories with Authentic Specialties:**
+      * Replaced the previous 5 generic domain filters (*RF Laminates & Materials*, *Semiconductors & GaN*, *RF/MW Components*, *SDR & Optics*, *Sensors, Power & PCB*) with dynamic filter pills derived directly from the **"Speciales in"** column of the official Excel workbook ([`Icon Website Product Info - Mrora.v2.xlsx`](file:///d:/ICON%20ELECTROMATIC/Icon%20Website%20Product%20Info%20-%20Mrora.v2.xlsx)).
+      * Added filters for:
+        1. *High Frequency Laminates & Prepregs* (Rogers Corporation)
+        2. *RF and MW Components* (Minicircuits)
+        3. *High Power GaN Device and Beamforming IC* (Qorvo)
+        4. *Thin Film Capacitors* (TecDia)
+        5. *Tunable Filters* (TriTeq)
+        6. *High Power Switches and Limiter* (RFuW Engineering)
+        7. *Software Defined Radios* (YTTEK)
+        8. *Ceramic Capacitors* (Evans)
+        9. *Embedded Resistive Film* (Ohmega Ticer)
+        10. *Temperature Sensors* (Thermosen)
+        11. *3D Printed Dielectric Parts* (Fortify)
+        12. *PCB Fabrication* (NEE & Transline Technology)
+        13. *High Voltage Power Supplies* (Spellman)
+        14. *Perimeter Intrusion Detection System (PIDS)* (AEE Israel)
+      * Clicking any specialty filter (e.g. *"High Frequency Laminates & Prepregs"* or *"PCB Fabrication"*) dynamically displays all matching OEM manufacturer cards and automatically updates the active count tag.
+      * Includes *"All Specialties (15)"* button to reset filter and show all global partners.
+      * Fully styled and reactive in both Dark and Light themes.
+
+
 * **Category:** Products Page — OEM Cards Vertical Alignment & Layout Consistency
   * **Page / Files:** [`src/pages/Products.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Products.js), [`src/styles/index.css`](file:///d:/ICON%20ELECTROMATIC/src/styles/index.css)
   * **Type:** Layout Alignment & Visual Consistency (Dark & Light Themes)

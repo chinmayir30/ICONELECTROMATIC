@@ -2074,7 +2074,7 @@ export const CATALOG = [
     id: "spellman",
     name: "Spellman",
     shortName: "Spellman",
-    specialty: "high voltage power supplies",
+    specialty: "High Voltage Power Supplies",
     tagline: "High Voltage Power Supplies, X-Ray Generators & Sources",
     description: "Spellman is the world's leading manufacturer of precision modular and rack-mount high-voltage power supplies, Monoblock\u00ae X-ray sources, and custom power systems for defense, medical, and industrial use.",
     website: "https://www.spellmanhv.com",

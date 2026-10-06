@@ -156,8 +156,16 @@ function renderCurrentLevel() {
 function renderOEMsLevel() {
   const oems = getOEMs();
   
+  // Extract unique specialties from catalog matching the Excel sheet's "Speciales in" column
+  const specialties = [];
+  oems.forEach(oem => {
+    if (oem.specialty && !specialties.includes(oem.specialty)) {
+      specialties.push(oem.specialty);
+    }
+  });
+
   return `
-    <!-- Search and Domain Filter Controls -->
+    <!-- Search and Specialty Filter Controls -->
     <div class="catalog-controls-bar">
       <div class="catalog-search-wrap">
         <i class="fa-solid fa-magnifying-glass catalog-search-icon"></i>
@@ -165,7 +173,7 @@ function renderOEMsLevel() {
           type="text" 
           id="oem-search-input" 
           class="catalog-search-input" 
-          placeholder="Search by company, category, product, or application..."
+          placeholder="Search by company, specialty, category, or product..."
           value="${navState.searchQuery || ''}"
         />
         ${navState.searchQuery ? `
@@ -176,24 +184,17 @@ function renderOEMsLevel() {
       </div>
 
       <div class="oem-domain-filters" id="oem-domain-filters">
-        <button class="domain-filter-pill ${navState.activeFilter === 'all' ? 'active' : ''}" data-domain="all">
-          All Partners (${oems.length})
+        <button class="domain-filter-pill ${(!navState.activeFilter || navState.activeFilter === 'all') ? 'active' : ''}" data-specialty="all">
+          All Specialties (${oems.length})
         </button>
-        <button class="domain-filter-pill ${navState.activeFilter === 'materials' ? 'active' : ''}" data-domain="materials">
-          RF Laminates &amp; Materials
-        </button>
-        <button class="domain-filter-pill ${navState.activeFilter === 'semiconductors' ? 'active' : ''}" data-domain="semiconductors">
-          Semiconductors &amp; GaN
-        </button>
-        <button class="domain-filter-pill ${navState.activeFilter === 'components' ? 'active' : ''}" data-domain="components">
-          RF/MW Components
-        </button>
-        <button class="domain-filter-pill ${navState.activeFilter === 'sdr' ? 'active' : ''}" data-domain="sdr">
-          SDR &amp; Optics
-        </button>
-        <button class="domain-filter-pill ${navState.activeFilter === 'sensors' ? 'active' : ''}" data-domain="sensors">
-          Sensors, Power &amp; PCB
-        </button>
+        ${specialties.map(spec => {
+          const count = oems.filter(o => o.specialty === spec).length;
+          return `
+            <button class="domain-filter-pill ${navState.activeFilter === spec ? 'active' : ''}" data-specialty="${spec}">
+              ${spec} (${count})
+            </button>
+          `;
+        }).join('')}
       </div>
     </div>
 
@@ -220,14 +221,6 @@ function renderOEMCard(oem) {
   const totalCategories = oem.categories.length;
   const params = buildNavParams('categories', oem.id);
 
-  // Derive domain category
-  let domain = 'components';
-  const nameL = oem.name.toLowerCase();
-  if (nameL.includes('rogers') || nameL.includes('ohmega')) domain = 'materials';
-  else if (nameL.includes('qorvo') || nameL.includes('gan')) domain = 'semiconductors';
-  else if (nameL.includes('fortify') || nameL.includes('yttek')) domain = 'sdr';
-  else if (nameL.includes('spellman') || nameL.includes('thermosen') || nameL.includes('tecdia') || nameL.includes('nee') || nameL.includes('transline') || nameL.includes('evans')) domain = 'sensors';
-
   // Standardize preview categories to maximum 2-line footprint
   let previewCats = oem.categories.slice(0, 3);
   const totalLength = previewCats.reduce((sum, c) => sum + c.name.length, 0);
@@ -237,7 +230,7 @@ function renderOEMCard(oem) {
   const remainingCount = oem.categories.length - previewCats.length;
 
   return `
-    <div class="oem-card" data-nav-params="${params}" data-oem-id="${oem.id}" data-domain="${domain}" style="--oem-accent: ${oem.accentColor}; --oem-glow: ${oem.glowColor};">
+    <div class="oem-card" data-nav-params="${params}" data-oem-id="${oem.id}" data-specialty="${oem.specialty}" style="--oem-accent: ${oem.accentColor}; --oem-glow: ${oem.glowColor};">
       <div class="oem-card-accent-bar"></div>
       
       <!-- Prominent OEM Logo Header Showcase -->
@@ -637,11 +630,11 @@ function attachCatalogEvents() {
       return;
     }
 
-    // Domain filter pills
-    const domainPill = e.target.closest('.domain-filter-pill');
-    if (domainPill) {
-      const domain = domainPill.getAttribute('data-domain');
-      filterOEMsByDomain(domain);
+    // Specialty filter pills
+    const specialtyPill = e.target.closest('.domain-filter-pill');
+    if (specialtyPill) {
+      const specialty = specialtyPill.getAttribute('data-specialty');
+      filterOEMsBySpecialty(specialty);
       return;
     }
 
@@ -682,13 +675,13 @@ function attachCatalogEvents() {
   }
 }
 
-function filterOEMsByDomain(domain) {
-  navState.activeFilter = domain;
+function filterOEMsBySpecialty(specialty) {
+  navState.activeFilter = specialty;
 
   // Update pill active classes
   const pills = document.querySelectorAll('.domain-filter-pill');
   pills.forEach(p => {
-    if (p.getAttribute('data-domain') === domain) p.classList.add('active');
+    if (p.getAttribute('data-specialty') === specialty) p.classList.add('active');
     else p.classList.remove('active');
   });
 
@@ -703,16 +696,16 @@ function applyFilters() {
   const cards = document.querySelectorAll('.oem-card');
   let visibleCount = 0;
   const query = (navState.searchQuery || '').toLowerCase();
-  const domain = navState.activeFilter || 'all';
+  const filter = navState.activeFilter || 'all';
 
   cards.forEach(card => {
-    const cardDomain = card.getAttribute('data-domain') || 'components';
+    const cardSpecialty = card.getAttribute('data-specialty') || '';
     const text = card.textContent.toLowerCase();
 
-    const matchesDomain = (domain === 'all') || (cardDomain === domain);
+    const matchesSpecialty = (filter === 'all') || (cardSpecialty === filter);
     const matchesQuery = (!query) || text.includes(query);
 
-    if (matchesDomain && matchesQuery) {
+    if (matchesSpecialty && matchesQuery) {
       card.style.display = 'flex';
       visibleCount++;
     } else {
