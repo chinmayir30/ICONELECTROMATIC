@@ -13,6 +13,14 @@
 
 ### **2026-10-06**
 
+* **Category:** Services Page — Enhanced Light Mode Card Elevation Shadows
+  * **Page / Files:** [`src/styles/index.css`](file:///d:/ICON%20ELECTROMATIC/src/styles/index.css)
+  * **Type:** Visual Refinement & Depth Enhancement
+  * **Details:**
+    * **Pronounced Multi-Tier Drop Shadows for 4 Service Cards:**
+      * Deepened the resting shadow of `.service-row-block` in Light Mode to `box-shadow: 0 16px 38px rgba(15, 29, 61, 0.1), 0 6px 16px rgba(227, 39, 38, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04) !important;` for prominent grounding against the light `#f4f6fa` background.
+      * Enhanced hover elevation with expanded multi-layer blur: `box-shadow: 0 24px 56px rgba(15, 29, 61, 0.16), 0 10px 24px rgba(227, 39, 38, 0.18), 0 0 24px rgba(227, 39, 38, 0.1) !important;`.
+
 * **Category:** Services Page — Rotating Media Showcase, Button Unification & Badge Cleanup
   * **Page / Files:** [`src/pages/Services.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Services.js), [`src/styles/index.css`](file:///d:/ICON%20ELECTROMATIC/src/styles/index.css)
   * **Type:** Interactive Media & Visual Refinement
