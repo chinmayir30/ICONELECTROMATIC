@@ -26,7 +26,7 @@ export function renderServicesPage() {
             Engineering Services &amp; Global Representation
           </h1>
           <p class="page-lead-unified">
-            From representing world-class RF and Microwave components and semiconductor manufacturers to offering design collaboration and strategic business consultancy, our services empower engineers and organisations to innovate with confidence.
+            We represent major RF, Microwave, mmWave, Semiconductors, Components, Subsystems and Power supplies manufacturers around the world, providing unparalleled support to electronic designers, manufacturers, engineers and researchers.
           </p>
         </div>
 
