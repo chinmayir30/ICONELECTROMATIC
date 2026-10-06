@@ -13,6 +13,21 @@
 
 ### **2026-10-06**
 
+* **Category:** Products Page — Light Red Filter Panel Theme, Stats Badges Removal & Excel Specialty Count Alignment
+  * **Page / Files:** [`src/pages/Products.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Products.js), [`src/styles/index.css`](file:///d:/ICON%20ELECTROMATIC/src/styles/index.css)
+  * **Type:** Visual Refinement, Brand Styling & Content Clean-up
+  * **Details:**
+    * **Light Red Filter Command Center Styling (`[data-theme="light"] .catalog-filter-panel`):**
+      * Styled the entire filter box with a soft light red background (`#fff5f5 !important;`), crimson red top border accent (`#e32726`), subtle border (`rgba(227, 39, 38, 0.22)`), and smooth shadow matching the OEM cards.
+      * Updated search bar, quick specialty select dropdown, circular scroll buttons, and specialty filter pills with clean white cards and crimson accents.
+    * **Removed Stats Strip & Counter Badges:**
+      * Removed the 4 stat pills from the page header: *"15 Global OEM Partners"*, *"88 Specialized Categories"*, *"145+ Precision Products & Lines"*, and *"Direct Factory Warranties & CoCs"*.
+      * Removed the *"Showing 15 Global OEMs"* badge (`.catalog-counter-tag`) above the OEM cards grid.
+    * **Excel Specialty Count Alignment:**
+      * Aligned the primary filter badge to reflect the authentic **14 distinct Specialties** from the Excel workbook (`All Specialties (14)`).
+
+
+
 * **Category:** Products Page — Specialty Filter Command Center Redesign & Light Mode Filter Fix
   * **Page / Files:** [`src/pages/Products.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Products.js), [`src/styles/index.css`](file:///d:/ICON%20ELECTROMATIC/src/styles/index.css)
   * **Type:** UX/UI Redesign & Critical Bug Fix (Dark & Light Themes)

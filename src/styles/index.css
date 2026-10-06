@@ -8250,58 +8250,59 @@ html[data-theme="light"],
   font-weight: 700 !important;
 }
 
-/* ---- Search Input (Matching Blog Section Light Blue) ---- */
+/* ---- Search Input on Light Red Filter Panel ---- */
 [data-theme="light"] .catalog-search-input {
-  background: #e8f1fc !important;
-  border: 1.5px solid rgba(18, 59, 122, 0.22) !important;
+  background: #ffffff !important;
+  border: 1.5px solid rgba(227, 39, 38, 0.25) !important;
   color: #0f172a !important;
-  box-shadow: 0 2px 8px rgba(18, 59, 122, 0.04) !important;
+  box-shadow: 0 2px 8px rgba(227, 39, 38, 0.04) !important;
   font-weight: 500 !important;
   transition: all 0.25s ease !important;
 }
 
 [data-theme="light"] .catalog-search-input::placeholder {
-  color: #5b7298 !important;
+  color: #94a3b8 !important;
 }
 
 [data-theme="light"] .catalog-search-input:focus {
   background: #ffffff !important;
-  border-color: #123b7a !important;
-  box-shadow: 0 0 0 3px rgba(18, 59, 122, 0.18), 0 4px 12px rgba(18, 59, 122, 0.08) !important;
+  border-color: #e32726 !important;
+  box-shadow: 0 0 0 3px rgba(227, 39, 38, 0.16), 0 4px 12px rgba(227, 39, 38, 0.08) !important;
 }
 
 [data-theme="light"] .catalog-search-icon {
-  color: #123b7a !important;
+  color: #e32726 !important;
 }
 
 [data-theme="light"] .catalog-search-clear {
-  color: #5b7298 !important;
+  color: #94a3b8 !important;
 }
 [data-theme="light"] .catalog-search-clear:hover {
   color: #e32726 !important;
 }
 
-/* ---- Products Catalog Filter Command Center (Light Theme) ---- */
+/* ---- Products Catalog Filter Command Center (Light Red Background in Light Theme) ---- */
 [data-theme="light"] .catalog-filter-panel {
-  background: #ffffff !important;
-  border: 1px solid #e2e8f0 !important;
-  border-top: 3.5px solid #123b7a !important;
-  border-radius: 16px !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02) !important;
+  background: #fff5f5 !important;
+  border: 1px solid rgba(227, 39, 38, 0.22) !important;
+  border-top: 3.5px solid #e32726 !important;
+  border-radius: 18px !important;
+  box-shadow: 0 6px 24px rgba(227, 39, 38, 0.07), 0 1px 3px rgba(0, 0, 0, 0.03) !important;
 }
 
 [data-theme="light"] .catalog-specialty-select {
-  background: #e8f1fc !important;
-  border: 1.5px solid rgba(18, 59, 122, 0.22) !important;
-  color: #123b7a !important;
+  background: #ffffff !important;
+  border: 1.5px solid rgba(227, 39, 38, 0.25) !important;
+  color: #1e293b !important;
   font-weight: 600 !important;
+  box-shadow: 0 2px 8px rgba(227, 39, 38, 0.04) !important;
 }
 
 [data-theme="light"] .catalog-specialty-select:hover,
 [data-theme="light"] .catalog-specialty-select:focus {
-  background: #dbeafe !important;
-  border-color: #123b7a !important;
-  box-shadow: 0 0 0 3px rgba(18, 59, 122, 0.15) !important;
+  background: #ffffff !important;
+  border-color: #e32726 !important;
+  box-shadow: 0 0 0 3px rgba(227, 39, 38, 0.16) !important;
 }
 
 [data-theme="light"] .catalog-specialty-select option {
@@ -8311,73 +8312,77 @@ html[data-theme="light"],
 
 [data-theme="light"] .catalog-select-wrap .select-icon,
 [data-theme="light"] .catalog-select-wrap .select-arrow {
-  color: #123b7a !important;
+  color: #e32726 !important;
 }
 
 [data-theme="light"] .catalog-reset-filters-btn {
   background: #fee2e2 !important;
-  border: 1px solid rgba(227, 39, 38, 0.3) !important;
+  border: 1px solid rgba(227, 39, 38, 0.35) !important;
   color: #b91c1c !important;
 }
 
 [data-theme="light"] .catalog-reset-filters-btn:hover {
   background: #fecaca !important;
   border-color: #e32726 !important;
-  color: #991b1b !important;
+  color: #7f1d1d !important;
 }
 
 [data-theme="light"] .chips-scroll-btn {
   background: #ffffff !important;
-  border: 1px solid #cbd5e1 !important;
-  color: #123b7a !important;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05) !important;
+  border: 1px solid rgba(227, 39, 38, 0.25) !important;
+  color: #e32726 !important;
+  box-shadow: 0 2px 6px rgba(227, 39, 38, 0.06) !important;
 }
 
 [data-theme="light"] .chips-scroll-btn:hover {
-  background: #e8f1fc !important;
-  border-color: #123b7a !important;
-  color: #123b7a !important;
+  background: #fee2e2 !important;
+  border-color: #e32726 !important;
+  color: #991b1b !important;
 }
 
-/* ---- Domain Filter Pills (Exact Blog Section Light Blue Style) ---- */
+/* ---- Domain Filter Pills on Light Red Panel ---- */
 [data-theme="light"] .domain-filter-pill {
-  background: #e8f1fc !important;
-  border: 1.5px solid rgba(18, 59, 122, 0.22) !important;
-  color: #123b7a !important;
+  background: #ffffff !important;
+  border: 1.5px solid rgba(227, 39, 38, 0.22) !important;
+  color: #1e293b !important;
   border-radius: 9999px !important;
-  box-shadow: 0 2px 8px rgba(18, 59, 122, 0.04) !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03) !important;
   font-weight: 600 !important;
   transition: all 0.25s ease !important;
 }
 
 [data-theme="light"] .domain-filter-pill .pill-badge {
-  background: rgba(18, 59, 122, 0.12) !important;
-  color: #123b7a !important;
+  background: rgba(227, 39, 38, 0.1) !important;
+  color: #e32726 !important;
 }
 
 [data-theme="light"] .domain-filter-pill:hover {
-  background: #dbeafe !important;
-  color: #123b7a !important;
-  border-color: #123b7a !important;
+  background: #fee2e2 !important;
+  color: #991b1b !important;
+  border-color: #e32726 !important;
   transform: translateY(-2px) !important;
-  box-shadow: 0 4px 12px rgba(18, 59, 122, 0.12) !important;
+  box-shadow: 0 4px 12px rgba(227, 39, 38, 0.15) !important;
 }
 
 [data-theme="light"] .domain-filter-pill.active {
-  background: #123b7a !important;
-  border-color: #123b7a !important;
+  background: #e32726 !important;
+  border-color: #e32726 !important;
   color: #ffffff !important;
-  box-shadow: 0 4px 14px rgba(18, 59, 122, 0.28) !important;
+  box-shadow: 0 4px 14px rgba(227, 39, 38, 0.35) !important;
 }
 
 [data-theme="light"] .domain-filter-pill.active .pill-badge {
-  background: rgba(255, 255, 255, 0.25) !important;
+  background: rgba(255, 255, 255, 0.28) !important;
   color: #ffffff !important;
 }
 
 /* ---- Section Header Meta ---- */
 [data-theme="light"] .catalog-section-meta {
   border-bottom: 1px solid #e2e8f0 !important;
+}
+
+[data-theme="light"] .catalog-counter-tag {
+  display: none !important;
 }
 
 [data-theme="light"] .catalog-level-title {

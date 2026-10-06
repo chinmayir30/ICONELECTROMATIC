@@ -63,28 +63,8 @@ function renderPageShell() {
       <h1 class="page-title-unified">Product Portfolio &amp; Component Catalog</h1>
       <p class="page-lead-unified">
         Authorized distributor for world-leading RF, microwave, mmWave, semiconductor, and Hi-Rel materials manufacturers.
-        Explore all 15 global OEM partners, multi-frequency categories, and specialized product lines.
+        Explore authorized global OEM partners, multi-frequency categories, and specialized product lines.
       </p>
-
-      <!-- Trust & Capability Highlights matching Partners and Services -->
-      <div class="catalog-trust-strip" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:24px;margin-bottom:var(--space-8);">
-        <div class="catalog-trust-pill">
-          <i class="fa-solid fa-industry" style="color:var(--logo-blue-light);"></i>
-          <span><strong>${totalOEMs}</strong> Global OEM Partners</span>
-        </div>
-        <div class="catalog-trust-pill">
-          <i class="fa-solid fa-shapes" style="color:var(--logo-red-light);"></i>
-          <span><strong>${totalCats}</strong> Specialized Categories</span>
-        </div>
-        <div class="catalog-trust-pill">
-          <i class="fa-solid fa-microchip" style="color:#10B981;"></i>
-          <span><strong>${totalProds}+</strong> Precision Products &amp; Lines</span>
-        </div>
-        <div class="catalog-trust-pill">
-          <i class="fa-solid fa-certificate" style="color:#F59E0B;"></i>
-          <span>Direct Factory Warranties &amp; CoCs</span>
-        </div>
-      </div>
     </div>
 
     <!-- Dynamic Content View -->
@@ -190,7 +170,7 @@ function renderOEMsLevel() {
             <i class="fa-solid fa-sliders select-icon"></i>
             <select id="oem-specialty-select" class="catalog-specialty-select" aria-label="Filter by OEM Specialty">
               <option value="all" ${(!navState.activeFilter || navState.activeFilter === 'all') ? 'selected' : ''}>
-                All Specialties (${oems.length})
+                All Specialties (${specialties.length})
               </option>
               ${specialties.map(spec => {
                 const count = oems.filter(o => o.specialty === spec).length;
@@ -225,7 +205,7 @@ function renderOEMsLevel() {
         <div class="catalog-chips-track" id="catalog-chips-track">
           <button class="domain-filter-pill ${(!navState.activeFilter || navState.activeFilter === 'all') ? 'active' : ''}" data-specialty="all">
             <span class="pill-title">All Specialties</span>
-            <span class="pill-badge">${oems.length}</span>
+            <span class="pill-badge">${specialties.length}</span>
           </button>
           ${specialties.map(spec => {
             const count = oems.filter(o => o.specialty === spec).length;
@@ -244,18 +224,16 @@ function renderOEMsLevel() {
       </div>
     </div>
 
-    <!-- Active Count Display -->
+    <!-- Active Count Display (Badge removed per user request) -->
     <div class="catalog-section-meta">
       <div class="catalog-level-header">
         <h2 class="catalog-level-title">Authorized Technology Manufacturers</h2>
         <p class="catalog-level-desc">Select an OEM partner below to explore their specialized categories and product models</p>
       </div>
-      <div class="catalog-counter-tag">
-        Showing <strong id="visible-oem-count">${oems.length}</strong> Global OEMs
-      </div>
+      <span id="visible-oem-count" style="display:none;">${oems.length}</span>
     </div>
 
-    <!-- Grid of All 15 OEM Cards -->
+    <!-- Grid of OEM Cards -->
     <div class="oem-cards-grid" id="oem-cards-grid">
       ${oems.map(oem => renderOEMCard(oem)).join('')}
     </div>
