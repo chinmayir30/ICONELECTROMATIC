@@ -13,18 +13,22 @@
 
 ### **2026-10-06**
 
-* **Category:** Products Page — Light Red Filter Panel Theme, Stats Badges Removal & Excel Specialty Count Alignment
+* **Category:** Products Page — Light Red Filter Panel with Blue Hover/Selection & Restored Trust Strip
   * **Page / Files:** [`src/pages/Products.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Products.js), [`src/styles/index.css`](file:///d:/ICON%20ELECTROMATIC/src/styles/index.css)
-  * **Type:** Visual Refinement, Brand Styling & Content Clean-up
+  * **Type:** Visual Refinement, Theme Correction & State Reversion
   * **Details:**
-    * **Light Red Filter Command Center Styling (`[data-theme="light"] .catalog-filter-panel`):**
-      * Styled the entire filter box with a soft light red background (`#fff5f5 !important;`), crimson red top border accent (`#e32726`), subtle border (`rgba(227, 39, 38, 0.22)`), and smooth shadow matching the OEM cards.
-      * Updated search bar, quick specialty select dropdown, circular scroll buttons, and specialty filter pills with clean white cards and crimson accents.
-    * **Removed Stats Strip & Counter Badges:**
-      * Removed the 4 stat pills from the page header: *"15 Global OEM Partners"*, *"88 Specialized Categories"*, *"145+ Precision Products & Lines"*, and *"Direct Factory Warranties & CoCs"*.
-      * Removed the *"Showing 15 Global OEMs"* badge (`.catalog-counter-tag`) above the OEM cards grid.
+    * **Light Red Filter Box with Blue Hover & Cursor Selection (`[data-theme="light"] .catalog-filter-panel`):**
+      * Retained the soft light red background (`#fff5f5 !important;`) on the filter command center box.
+      * **Blue Hover Interactions:** Hovering over specialty pills displays light blue (`#dbeafe !important;`), navy border (`#123b7a !important;`), and blue text (`#123b7a !important;`). Search clear button, specialty dropdown, and carousel arrows also transition to blue on hover.
+      * **Blue Cursor & Active Selection:** Selecting any specialty pill turns it solid navy blue (`#123b7a !important;`) with white text and badge. Focus states and text selection (`::selection`) across the panel now use signature navy blue (`#123b7a`).
+    * **Restored Trust & Capability Highlights Strip:**
+      * Restored the 4 capability badges strip directly below the lead paragraph:
+        1. *Global OEM Partners*
+        2. *Specialized Categories*
+        3. *Precision Products & Lines*
+        4. *Direct Factory Warranties & CoCs*
     * **Excel Specialty Count Alignment:**
-      * Aligned the primary filter badge to reflect the authentic **14 distinct Specialties** from the Excel workbook (`All Specialties (14)`).
+      * Retained the correct **14 distinct Specialties** count from the Excel workbook (`All Specialties (14)`).
 
 
 

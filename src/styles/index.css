@@ -8250,38 +8250,43 @@ html[data-theme="light"],
   font-weight: 700 !important;
 }
 
-/* ---- Search Input on Light Red Filter Panel ---- */
+/* ---- Search Input on Light Red Filter Panel (Blue Focus & Cursor Selection) ---- */
 [data-theme="light"] .catalog-search-input {
   background: #ffffff !important;
-  border: 1.5px solid rgba(227, 39, 38, 0.25) !important;
+  border: 1.5px solid rgba(18, 59, 122, 0.22) !important;
   color: #0f172a !important;
-  box-shadow: 0 2px 8px rgba(227, 39, 38, 0.04) !important;
+  box-shadow: 0 2px 8px rgba(18, 59, 122, 0.04) !important;
   font-weight: 500 !important;
   transition: all 0.25s ease !important;
 }
 
 [data-theme="light"] .catalog-search-input::placeholder {
-  color: #94a3b8 !important;
+  color: #5b7298 !important;
 }
 
 [data-theme="light"] .catalog-search-input:focus {
   background: #ffffff !important;
-  border-color: #e32726 !important;
-  box-shadow: 0 0 0 3px rgba(227, 39, 38, 0.16), 0 4px 12px rgba(227, 39, 38, 0.08) !important;
+  border-color: #123b7a !important;
+  box-shadow: 0 0 0 3px rgba(18, 59, 122, 0.18), 0 4px 12px rgba(18, 59, 122, 0.08) !important;
+}
+
+[data-theme="light"] .catalog-search-input::selection {
+  background: #123b7a !important;
+  color: #ffffff !important;
 }
 
 [data-theme="light"] .catalog-search-icon {
-  color: #e32726 !important;
+  color: #123b7a !important;
 }
 
 [data-theme="light"] .catalog-search-clear {
-  color: #94a3b8 !important;
+  color: #5b7298 !important;
 }
 [data-theme="light"] .catalog-search-clear:hover {
-  color: #e32726 !important;
+  color: #123b7a !important;
 }
 
-/* ---- Products Catalog Filter Command Center (Light Red Background in Light Theme) ---- */
+/* ---- Products Catalog Filter Command Center (Light Red Background, Blue Hover & Selection) ---- */
 [data-theme="light"] .catalog-filter-panel {
   background: #fff5f5 !important;
   border: 1px solid rgba(227, 39, 38, 0.22) !important;
@@ -8290,19 +8295,24 @@ html[data-theme="light"],
   box-shadow: 0 6px 24px rgba(227, 39, 38, 0.07), 0 1px 3px rgba(0, 0, 0, 0.03) !important;
 }
 
+[data-theme="light"] .catalog-filter-panel ::selection {
+  background: #123b7a !important;
+  color: #ffffff !important;
+}
+
 [data-theme="light"] .catalog-specialty-select {
   background: #ffffff !important;
-  border: 1.5px solid rgba(227, 39, 38, 0.25) !important;
-  color: #1e293b !important;
+  border: 1.5px solid rgba(18, 59, 122, 0.22) !important;
+  color: #123b7a !important;
   font-weight: 600 !important;
-  box-shadow: 0 2px 8px rgba(227, 39, 38, 0.04) !important;
+  box-shadow: 0 2px 8px rgba(18, 59, 122, 0.04) !important;
 }
 
 [data-theme="light"] .catalog-specialty-select:hover,
 [data-theme="light"] .catalog-specialty-select:focus {
   background: #ffffff !important;
-  border-color: #e32726 !important;
-  box-shadow: 0 0 0 3px rgba(227, 39, 38, 0.16) !important;
+  border-color: #123b7a !important;
+  box-shadow: 0 0 0 3px rgba(18, 59, 122, 0.18) !important;
 }
 
 [data-theme="light"] .catalog-specialty-select option {
@@ -8312,7 +8322,7 @@ html[data-theme="light"],
 
 [data-theme="light"] .catalog-select-wrap .select-icon,
 [data-theme="light"] .catalog-select-wrap .select-arrow {
-  color: #e32726 !important;
+  color: #123b7a !important;
 }
 
 [data-theme="light"] .catalog-reset-filters-btn {
@@ -8329,50 +8339,52 @@ html[data-theme="light"],
 
 [data-theme="light"] .chips-scroll-btn {
   background: #ffffff !important;
-  border: 1px solid rgba(227, 39, 38, 0.25) !important;
-  color: #e32726 !important;
-  box-shadow: 0 2px 6px rgba(227, 39, 38, 0.06) !important;
+  border: 1px solid rgba(18, 59, 122, 0.22) !important;
+  color: #123b7a !important;
+  box-shadow: 0 2px 6px rgba(18, 59, 122, 0.06) !important;
 }
 
 [data-theme="light"] .chips-scroll-btn:hover {
-  background: #fee2e2 !important;
-  border-color: #e32726 !important;
-  color: #991b1b !important;
+  background: #dbeafe !important;
+  border-color: #123b7a !important;
+  color: #123b7a !important;
 }
 
-/* ---- Domain Filter Pills on Light Red Panel ---- */
+/* ---- Domain Filter Pills on Light Red Panel (Blue Hover & Blue Cursor/Active Selection) ---- */
 [data-theme="light"] .domain-filter-pill {
   background: #ffffff !important;
-  border: 1.5px solid rgba(227, 39, 38, 0.22) !important;
-  color: #1e293b !important;
+  border: 1.5px solid rgba(18, 59, 122, 0.22) !important;
+  color: #123b7a !important;
   border-radius: 9999px !important;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03) !important;
+  box-shadow: 0 2px 6px rgba(18, 59, 122, 0.04) !important;
   font-weight: 600 !important;
   transition: all 0.25s ease !important;
 }
 
 [data-theme="light"] .domain-filter-pill .pill-badge {
-  background: rgba(227, 39, 38, 0.1) !important;
-  color: #e32726 !important;
+  background: rgba(18, 59, 122, 0.12) !important;
+  color: #123b7a !important;
 }
 
+/* Hover State -> Blue */
 [data-theme="light"] .domain-filter-pill:hover {
-  background: #fee2e2 !important;
-  color: #991b1b !important;
-  border-color: #e32726 !important;
+  background: #dbeafe !important;
+  color: #123b7a !important;
+  border-color: #123b7a !important;
   transform: translateY(-2px) !important;
-  box-shadow: 0 4px 12px rgba(227, 39, 38, 0.15) !important;
+  box-shadow: 0 4px 12px rgba(18, 59, 122, 0.16) !important;
 }
 
+/* Cursor Selection / Active State -> Solid Navy Blue */
 [data-theme="light"] .domain-filter-pill.active {
-  background: #e32726 !important;
-  border-color: #e32726 !important;
+  background: #123b7a !important;
+  border-color: #123b7a !important;
   color: #ffffff !important;
-  box-shadow: 0 4px 14px rgba(227, 39, 38, 0.35) !important;
+  box-shadow: 0 4px 14px rgba(18, 59, 122, 0.35) !important;
 }
 
 [data-theme="light"] .domain-filter-pill.active .pill-badge {
-  background: rgba(255, 255, 255, 0.28) !important;
+  background: rgba(255, 255, 255, 0.25) !important;
   color: #ffffff !important;
 }
 
