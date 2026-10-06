@@ -38,15 +38,11 @@ export function renderServicesPage() {
           </div>
           <div style="background:rgba(225,29,72,0.08);border:1px solid rgba(225,29,72,0.25);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#FDA4AF;display:flex;align-items:center;gap:8px;">
             <i class="fa-solid fa-landmark" style="color:var(--logo-red-light);"></i>
-            <span>Indian Govt Tender Portals (GeM & CPPP)</span>
+            <span>Indian Govt Tender Portals (GeM &amp; CPPP)</span>
           </div>
           <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#E2E8F0;display:flex;align-items:center;gap:8px;">
             <i class="fa-solid fa-coins" style="color:#F59E0B;"></i>
             <span>Global Multi-Currency Supply Logistics</span>
-          </div>
-          <div style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.25);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#6EE7B7;display:flex;align-items:center;gap:8px;">
-            <i class="fa-solid fa-certificate" style="color:#10B981;"></i>
-            <span>ISO 9001:2015 Quality Verified</span>
           </div>
         </div>
 
@@ -58,7 +54,7 @@ export function renderServicesPage() {
             <div>
               <div style="display:inline-flex;align-items:center;gap:8px;padding:4px 12px;background:rgba(37,99,235,0.12);border:1px solid rgba(37,99,235,0.28);border-radius:20px;margin-bottom:12px;">
                 <i class="fa-solid fa-globe" style="color:var(--logo-blue-light);font-size:0.75rem;"></i>
-                <span style="font-family:var(--font-display);font-size:0.72rem;font-weight:700;color:var(--logo-blue-light);text-transform:uppercase;letter-spacing:0.08em;">Global Distribution & Sourcing</span>
+                <span style="font-family:var(--font-display);font-size:0.72rem;font-weight:700;color:var(--logo-blue-light);text-transform:uppercase;letter-spacing:0.08em;">Global Distribution &amp; Sourcing</span>
               </div>
               
               <h2 style="font-size:clamp(1.7rem, 2.8vw, 2.2rem);font-weight:800;color:var(--text-white);letter-spacing:-0.02em;margin-bottom:14px;line-height:1.25;">
@@ -89,28 +85,68 @@ export function renderServicesPage() {
                 </div>
               </div>
 
-              <a class="btn-relay-blue" data-route="/products">
+              <a class="btn-relay-red" data-route="/products">
                 Explore Represented Products <i class="fa-solid fa-arrow-right"></i>
               </a>
             </div>
 
-            <div style="border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,0.08);background:#030712;aspect-ratio:4/3;box-shadow:0 20px 40px -15px rgba(0,0,0,0.8);">
-              <img src="/images/hero-amplifier.jpg" alt="RF Component Representation" style="width:100%;height:100%;object-fit:cover;" />
+            <!-- Auto-Changing Media Showcase (Card 1) -->
+            <div class="service-media-showcase" data-service-index="0">
+              <div class="service-slides-wrapper">
+                <div class="service-slide active" data-index="0">
+                  <img src="/images/hero-amplifier.jpg" alt="RF Component Representation — Microwave Amplifier" />
+                </div>
+                <div class="service-slide" data-index="1">
+                  <img src="/images/gan-power-chip.jpg" alt="Active Antenna GaN MMIC Semiconductor" />
+                </div>
+                <div class="service-slide" data-index="2">
+                  <img src="/images/rf-attenuator.jpg" alt="Precision RF Attenuator Module" />
+                </div>
+                <div class="service-slide" data-index="3">
+                  <img src="/images/rf-mixer.jpg" alt="Microwave Frequency Mixer Subsystem" />
+                </div>
+              </div>
+              <div class="service-slide-indicators">
+                <button class="service-slide-dot active" data-slide="0" aria-label="Slide 1"></button>
+                <button class="service-slide-dot" data-slide="1" aria-label="Slide 2"></button>
+                <button class="service-slide-dot" data-slide="2" aria-label="Slide 3"></button>
+                <button class="service-slide-dot" data-slide="3" aria-label="Slide 4"></button>
+              </div>
             </div>
           </div>
 
           <!-- Service 2: Product Supply and Logistics -->
           <div style="display:grid;grid-template-columns:1fr 1.15fr;gap:var(--space-12);align-items:center;" class="service-row-block">
             <div style="order:1;" class="service-img-col">
-              <div style="border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,0.08);background:#030712;aspect-ratio:4/3;box-shadow:0 20px 40px -15px rgba(0,0,0,0.8);">
-                <img src="/images/defense-satcom.jpg" alt="Product Supply and Logistics" style="width:100%;height:100%;object-fit:cover;" />
+              <!-- Auto-Changing Media Showcase (Card 2) -->
+              <div class="service-media-showcase" data-service-index="1">
+                <div class="service-slides-wrapper">
+                  <div class="service-slide active" data-index="0">
+                    <img src="/images/defense-satcom.jpg" alt="Product Supply and Logistics — Aerospace &amp; Defense SATCOM" />
+                  </div>
+                  <div class="service-slide" data-index="1">
+                    <img src="/images/rf-waveguide.jpg" alt="Waveguide Assemblies &amp; Hardware Logistics" />
+                  </div>
+                  <div class="service-slide" data-index="2">
+                    <img src="/images/rf-microwave-pcb.jpg" alt="High-Frequency Space-Grade PCB Supply" />
+                  </div>
+                  <div class="service-slide" data-index="3">
+                    <img src="/images/dielectric-3d-lens.jpg" alt="Specialized Dielectric Component Logistics" />
+                  </div>
+                </div>
+                <div class="service-slide-indicators">
+                  <button class="service-slide-dot active" data-slide="0" aria-label="Slide 1"></button>
+                  <button class="service-slide-dot" data-slide="1" aria-label="Slide 2"></button>
+                  <button class="service-slide-dot" data-slide="2" aria-label="Slide 3"></button>
+                  <button class="service-slide-dot" data-slide="3" aria-label="Slide 4"></button>
+                </div>
               </div>
             </div>
 
             <div style="order:2;" class="service-text-col">
               <div style="display:inline-flex;align-items:center;gap:8px;padding:4px 12px;background:rgba(225,29,72,0.12);border:1px solid rgba(225,29,72,0.28);border-radius:20px;margin-bottom:12px;">
                 <i class="fa-solid fa-truck-fast" style="color:var(--logo-red-light);font-size:0.75rem;"></i>
-                <span style="font-family:var(--font-display);font-size:0.72rem;font-weight:700;color:var(--logo-red-light);text-transform:uppercase;letter-spacing:0.08em;">Supply Chain & Logistics</span>
+                <span style="font-family:var(--font-display);font-size:0.72rem;font-weight:700;color:var(--logo-red-light);text-transform:uppercase;letter-spacing:0.08em;">Supply Chain &amp; Logistics</span>
               </div>
               
               <h2 style="font-size:clamp(1.7rem, 2.8vw, 2.2rem);font-weight:800;color:var(--text-white);letter-spacing:-0.02em;margin-bottom:14px;line-height:1.25;">
@@ -127,10 +163,10 @@ export function renderServicesPage() {
 
               <div style="display:flex;gap:12px;flex-wrap:wrap;">
                 <span style="display:inline-flex;align-items:center;gap:6px;font-size:0.8rem;color:#CBD5E1;background:#080D1A;border:1px solid rgba(255,255,255,0.07);padding:6px 12px;border-radius:6px;">
-                  <i class="fa-solid fa-circle-check" style="color:var(--success);"></i> GeM & CPPP Portal Bidding
+                  <i class="fa-solid fa-circle-check" style="color:var(--success);"></i> GeM &amp; CPPP Portal Bidding
                 </span>
                 <span style="display:inline-flex;align-items:center;gap:6px;font-size:0.8rem;color:#CBD5E1;background:#080D1A;border:1px solid rgba(255,255,255,0.07);padding:6px 12px;border-radius:6px;">
-                  <i class="fa-solid fa-circle-check" style="color:var(--success);"></i> Customs & Duty Optimization
+                  <i class="fa-solid fa-circle-check" style="color:var(--success);"></i> Customs &amp; Duty Optimization
                 </span>
                 <span style="display:inline-flex;align-items:center;gap:6px;font-size:0.8rem;color:#CBD5E1;background:#080D1A;border:1px solid rgba(255,255,255,0.07);padding:6px 12px;border-radius:6px;">
                   <i class="fa-solid fa-circle-check" style="color:var(--success);"></i> Multi-Currency Billing
@@ -144,7 +180,7 @@ export function renderServicesPage() {
             <div>
               <div style="display:inline-flex;align-items:center;gap:8px;padding:4px 12px;background:rgba(37,99,235,0.12);border:1px solid rgba(37,99,235,0.28);border-radius:20px;margin-bottom:12px;">
                 <i class="fa-solid fa-compass-drafting" style="color:var(--logo-blue-light);font-size:0.75rem;"></i>
-                <span style="font-family:var(--font-display);font-size:0.72rem;font-weight:700;color:var(--logo-blue-light);text-transform:uppercase;letter-spacing:0.08em;">RF Engineering & Advisory</span>
+                <span style="font-family:var(--font-display);font-size:0.72rem;font-weight:700;color:var(--logo-blue-light);text-transform:uppercase;letter-spacing:0.08em;">RF Engineering &amp; Advisory</span>
               </div>
               
               <h2 style="font-size:clamp(1.7rem, 2.8vw, 2.2rem);font-weight:800;color:var(--text-white);letter-spacing:-0.02em;margin-bottom:14px;line-height:1.25;">
@@ -172,7 +208,7 @@ export function renderServicesPage() {
                     <i class="fa-solid fa-microchip"></i>
                   </div>
                   <div>
-                    <h4 style="font-size:0.95rem;font-weight:700;color:#FFFFFF;margin-bottom:2px;">Stack-Up & S-Parameter Verification</h4>
+                    <h4 style="font-size:0.95rem;font-weight:700;color:#FFFFFF;margin-bottom:2px;">Stack-Up &amp; S-Parameter Verification</h4>
                     <p style="font-size:0.85rem;color:var(--text-gray-400);line-height:1.5;margin:0;">Rigorous simulation data verification, substrate material recommendations, and impedance modeling.</p>
                   </div>
                 </div>
@@ -183,16 +219,56 @@ export function renderServicesPage() {
               </a>
             </div>
 
-            <div style="border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,0.08);background:#030712;aspect-ratio:4/3;box-shadow:0 20px 40px -15px rgba(0,0,0,0.8);">
-              <img src="/images/rf-filter.webp" alt="RF Design Services" style="width:100%;height:100%;object-fit:cover;" />
+            <!-- Auto-Changing Media Showcase (Card 3) -->
+            <div class="service-media-showcase" data-service-index="2">
+              <div class="service-slides-wrapper">
+                <div class="service-slide active" data-index="0">
+                  <img src="/images/rf-filter.webp" alt="RF Design Services — Tunable Cavity Filter" />
+                </div>
+                <div class="service-slide" data-index="1">
+                  <img src="/images/rf-laminate.jpg" alt="High-Frequency Substrate Simulation &amp; Stack-Up" />
+                </div>
+                <div class="service-slide" data-index="2">
+                  <img src="/images/rf-filter.jpg" alt="Custom Microwave Filter Design &amp; Testing" />
+                </div>
+                <div class="service-slide" data-index="3">
+                  <img src="/images/rf-switch.jpg" alt="Solid-State RF Switch Prototype" />
+                </div>
+              </div>
+              <div class="service-slide-indicators">
+                <button class="service-slide-dot active" data-slide="0" aria-label="Slide 1"></button>
+                <button class="service-slide-dot" data-slide="1" aria-label="Slide 2"></button>
+                <button class="service-slide-dot" data-slide="2" aria-label="Slide 3"></button>
+                <button class="service-slide-dot" data-slide="3" aria-label="Slide 4"></button>
+              </div>
             </div>
           </div>
 
           <!-- Service 4: Business Consultancy -->
           <div style="display:grid;grid-template-columns:1fr 1.15fr;gap:var(--space-12);align-items:center;" class="service-row-block">
             <div style="order:1;" class="service-img-col">
-              <div style="border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,0.08);background:#030712;aspect-ratio:4/3;box-shadow:0 20px 40px -15px rgba(0,0,0,0.8);">
-                <img src="/images/rf-switch.jpg" alt="Business Consultancy" style="width:100%;height:100%;object-fit:cover;" />
+              <!-- Auto-Changing Media Showcase (Card 4) -->
+              <div class="service-media-showcase" data-service-index="3">
+                <div class="service-slides-wrapper">
+                  <div class="service-slide active" data-index="0">
+                    <img src="/images/rf-switch.jpg" alt="Strategic Partnership Consultancy &amp; Hi-Rel Technology" />
+                  </div>
+                  <div class="service-slide" data-index="1">
+                    <img src="/images/rf-microwave-pcb.jpg" alt="Make in India Manufacturing Support &amp; Local FAB" />
+                  </div>
+                  <div class="service-slide" data-index="2">
+                    <img src="/images/defense-satcom.jpg" alt="Aerospace Program Consultancy" />
+                  </div>
+                  <div class="service-slide" data-index="3">
+                    <img src="/images/gan-power-chip.jpg" alt="Semiconductor Industry Modernization &amp; BPO" />
+                  </div>
+                </div>
+                <div class="service-slide-indicators">
+                  <button class="service-slide-dot active" data-slide="0" aria-label="Slide 1"></button>
+                  <button class="service-slide-dot" data-slide="1" aria-label="Slide 2"></button>
+                  <button class="service-slide-dot" data-slide="2" aria-label="Slide 3"></button>
+                  <button class="service-slide-dot" data-slide="3" aria-label="Slide 4"></button>
+                </div>
               </div>
             </div>
 
@@ -222,8 +298,8 @@ export function renderServicesPage() {
                 </div>
               </div>
 
-              <a class="btn-relay-dark" data-route="/contact">
-                Initiate Business Discussion &rarr;
+              <a class="btn-relay-red" data-route="/contact">
+                Initiate Business Discussion <i class="fa-solid fa-arrow-right"></i>
               </a>
             </div>
           </div>
@@ -235,4 +311,56 @@ export function renderServicesPage() {
   `;
 }
 
-export function initServicesPage() {}
+export function initServicesPage() {
+  const showcases = document.querySelectorAll('.service-media-showcase');
+  if (!showcases.length) return;
+
+  showcases.forEach(showcase => {
+    const slides = showcase.querySelectorAll('.service-slide');
+    const dots = showcase.querySelectorAll('.service-slide-dot');
+    if (slides.length <= 1) return;
+
+    let currentIndex = 0;
+    let timer = null;
+    let isHovered = false;
+
+    function goToSlide(targetIdx) {
+      if (slides[currentIndex]) slides[currentIndex].classList.remove('active');
+      if (dots[currentIndex]) dots[currentIndex].classList.remove('active');
+
+      currentIndex = (targetIdx + slides.length) % slides.length;
+
+      if (slides[currentIndex]) slides[currentIndex].classList.add('active');
+      if (dots[currentIndex]) dots[currentIndex].classList.add('active');
+    }
+
+    function startAutoPlay() {
+      stopAutoPlay();
+      timer = setInterval(() => {
+        if (!isHovered) {
+          goToSlide(currentIndex + 1);
+        }
+      }, 3500);
+    }
+
+    function stopAutoPlay() {
+      if (timer) clearInterval(timer);
+      timer = null;
+    }
+
+    // Dot click interaction
+    dots.forEach((dot, dotIdx) => {
+      dot.addEventListener('click', (e) => {
+        e.stopPropagation();
+        goToSlide(dotIdx);
+        startAutoPlay();
+      });
+    });
+
+    // Pause on hover
+    showcase.addEventListener('mouseenter', () => { isHovered = true; });
+    showcase.addEventListener('mouseleave', () => { isHovered = false; });
+
+    startAutoPlay();
+  });
+}

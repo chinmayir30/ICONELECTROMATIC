@@ -13,6 +13,16 @@
 
 ### **2026-10-06**
 
+* **Category:** Services Page — Rotating Media Showcase, Button Unification & Badge Cleanup
+  * **Page / Files:** [`src/pages/Services.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Services.js), [`src/styles/index.css`](file:///d:/ICON%20ELECTROMATIC/src/styles/index.css)
+  * **Type:** Interactive Media & Visual Refinement
+  * **Details:**
+    * **Auto-Changing Media Showcase for All 4 Service Cards:**
+      * Upgraded all 4 service pillar cards with an automated, continuous crossfade media carousel showcasing 4 high-resolution domain photos per card (total 16 high-tech images across Representation, Logistics, Design, and Consultancy).
+      * Included smooth 0.85s opacity crossfade transitions, slow Ken Burns zoom, clickable floating glassmorphism indicator dots, and automatic pause-on-hover interaction in both Light and Dark themes.
+    * **Red "Initiate Business Discussion →" Button:** Styled the Card 4 call-to-action button with `.btn-relay-red` and arrow icon to match the signature red button on Card 1 (*"Explore Represented Products →"*) across both Light and Dark themes.
+    * **Removed ISO 9001:2015 Badge:** Purged the *"ISO 9001:2015 Quality Verified"* badge from the top trust badges strip in both themes.
+
 * **Category:** Services Page — Header Lead Copy Update
   * **Page / Files:** [`src/pages/Services.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Services.js)
   * **Type:** Copy / Content Refinement
