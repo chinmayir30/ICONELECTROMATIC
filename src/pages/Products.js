@@ -70,19 +70,15 @@ function renderPageShell() {
       <div class="catalog-trust-strip" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:24px;margin-bottom:var(--space-8);">
         <div class="catalog-trust-pill">
           <i class="fa-solid fa-industry" style="color:var(--logo-blue-light);"></i>
-          <span><strong>${totalOEMs}</strong> Global OEM Partners</span>
+          <span>Global OEM Partners</span>
         </div>
         <div class="catalog-trust-pill">
           <i class="fa-solid fa-shapes" style="color:var(--logo-red-light);"></i>
-          <span><strong>${totalCats}</strong> Specialized Categories</span>
+          <span>Specialized Categories</span>
         </div>
         <div class="catalog-trust-pill">
           <i class="fa-solid fa-microchip" style="color:#10B981;"></i>
-          <span><strong>${totalProds}+</strong> Precision Products &amp; Lines</span>
-        </div>
-        <div class="catalog-trust-pill">
-          <i class="fa-solid fa-certificate" style="color:#F59E0B;"></i>
-          <span>Direct Factory Warranties &amp; CoCs</span>
+          <span>Precision Products &amp; Lines</span>
         </div>
       </div>
     </div>

@@ -21,12 +21,12 @@
       * Retained the soft light red background (`#fff5f5 !important;`) on the filter command center box.
       * **Blue Hover Interactions:** Hovering over specialty pills displays light blue (`#dbeafe !important;`), navy border (`#123b7a !important;`), and blue text (`#123b7a !important;`). Search clear button, specialty dropdown, and carousel arrows also transition to blue on hover.
       * **Blue Cursor & Active Selection:** Selecting any specialty pill turns it solid navy blue (`#123b7a !important;`) with white text and badge. Focus states and text selection (`::selection`) across the panel now use signature navy blue (`#123b7a`).
-    * **Restored Trust & Capability Highlights Strip:**
-      * Restored the 4 capability badges strip directly below the lead paragraph:
+    * **Refined Trust & Capability Highlights Badges:**
+      * Removed the *"Direct Factory Warranties & CoCs"* badge.
+      * Removed the numeric prefixes (`15`, `88`, and `145+`) from the remaining 3 badges while keeping their icons and descriptions clean:
         1. *Global OEM Partners*
         2. *Specialized Categories*
         3. *Precision Products & Lines*
-        4. *Direct Factory Warranties & CoCs*
     * **Excel Specialty Count Alignment:**
       * Retained the correct **14 distinct Specialties** count from the Excel workbook (`All Specialties (14)`).
 
