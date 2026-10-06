@@ -91,10 +91,11 @@ export function initHeader() {
     });
   }
 
-  // Theme toggle — persist to localStorage
+  // Theme toggle — persist to localStorage (supports ?theme=light URL override)
   const toggleBtn = document.getElementById('theme-toggle-btn');
   const toggleIcon = document.getElementById('theme-toggle-icon');
-  const savedTheme = localStorage.getItem('icon-theme') || 'dark';
+  const urlTheme = new URLSearchParams(window.location.search).get('theme');
+  const savedTheme = urlTheme || localStorage.getItem('icon-theme') || 'dark';
 
   if (savedTheme === 'light') {
     document.documentElement.setAttribute('data-theme', 'light');

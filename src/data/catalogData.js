@@ -16,6 +16,7 @@ export const CATALOG = [
     accentColor: "#CC0000",
     glowColor: "rgba(204, 0, 0, 0.4)",
     defaultImage: "/images/rf-laminate.jpg",
+    logoImg: "/images/oem-logos/Rogers_Logo_no_bg.png",
     logoSvg: "<svg viewBox=\"0 0 200 42\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"2\" y=\"2\" width=\"38\" height=\"38\" rx=\"8\" fill=\"#CC0000\"/><path d=\"M14 11h9c4 0 6.5 2 6.5 5.2 0 2.5-1.5 4.3-4 4.9l4.8 9.9h-4.8l-4.2-9h-2.5V31H14V11zm4 7.8h4.3c1.8 0 2.8-.9 2.8-2.2 0-1.3-1-2.2-2.8-2.2H18v4.4z\" fill=\"#FFFFFF\"/><text x=\"49\" y=\"23\" fill=\"#FFFFFF\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"900\" font-size=\"17\" letter-spacing=\"1.5\">ROGERS</text><text x=\"50\" y=\"34\" fill=\"#94A3B8\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"700\" font-size=\"8\" letter-spacing=\"2.2\">CORPORATION</text></svg>",
     categories: [
       {
@@ -403,529 +404,6 @@ export const CATALOG = [
     ]
   },
   {
-    id: "ohmega-ticer",
-    name: "Ohmega Ticer",
-    shortName: "Ohmega Ticer",
-    specialty: "Embedded Resistive Film",
-    tagline: "Embedded Thin-Film Resistive Copper Foil Materials",
-    description: "Quantic Ohmega-Ticer pioneers thin-film embedded resistor technology, integrating precision resistor networks directly into inner PCB layers for aerospace, defense, and high-speed digital systems.",
-    website: "https://quanticohmega.com",
-    accentColor: "#2563EB",
-    glowColor: "rgba(37, 99, 235, 0.4)",
-    defaultImage: "/images/rf-laminate.jpg",
-    logoSvg: "<svg viewBox=\"0 0 220 42\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"2\" y=\"2\" width=\"38\" height=\"38\" rx=\"9\" fill=\"rgba(37,99,235,0.2)\" stroke=\"#2563EB\" stroke-width=\"1.8\"/><path d=\"M21 9l9 5.2v10.6l-9 5.2-9-5.2V14.2l9-5.2z\" stroke=\"#60A5FA\" stroke-width=\"2.2\" fill=\"none\"/><circle cx=\"21\" cy=\"20\" r=\"3.2\" fill=\"#3B82F6\"/><text x=\"48\" y=\"20\" fill=\"#93C5FD\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"800\" font-size=\"10\" letter-spacing=\"1.4\">QUANTIC</text><text x=\"48\" y=\"34\" fill=\"#FFFFFF\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"900\" font-size=\"14.5\" letter-spacing=\"-0.2\">Ohmega-Ticer</text></svg>",
-    categories: [
-      {
-        id: "rcm-series",
-        name: "RCM Series",
-        description: "10 \u03a9/sq thin-film embedded resistor copper foil on \u00bd oz (18 \u00b5m) copper. High reliability resistive conductor material for PCB integration.",
-        products: [
-          {
-            id: "ohmegaply-rcm-0-5a10pt-39",
-            name: "OhmegaPly\u00ae RCM \u2013 0.5A10PT",
-            category: "RCM Series",
-            description: "10 \u03a9/sq thin-film embedded resistor copper foil on \u00bd oz (18 \u00b5m) copper. High reliability resistive conductor material for PCB integration.",
-            applications: "Embedded resistors in RF/microwave/5G PCBs, aerospace, defense, automotive, industrial.",
-            link: "https://quanticohmega.com/ohmegaply/",
-            image: "/images/rf-laminate.jpg"
-          },
-          {
-            id: "ohmegaply-rcm-0-5a25pt-40",
-            name: "OhmegaPly\u00ae RCM \u2013 0.5A25PT",
-            category: "RCM Series",
-            description: "25 \u03a9/sq thin-film embedded resistor foil on \u00bd oz copper. Ideal for standard embedded resistor designs.",
-            applications: "PCB boards needing tight resistor integration and improved signal integrity.",
-            link: "https://quanticohmega.com/ohmegaply/",
-            image: "/images/rf-laminate.jpg"
-          },
-          {
-            id: "ohmegaply-rcm-0-5a40pt-41",
-            name: "OhmegaPly\u00ae RCM \u2013 0.5A40PT",
-            category: "RCM Series",
-            description: "40 \u03a9/sq embedded resistor conductor copper foil for moderate resistance applications.",
-            applications: "High frequency/medium-power embedded resistive networks.",
-            link: "https://quanticohmega.com/ohmegaply/",
-            image: "/images/rf-laminate.jpg"
-          },
-          {
-            id: "ohmegaply-rcm-0-5a50pt-42",
-            name: "OhmegaPly\u00ae RCM \u2013 0.5A50PT",
-            category: "RCM Series",
-            description: "50 \u03a9/sq embedded resistive foil with predictable sheet resistivity.",
-            applications: "Broadband embedded resistor solutions for RF & high-speed boards.",
-            link: "https://quanticohmega.com/ohmegaply/",
-            image: "/images/rf-laminate.jpg"
-          },
-          {
-            id: "ohmegaply-rcm-0-5a100pt-43",
-            name: "OhmegaPly\u00ae RCM \u2013 0.5A100PT",
-            category: "RCM Series",
-            description: "100 \u03a9/sq resistive conductor material on \u00bd oz copper.",
-            applications: "High-density resistor embedding, signal termination layers.",
-            link: "https://quanticohmega.com/ohmegaply/",
-            image: "/images/rf-laminate.jpg"
-          },
-          {
-            id: "ohmegaply-rcm-0-5a250pt-44",
-            name: "OhmegaPly\u00ae RCM \u2013 0.5A250PT",
-            category: "RCM Series",
-            description: "250 \u03a9/sq high resistivity embedded foil.",
-            applications: "Specialized high resistive networks for signal termination and filtering.",
-            link: "https://quanticohmega.com/ohmegaply/",
-            image: "/images/rf-laminate.jpg"
-          },
-          {
-            id: "ohmegaply-rcm-0-5a377pt-45",
-            name: "OhmegaPly\u00ae RCM \u2013 0.5A377PT",
-            category: "RCM Series",
-            description: "377 \u03a9/sq high sheet resistivity material.",
-            applications: "Designed for high-frequency and calibration networks where high resistivity is critical.",
-            link: "https://quanticohmega.com/ohmegaply/",
-            image: "/images/rf-laminate.jpg"
-          },
-          {
-            id: "ohmegaply-rcm-1a10pt-46",
-            name: "OhmegaPly\u00ae RCM \u2013 1A10PT",
-            category: "RCM Series",
-            description: "10 \u03a9/sq on 1 oz (35 \u00b5m) copper for higher current capacity.",
-            applications: "Embedded resistor networks with higher current requirements.",
-            link: "https://quanticohmega.com/ohmegaply/",
-            image: "/images/rf-laminate.jpg"
-          },
-          {
-            id: "ohmegaply-rcm-1a25pt-47",
-            name: "OhmegaPly\u00ae RCM \u2013 1A25PT",
-            category: "RCM Series",
-            description: "25 \u03a9/sq on 1 oz copper combining high reliability and standard resistance.",
-            applications: "Medium resistance embedded designs in demanding environments.",
-            link: "https://quanticohmega.com/ohmegaply/",
-            image: "/images/rf-laminate.jpg"
-          },
-          {
-            id: "ohmegaply-rcm-1a50pt-48",
-            name: "OhmegaPly\u00ae RCM \u2013 1A50PT",
-            category: "RCM Series",
-            description: "50 \u03a9/sq on 1 oz copper for standard embedded resistor solutions.",
-            applications: "RF termination networks, high frequency PCBs.",
-            link: "https://quanticohmega.com/ohmegaply/",
-            image: "/images/rf-laminate.jpg"
-          },
-          {
-            id: "ohmegaply-rcm-1a100pt-49",
-            name: "OhmegaPly\u00ae RCM \u2013 1A100PT",
-            category: "RCM Series",
-            description: "100 \u03a9/sq on thicker copper for precision resistor applications.",
-            applications: "High density embedded resistor layers for advanced PCB designs.",
-            link: "https://quanticohmega.com/ohmegaply/",
-            image: "/images/rf-laminate.jpg"
-          },
-        ]
-      },
-      {
-        id: "tcr-series",
-        name: "TCR Series",
-        description: "25 \u03a9/sq Ticer thin-film resistive copper foil on \u00bd oz (18 \u00b5m) copper, designed for high-frequency response.",
-        products: [
-          {
-            id: "tcr-25n18p9x-50",
-            name: "TCR\u00ae 25N18P9X",
-            category: "TCR Series",
-            description: "25 \u03a9/sq Ticer thin-film resistive copper foil on \u00bd oz (18 \u00b5m) copper, designed for high-frequency response.",
-            applications: "Embedded resistor foil for RF/mmWave PCBs.",
-            link: "https://quanticohmega.com/tcr/",
-            image: "/images/rf-laminate.jpg"
-          },
-          {
-            id: "tcr-50n18p9x-51",
-            name: "TCR\u00ae 50N18P9X",
-            category: "TCR Series",
-            description: "50 \u03a9/sq TCR resistive material on \u00bd oz copper for RF/HDI embedded resistors.",
-            applications: "High speed digital & RF embedded circuits.",
-            link: "https://quanticohmega.com/tcr/",
-            image: "/images/rf-laminate.jpg"
-          },
-          {
-            id: "tcr-100n18p9x-52",
-            name: "TCR\u00ae 100N18P9X",
-            category: "TCR Series",
-            description: "100 \u03a9/sq TCR resistive foil on \u00bd oz copper.",
-            applications: "Signal termination networks in high frequency circuit boards.",
-            link: "https://quanticohmega.com/tcr/",
-            image: "/images/rf-laminate.jpg"
-          },
-          {
-            id: "tcr-250a18p9x-53",
-            name: "TCR\u00ae 250A18P9X",
-            category: "TCR Series",
-            description: "250 \u03a9/sq TCR resistive conductor material on \u00bd oz copper.",
-            applications: "Highly resistive embedded networks for specialized PCB functions.",
-            link: "https://quanticohmega.com/tcr/",
-            image: "/images/rf-laminate.jpg"
-          },
-          {
-            id: "tcr-1ko18p9x-54",
-            name: "TCR\u00ae 1KO18P9X",
-            category: "TCR Series",
-            description: "1000 \u03a9/sq ultra-high resistivity Ticer embedded foil.",
-            applications: "Low-loss, high resistivity networks for precision embedded resistors.",
-            link: "https://quanticohmega.com/tcr/",
-            image: "/images/rf-laminate.jpg"
-          },
-        ]
-      },
-      {
-        id: "tcr-ehf-series",
-        name: "TCR EHF Series",
-        description: "25 \u03a9/sq TCR EHF embedded foil with very smooth thin film for lowest loss.",
-        products: [
-          {
-            id: "tcr-ehf-25n18p8x-55",
-            name: "TCR EHF\u00ae 25N18P8X",
-            category: "TCR EHF Series",
-            description: "25 \u03a9/sq TCR EHF embedded foil with very smooth thin film for lowest loss.",
-            applications: "mmWave frequency embedded resistor foils.",
-            link: "TCR-EHF\u00ae Embedded Resistor Copper Foil | 5G mmWave PCB",
-            image: "/images/rf-laminate.jpg"
-          },
-          {
-            id: "tcr-ehf-50n18p8x-56",
-            name: "TCR EHF\u00ae 50N18P8X",
-            category: "TCR EHF Series",
-            description: "50 \u03a9/sq TCR EHF resistive foil optimized for high speed & high frequency.",
-            applications: "Embedded resistor applications with minimized insertion loss.",
-            link: "TCR-EHF\u00ae Embedded Resistor Copper Foil | 5G mmWave PCB",
-            image: "/images/rf-laminate.jpg"
-          },
-          {
-            id: "tcr-ehf-100n18p8x-57",
-            name: "TCR EHF\u00ae 100N18P8X",
-            category: "TCR EHF Series",
-            description: "100 \u03a9/sq TCR EHF resistive foil for high precision mmWave embedded networks.",
-            applications: "Advanced RF/mmWave PCB designs.",
-            link: "TCR-EHF\u00ae Embedded Resistor Copper Foil | 5G mmWave PCB",
-            image: "/images/rf-laminate.jpg"
-          },
-        ]
-      },
-    ]
-  },
-  {
-    id: "fortify",
-    name: "Fortify",
-    shortName: "Fortify",
-    specialty: "3D Printed Dielectric Parts",
-    tagline: "3D Printed Dielectric Materials & Metamaterial RF Lenses",
-    description: "Fortify enables advanced dielectric 3D printing for RF and microwave components, delivering complex GRIN lenses, radomes, and conformal antenna optics with precise spatial permittivity control.",
-    website: "https://3dfortify.com",
-    accentColor: "#06B6D4",
-    glowColor: "rgba(6, 182, 212, 0.4)",
-    defaultImage: "/images/dielectric-3d-lens.jpg",
-    logoSvg: "<svg viewBox=\"0 0 185 42\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"2\" y=\"2\" width=\"38\" height=\"38\" rx=\"9\" fill=\"rgba(6,182,212,0.2)\" stroke=\"#06B6D4\" stroke-width=\"1.8\"/><path d=\"M13 11h14v5h-9v4h7v5h-7v7H13V11z\" fill=\"#22D3EE\"/><circle cx=\"26\" cy=\"27\" r=\"2.8\" fill=\"#38BDF8\"/><text x=\"48\" y=\"27\" fill=\"#FFFFFF\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"900\" font-size=\"18\" letter-spacing=\"1.5\">FORTIFY</text></svg>",
-    categories: [
-      {
-        id: "3d-printed-dielectric-parts",
-        name: "3D Printed Dielectric Parts",
-        description: "Industry\u2019s first low-loss dielectric photopolymer enabling scalable 3D printing of dielectric and GRIN lenses. Dielectric constant 2.8, loss tangent 0.0043.",
-        products: [
-          {
-            id: "radix-2-8-dielectric-lens-material-58",
-            name: "Radix\u2122 2.8 Dielectric Lens Material",
-            category: "3D Printed Dielectric Parts",
-            description: "Industry\u2019s first low-loss dielectric photopolymer enabling scalable 3D printing of dielectric and GRIN lenses. Dielectric constant 2.8, loss tangent 0.0043.",
-            applications: "RF & mmWave dielectric lenses, antenna gain enhancement, GRIN and Luneburg lenses.",
-            link: "https://3dfortify.com/advanced-3d-printing-materials-2/rf-materials-2-3/",
-            image: "/images/dielectric-3d-lens.jpg"
-          },
-          {
-            id: "radix-4-6-dielectric-lens-material-59",
-            name: "Radix\u2122 4.6 Dielectric Lens Material",
-            category: "3D Printed Dielectric Parts",
-            description: "Higher-Dk printable dielectric material enabling reduced feature size and transformation optics. Dielectric constant 4.6, loss tangent 0.0046.",
-            applications: "Compact RF lenses, high-gain antenna optics, phased-array enhancement.",
-            link: "https://3dfortify.com/advanced-3d-printing-materials-2/rf-materials-2-3/",
-            image: "/images/dielectric-3d-lens.jpg"
-          },
-          {
-            id: "grin-dielectric-lens-radix-platform-60",
-            name: "GRIN Dielectric Lens (Radix\u2122 Platform)",
-            category: "3D Printed Dielectric Parts",
-            description: "Gradient-index dielectric lenses created using lattice-controlled effective permittivity. Enables spatial Dk variation within a single printed lens.",
-            applications: "GRIN lenses, beam steering, wide-band RF optics.",
-            link: "https://3dfortify.com/rf-applications/",
-            image: "/images/dielectric-3d-lens.jpg"
-          },
-          {
-            id: "3d-printed-horn-lens-61",
-            name: "3D Printed Horn Lens",
-            category: "3D Printed Dielectric Parts",
-            description: "Dielectric horn-mounted lens that increases antenna gain without increasing antenna length. Reduces device length by ~33% for equivalent gain.",
-            applications: "Point-to-point RF links, FWA, backhaul, antenna characterization.",
-            link: "https://3dfortify.com/rf-applications/",
-            image: "/images/dielectric-3d-lens.jpg"
-          },
-          {
-            id: "switched-beam-antenna-lens-62",
-            name: "Switched Beam Antenna Lens",
-            category: "3D Printed Dielectric Parts",
-            description: "Dielectric lens replacing phase shifters to enable wide-band beam steering with lower power consumption and reduced system complexity.",
-            applications: "EW systems, direction finding, ground-to-satellite & cellular base stations.",
-            link: "https://3dfortify.com/rf-applications/",
-            image: "/images/dielectric-3d-lens.jpg"
-          },
-          {
-            id: "field-of-view-fov-enhancing-lens-63",
-            name: "Field-of-View (FOV) Enhancing Lens",
-            category: "3D Printed Dielectric Parts",
-            description: "3D printed dielectric lens extending antenna field-of-view up to \u00b190\u00b0 while reducing scan loss at high angles.",
-            applications: "5G infrastructure, outdoor antennas, phased-array systems.",
-            link: "https://3dfortify.com/rf-applications/",
-            image: "/images/dielectric-3d-lens.jpg"
-          },
-          {
-            id: "tactical-fov-enhancing-lens-64",
-            name: "Tactical FOV Enhancing Lens",
-            category: "3D Printed Dielectric Parts",
-            description: "Dielectric lens optimized for AESA reduction, enabling 360\u00b0 coverage with fewer antennas and lower power consumption.",
-            applications: "LPD/LPI tactical communications, mesh networking, defense RF systems.",
-            link: "https://3dfortify.com/rf-applications/",
-            image: "/images/dielectric-3d-lens.jpg"
-          },
-          {
-            id: "low-dk-printed-foam-spacer-lens-adjacent-65",
-            name: "Low-Dk Printed Foam Spacer (Lens Adjacent)",
-            category: "3D Printed Dielectric Parts",
-            description: "Non-compressing, low-Dk printed structures used near antenna/lens assemblies to improve predictability and integration.",
-            applications: "Antenna stack-ups, conformal RF structures, radomes.",
-            link: "https://3dfortify.com/rf-applications/",
-            image: "/images/dielectric-3d-lens.jpg"
-          },
-        ]
-      },
-    ]
-  },
-  {
-    id: "qorvo",
-    name: "Qorvo",
-    shortName: "Qorvo",
-    specialty: "High Power GaN Device and Beamforming IC",
-    tagline: "High Power GaN Devices & Active Beamforming ICs",
-    description: "Qorvo is an industry-leading innovator in RF solutions, developing high-power GaN HEMTs, driver and low noise amplifiers, beamformers, and front-end modules for defense radar, 5G, and SATCOM.",
-    website: "https://www.qorvo.com",
-    accentColor: "#00C853",
-    glowColor: "rgba(0, 200, 83, 0.4)",
-    defaultImage: "/images/gan-power-chip.jpg",
-    logoSvg: "<svg viewBox=\"0 0 175 42\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><text x=\"4\" y=\"29\" fill=\"#FFFFFF\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"900\" font-size=\"28\" letter-spacing=\"-1.2\">qorvo</text><circle cx=\"21\" cy=\"9\" r=\"3.8\" fill=\"#00C853\"/><circle cx=\"100\" cy=\"29\" r=\"3.2\" fill=\"#00C853\"/></svg>",
-    categories: [
-      {
-        id: "power-amplifiers",
-        name: "Power Amplifiers",
-        description: "1. Frequency coverage from DC to W-band\n2. Application-specific product focus (such as power or linearity)\n3. Variety of power levels along with high PAE and gain performance\n4. Superior thermal management\n5. Small fo...",
-        products: [
-          {
-            id: "power-amplifiers-66",
-            name: "Power Amplifiers",
-            category: "Power Amplifiers",
-            description: "1. Frequency coverage from DC to W-band\n2. Application-specific product focus (such as power or linearity)\n3. Variety of power levels along with high PAE and gain performance\n4. Superior thermal management\n5. Small footprint packages",
-            applications: "1. Military and commercial radar,\n2. Military and commercial satellite communications,\n3. Infrastructure communication links,\n4. Instrumentation,\n5. Traveling wave tube amplifier (TWTA) replacement.",
-            link: "https://www.qorvo.com/products/amplifiers/power-amplifiers",
-            image: "/images/gan-power-chip.jpg"
-          },
-        ]
-      },
-      {
-        id: "driver-amplifiers",
-        name: "Driver Amplifiers",
-        description: "1. High efficiency\n2. High linearity\n3. High gain",
-        products: [
-          {
-            id: "driver-amplifiers-67",
-            name: "Driver Amplifiers",
-            category: "Driver Amplifiers",
-            description: "1. High efficiency\n2. High linearity\n3. High gain",
-            applications: "1. Base station\n2. Defense communications\n3. Electronic warfare (EW) and radar\n4. Optical\n5. Point-to-point radio\n6. VSAT",
-            link: "https://www.qorvo.com/products/amplifiers/driver-amplifiers",
-            image: "/images/gan-power-chip.jpg"
-          },
-        ]
-      },
-      {
-        id: "low-noise-amplifiers",
-        name: "Low Noise Amplifiers",
-        description: "1. Ultra-low noise figure \u2013 as low as 0.4 dB NF\n2. Integrated active biasing for most parts\n3. Integrated on-chip matching for most parts\n4. Available in die or packaged form",
-        products: [
-          {
-            id: "low-noise-amplifiers-68",
-            name: "Low Noise Amplifiers",
-            category: "Low Noise Amplifiers",
-            description: "1. Ultra-low noise figure \u2013 as low as 0.4 dB NF\n2. Integrated active biasing for most parts\n3. Integrated on-chip matching for most parts\n4. Available in die or packaged form",
-            applications: "1. Automotive\n2. Base station\n3. Cable TV (CATV) / fiber to the home (FTTH)\n4. Defense communications\n5. Optical\n6. Point-to-point (PtP) radio",
-            link: "https://www.qorvo.com/products/amplifiers/low-noise-amplifiers",
-            image: "/images/gan-power-chip.jpg"
-          },
-        ]
-      },
-      {
-        id: "variable-gain-amplifiers",
-        name: "Variable Gain Amplifiers",
-        description: "1. Integration offers PCB size reduction\n2. High linearity\n3. High efficiency\n4. Same package configuration across 3GPP bands",
-        products: [
-          {
-            id: "variable-gain-amplifiers-69",
-            name: "Variable Gain Amplifiers",
-            category: "Variable Gain Amplifiers",
-            description: "1. Integration offers PCB size reduction\n2. High linearity\n3. High efficiency\n4. Same package configuration across 3GPP bands",
-            applications: "1. Base station\n2. Distributed antenna systems (DAS)\n3. Repeaters",
-            link: "https://www.qorvo.com/products/amplifiers/variable-gain-amplifiers",
-            image: "/images/gan-power-chip.jpg"
-          },
-        ]
-      },
-      {
-        id: "beamforming-integrated-circuits",
-        name: "Beamforming Integrated Circuits",
-        description: "1. Lowest $/dBm commercially available today\n2. Multi-band performance\n3. Advanced digital core simplifying design\n4. Smart integration\n5. System level support for optimized solutions\n6. Proven in volume in fielded ra...",
-        products: [
-          {
-            id: "beamforming-integrated-circuits-70",
-            name: "Beamforming Integrated Circuits",
-            category: "Beamforming Integrated Circuits",
-            description: "1. Lowest $/dBm commercially available today\n2. Multi-band performance\n3. Advanced digital core simplifying design\n4. Smart integration\n5. System level support for optimized solutions\n6. Proven in volume in fielded radios",
-            applications: "1. Military / commercial radar\n2. SATCOM LEO/MEO, mobile GEO\n3. Millimeter wave (mmWave) 5G\n4. Future FR3",
-            link: "https://www.qorvo.com/products/active-antenna-systems/beamformers",
-            image: "/images/gan-power-chip.jpg"
-          },
-        ]
-      },
-      {
-        id: "front-end-modules",
-        name: "Front End Modules",
-        description: "1. High power efficiency\n2. Low noise figure\n3. Front end protection\n4. Suitable for harsh environments",
-        products: [
-          {
-            id: "front-end-modules-71",
-            name: "Front End Modules",
-            category: "Front End Modules",
-            description: "1. High power efficiency\n2. Low noise figure\n3. Front end protection\n4. Suitable for harsh environments",
-            applications: "1. Military / commercial radar\n2. Long range communications",
-            link: "https://www.qorvo.com/products/active-antenna-systems/front-end-modules",
-            image: "/images/gan-power-chip.jpg"
-          },
-        ]
-      },
-      {
-        id: "vpin-limiters",
-        name: "Vpin Limiters",
-        description: "1. Protection against high-power incident RF signals\n2. Low flat leakage\n3. Low insertion loss\n4. Passive component that requires no system power\n5. Small footprint SMT packaging",
-        products: [
-          {
-            id: "vpin-limiters-72",
-            name: "Vpin Limiters",
-            category: "Vpin Limiters",
-            description: "1. Protection against high-power incident RF signals\n2. Low flat leakage\n3. Low insertion loss\n4. Passive component that requires no system power\n5. Small footprint SMT packaging",
-            applications: "1. Receiver protection for radar systems",
-            link: "https://www.qorvo.com/products/passives/limiters",
-            image: "/images/rf-switch.jpg"
-          },
-        ]
-      },
-      {
-        id: "mixers",
-        name: "Mixers",
-        description: "1. High linearity\n2. Low current draw",
-        products: [
-          {
-            id: "mixers-73",
-            name: "Mixers",
-            category: "Mixers",
-            description: "1. High linearity\n2. Low current draw",
-            applications: "1. Automotive\n2. Base station\n3. Repeaters\n4. Defense communications\n5. Point-to-point radio",
-            link: "https://www.qorvo.com/products/frequency-converters/mixers",
-            image: "/images/rf-mixer.jpg"
-          },
-        ]
-      },
-      {
-        id: "gan-hemts",
-        name: "GaN HEMTs",
-        description: "1. High efficiency and power density\n2. Superior gain\n3. Ruggedness and ability to operate over a wide bandwidth\n4. Record-setting reliability that exceeds previous industry standards\n5. Design expertise as a frontrun...",
-        products: [
-          {
-            id: "gan-hemts-74",
-            name: "GaN HEMTs",
-            category: "GaN HEMTs",
-            description: "1. High efficiency and power density\n2. Superior gain\n3. Ruggedness and ability to operate over a wide bandwidth\n4. Record-setting reliability that exceeds previous industry standards\n5. Design expertise as a frontrunner in GaN technology",
-            applications: "1. Military and civilian radar\n2. Professional and military radio communications\n3. Test instrumentation\n4. Wideband or narrowband amplifiers\n5. Jammers\n6. Base station \u2013 base transceiver station, repeaters, pico cells, macro cell networks",
-            link: "https://www.qorvo.com/products/discrete-transistors/gan-hemts",
-            image: "/images/gan-power-chip.jpg"
-          },
-        ]
-      },
-      {
-        id: "gaas-phemts",
-        name: "GaAs pHEMTs",
-        description: "1. Ultra-low noise figure \u2013 as low as 0.15 dB NF (min)\n2. Available in die or packaged form",
-        products: [
-          {
-            id: "gaas-phemts-75",
-            name: "GaAs pHEMTs",
-            category: "GaAs pHEMTs",
-            description: "1. Ultra-low noise figure \u2013 as low as 0.15 dB NF (min)\n2. Available in die or packaged form",
-            applications: "1. Base station\n2. Defense communications\n3. Point-to-point (PtP) radio",
-            link: "https://www.qorvo.com/products/discrete-transistors/gaas-phemts",
-            image: "/images/gan-power-chip.jpg"
-          },
-        ]
-      },
-    ]
-  },
-  {
-    id: "rfuw-engineering",
-    name: "RFuW Engineering",
-    shortName: "RFuW Engineering",
-    specialty: "High Power Switches and Limiter",
-    tagline: "High Power PIN Diode Switches & Quasi-Active Limiters",
-    description: "RFuW Engineering manufactures rugged, surface-mount high-power RF switches and \"Always On\" limiters operating up to Ku-band with power handling up to +60 dBm for mission-critical receivers.",
-    website: "https://www.rfuw-engineering.com",
-    accentColor: "#E11D48",
-    glowColor: "rgba(225, 29, 72, 0.4)",
-    defaultImage: "/images/rf-switch.jpg",
-    logoSvg: "<svg viewBox=\"0 0 200 42\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"2\" y=\"2\" width=\"38\" height=\"38\" rx=\"9\" fill=\"rgba(225,29,72,0.18)\" stroke=\"#E11D48\" stroke-width=\"1.8\"/><path d=\"M10 21h5l3-8 4.5 16 3-8h5.5\" stroke=\"#E11D48\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><text x=\"48\" y=\"23\" fill=\"#FFFFFF\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"900\" font-size=\"17\" letter-spacing=\"1\">RFuW</text><text x=\"49\" y=\"34\" fill=\"#FB7185\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"800\" font-size=\"8.5\" letter-spacing=\"2\">ENGINEERING</text></svg>",
-    categories: [
-      {
-        id: "rf-limiters",
-        name: "RF Limiters",
-        description: "Always RF offers a family of passive and quasi-active High Power RF Limiters which operate from HF to Ku Band frequency ranges with power handling capabilities up to +60 dBm. These RF Limiters provide \"Always On\" prot...",
-        products: [
-          {
-            id: "rf-limiters-76",
-            name: "RF Limiters",
-            category: "RF Limiters",
-            description: "Always RF offers a family of passive and quasi-active High Power RF Limiters which operate from HF to Ku Band frequency ranges with power handling capabilities up to +60 dBm. These RF Limiters provide \"Always On\" protection which afford complete protection to sensitive RF receivers, even when the system is turned off.",
-            applications: "1. Receiver Protection, Protects LNAs, mixers, and ADCs from damage or compression caused by high RF power.                 2. Common in radar receivers, EW/ESM systems, and wideband monitoring receivers.                                                                          3. Radar Systems, Used at the front end of radar receivers to prevent damage from: \nTransmit leakage, Reflections from nearby targets.                                                                                 4. Electronic Warfare (EW) & SIGINT, \nShields sensitive receivers from strong intentional or unintentional signals.",
-            link: "https://www.rfuw-engineering.com/rf-limiters.html",
-            image: "/images/rf-switch.jpg"
-          },
-        ]
-      },
-      {
-        id: "rf-switches",
-        name: "RF Switches",
-        description: "Always RF offers a family of High Power PIN diode based surface mount RF switches which operate HF to Ku Band frequency ranges with power handling capabilities from +50 dBm to +62 dBm. The standard product family come...",
-        products: [
-          {
-            id: "rf-switches-77",
-            name: "RF Switches",
-            category: "RF Switches",
-            description: "Always RF offers a family of High Power PIN diode based surface mount RF switches which operate HF to Ku Band frequency ranges with power handling capabilities from +50 dBm to +62 dBm. The standard product family comes in SP2T, SP3T, SP4T, SP5T and SP6T configurations.",
-            applications: "1. Communication Systems, Antenna switching between transmit and receive paths, \nBand selection in multi-band radios and Redundancy switching for backup transceivers.                                                                   2. Radar Systems, T/R switching between transmitter and receiver, Beamforming networks, Switching between calibration, test, and operational paths.                                            3. Electronic Warfare (EW), SIGINT & ESM, \nRapid selection among multiple antennas, \nThreat monitoring and signal direction finding and Channelized receiver front ends.",
-            link: "https://www.rfuw-engineering.com/rf-switches.html",
-            image: "/images/rf-switch.jpg"
-          },
-        ]
-      },
-    ]
-  },
-  {
     id: "minicircuits",
     name: "Minicircuits",
     shortName: "Mini-Circuits",
@@ -936,6 +414,7 @@ export const CATALOG = [
     accentColor: "#E11D48",
     glowColor: "rgba(225, 29, 72, 0.4)",
     defaultImage: "/images/rf-filter.jpg",
+    logoImg: "/images/oem-logos/mini-circuits-seeklogo.png",
     logoSvg: "<svg viewBox=\"0 0 215 42\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"2\" y=\"2\" width=\"38\" height=\"38\" rx=\"9\" fill=\"#E11D48\"/><path d=\"M7 21c2.8-6.5 5.6-6.5 8.4 0s5.6 6.5 8.4 0s5.6-6.5 8.4 0\" stroke=\"#FFFFFF\" stroke-width=\"2.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><text x=\"48\" y=\"27\" fill=\"#FFFFFF\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"800\" font-size=\"18\" letter-spacing=\"-0.4\">Mini-Circuits</text><circle cx=\"204\" cy=\"16\" r=\"2.8\" fill=\"#E11D48\"/><text x=\"202\" y=\"18\" fill=\"#FFFFFF\" font-family=\"sans-serif\" font-weight=\"700\" font-size=\"4\">\u00ae</text></svg>",
     categories: [
       {
@@ -1622,204 +1101,176 @@ export const CATALOG = [
     ]
   },
   {
-    id: "triteq",
-    name: "TriTeq",
-    shortName: "Tri-TeQ",
-    specialty: "Tunable Filters",
-    tagline: "High-Reliability Tunable Filters & Switched Filterbanks",
-    description: "Tri-TeQ specializes in tunable harmonic switched filter banks, lumped element, and suspended substrate RF filters for tactical software-defined radios and EW co-site mitigation systems.",
-    website: "https://www.tri-teq.com",
-    accentColor: "#F43F5E",
-    glowColor: "rgba(244, 63, 94, 0.4)",
-    defaultImage: "/images/rf-filter.jpg",
-    logoSvg: "<svg viewBox=\"0 0 190 42\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"2\" y=\"2\" width=\"38\" height=\"38\" rx=\"9\" fill=\"rgba(244,63,94,0.18)\" stroke=\"#F43F5E\" stroke-width=\"1.8\"/><path d=\"M21 9l10 18H11l10-18z\" stroke=\"#FB7185\" stroke-width=\"2.4\" fill=\"none\"/><circle cx=\"21\" cy=\"20\" r=\"2.8\" fill=\"#F43F5E\"/><text x=\"48\" y=\"23\" fill=\"#FFFFFF\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"900\" font-size=\"17\" letter-spacing=\"1\">TRI-TEQ</text><text x=\"49\" y=\"34\" fill=\"#FB7185\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"800\" font-size=\"8\" letter-spacing=\"2\">MICROWAVE</text></svg>",
+    id: "qorvo",
+    name: "Qorvo",
+    shortName: "Qorvo",
+    specialty: "High Power GaN Device and Beamforming IC",
+    tagline: "High Power GaN Devices & Active Beamforming ICs",
+    description: "Qorvo is an industry-leading innovator in RF solutions, developing high-power GaN HEMTs, driver and low noise amplifiers, beamformers, and front-end modules for defense radar, 5G, and SATCOM.",
+    website: "https://www.qorvo.com",
+    accentColor: "#00C853",
+    glowColor: "rgba(0, 200, 83, 0.4)",
+    defaultImage: "/images/gan-power-chip.jpg",
+    logoImg: "/images/oem-logos/Qorvo_logo_wb.png",
+    logoSvg: "<svg viewBox=\"0 0 175 42\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><text x=\"4\" y=\"29\" fill=\"#FFFFFF\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"900\" font-size=\"28\" letter-spacing=\"-1.2\">qorvo</text><circle cx=\"21\" cy=\"9\" r=\"3.8\" fill=\"#00C853\"/><circle cx=\"100\" cy=\"29\" r=\"3.2\" fill=\"#00C853\"/></svg>",
     categories: [
       {
-        id: "harmonic-switched-filters",
-        name: "Harmonic Switched Filters",
-        description: "Tunable Filters.\nBandpass\nPassive & Co-Site Mitigation Filters\nLumped Element & Suspended Substrate Technologies-- RF filters for tactical radios.",
+        id: "power-amplifiers",
+        name: "Power Amplifiers",
+        description: "1. Frequency coverage from DC to W-band\n2. Application-specific product focus (such as power or linearity)\n3. Variety of power levels along with high PAE and gain performance\n4. Superior thermal management\n5. Small fo...",
         products: [
           {
-            id: "harmonic-switched-filters-121",
-            name: "Harmonic Switched Filters",
-            category: "Harmonic Switched Filters",
-            description: "Tunable Filters.\nBandpass\nPassive & Co-Site Mitigation Filters\nLumped Element & Suspended Substrate Technologies-- RF filters for tactical radios.",
-            applications: "Tunable Harmonic Switched Filterbank-- Miniature Low Noise Tunable Bandpass-- Tunable Bandpass  - Software Defined Radios",
-            link: "https://www.tri-teq.com/",
+            id: "power-amplifiers-66",
+            name: "Power Amplifiers",
+            category: "Power Amplifiers",
+            description: "1. Frequency coverage from DC to W-band\n2. Application-specific product focus (such as power or linearity)\n3. Variety of power levels along with high PAE and gain performance\n4. Superior thermal management\n5. Small footprint packages",
+            applications: "1. Military and commercial radar,\n2. Military and commercial satellite communications,\n3. Infrastructure communication links,\n4. Instrumentation,\n5. Traveling wave tube amplifier (TWTA) replacement.",
+            link: "https://www.qorvo.com/products/amplifiers/power-amplifiers",
+            image: "/images/gan-power-chip.jpg"
+          },
+        ]
+      },
+      {
+        id: "driver-amplifiers",
+        name: "Driver Amplifiers",
+        description: "1. High efficiency\n2. High linearity\n3. High gain",
+        products: [
+          {
+            id: "driver-amplifiers-67",
+            name: "Driver Amplifiers",
+            category: "Driver Amplifiers",
+            description: "1. High efficiency\n2. High linearity\n3. High gain",
+            applications: "1. Base station\n2. Defense communications\n3. Electronic warfare (EW) and radar\n4. Optical\n5. Point-to-point radio\n6. VSAT",
+            link: "https://www.qorvo.com/products/amplifiers/driver-amplifiers",
+            image: "/images/gan-power-chip.jpg"
+          },
+        ]
+      },
+      {
+        id: "low-noise-amplifiers",
+        name: "Low Noise Amplifiers",
+        description: "1. Ultra-low noise figure \u2013 as low as 0.4 dB NF\n2. Integrated active biasing for most parts\n3. Integrated on-chip matching for most parts\n4. Available in die or packaged form",
+        products: [
+          {
+            id: "low-noise-amplifiers-68",
+            name: "Low Noise Amplifiers",
+            category: "Low Noise Amplifiers",
+            description: "1. Ultra-low noise figure \u2013 as low as 0.4 dB NF\n2. Integrated active biasing for most parts\n3. Integrated on-chip matching for most parts\n4. Available in die or packaged form",
+            applications: "1. Automotive\n2. Base station\n3. Cable TV (CATV) / fiber to the home (FTTH)\n4. Defense communications\n5. Optical\n6. Point-to-point (PtP) radio",
+            link: "https://www.qorvo.com/products/amplifiers/low-noise-amplifiers",
+            image: "/images/gan-power-chip.jpg"
+          },
+        ]
+      },
+      {
+        id: "variable-gain-amplifiers",
+        name: "Variable Gain Amplifiers",
+        description: "1. Integration offers PCB size reduction\n2. High linearity\n3. High efficiency\n4. Same package configuration across 3GPP bands",
+        products: [
+          {
+            id: "variable-gain-amplifiers-69",
+            name: "Variable Gain Amplifiers",
+            category: "Variable Gain Amplifiers",
+            description: "1. Integration offers PCB size reduction\n2. High linearity\n3. High efficiency\n4. Same package configuration across 3GPP bands",
+            applications: "1. Base station\n2. Distributed antenna systems (DAS)\n3. Repeaters",
+            link: "https://www.qorvo.com/products/amplifiers/variable-gain-amplifiers",
+            image: "/images/gan-power-chip.jpg"
+          },
+        ]
+      },
+      {
+        id: "beamforming-integrated-circuits",
+        name: "Beamforming Integrated Circuits",
+        description: "1. Lowest $/dBm commercially available today\n2. Multi-band performance\n3. Advanced digital core simplifying design\n4. Smart integration\n5. System level support for optimized solutions\n6. Proven in volume in fielded ra...",
+        products: [
+          {
+            id: "beamforming-integrated-circuits-70",
+            name: "Beamforming Integrated Circuits",
+            category: "Beamforming Integrated Circuits",
+            description: "1. Lowest $/dBm commercially available today\n2. Multi-band performance\n3. Advanced digital core simplifying design\n4. Smart integration\n5. System level support for optimized solutions\n6. Proven in volume in fielded radios",
+            applications: "1. Military / commercial radar\n2. SATCOM LEO/MEO, mobile GEO\n3. Millimeter wave (mmWave) 5G\n4. Future FR3",
+            link: "https://www.qorvo.com/products/active-antenna-systems/beamformers",
+            image: "/images/gan-power-chip.jpg"
+          },
+        ]
+      },
+      {
+        id: "front-end-modules",
+        name: "Front End Modules",
+        description: "1. High power efficiency\n2. Low noise figure\n3. Front end protection\n4. Suitable for harsh environments",
+        products: [
+          {
+            id: "front-end-modules-71",
+            name: "Front End Modules",
+            category: "Front End Modules",
+            description: "1. High power efficiency\n2. Low noise figure\n3. Front end protection\n4. Suitable for harsh environments",
+            applications: "1. Military / commercial radar\n2. Long range communications",
+            link: "https://www.qorvo.com/products/active-antenna-systems/front-end-modules",
+            image: "/images/gan-power-chip.jpg"
+          },
+        ]
+      },
+      {
+        id: "vpin-limiters",
+        name: "Vpin Limiters",
+        description: "1. Protection against high-power incident RF signals\n2. Low flat leakage\n3. Low insertion loss\n4. Passive component that requires no system power\n5. Small footprint SMT packaging",
+        products: [
+          {
+            id: "vpin-limiters-72",
+            name: "Vpin Limiters",
+            category: "Vpin Limiters",
+            description: "1. Protection against high-power incident RF signals\n2. Low flat leakage\n3. Low insertion loss\n4. Passive component that requires no system power\n5. Small footprint SMT packaging",
+            applications: "1. Receiver protection for radar systems",
+            link: "https://www.qorvo.com/products/passives/limiters",
             image: "/images/rf-switch.jpg"
           },
         ]
       },
-    ]
-  },
-  {
-    id: "yttek",
-    name: "YTTEK",
-    shortName: "YTTEK",
-    specialty: "Software Defined Radios",
-    tagline: "Software-Defined Radio Platforms & Satellite Modems",
-    description: "YTTEK develops wideband SDR platforms, satellite communication modems, 5G FR2/6G up/downconverters, and reconfigurable intelligent surfaces (RIS) for aerospace and CubeSats.",
-    website: "https://yttek.com",
-    accentColor: "#3B82F6",
-    glowColor: "rgba(59, 130, 246, 0.4)",
-    defaultImage: "/images/defense-satcom.jpg",
-    logoSvg: "<svg viewBox=\"0 0 190 42\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"2\" y=\"2\" width=\"38\" height=\"38\" rx=\"9\" fill=\"rgba(37,99,235,0.2)\" stroke=\"#2563EB\" stroke-width=\"1.8\"/><path d=\"M12 12l9 8v10m0-10l9-8\" stroke=\"#60A5FA\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><text x=\"48\" y=\"24\" fill=\"#FFFFFF\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"900\" font-size=\"18\" letter-spacing=\"1.2\">YTTEK</text><text x=\"49\" y=\"34\" fill=\"#93C5FD\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"800\" font-size=\"8\" letter-spacing=\"1.5\">SDR PLATFORMS</text></svg>",
-    categories: [
       {
-        id: "software-defined-radio-sdr",
-        name: "Software-Defined Radio (SDR)",
-        description: "High performance Software-Defined Radio (SDR) solution engineered for demanding RF, microwave, and aerospace applications.",
+        id: "mixers",
+        name: "Mixers",
+        description: "1. High linearity\n2. Low current draw",
         products: [
           {
-            id: "software-defined-radio-sdr-122",
-            name: "Software-Defined Radio (SDR)",
-            category: "Software-Defined Radio (SDR)",
-            description: "High performance Software-Defined Radio (SDR) solution engineered for demanding RF, microwave, and aerospace applications.",
-            applications: "Real time satellite modem\nCubeSats communication payloadOffline debugging tool by RF recorder  VSG and VSA enabled by SDR  -mmWave modules\nUp/down converter\nReconfigurable Intelligent Surface (RIS)\nAnti-jamming UAV communication payload with agile frequency hopping",
-            link: "https://yttek.com/",
-            image: "/images/defense-satcom.jpg"
+            id: "mixers-73",
+            name: "Mixers",
+            category: "Mixers",
+            description: "1. High linearity\n2. Low current draw",
+            applications: "1. Automotive\n2. Base station\n3. Repeaters\n4. Defense communications\n5. Point-to-point radio",
+            link: "https://www.qorvo.com/products/frequency-converters/mixers",
+            image: "/images/rf-mixer.jpg"
           },
         ]
       },
       {
-        id: "hypersdr",
-        name: "HyperSDR",
-        description: "High-speed satellite modem",
+        id: "gan-hemts",
+        name: "GaN HEMTs",
+        description: "1. High efficiency and power density\n2. Superior gain\n3. Ruggedness and ability to operate over a wide bandwidth\n4. Record-setting reliability that exceeds previous industry standards\n5. Design expertise as a frontrun...",
         products: [
           {
-            id: "hypersdr-123",
-            name: "HyperSDR",
-            category: "HyperSDR",
-            description: "High-speed satellite modem",
-            applications: "Frequency Hopping\nThree-phase deployment stage",
-            link: "https://yttek.com/",
-            image: "/images/defense-satcom.jpg"
+            id: "gan-hemts-74",
+            name: "GaN HEMTs",
+            category: "GaN HEMTs",
+            description: "1. High efficiency and power density\n2. Superior gain\n3. Ruggedness and ability to operate over a wide bandwidth\n4. Record-setting reliability that exceeds previous industry standards\n5. Design expertise as a frontrunner in GaN technology",
+            applications: "1. Military and civilian radar\n2. Professional and military radio communications\n3. Test instrumentation\n4. Wideband or narrowband amplifiers\n5. Jammers\n6. Base station \u2013 base transceiver station, repeaters, pico cells, macro cell networks",
+            link: "https://www.qorvo.com/products/discrete-transistors/gan-hemts",
+            image: "/images/gan-power-chip.jpg"
           },
         ]
       },
       {
-        id: "sdrspace",
-        name: "SDRspace",
-        description: "High performance SDRspace solution engineered for demanding RF, microwave, and aerospace applications.",
+        id: "gaas-phemts",
+        name: "GaAs pHEMTs",
+        description: "1. Ultra-low noise figure \u2013 as low as 0.15 dB NF (min)\n2. Available in die or packaged form",
         products: [
           {
-            id: "sdrspace-124",
-            name: "SDRspace",
-            category: "SDRspace",
-            description: "High performance SDRspace solution engineered for demanding RF, microwave, and aerospace applications.",
-            applications: "Satellite communication payload",
-            link: "https://yttek.com/",
-            image: "/images/defense-satcom.jpg"
-          },
-        ]
-      },
-      {
-        id: "plusdr",
-        name: "PluSDR",
-        description: "Software-defined radio platform",
-        products: [
-          {
-            id: "plusdr-125",
-            name: "PluSDR",
-            category: "PluSDR",
-            description: "Software-defined radio platform",
-            applications: "Wide range band:\n10 MHz - 15 GHz",
-            link: "https://yttek.com/",
-            image: "/images/defense-satcom.jpg"
-          },
-        ]
-      },
-      {
-        id: "sdrone",
-        name: "SDRone",
-        description: "UAV communication transceiver",
-        products: [
-          {
-            id: "sdrone-126",
-            name: "SDRone",
-            category: "SDRone",
-            description: "UAV communication transceiver",
-            applications: "Aerospace, Defense, Radar, Telecommunications, Space",
-            link: "https://yttek.com/",
-            image: "/images/defense-satcom.jpg"
-          },
-        ]
-      },
-      {
-        id: "5g-fr2-6g",
-        name: "5G FR2\n& 6G",
-        description: "TrueUDC\n26.5~29.5 GHz\nFrequency drift: 5ppb.",
-        products: [
-          {
-            id: "5g-fr2-6g-127",
-            name: "5G FR2\n& 6G",
-            category: "5G FR2\n& 6G",
-            description: "TrueUDC\n26.5~29.5 GHz\nFrequency drift: 5ppb.",
-            applications: "FR2 Small Cell-   EcoRIS (Power by Liquid Crystal)",
-            link: "https://yttek.com/",
-            image: "/images/defense-satcom.jpg"
-          },
-        ]
-      },
-    ]
-  },
-  {
-    id: "spellman",
-    name: "Spellman",
-    shortName: "Spellman",
-    specialty: "high voltage power supplies",
-    tagline: "High Voltage Power Supplies, X-Ray Generators & Sources",
-    description: "Spellman is the world's leading manufacturer of precision modular and rack-mount high-voltage power supplies, Monoblock\u00ae X-ray sources, and custom power systems for defense, medical, and industrial use.",
-    website: "https://www.spellmanhv.com",
-    accentColor: "#0284C7",
-    glowColor: "rgba(2, 132, 199, 0.4)",
-    defaultImage: "/images/hero-amplifier.jpg",
-    logoSvg: "<svg viewBox=\"0 0 200 42\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"2\" y=\"2\" width=\"38\" height=\"38\" rx=\"8\" fill=\"#0284C7\"/><path d=\"M21 8l-8 14h7l-3 12 11-16h-7l4-10h-4z\" fill=\"#FFFFFF\"/><text x=\"48\" y=\"23\" fill=\"#FFFFFF\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"900\" font-size=\"16\" letter-spacing=\"1\">SPELLMAN</text><text x=\"49\" y=\"34\" fill=\"#38BDF8\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"800\" font-size=\"7.5\" letter-spacing=\"1.8\">HIGH VOLTAGE</text></svg>",
-    categories: [
-      {
-        id: "high-voltage-power-supplies",
-        name: "high voltage power supplies",
-        description: "Modular High Voltage Power Supply\nRack Mount High Voltage Power Supply\nX-Ray Generator\nX-Ray Source (Monoblock\u00ae)\nCustom High Voltage Power Supply\nApplication Specific High Voltage Power Supply\nPortable NDT X-Ray Imagi...",
-        products: [
-          {
-            id: "high-voltage-power-supplies-128",
-            name: "high voltage power supplies",
-            category: "high voltage power supplies",
-            description: "Modular High Voltage Power Supply\nRack Mount High Voltage Power Supply\nX-Ray Generator\nX-Ray Source (Monoblock\u00ae)\nCustom High Voltage Power Supply\nApplication Specific High Voltage Power Supply\nPortable NDT X-Ray Imaging Products",
-            applications: "These power supplies are used in a wide variety of applications: Ion Beam Implantation, Electron Beam Welding, Electrostatic Separators, Electron Beam Evaporation, Ion Milling, Neutron Generators, Plasma Igniters, Sputtering, Marx Generators, Electrostatic Lenses and Oil Well Data Logging.",
-            link: "High Voltage Power Supplies, X-Ray Generator and Monoblock\u00ae X-Ray Source Manufacturer",
-            image: "/images/hero-amplifier.jpg"
-          },
-        ]
-      },
-    ]
-  },
-  {
-    id: "thermosen",
-    name: "Thermosen",
-    shortName: "Thermosen",
-    specialty: "Temperature Sensors",
-    tagline: "Precision Temperature Sensors & Hi-Rel Thermistors",
-    description: "Thermosen Technologies develops high-reliability NTC and PTC thermistors and precision thermal sensors for mission-critical space, aerospace, EV, medical, and defense applications.",
-    website: "https://www.thermosen.com",
-    accentColor: "#F59E0B",
-    glowColor: "rgba(245, 158, 11, 0.4)",
-    defaultImage: "/images/rf-microwave-pcb.jpg",
-    logoSvg: "<svg viewBox=\"0 0 210 42\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"2\" y=\"2\" width=\"38\" height=\"38\" rx=\"9\" fill=\"rgba(245,158,11,0.2)\" stroke=\"#F59E0B\" stroke-width=\"1.8\"/><circle cx=\"21\" cy=\"25\" r=\"5.5\" stroke=\"#FBBF24\" stroke-width=\"2.2\" fill=\"#F59E0B\"/><path d=\"M21 10v10\" stroke=\"#FBBF24\" stroke-width=\"2.5\" stroke-linecap=\"round\"/><text x=\"48\" y=\"23\" fill=\"#FFFFFF\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"900\" font-size=\"15\" letter-spacing=\"0.8\">THERMOSEN</text><text x=\"49\" y=\"34\" fill=\"#FBBF24\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"800\" font-size=\"8\" letter-spacing=\"1.5\">TECHNOLOGIES</text></svg>",
-    categories: [
-      {
-        id: "temperature-sensors",
-        name: "temperature sensors",
-        description: "Space * EV * Medical * IOT",
-        products: [
-          {
-            id: "temperature-sensors-129",
-            name: "temperature sensors",
-            category: "temperature sensors",
-            description: "Space * EV * Medical * IOT",
-            applications: "NTC Thermistor /PTC Thermistor /",
-            link: "https://www.thermosen.com/",
-            image: "/images/rf-microwave-pcb.jpg"
+            id: "gaas-phemts-75",
+            name: "GaAs pHEMTs",
+            category: "GaAs pHEMTs",
+            description: "1. Ultra-low noise figure \u2013 as low as 0.15 dB NF (min)\n2. Available in die or packaged form",
+            applications: "1. Base station\n2. Defense communications\n3. Point-to-point (PtP) radio",
+            link: "https://www.qorvo.com/products/discrete-transistors/gaas-phemts",
+            image: "/images/gan-power-chip.jpg"
           },
         ]
       },
@@ -1836,6 +1287,7 @@ export const CATALOG = [
     accentColor: "#0284C7",
     glowColor: "rgba(2, 132, 199, 0.4)",
     defaultImage: "/images/rf-attenuator.jpg",
+    logoImg: "/images/oem-logos/Tecdia_cropped.png",
     logoSvg: "<svg viewBox=\"0 0 180 42\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><g transform=\"translate(4, 5)\"><path d=\"M16 4l12 6.5-12 6.5-12-6.5L16 4z\" fill=\"#38BDF8\"/><path d=\"M4 10.5l12 6.5v13L4 23.5v-13z\" fill=\"#0284C7\"/><path d=\"M28 10.5l-12 6.5v13l12-6.5v-13z\" fill=\"#0369A1\"/></g><text x=\"44\" y=\"28\" fill=\"#FFFFFF\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"900\" font-size=\"20\" letter-spacing=\"2\">TECDIA</text></svg>",
     categories: [
       {
@@ -1953,6 +1405,198 @@ export const CATALOG = [
     ]
   },
   {
+    id: "triteq",
+    name: "TriTeq",
+    shortName: "Tri-TeQ",
+    specialty: "Tunable Filters",
+    tagline: "High-Reliability Tunable Filters & Switched Filterbanks",
+    description: "Tri-TeQ specializes in tunable harmonic switched filter banks, lumped element, and suspended substrate RF filters for tactical software-defined radios and EW co-site mitigation systems.",
+    website: "https://www.tri-teq.com",
+    accentColor: "#F43F5E",
+    glowColor: "rgba(244, 63, 94, 0.4)",
+    defaultImage: "/images/rf-filter.jpg",
+    logoImg: "/images/oem-logos/TriTeq_logo_wb.png",
+    logoSvg: "<svg viewBox=\"0 0 190 42\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"2\" y=\"2\" width=\"38\" height=\"38\" rx=\"9\" fill=\"rgba(244,63,94,0.18)\" stroke=\"#F43F5E\" stroke-width=\"1.8\"/><path d=\"M21 9l10 18H11l10-18z\" stroke=\"#FB7185\" stroke-width=\"2.4\" fill=\"none\"/><circle cx=\"21\" cy=\"20\" r=\"2.8\" fill=\"#F43F5E\"/><text x=\"48\" y=\"23\" fill=\"#FFFFFF\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"900\" font-size=\"17\" letter-spacing=\"1\">TRI-TEQ</text><text x=\"49\" y=\"34\" fill=\"#FB7185\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"800\" font-size=\"8\" letter-spacing=\"2\">MICROWAVE</text></svg>",
+    categories: [
+      {
+        id: "harmonic-switched-filters",
+        name: "Harmonic Switched Filters",
+        description: "Tunable Filters.\nBandpass\nPassive & Co-Site Mitigation Filters\nLumped Element & Suspended Substrate Technologies-- RF filters for tactical radios.",
+        products: [
+          {
+            id: "harmonic-switched-filters-121",
+            name: "Harmonic Switched Filters",
+            category: "Harmonic Switched Filters",
+            description: "Tunable Filters.\nBandpass\nPassive & Co-Site Mitigation Filters\nLumped Element & Suspended Substrate Technologies-- RF filters for tactical radios.",
+            applications: "Tunable Harmonic Switched Filterbank-- Miniature Low Noise Tunable Bandpass-- Tunable Bandpass  - Software Defined Radios",
+            link: "https://www.tri-teq.com/",
+            image: "/images/rf-switch.jpg"
+          },
+        ]
+      },
+    ]
+  },
+  {
+    id: "rfuw-engineering",
+    name: "RFuW Engineering",
+    shortName: "RFuW Engineering",
+    specialty: "High Power Switches and Limiter",
+    tagline: "High Power PIN Diode Switches & Quasi-Active Limiters",
+    description: "RFuW Engineering manufactures rugged, surface-mount high-power RF switches and \"Always On\" limiters operating up to Ku-band with power handling up to +60 dBm for mission-critical receivers.",
+    website: "https://www.rfuw-engineering.com",
+    accentColor: "#E11D48",
+    glowColor: "rgba(225, 29, 72, 0.4)",
+    defaultImage: "/images/rf-switch.jpg",
+    logoImg: "/images/oem-logos/RFuW_Logo.jpg",
+    logoSvg: "<svg viewBox=\"0 0 200 42\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"2\" y=\"2\" width=\"38\" height=\"38\" rx=\"9\" fill=\"rgba(225,29,72,0.18)\" stroke=\"#E11D48\" stroke-width=\"1.8\"/><path d=\"M10 21h5l3-8 4.5 16 3-8h5.5\" stroke=\"#E11D48\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><text x=\"48\" y=\"23\" fill=\"#FFFFFF\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"900\" font-size=\"17\" letter-spacing=\"1\">RFuW</text><text x=\"49\" y=\"34\" fill=\"#FB7185\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"800\" font-size=\"8.5\" letter-spacing=\"2\">ENGINEERING</text></svg>",
+    categories: [
+      {
+        id: "rf-limiters",
+        name: "RF Limiters",
+        description: "Always RF offers a family of passive and quasi-active High Power RF Limiters which operate from HF to Ku Band frequency ranges with power handling capabilities up to +60 dBm. These RF Limiters provide \"Always On\" prot...",
+        products: [
+          {
+            id: "rf-limiters-76",
+            name: "RF Limiters",
+            category: "RF Limiters",
+            description: "Always RF offers a family of passive and quasi-active High Power RF Limiters which operate from HF to Ku Band frequency ranges with power handling capabilities up to +60 dBm. These RF Limiters provide \"Always On\" protection which afford complete protection to sensitive RF receivers, even when the system is turned off.",
+            applications: "1. Receiver Protection, Protects LNAs, mixers, and ADCs from damage or compression caused by high RF power.                 2. Common in radar receivers, EW/ESM systems, and wideband monitoring receivers.                                                                          3. Radar Systems, Used at the front end of radar receivers to prevent damage from: \nTransmit leakage, Reflections from nearby targets.                                                                                 4. Electronic Warfare (EW) & SIGINT, \nShields sensitive receivers from strong intentional or unintentional signals.",
+            link: "https://www.rfuw-engineering.com/rf-limiters.html",
+            image: "/images/rf-switch.jpg"
+          },
+        ]
+      },
+      {
+        id: "rf-switches",
+        name: "RF Switches",
+        description: "Always RF offers a family of High Power PIN diode based surface mount RF switches which operate HF to Ku Band frequency ranges with power handling capabilities from +50 dBm to +62 dBm. The standard product family come...",
+        products: [
+          {
+            id: "rf-switches-77",
+            name: "RF Switches",
+            category: "RF Switches",
+            description: "Always RF offers a family of High Power PIN diode based surface mount RF switches which operate HF to Ku Band frequency ranges with power handling capabilities from +50 dBm to +62 dBm. The standard product family comes in SP2T, SP3T, SP4T, SP5T and SP6T configurations.",
+            applications: "1. Communication Systems, Antenna switching between transmit and receive paths, \nBand selection in multi-band radios and Redundancy switching for backup transceivers.                                                                   2. Radar Systems, T/R switching between transmitter and receiver, Beamforming networks, Switching between calibration, test, and operational paths.                                            3. Electronic Warfare (EW), SIGINT & ESM, \nRapid selection among multiple antennas, \nThreat monitoring and signal direction finding and Channelized receiver front ends.",
+            link: "https://www.rfuw-engineering.com/rf-switches.html",
+            image: "/images/rf-switch.jpg"
+          },
+        ]
+      },
+    ]
+  },
+  {
+    id: "yttek",
+    name: "YTTEK",
+    shortName: "YTTEK",
+    specialty: "Software Defined Radios",
+    tagline: "Software-Defined Radio Platforms & Satellite Modems",
+    description: "YTTEK develops wideband SDR platforms, satellite communication modems, 5G FR2/6G up/downconverters, and reconfigurable intelligent surfaces (RIS) for aerospace and CubeSats.",
+    website: "https://yttek.com",
+    accentColor: "#3B82F6",
+    glowColor: "rgba(59, 130, 246, 0.4)",
+    defaultImage: "/images/defense-satcom.jpg",
+    logoImg: "/images/oem-logos/YTTEK_Logo_wb.png",
+    logoSvg: "<svg viewBox=\"0 0 190 42\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"2\" y=\"2\" width=\"38\" height=\"38\" rx=\"9\" fill=\"rgba(37,99,235,0.2)\" stroke=\"#2563EB\" stroke-width=\"1.8\"/><path d=\"M12 12l9 8v10m0-10l9-8\" stroke=\"#60A5FA\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><text x=\"48\" y=\"24\" fill=\"#FFFFFF\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"900\" font-size=\"18\" letter-spacing=\"1.2\">YTTEK</text><text x=\"49\" y=\"34\" fill=\"#93C5FD\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"800\" font-size=\"8\" letter-spacing=\"1.5\">SDR PLATFORMS</text></svg>",
+    categories: [
+      {
+        id: "software-defined-radio-sdr",
+        name: "Software-Defined Radio (SDR)",
+        description: "High performance Software-Defined Radio (SDR) solution engineered for demanding RF, microwave, and aerospace applications.",
+        products: [
+          {
+            id: "software-defined-radio-sdr-122",
+            name: "Software-Defined Radio (SDR)",
+            category: "Software-Defined Radio (SDR)",
+            description: "High performance Software-Defined Radio (SDR) solution engineered for demanding RF, microwave, and aerospace applications.",
+            applications: "Real time satellite modem\nCubeSats communication payloadOffline debugging tool by RF recorder  VSG and VSA enabled by SDR  -mmWave modules\nUp/down converter\nReconfigurable Intelligent Surface (RIS)\nAnti-jamming UAV communication payload with agile frequency hopping",
+            link: "https://yttek.com/",
+            image: "/images/defense-satcom.jpg"
+          },
+        ]
+      },
+      {
+        id: "hypersdr",
+        name: "HyperSDR",
+        description: "High-speed satellite modem",
+        products: [
+          {
+            id: "hypersdr-123",
+            name: "HyperSDR",
+            category: "HyperSDR",
+            description: "High-speed satellite modem",
+            applications: "Frequency Hopping\nThree-phase deployment stage",
+            link: "https://yttek.com/",
+            image: "/images/defense-satcom.jpg"
+          },
+        ]
+      },
+      {
+        id: "sdrspace",
+        name: "SDRspace",
+        description: "High performance SDRspace solution engineered for demanding RF, microwave, and aerospace applications.",
+        products: [
+          {
+            id: "sdrspace-124",
+            name: "SDRspace",
+            category: "SDRspace",
+            description: "High performance SDRspace solution engineered for demanding RF, microwave, and aerospace applications.",
+            applications: "Satellite communication payload",
+            link: "https://yttek.com/",
+            image: "/images/defense-satcom.jpg"
+          },
+        ]
+      },
+      {
+        id: "plusdr",
+        name: "PluSDR",
+        description: "Software-defined radio platform",
+        products: [
+          {
+            id: "plusdr-125",
+            name: "PluSDR",
+            category: "PluSDR",
+            description: "Software-defined radio platform",
+            applications: "Wide range band:\n10 MHz - 15 GHz",
+            link: "https://yttek.com/",
+            image: "/images/defense-satcom.jpg"
+          },
+        ]
+      },
+      {
+        id: "sdrone",
+        name: "SDRone",
+        description: "UAV communication transceiver",
+        products: [
+          {
+            id: "sdrone-126",
+            name: "SDRone",
+            category: "SDRone",
+            description: "UAV communication transceiver",
+            applications: "Aerospace, Defense, Radar, Telecommunications, Space",
+            link: "https://yttek.com/",
+            image: "/images/defense-satcom.jpg"
+          },
+        ]
+      },
+      {
+        id: "5g-fr2-6g",
+        name: "5G FR2\n& 6G",
+        description: "TrueUDC\n26.5~29.5 GHz\nFrequency drift: 5ppb.",
+        products: [
+          {
+            id: "5g-fr2-6g-127",
+            name: "5G FR2\n& 6G",
+            category: "5G FR2\n& 6G",
+            description: "TrueUDC\n26.5~29.5 GHz\nFrequency drift: 5ppb.",
+            applications: "FR2 Small Cell-   EcoRIS (Power by Liquid Crystal)",
+            link: "https://yttek.com/",
+            image: "/images/defense-satcom.jpg"
+          },
+        ]
+      },
+    ]
+  },
+  {
     id: "evans",
     name: "Evans",
     shortName: "Evans",
@@ -1963,6 +1607,7 @@ export const CATALOG = [
     accentColor: "#3B82F6",
     glowColor: "rgba(59, 130, 246, 0.4)",
     defaultImage: "/images/rf-attenuator.jpg",
+    logoImg: "/images/oem-logos/Evans_logo.png",
     logoSvg: "<svg viewBox=\"0 0 200 42\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"2\" y=\"2\" width=\"38\" height=\"38\" rx=\"9\" fill=\"rgba(37,99,235,0.2)\" stroke=\"#3B82F6\" stroke-width=\"1.8\"/><path d=\"M13 20h5m0-8v16m8-16v16m0-8h5\" stroke=\"#60A5FA\" stroke-width=\"2.5\" stroke-linecap=\"round\"/><text x=\"48\" y=\"20\" fill=\"#93C5FD\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"800\" font-size=\"10\" letter-spacing=\"1.4\">QUANTIC</text><text x=\"48\" y=\"34\" fill=\"#FFFFFF\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"900\" font-size=\"15\" letter-spacing=\"0.8\">EVANS / EULEX</text></svg>",
     categories: [
       {
@@ -2032,6 +1677,341 @@ export const CATALOG = [
     ]
   },
   {
+    id: "ohmega-ticer",
+    name: "Ohmega Ticer",
+    shortName: "Ohmega Ticer",
+    specialty: "Embedded Resistive Film",
+    tagline: "Embedded Thin-Film Resistive Copper Foil Materials",
+    description: "Quantic Ohmega-Ticer pioneers thin-film embedded resistor technology, integrating precision resistor networks directly into inner PCB layers for aerospace, defense, and high-speed digital systems.",
+    website: "https://quanticohmega.com",
+    accentColor: "#2563EB",
+    glowColor: "rgba(37, 99, 235, 0.4)",
+    defaultImage: "/images/rf-laminate.jpg",
+    logoImg: "/images/oem-logos/OhmegaTicer_Black.png",
+    logoSvg: "<svg viewBox=\"0 0 220 42\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"2\" y=\"2\" width=\"38\" height=\"38\" rx=\"9\" fill=\"rgba(37,99,235,0.2)\" stroke=\"#2563EB\" stroke-width=\"1.8\"/><path d=\"M21 9l9 5.2v10.6l-9 5.2-9-5.2V14.2l9-5.2z\" stroke=\"#60A5FA\" stroke-width=\"2.2\" fill=\"none\"/><circle cx=\"21\" cy=\"20\" r=\"3.2\" fill=\"#3B82F6\"/><text x=\"48\" y=\"20\" fill=\"#93C5FD\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"800\" font-size=\"10\" letter-spacing=\"1.4\">QUANTIC</text><text x=\"48\" y=\"34\" fill=\"#FFFFFF\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"900\" font-size=\"14.5\" letter-spacing=\"-0.2\">Ohmega-Ticer</text></svg>",
+    categories: [
+      {
+        id: "rcm-series",
+        name: "RCM Series",
+        description: "10 \u03a9/sq thin-film embedded resistor copper foil on \u00bd oz (18 \u00b5m) copper. High reliability resistive conductor material for PCB integration.",
+        products: [
+          {
+            id: "ohmegaply-rcm-0-5a10pt-39",
+            name: "OhmegaPly\u00ae RCM \u2013 0.5A10PT",
+            category: "RCM Series",
+            description: "10 \u03a9/sq thin-film embedded resistor copper foil on \u00bd oz (18 \u00b5m) copper. High reliability resistive conductor material for PCB integration.",
+            applications: "Embedded resistors in RF/microwave/5G PCBs, aerospace, defense, automotive, industrial.",
+            link: "https://quanticohmega.com/ohmegaply/",
+            image: "/images/rf-laminate.jpg"
+          },
+          {
+            id: "ohmegaply-rcm-0-5a25pt-40",
+            name: "OhmegaPly\u00ae RCM \u2013 0.5A25PT",
+            category: "RCM Series",
+            description: "25 \u03a9/sq thin-film embedded resistor foil on \u00bd oz copper. Ideal for standard embedded resistor designs.",
+            applications: "PCB boards needing tight resistor integration and improved signal integrity.",
+            link: "https://quanticohmega.com/ohmegaply/",
+            image: "/images/rf-laminate.jpg"
+          },
+          {
+            id: "ohmegaply-rcm-0-5a40pt-41",
+            name: "OhmegaPly\u00ae RCM \u2013 0.5A40PT",
+            category: "RCM Series",
+            description: "40 \u03a9/sq embedded resistor conductor copper foil for moderate resistance applications.",
+            applications: "High frequency/medium-power embedded resistive networks.",
+            link: "https://quanticohmega.com/ohmegaply/",
+            image: "/images/rf-laminate.jpg"
+          },
+          {
+            id: "ohmegaply-rcm-0-5a50pt-42",
+            name: "OhmegaPly\u00ae RCM \u2013 0.5A50PT",
+            category: "RCM Series",
+            description: "50 \u03a9/sq embedded resistive foil with predictable sheet resistivity.",
+            applications: "Broadband embedded resistor solutions for RF & high-speed boards.",
+            link: "https://quanticohmega.com/ohmegaply/",
+            image: "/images/rf-laminate.jpg"
+          },
+          {
+            id: "ohmegaply-rcm-0-5a100pt-43",
+            name: "OhmegaPly\u00ae RCM \u2013 0.5A100PT",
+            category: "RCM Series",
+            description: "100 \u03a9/sq resistive conductor material on \u00bd oz copper.",
+            applications: "High-density resistor embedding, signal termination layers.",
+            link: "https://quanticohmega.com/ohmegaply/",
+            image: "/images/rf-laminate.jpg"
+          },
+          {
+            id: "ohmegaply-rcm-0-5a250pt-44",
+            name: "OhmegaPly\u00ae RCM \u2013 0.5A250PT",
+            category: "RCM Series",
+            description: "250 \u03a9/sq high resistivity embedded foil.",
+            applications: "Specialized high resistive networks for signal termination and filtering.",
+            link: "https://quanticohmega.com/ohmegaply/",
+            image: "/images/rf-laminate.jpg"
+          },
+          {
+            id: "ohmegaply-rcm-0-5a377pt-45",
+            name: "OhmegaPly\u00ae RCM \u2013 0.5A377PT",
+            category: "RCM Series",
+            description: "377 \u03a9/sq high sheet resistivity material.",
+            applications: "Designed for high-frequency and calibration networks where high resistivity is critical.",
+            link: "https://quanticohmega.com/ohmegaply/",
+            image: "/images/rf-laminate.jpg"
+          },
+          {
+            id: "ohmegaply-rcm-1a10pt-46",
+            name: "OhmegaPly\u00ae RCM \u2013 1A10PT",
+            category: "RCM Series",
+            description: "10 \u03a9/sq on 1 oz (35 \u00b5m) copper for higher current capacity.",
+            applications: "Embedded resistor networks with higher current requirements.",
+            link: "https://quanticohmega.com/ohmegaply/",
+            image: "/images/rf-laminate.jpg"
+          },
+          {
+            id: "ohmegaply-rcm-1a25pt-47",
+            name: "OhmegaPly\u00ae RCM \u2013 1A25PT",
+            category: "RCM Series",
+            description: "25 \u03a9/sq on 1 oz copper combining high reliability and standard resistance.",
+            applications: "Medium resistance embedded designs in demanding environments.",
+            link: "https://quanticohmega.com/ohmegaply/",
+            image: "/images/rf-laminate.jpg"
+          },
+          {
+            id: "ohmegaply-rcm-1a50pt-48",
+            name: "OhmegaPly\u00ae RCM \u2013 1A50PT",
+            category: "RCM Series",
+            description: "50 \u03a9/sq on 1 oz copper for standard embedded resistor solutions.",
+            applications: "RF termination networks, high frequency PCBs.",
+            link: "https://quanticohmega.com/ohmegaply/",
+            image: "/images/rf-laminate.jpg"
+          },
+          {
+            id: "ohmegaply-rcm-1a100pt-49",
+            name: "OhmegaPly\u00ae RCM \u2013 1A100PT",
+            category: "RCM Series",
+            description: "100 \u03a9/sq on thicker copper for precision resistor applications.",
+            applications: "High density embedded resistor layers for advanced PCB designs.",
+            link: "https://quanticohmega.com/ohmegaply/",
+            image: "/images/rf-laminate.jpg"
+          },
+        ]
+      },
+      {
+        id: "tcr-series",
+        name: "TCR Series",
+        description: "25 \u03a9/sq Ticer thin-film resistive copper foil on \u00bd oz (18 \u00b5m) copper, designed for high-frequency response.",
+        products: [
+          {
+            id: "tcr-25n18p9x-50",
+            name: "TCR\u00ae 25N18P9X",
+            category: "TCR Series",
+            description: "25 \u03a9/sq Ticer thin-film resistive copper foil on \u00bd oz (18 \u00b5m) copper, designed for high-frequency response.",
+            applications: "Embedded resistor foil for RF/mmWave PCBs.",
+            link: "https://quanticohmega.com/tcr/",
+            image: "/images/rf-laminate.jpg"
+          },
+          {
+            id: "tcr-50n18p9x-51",
+            name: "TCR\u00ae 50N18P9X",
+            category: "TCR Series",
+            description: "50 \u03a9/sq TCR resistive material on \u00bd oz copper for RF/HDI embedded resistors.",
+            applications: "High speed digital & RF embedded circuits.",
+            link: "https://quanticohmega.com/tcr/",
+            image: "/images/rf-laminate.jpg"
+          },
+          {
+            id: "tcr-100n18p9x-52",
+            name: "TCR\u00ae 100N18P9X",
+            category: "TCR Series",
+            description: "100 \u03a9/sq TCR resistive foil on \u00bd oz copper.",
+            applications: "Signal termination networks in high frequency circuit boards.",
+            link: "https://quanticohmega.com/tcr/",
+            image: "/images/rf-laminate.jpg"
+          },
+          {
+            id: "tcr-250a18p9x-53",
+            name: "TCR\u00ae 250A18P9X",
+            category: "TCR Series",
+            description: "250 \u03a9/sq TCR resistive conductor material on \u00bd oz copper.",
+            applications: "Highly resistive embedded networks for specialized PCB functions.",
+            link: "https://quanticohmega.com/tcr/",
+            image: "/images/rf-laminate.jpg"
+          },
+          {
+            id: "tcr-1ko18p9x-54",
+            name: "TCR\u00ae 1KO18P9X",
+            category: "TCR Series",
+            description: "1000 \u03a9/sq ultra-high resistivity Ticer embedded foil.",
+            applications: "Low-loss, high resistivity networks for precision embedded resistors.",
+            link: "https://quanticohmega.com/tcr/",
+            image: "/images/rf-laminate.jpg"
+          },
+        ]
+      },
+      {
+        id: "tcr-ehf-series",
+        name: "TCR EHF Series",
+        description: "25 \u03a9/sq TCR EHF embedded foil with very smooth thin film for lowest loss.",
+        products: [
+          {
+            id: "tcr-ehf-25n18p8x-55",
+            name: "TCR EHF\u00ae 25N18P8X",
+            category: "TCR EHF Series",
+            description: "25 \u03a9/sq TCR EHF embedded foil with very smooth thin film for lowest loss.",
+            applications: "mmWave frequency embedded resistor foils.",
+            link: "TCR-EHF\u00ae Embedded Resistor Copper Foil | 5G mmWave PCB",
+            image: "/images/rf-laminate.jpg"
+          },
+          {
+            id: "tcr-ehf-50n18p8x-56",
+            name: "TCR EHF\u00ae 50N18P8X",
+            category: "TCR EHF Series",
+            description: "50 \u03a9/sq TCR EHF resistive foil optimized for high speed & high frequency.",
+            applications: "Embedded resistor applications with minimized insertion loss.",
+            link: "TCR-EHF\u00ae Embedded Resistor Copper Foil | 5G mmWave PCB",
+            image: "/images/rf-laminate.jpg"
+          },
+          {
+            id: "tcr-ehf-100n18p8x-57",
+            name: "TCR EHF\u00ae 100N18P8X",
+            category: "TCR EHF Series",
+            description: "100 \u03a9/sq TCR EHF resistive foil for high precision mmWave embedded networks.",
+            applications: "Advanced RF/mmWave PCB designs.",
+            link: "TCR-EHF\u00ae Embedded Resistor Copper Foil | 5G mmWave PCB",
+            image: "/images/rf-laminate.jpg"
+          },
+        ]
+      },
+    ]
+  },
+  {
+    id: "thermosen",
+    name: "Thermosen",
+    shortName: "Thermosen",
+    specialty: "Temperature Sensors",
+    tagline: "Precision Temperature Sensors & Hi-Rel Thermistors",
+    description: "Thermosen Technologies develops high-reliability NTC and PTC thermistors and precision thermal sensors for mission-critical space, aerospace, EV, medical, and defense applications.",
+    website: "https://www.thermosen.com",
+    accentColor: "#F59E0B",
+    glowColor: "rgba(245, 158, 11, 0.4)",
+    defaultImage: "/images/rf-microwave-pcb.jpg",
+    logoImg: "/images/oem-logos/Thermosen_logo.png",
+    logoSvg: "<svg viewBox=\"0 0 210 42\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"2\" y=\"2\" width=\"38\" height=\"38\" rx=\"9\" fill=\"rgba(245,158,11,0.2)\" stroke=\"#F59E0B\" stroke-width=\"1.8\"/><circle cx=\"21\" cy=\"25\" r=\"5.5\" stroke=\"#FBBF24\" stroke-width=\"2.2\" fill=\"#F59E0B\"/><path d=\"M21 10v10\" stroke=\"#FBBF24\" stroke-width=\"2.5\" stroke-linecap=\"round\"/><text x=\"48\" y=\"23\" fill=\"#FFFFFF\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"900\" font-size=\"15\" letter-spacing=\"0.8\">THERMOSEN</text><text x=\"49\" y=\"34\" fill=\"#FBBF24\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"800\" font-size=\"8\" letter-spacing=\"1.5\">TECHNOLOGIES</text></svg>",
+    categories: [
+      {
+        id: "temperature-sensors",
+        name: "temperature sensors",
+        description: "Space * EV * Medical * IOT",
+        products: [
+          {
+            id: "temperature-sensors-129",
+            name: "temperature sensors",
+            category: "temperature sensors",
+            description: "Space * EV * Medical * IOT",
+            applications: "NTC Thermistor /PTC Thermistor /",
+            link: "https://www.thermosen.com/",
+            image: "/images/rf-microwave-pcb.jpg"
+          },
+        ]
+      },
+    ]
+  },
+  {
+    id: "fortify",
+    name: "Fortify",
+    shortName: "Fortify",
+    specialty: "3D Printed Dielectric Parts",
+    tagline: "3D Printed Dielectric Materials & Metamaterial RF Lenses",
+    description: "Fortify enables advanced dielectric 3D printing for RF and microwave components, delivering complex GRIN lenses, radomes, and conformal antenna optics with precise spatial permittivity control.",
+    website: "https://3dfortify.com",
+    accentColor: "#06B6D4",
+    glowColor: "rgba(6, 182, 212, 0.4)",
+    defaultImage: "/images/dielectric-3d-lens.jpg",
+    logoImg: "/images/oem-logos/Fortify_Logo_Black_Bg.png",
+    logoSvg: "<svg viewBox=\"0 0 185 42\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"2\" y=\"2\" width=\"38\" height=\"38\" rx=\"9\" fill=\"rgba(6,182,212,0.2)\" stroke=\"#06B6D4\" stroke-width=\"1.8\"/><path d=\"M13 11h14v5h-9v4h7v5h-7v7H13V11z\" fill=\"#22D3EE\"/><circle cx=\"26\" cy=\"27\" r=\"2.8\" fill=\"#38BDF8\"/><text x=\"48\" y=\"27\" fill=\"#FFFFFF\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"900\" font-size=\"18\" letter-spacing=\"1.5\">FORTIFY</text></svg>",
+    categories: [
+      {
+        id: "3d-printed-dielectric-parts",
+        name: "3D Printed Dielectric Parts",
+        description: "Industry\u2019s first low-loss dielectric photopolymer enabling scalable 3D printing of dielectric and GRIN lenses. Dielectric constant 2.8, loss tangent 0.0043.",
+        products: [
+          {
+            id: "radix-2-8-dielectric-lens-material-58",
+            name: "Radix\u2122 2.8 Dielectric Lens Material",
+            category: "3D Printed Dielectric Parts",
+            description: "Industry\u2019s first low-loss dielectric photopolymer enabling scalable 3D printing of dielectric and GRIN lenses. Dielectric constant 2.8, loss tangent 0.0043.",
+            applications: "RF & mmWave dielectric lenses, antenna gain enhancement, GRIN and Luneburg lenses.",
+            link: "https://3dfortify.com/advanced-3d-printing-materials-2/rf-materials-2-3/",
+            image: "/images/dielectric-3d-lens.jpg"
+          },
+          {
+            id: "radix-4-6-dielectric-lens-material-59",
+            name: "Radix\u2122 4.6 Dielectric Lens Material",
+            category: "3D Printed Dielectric Parts",
+            description: "Higher-Dk printable dielectric material enabling reduced feature size and transformation optics. Dielectric constant 4.6, loss tangent 0.0046.",
+            applications: "Compact RF lenses, high-gain antenna optics, phased-array enhancement.",
+            link: "https://3dfortify.com/advanced-3d-printing-materials-2/rf-materials-2-3/",
+            image: "/images/dielectric-3d-lens.jpg"
+          },
+          {
+            id: "grin-dielectric-lens-radix-platform-60",
+            name: "GRIN Dielectric Lens (Radix\u2122 Platform)",
+            category: "3D Printed Dielectric Parts",
+            description: "Gradient-index dielectric lenses created using lattice-controlled effective permittivity. Enables spatial Dk variation within a single printed lens.",
+            applications: "GRIN lenses, beam steering, wide-band RF optics.",
+            link: "https://3dfortify.com/rf-applications/",
+            image: "/images/dielectric-3d-lens.jpg"
+          },
+          {
+            id: "3d-printed-horn-lens-61",
+            name: "3D Printed Horn Lens",
+            category: "3D Printed Dielectric Parts",
+            description: "Dielectric horn-mounted lens that increases antenna gain without increasing antenna length. Reduces device length by ~33% for equivalent gain.",
+            applications: "Point-to-point RF links, FWA, backhaul, antenna characterization.",
+            link: "https://3dfortify.com/rf-applications/",
+            image: "/images/dielectric-3d-lens.jpg"
+          },
+          {
+            id: "switched-beam-antenna-lens-62",
+            name: "Switched Beam Antenna Lens",
+            category: "3D Printed Dielectric Parts",
+            description: "Dielectric lens replacing phase shifters to enable wide-band beam steering with lower power consumption and reduced system complexity.",
+            applications: "EW systems, direction finding, ground-to-satellite & cellular base stations.",
+            link: "https://3dfortify.com/rf-applications/",
+            image: "/images/dielectric-3d-lens.jpg"
+          },
+          {
+            id: "field-of-view-fov-enhancing-lens-63",
+            name: "Field-of-View (FOV) Enhancing Lens",
+            category: "3D Printed Dielectric Parts",
+            description: "3D printed dielectric lens extending antenna field-of-view up to \u00b190\u00b0 while reducing scan loss at high angles.",
+            applications: "5G infrastructure, outdoor antennas, phased-array systems.",
+            link: "https://3dfortify.com/rf-applications/",
+            image: "/images/dielectric-3d-lens.jpg"
+          },
+          {
+            id: "tactical-fov-enhancing-lens-64",
+            name: "Tactical FOV Enhancing Lens",
+            category: "3D Printed Dielectric Parts",
+            description: "Dielectric lens optimized for AESA reduction, enabling 360\u00b0 coverage with fewer antennas and lower power consumption.",
+            applications: "LPD/LPI tactical communications, mesh networking, defense RF systems.",
+            link: "https://3dfortify.com/rf-applications/",
+            image: "/images/dielectric-3d-lens.jpg"
+          },
+          {
+            id: "low-dk-printed-foam-spacer-lens-adjacent-65",
+            name: "Low-Dk Printed Foam Spacer (Lens Adjacent)",
+            category: "3D Printed Dielectric Parts",
+            description: "Non-compressing, low-Dk printed structures used near antenna/lens assemblies to improve predictability and integration.",
+            applications: "Antenna stack-ups, conformal RF structures, radomes.",
+            link: "https://3dfortify.com/rf-applications/",
+            image: "/images/dielectric-3d-lens.jpg"
+          },
+        ]
+      },
+    ]
+  },
+  {
     id: "nee",
     name: "NEE",
     shortName: "NEE International",
@@ -2042,6 +2022,7 @@ export const CATALOG = [
     accentColor: "#10B981",
     glowColor: "rgba(16, 185, 129, 0.4)",
     defaultImage: "/images/rf-microwave-pcb.jpg",
+    logoImg: "/images/oem-logos/NEE_Logo_wb.png",
     logoSvg: "<svg viewBox=\"0 0 210 42\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"2\" y=\"2\" width=\"38\" height=\"38\" rx=\"9\" fill=\"rgba(16,185,129,0.2)\" stroke=\"#10B981\" stroke-width=\"1.8\"/><path d=\"M12 29V13h5l5.5 8V13H28v16h-5l-5.5-8v8H12z\" fill=\"#34D399\"/><text x=\"48\" y=\"23\" fill=\"#FFFFFF\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"900\" font-size=\"16\" letter-spacing=\"1\">NEE INTL</text><text x=\"49\" y=\"34\" fill=\"#34D399\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"800\" font-size=\"7.5\" letter-spacing=\"1.5\">NEW ERA ELECTRONICS</text></svg>",
     categories: [
       {
@@ -2084,6 +2065,37 @@ export const CATALOG = [
             applications: "High power circuit boards",
             link: "https://www.nee-intl.com",
             image: "/images/rf-microwave-pcb.jpg"
+          },
+        ]
+      },
+    ]
+  },
+  {
+    id: "spellman",
+    name: "Spellman",
+    shortName: "Spellman",
+    specialty: "high voltage power supplies",
+    tagline: "High Voltage Power Supplies, X-Ray Generators & Sources",
+    description: "Spellman is the world's leading manufacturer of precision modular and rack-mount high-voltage power supplies, Monoblock\u00ae X-ray sources, and custom power systems for defense, medical, and industrial use.",
+    website: "https://www.spellmanhv.com",
+    accentColor: "#0284C7",
+    glowColor: "rgba(2, 132, 199, 0.4)",
+    defaultImage: "/images/hero-amplifier.jpg",
+    logoSvg: "<svg viewBox=\"0 0 200 42\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"2\" y=\"2\" width=\"38\" height=\"38\" rx=\"8\" fill=\"#0284C7\"/><path d=\"M21 8l-8 14h7l-3 12 11-16h-7l4-10h-4z\" fill=\"#FFFFFF\"/><text x=\"48\" y=\"23\" fill=\"#FFFFFF\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"900\" font-size=\"16\" letter-spacing=\"1\">SPELLMAN</text><text x=\"49\" y=\"34\" fill=\"#38BDF8\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"800\" font-size=\"7.5\" letter-spacing=\"1.8\">HIGH VOLTAGE</text></svg>",
+    categories: [
+      {
+        id: "high-voltage-power-supplies",
+        name: "high voltage power supplies",
+        description: "Modular High Voltage Power Supply\nRack Mount High Voltage Power Supply\nX-Ray Generator\nX-Ray Source (Monoblock\u00ae)\nCustom High Voltage Power Supply\nApplication Specific High Voltage Power Supply\nPortable NDT X-Ray Imagi...",
+        products: [
+          {
+            id: "high-voltage-power-supplies-128",
+            name: "high voltage power supplies",
+            category: "high voltage power supplies",
+            description: "Modular High Voltage Power Supply\nRack Mount High Voltage Power Supply\nX-Ray Generator\nX-Ray Source (Monoblock\u00ae)\nCustom High Voltage Power Supply\nApplication Specific High Voltage Power Supply\nPortable NDT X-Ray Imaging Products",
+            applications: "These power supplies are used in a wide variety of applications: Ion Beam Implantation, Electron Beam Welding, Electrostatic Separators, Electron Beam Evaporation, Ion Milling, Neutron Generators, Plasma Igniters, Sputtering, Marx Generators, Electrostatic Lenses and Oil Well Data Logging.",
+            link: "High Voltage Power Supplies, X-Ray Generator and Monoblock\u00ae X-Ray Source Manufacturer",
+            image: "/images/hero-amplifier.jpg"
           },
         ]
       },
@@ -2159,7 +2171,7 @@ export function getOEM(id) { return CATALOG.find(o => o.id === id) || null; }
 export function getCategories(oemId) { const o = getOEM(oemId); return o ? o.categories : []; }
 export function getCategory(oemId, catId) { const cats = getCategories(oemId); return cats.find(c => c.id === catId) || null; }
 export function getProductsForCategory(oemId, catId) { const c = getCategory(oemId, catId); return c ? c.products : []; }
-export function getAllProducts() { return CATALOG.flatMap(o => o.categories.flatMap(c => c.products.map(p => ({ ...p, oemName: o.name, oemId: o.id, oemAccent: o.accentColor, oemLogo: o.logoSvg })))); }
+export function getAllProducts() { return CATALOG.flatMap(o => o.categories.flatMap(c => c.products.map(p => ({ ...p, oemName: o.name, oemId: o.id, oemAccent: o.accentColor, oemLogo: o.logoSvg, oemLogoImg: o.logoImg })))); }
 export function getTotalProductCount() { return CATALOG.reduce((t, o) => t + o.categories.reduce((c, cat) => c + cat.products.length, 0), 0); }
 export function getTotalCategoryCount() { return CATALOG.reduce((t, o) => t + o.categories.length, 0); }
 export function getTotalOEMCount() { return CATALOG.length; }
@@ -2196,6 +2208,7 @@ export function getPopularProducts() {
         oemAccent: oem.accentColor,
         oemGlow: oem.glowColor,
         oemLogo: oem.logoSvg,
+        oemLogoImg: oem.logoImg,
         catId: cat.id,
         categoryName: cat.name
       });

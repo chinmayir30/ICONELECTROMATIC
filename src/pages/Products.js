@@ -235,7 +235,7 @@ function renderOEMCard(oem) {
       <!-- Prominent OEM Logo Header Showcase -->
       <div class="oem-card-logo-showcase" style="border-bottom: 1px solid ${oem.accentColor}25;">
         <div class="oem-card-logo-container">
-          ${oem.logoSvg}
+          ${oem.logoImg ? `<img src="${oem.logoImg}" alt="${oem.name} Official Logo" class="oem-logo-img" loading="eager" />` : oem.logoSvg}
         </div>
       </div>
 
@@ -301,7 +301,7 @@ function renderCategoriesLevel() {
     <div class="catalog-oem-banner" style="--oem-accent: ${oem.accentColor}; --oem-glow: ${oem.glowColor};">
       <div class="catalog-oem-banner-top">
         <div class="catalog-oem-banner-logo-box">
-          ${oem.logoSvg}
+          ${oem.logoImg ? `<img src="${oem.logoImg}" alt="${oem.name} Official Logo" class="oem-banner-logo-img" loading="eager" />` : oem.logoSvg}
         </div>
         <div class="catalog-oem-banner-links">
           ${oem.website ? `
@@ -421,7 +421,7 @@ function renderProductsLevel() {
       <div class="cpl-left">
         <div class="cpl-oem-badge-row">
           <div class="cpl-logo-inline">
-            ${oem.logoSvg}
+            ${oem.logoImg ? `<img src="${oem.logoImg}" alt="${oem.name}" class="cpl-inline-logo-img" />` : oem.logoSvg}
           </div>
           <span class="cpl-divider">/</span>
           <span class="cpl-cat-tag">${cat.name}</span>
