@@ -188,7 +188,7 @@ export function renderPartnersPage() {
           <nav class="breadcrumb-dark">
             <a data-route="/">Home</a>
             <span class="sep"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;"></i></span>
-            <span style="color:var(--text-white);font-weight:600;">Partners</span>
+            <span class="crumb-current" style="color:var(--text-white);font-weight:600;">Partners</span>
           </nav>
 
           <!-- Unified Page Header -->

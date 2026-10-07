@@ -15,7 +15,7 @@ export function renderServicesPage() {
           <nav class="breadcrumb-dark">
             <a data-route="/">Home</a>
             <span class="sep"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;"></i></span>
-            <span style="color:var(--text-white);font-weight:600;">Services</span>
+            <span class="crumb-current" style="color:var(--text-white);font-weight:600;">Services</span>
           </nav>
 
           <!-- Unified Page Header -->

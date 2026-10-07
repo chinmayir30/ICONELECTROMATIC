@@ -71,7 +71,7 @@ export function renderContactPage() {
           <nav class="breadcrumb-dark">
             <a data-route="/">Home</a>
             <span class="sep"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;"></i></span>
-            <span style="color:var(--text-white);font-weight:600;" id="contact-breadcrumb-active">
+            <span class="crumb-current" style="color:var(--text-white);font-weight:600;" id="contact-breadcrumb-active">
               ${isRecruiting ? 'Careers &amp; Recruiting' : 'Contact &amp; RFQ'}
             </span>
           </nav>

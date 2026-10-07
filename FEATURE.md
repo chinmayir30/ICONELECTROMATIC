@@ -13,6 +13,22 @@
 
 ### **2026-10-07**
 
+* **Category:** All Pages — Hero Headings in Signature Dark Red (`#e32726`), Trust Badges High Visibility & Breadcrumbs Sizing Refinement
+  * **Page / Files:** [`src/pages/About.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/About.js), [`src/pages/Blogs.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Blogs.js), [`src/pages/Partners.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Partners.js), [`src/pages/Services.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Services.js), [`src/pages/Products.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Products.js), [`src/pages/Contact.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Contact.js), [`src/pages/ProductDetail.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/ProductDetail.js), [`src/styles/index.css`](file:///d:/ICON%20ELECTROMATIC/src/styles/index.css)
+  * **Type:** UX/UI Design Consistency, Typographic Hierarchy & Contrast Restoration
+  * **Details:**
+    * **Page Headings in Signature Brand Dark Red (`#e32726`):**
+      * Styled all main page hero headings (`h1.page-title-unified`) across every page (`About Us`, `Authorized Technology Partners`, `Product Portfolio & Component Catalog`, `Engineering Services & Global Representation`, `OEM Technical News, Video Demos & Insights`, `Contact Our Technical Team`, and Product Detail models) in the authentic dark crimson red (`#e32726`) matching the official logo brand code.
+    * **Full Visibility Restoration for Trust & Capability Badges:**
+      * Restored crystal-clear visibility to all hero badges across all pages (`ISO 9001:2015 Operations`, `Multi-Decade Pedigree`, `Defense & Telecom Solutions`, `Global OEM Representation`, etc.).
+      * Added high-contrast frosted glass container (`rgba(255, 255, 255, 0.12)` with `rgba(255, 255, 255, 0.3)` border and depth shadow).
+      * Guaranteed pure bright white text (`#ffffff !important`, `font-weight: 600`) overriding all generic light-theme color selectors that previously darkened text into navy/brown/green.
+      * Enhanced icons with high vibrancy drop shadows and sleek hover transitions.
+    * **Prominent Breadcrumbs ("Home > [Page Name]") with Signature Red Active Crumb:**
+      * Increased breadcrumb sizing to `1.05rem` with `font-weight: 600` for crisp legibility.
+      * Styled parent "Home" links in prominent silver-white (`#f1f5f9`), with clear hover glow.
+      * Styled the active/current page crumb (`About Us`, `Partners`, `Products`, `Services`, `OEM Technical Blogs & Releases`, `Contact`) in bold signature red (`#e32726`, `font-weight: 700`) uniformly across every page.
+
 * **Category:** All Pages — Hero Banner Ending Baseline & Blogs Double-Padding Alignment Fix
   * **Page / Files:** [`src/pages/Blogs.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Blogs.js), [`src/pages/About.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/About.js), [`src/pages/Contact.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Contact.js), [`src/pages/Partners.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Partners.js), [`src/pages/Services.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Services.js), [`src/pages/Products.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Products.js), [`src/styles/index.css`](file:///d:/ICON%20ELECTROMATIC/src/styles/index.css)
   * **Type:** Bug Fix & Layout Consistency (Pixel-Perfect Banner Alignment Across All Pages)

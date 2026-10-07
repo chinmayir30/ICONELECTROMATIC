@@ -1588,8 +1588,8 @@ h1, h2, h3, h4, h5, h6 {
 .breadcrumb-dark .crumb-current,
 .breadcrumb-dark > span:last-child {
   font-size: 1.05rem;
-  font-weight: 600;
-  color: #ffffff;
+  font-weight: 700;
+  color: var(--logo-red);
 }
 
 .listing-layout {
@@ -9729,38 +9729,54 @@ html[data-theme="light"],
   box-shadow: 0 4px 24px rgba(11, 26, 61, 0.12) !important;
 }
 
-/* Breadcrumbs in Light Theme inside Page Hero Banner */
+/* Breadcrumbs in Light Theme inside Page Hero Banner — Bigger, Distinct & Signature Red Active Crumb */
 [data-theme="light"] .page-hero-banner .breadcrumb-dark {
-  color: #94a3b8 !important;
-  margin-bottom: 18px !important;
-}
-
-[data-theme="light"] .page-hero-banner .breadcrumb-dark a {
   color: #cbd5e1 !important;
-  text-decoration: none !important;
-  font-weight: 500 !important;
-  font-size: 0.92rem !important;
-  transition: color 0.2s ease !important;
+  margin-bottom: 20px !important;
+  display: flex !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
 }
 
-[data-theme="light"] .page-hero-banner .breadcrumb-dark a:hover {
+[data-theme="light"] .page-hero-banner .breadcrumb-dark a,
+[data-theme="light"] .page-hero-banner .breadcrumb-dark .crumb-link {
+  color: #f1f5f9 !important;
+  text-decoration: none !important;
+  font-weight: 600 !important;
+  font-size: 1.05rem !important;
+  transition: all 0.2s ease !important;
+  display: inline-flex !important;
+  align-items: center !important;
+}
+
+[data-theme="light"] .page-hero-banner .breadcrumb-dark a:hover,
+[data-theme="light"] .page-hero-banner .breadcrumb-dark .crumb-link:hover {
   color: #ffffff !important;
   text-decoration: underline !important;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.6) !important;
 }
 
 [data-theme="light"] .page-hero-banner .breadcrumb-dark .sep,
 [data-theme="light"] .page-hero-banner .breadcrumb-dark .sep i {
-  color: rgba(255, 255, 255, 0.45) !important;
-  font-size: 0.7rem !important;
+  color: rgba(255, 255, 255, 0.55) !important;
+  font-size: 0.8rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
 }
 
+/* Active Crumb in Signature Dark Red (#e32726) - Bigger & Highly Visible across All Pages */
 [data-theme="light"] .page-hero-banner .breadcrumb-dark span[style*="var(--text-white)"],
 [data-theme="light"] .page-hero-banner .breadcrumb-dark .crumb-current,
 [data-theme="light"] .page-hero-banner #contact-breadcrumb-active,
 [data-theme="light"] .page-hero-banner .breadcrumb-dark > span:last-child {
-  color: #ffffff !important;
-  font-size: 0.92rem !important;
-  font-weight: 600 !important;
+  color: #e32726 !important;
+  font-size: 1.05rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.02em !important;
+  text-shadow: 0 0 12px rgba(227, 39, 38, 0.35) !important;
+  display: inline-flex !important;
+  align-items: center !important;
 }
 
 /* Eyebrow Pill in Light Theme inside Page Hero Banner */
@@ -9777,9 +9793,10 @@ html[data-theme="light"],
   box-shadow: 0 0 8px #60a5fa !important;
 }
 
-/* Page Title & Lead in Light Theme inside Page Hero Banner */
-[data-theme="light"] .page-hero-banner .page-title-unified {
-  color: #ffffff !important;
+/* Page Title in Signature Dark Red (#e32726) across All Pages in Light Theme */
+[data-theme="light"] .page-hero-banner .page-title-unified,
+[data-theme="light"] .page-hero-banner h1 {
+  color: #e32726 !important;
   text-shadow: 0 2px 14px rgba(0, 0, 0, 0.45) !important;
   margin-bottom: 14px !important;
 }
@@ -9789,7 +9806,7 @@ html[data-theme="light"],
   line-height: 1.7 !important;
 }
 
-/* Trust Badges & Highlights Strips in Light Theme inside Page Hero Banner */
+/* Trust Badges & Highlights Strips in Light Theme inside Page Hero Banner - High Visibility Crystal Crisp Design */
 [data-theme="light"] .page-hero-banner .services-trust-strip,
 [data-theme="light"] .page-hero-banner .partners-trust-strip,
 [data-theme="light"] .page-hero-banner .blogs-trust-strip,
@@ -9805,19 +9822,70 @@ html[data-theme="light"],
 [data-theme="light"] .page-hero-banner .partners-trust-strip > div,
 [data-theme="light"] .page-hero-banner .blogs-trust-strip > div,
 [data-theme="light"] .page-hero-banner .about-trust-strip > div,
-[data-theme="light"] .page-hero-banner .contact-trust-strip > div {
-  background: rgba(255, 255, 255, 0.08) !important;
-  border: 1px solid rgba(255, 255, 255, 0.18) !important;
-  backdrop-filter: blur(8px) !important;
-  -webkit-backdrop-filter: blur(8px) !important;
+[data-theme="light"] .page-hero-banner .contact-trust-strip > div,
+[data-theme="light"] .page-hero-banner .catalog-trust-strip .catalog-trust-pill {
+  background: rgba(255, 255, 255, 0.12) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  color: #ffffff !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25) !important;
+  border-radius: 10px !important;
+  padding: 10px 18px !important;
+  transition: all 0.25s ease !important;
 }
 
-[data-theme="light"] .page-hero-banner .catalog-trust-strip .catalog-trust-pill {
-  background: rgba(255, 255, 255, 0.08) !important;
-  border: 1px solid rgba(255, 255, 255, 0.18) !important;
-  color: #f1f5f9 !important;
-  backdrop-filter: blur(8px) !important;
-  -webkit-backdrop-filter: blur(8px) !important;
+/* Explicit override to prevent lower-level light theme pill rules from applying dark text */
+[data-theme="light"] .page-hero-banner div[style*="color:#93C5FD"],
+[data-theme="light"] .page-hero-banner div[style*="color:#FDA4AF"],
+[data-theme="light"] .page-hero-banner div[style*="color:#E2E8F0"],
+[data-theme="light"] .page-hero-banner div[style*="color:#FCD34D"],
+[data-theme="light"] .page-hero-banner div[style*="color:#6EE7B7"] {
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.12) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+}
+
+[data-theme="light"] .page-hero-banner .services-trust-strip > div span,
+[data-theme="light"] .page-hero-banner .partners-trust-strip > div span,
+[data-theme="light"] .page-hero-banner .blogs-trust-strip > div span,
+[data-theme="light"] .page-hero-banner .about-trust-strip > div span,
+[data-theme="light"] .page-hero-banner .contact-trust-strip > div span,
+[data-theme="light"] .page-hero-banner .services-trust-strip > div strong,
+[data-theme="light"] .page-hero-banner .partners-trust-strip > div strong,
+[data-theme="light"] .page-hero-banner .blogs-trust-strip > div strong,
+[data-theme="light"] .page-hero-banner .about-trust-strip > div strong,
+[data-theme="light"] .page-hero-banner .contact-trust-strip > div strong,
+[data-theme="light"] .page-hero-banner .catalog-trust-strip .catalog-trust-pill,
+[data-theme="light"] .page-hero-banner .catalog-trust-strip .catalog-trust-pill strong {
+  color: #ffffff !important;
+  font-size: 0.92rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.01em !important;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35) !important;
+}
+
+/* Vibrant high-contrast icon styling on hero banner */
+[data-theme="light"] .page-hero-banner .services-trust-strip > div i,
+[data-theme="light"] .page-hero-banner .partners-trust-strip > div i,
+[data-theme="light"] .page-hero-banner .blogs-trust-strip > div i,
+[data-theme="light"] .page-hero-banner .about-trust-strip > div i,
+[data-theme="light"] .page-hero-banner .contact-trust-strip > div i,
+[data-theme="light"] .page-hero-banner .catalog-trust-strip .catalog-trust-pill i {
+  font-size: 1.05rem !important;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.4)) !important;
+}
+
+[data-theme="light"] .page-hero-banner .services-trust-strip > div:hover,
+[data-theme="light"] .page-hero-banner .partners-trust-strip > div:hover,
+[data-theme="light"] .page-hero-banner .blogs-trust-strip > div:hover,
+[data-theme="light"] .page-hero-banner .about-trust-strip > div:hover,
+[data-theme="light"] .page-hero-banner .contact-trust-strip > div:hover,
+[data-theme="light"] .page-hero-banner .catalog-trust-strip .catalog-trust-pill:hover {
+  background: rgba(255, 255, 255, 0.22) !important;
+  border-color: rgba(255, 255, 255, 0.5) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35) !important;
 }
 
 .product-detail-page .page-hero-banner {

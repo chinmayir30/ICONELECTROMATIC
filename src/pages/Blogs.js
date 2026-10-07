@@ -37,7 +37,7 @@ function renderAllOemsBlogView() {
           <nav class="breadcrumb-dark">
             <a data-route="/">Home</a>
             <span class="sep"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;"></i></span>
-            <span style="color:var(--text-white);font-weight:600;">OEM Technical Blogs &amp; Releases</span>
+            <span class="crumb-current" style="color:var(--text-white);font-weight:600;">OEM Technical Blogs &amp; Releases</span>
           </nav>
 
           <!-- Page Header -->
@@ -301,7 +301,7 @@ function renderSingleOemBlogView(oem, blog, activeTab) {
             <span class="sep"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;"></i></span>
             <a data-route="/blogs">OEM Blogs &amp; Tech Hub</a>
             <span class="sep"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;"></i></span>
-            <span style="color:var(--text-white);font-weight:600;">${oem.name}</span>
+            <span class="crumb-current" style="color:var(--text-white);font-weight:600;">${oem.name}</span>
           </nav>
 
           <!-- Selected OEM Banner -->
