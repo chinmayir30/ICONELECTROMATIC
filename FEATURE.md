@@ -13,6 +13,17 @@
 
 ### **2026-10-07**
 
+* **Category:** Services Page — Core Services Primary & Secondary Title Interchange
+  * **Page / Files:** [`src/pages/Services.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Services.js)
+  * **Type:** UX/Content Hierarchy Alignment (Dark & Light Themes)
+  * **Details:**
+    * Interchanged the primary (`.service-primary-title`) and secondary (`.service-secondary-title`) titles across all 4 service pillar cards:
+      * **Card 1:** Primary became `Representation of Global Leaders` and secondary became `Global Distribution & Sourcing`.
+      * **Card 2:** Primary became `Product Supply and Logistics` and secondary became `Supply Chain & Logistics`.
+      * **Card 3:** Primary became `Design Services` and secondary became `RF Engineering & Advisory`.
+      * **Card 4:** Primary became `Business Consultancy` and secondary became `Strategic Partnerships`.
+    * Fully unified and consistent across both light and dark themes with original typography and accent color hierarchy preserved.
+
 * **Category:** Products & Blogs Pages — Removal of Outbound "Official Website" & "Official Portal" Links
   * **Page / Files:** [`src/pages/Products.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Products.js), [`src/pages/Blogs.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Blogs.js)
   * **Type:** Business Logic & Customer Retention (Zero Outbound OEM Referral Links)

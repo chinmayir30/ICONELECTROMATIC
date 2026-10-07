@@ -56,7 +56,7 @@ export function renderServicesPage() {
         <div class="container">
           <div style="display:flex;flex-direction:column;gap:var(--space-16);margin-bottom:0;">
           
-          <!-- Service 1: Global Distribution & Sourcing -->
+          <!-- Service 1: Representation of Global Leaders -->
           <div style="display:grid;grid-template-columns:1.15fr 1fr;gap:var(--space-12);align-items:center;" class="service-row-block">
             <div>
               <div class="service-badge-pill service-badge-blue">
@@ -65,11 +65,11 @@ export function renderServicesPage() {
               </div>
               
               <h2 class="service-primary-title">
-                Global Distribution &amp; Sourcing
+                Representation of Global Leaders
               </h2>
               
               <h3 class="service-secondary-title blue-accent">
-                Representation of Global Leaders
+                Global Distribution &amp; Sourcing
               </h3>
               
               <p style="font-size:1rem;color:var(--text-gray-300);line-height:1.75;margin-bottom:20px;">
@@ -161,11 +161,11 @@ export function renderServicesPage() {
               </div>
               
               <h2 class="service-primary-title">
-                Supply Chain &amp; Logistics
+                Product Supply and Logistics
               </h2>
               
               <h3 class="service-secondary-title red-accent">
-                Product Supply and Logistics
+                Supply Chain &amp; Logistics
               </h3>
               
               <p style="font-size:1rem;color:var(--text-gray-300);line-height:1.75;margin-bottom:14px;">
@@ -199,11 +199,11 @@ export function renderServicesPage() {
               </div>
               
               <h2 class="service-primary-title">
-                RF Engineering &amp; Advisory
+                Design Services
               </h2>
               
               <h3 class="service-secondary-title blue-accent">
-                Design Services
+                RF Engineering &amp; Advisory
               </h3>
               
               <p style="font-size:1rem;color:var(--text-gray-300);line-height:1.75;margin-bottom:20px;">
@@ -298,11 +298,11 @@ export function renderServicesPage() {
               </div>
               
               <h2 class="service-primary-title">
-                Strategic Partnerships
+                Business Consultancy
               </h2>
               
               <h3 class="service-secondary-title red-accent">
-                Business Consultancy
+                Strategic Partnerships
               </h3>
               
               <p style="font-size:1rem;color:var(--text-gray-300);line-height:1.75;margin-bottom:20px;">
