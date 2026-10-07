@@ -13,6 +13,17 @@
 
 ### **2026-10-07**
 
+* **Category:** Products Page & All Pages — Trust Pills Visibility Restoration & Signature Red Hover Transition
+  * **Page / Files:** [`src/pages/Products.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Products.js), [`src/styles/index.css`](file:///d:/ICON%20ELECTROMATIC/src/styles/index.css)
+  * **Type:** Visual Bug Fix & Interactive Micro-Animation (Light Theme Brand Consistency)
+  * **Details:**
+    * **Resolved Text Visibility on Products Page Hero Pills:**
+      * Root cause: Generic selector `[data-theme="light"] .catalog-trust-pill span` was setting dark slate `#334155 !important`, which blended into the Navy Blue hero banner canvas and rendered *"Global OEM Partners"*, *"Specialized Categories"*, and *"Precision Products & Lines"* invisible.
+      * Fix: Explicitly mapped `[data-theme="light"] .page-hero-banner .catalog-trust-strip .catalog-trust-pill span` to crisp white (`#ffffff !important`, `font-weight: 600`, subtle text-shadow).
+    * **Universal Signature Red Hover Transition (`#e32726`):**
+      * Added interactive red hover transitions across all pages containing trust & highlight strips (`Products`, `About`, `Partners`, `Services`, `Blogs`, `Contact`).
+      * On hover, pills transition to translucent crimson glass (`background: rgba(227, 39, 38, 0.2)`), crisp signature red border (`border-color: #e32726`), vibrant red glow shadow (`box-shadow: 0 6px 20px rgba(227, 39, 38, 0.38)`), smooth `translateY(-2px)` elevation, and glowing red scaled icons (`color: #ff4d6d`, `scale(1.15)`).
+
 * **Category:** All Pages — Hero Headings in Signature Dark Red (`#e32726`), Trust Badges High Visibility & Breadcrumbs Sizing Refinement
   * **Page / Files:** [`src/pages/About.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/About.js), [`src/pages/Blogs.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Blogs.js), [`src/pages/Partners.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Partners.js), [`src/pages/Services.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Services.js), [`src/pages/Products.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Products.js), [`src/pages/Contact.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Contact.js), [`src/pages/ProductDetail.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/ProductDetail.js), [`src/styles/index.css`](file:///d:/ICON%20ELECTROMATIC/src/styles/index.css)
   * **Type:** UX/UI Design Consistency, Typographic Hierarchy & Contrast Restoration
