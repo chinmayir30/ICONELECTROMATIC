@@ -7,51 +7,55 @@
 
 export function renderAboutPage() {
   return `
-    <div class="page-content" style="padding-top:calc(var(--header-height) + 24px);padding-bottom:var(--space-20);background:var(--bg-dark);position:relative;overflow:hidden;min-height:100vh;">
-      
-      <!-- Ambient Lighting Effects -->
-      <div style="position:absolute;top:0;left:10%;width:500px;height:500px;background:radial-gradient(circle, rgba(37,99,235,0.12) 0%, transparent 70%);border-radius:50%;pointer-events:none;"></div>
-      <div style="position:absolute;top:300px;right:5%;width:600px;height:600px;background:radial-gradient(circle, rgba(225,29,72,0.08) 0%, transparent 70%);border-radius:50%;pointer-events:none;"></div>
+    <div class="page-content about-page" style="min-height:100vh;">
+      <!-- Unified Page Hero Banner (Blue in light theme) -->
+      <section class="page-hero-banner" style="position:relative;overflow:hidden;">
+        <!-- Ambient Lighting Effects -->
+        <div style="position:absolute;top:0;left:10%;width:500px;height:500px;background:radial-gradient(circle, rgba(37,99,235,0.12) 0%, transparent 70%);border-radius:50%;pointer-events:none;"></div>
+        <div style="position:absolute;top:300px;right:5%;width:600px;height:600px;background:radial-gradient(circle, rgba(225,29,72,0.08) 0%, transparent 70%);border-radius:50%;pointer-events:none;"></div>
 
-      <div class="container" style="position:relative;z-index:2;">
-        
-        <!-- Breadcrumb -->
-        <nav class="breadcrumb-dark">
-          <a data-route="/">Home</a>
-          <span class="sep"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;"></i></span>
-          <span style="color:var(--text-white);font-weight:600;">About Us</span>
-        </nav>
+        <div class="container" style="position:relative;z-index:2;">
+          <!-- Breadcrumb -->
+          <nav class="breadcrumb-dark">
+            <a data-route="/">Home</a>
+            <span class="sep"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;"></i></span>
+            <span style="color:var(--text-white);font-weight:600;">About Us</span>
+          </nav>
 
-        <!-- Section 1: Hero Header with Animated Ambient Radar -->
-        <div class="page-header-unified" style="display:flex;align-items:center;padding:10px 0;">
-          
-          <!-- Animated Radar Wave Component -->
-          <div class="rf-radar-ambient" aria-hidden="true">
-            <div class="rf-radar-ring"></div>
-            <div class="rf-radar-ring"></div>
-            <div class="rf-radar-ring"></div>
-            <div class="rf-radar-ring"></div>
-            <div class="rf-radar-sweep"></div>
-          </div>
-
-          <div style="position:relative;z-index:3;">
-            <div class="page-eyebrow-pill">
-              <span class="hub-dot-pulse"></span>
-              <span>ABOUT ICON ELECTROMATIC</span>
+          <!-- Section 1: Hero Header with Animated Ambient Radar -->
+          <div class="page-header-unified" style="display:flex;align-items:center;padding:10px 0;margin-bottom:0;">
+            <!-- Animated Radar Wave Component -->
+            <div class="rf-radar-ambient" aria-hidden="true">
+              <div class="rf-radar-ring"></div>
+              <div class="rf-radar-ring"></div>
+              <div class="rf-radar-ring"></div>
+              <div class="rf-radar-ring"></div>
+              <div class="rf-radar-sweep"></div>
             </div>
-            
-            <h1 class="page-title-unified">
-              About Us
-            </h1>
-            
-            <p class="page-lead-unified">
-              Driven by decades of engineering expertise and global collaborations, Icon Electromatic Private Limited delivers advanced components and tailored solutions that transform design ambitions into reality.
-            </p>
+
+            <div style="position:relative;z-index:3;">
+              <div class="page-eyebrow-pill">
+                <span class="hub-dot-pulse"></span>
+                <span>ABOUT ICON ELECTROMATIC</span>
+              </div>
+              
+              <h1 class="page-title-unified">
+                About Us
+              </h1>
+              
+              <p class="page-lead-unified">
+                Driven by decades of engineering expertise and global collaborations, Icon Electromatic Private Limited delivers advanced components and tailored solutions that transform design ambitions into reality.
+              </p>
+            </div>
           </div>
         </div>
+      </section>
 
-        <!-- Section 2: Fulfillment Partners & Origin (with Interactive Feature Badges & Downloads) -->
-        <div style="display:grid;grid-template-columns:1.15fr 0.85fr;gap:40px;align-items:center;border-radius:24px;padding:44px 36px;margin-bottom:var(--space-16);" class="about-hero-feature-card about-interactive-card about-animate-fadeup">
+      <!-- Main Content Area -->
+      <div class="page-main-body" style="padding-top:var(--space-12);padding-bottom:var(--space-20);">
+        <div class="container">
+          <!-- Section 2: Fulfillment Partners & Origin (with Interactive Feature Badges & Downloads) -->
+          <div style="display:grid;grid-template-columns:1.15fr 0.85fr;gap:40px;align-items:center;border-radius:24px;padding:44px 36px;margin-bottom:var(--space-16);" class="about-hero-feature-card about-interactive-card about-animate-fadeup">
           <div>
             <span style="font-size:0.75rem;font-weight:700;color:var(--logo-red-light);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;display:inline-block;">
               CORE CAPABILITIES
@@ -354,6 +358,7 @@ export function renderAboutPage() {
           </div>
         </div>
 
+        </div>
       </div>
     </div>
   `;

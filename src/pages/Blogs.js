@@ -29,35 +29,42 @@ function renderAllOemsBlogView() {
   const allVideos = getAllVideos();
 
   return `
-    <div class="blogs-page-wrap">
-      <div class="container">
-        <!-- Breadcrumb -->
-        <nav class="breadcrumb-dark">
-          <a data-route="/">Home</a>
-          <span class="sep"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;"></i></span>
-          <span style="color:var(--text-white);font-weight:600;">OEM Technical Blogs &amp; Releases</span>
-        </nav>
+    <div class="blogs-page-wrap" style="min-height:100vh;">
+      <!-- Unified Page Hero Banner (Blue in light theme) -->
+      <section class="page-hero-banner">
+        <div class="container">
+          <!-- Breadcrumb -->
+          <nav class="breadcrumb-dark">
+            <a data-route="/">Home</a>
+            <span class="sep"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;"></i></span>
+            <span style="color:var(--text-white);font-weight:600;">OEM Technical Blogs &amp; Releases</span>
+          </nav>
 
-        <!-- Page Header -->
-        <div class="page-header-unified blogs-hero">
-          <div class="page-eyebrow-pill">
-            <span class="hub-dot-pulse"></span>
-            <span>MANUFACTURER RELEASES &amp; TECH INSIGHTS</span>
+          <!-- Page Header -->
+          <div class="page-header-unified blogs-hero" style="margin-bottom:0;">
+            <div class="page-eyebrow-pill">
+              <span class="hub-dot-pulse"></span>
+              <span>MANUFACTURER RELEASES &amp; TECH INSIGHTS</span>
+            </div>
+            <h1 class="page-title-unified">
+              OEM Technical News, Video Demos &amp; Insights
+            </h1>
+            <p class="page-lead-unified">
+              Direct technical bulletins, video demonstrations, application whitepapers, and product release updates 
+              from ICON Electromatic's 15 global manufacturing partners.
+            </p>
           </div>
-          <h1 class="page-title-unified">
-            OEM Technical News, Video Demos &amp; Insights
-          </h1>
-          <p class="page-lead-unified">
-            Direct technical bulletins, video demonstrations, application whitepapers, and product release updates 
-            from ICON Electromatic's 15 global manufacturing partners.
-          </p>
         </div>
+      </section>
 
-        <!-- Quick Filter Chips by OEM -->
-        <div class="blogs-oem-selector-bar">
-          <button class="blogs-oem-chip active" data-filter="all">
-            <i class="fa-solid fa-layer-group"></i> All 15 OEMs
-          </button>
+      <!-- Main Content Area -->
+      <div class="page-main-body" style="padding-top:var(--space-8);padding-bottom:var(--space-20);">
+        <div class="container">
+          <!-- Quick Filter Chips by OEM -->
+          <div class="blogs-oem-selector-bar">
+            <button class="blogs-oem-chip active" data-filter="all">
+              <i class="fa-solid fa-layer-group"></i> All 15 OEMs
+            </button>
           ${CATALOG.map(oem => `
             <button class="blogs-oem-chip" data-oem-select="${oem.id}">
               <span style="width:8px;height:8px;border-radius:50%;background:${oem.accentColor};display:inline-block;"></span>
@@ -206,6 +213,7 @@ function renderAllOemsBlogView() {
           </div>
         </div>
 
+        </div>
       </div>
     </div>
 
@@ -263,43 +271,51 @@ function renderSingleOemBlogView(oem, blog, activeTab) {
   const links = blog.officialLinks || [];
 
   return `
-    <div class="blogs-page-wrap">
-      <div class="container">
-        <!-- Breadcrumb -->
-        <nav class="breadcrumb-dark">
-          <a data-route="/">Home</a>
-          <span class="sep"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;"></i></span>
-          <a data-route="/blogs">OEM Blogs &amp; Tech Hub</a>
-          <span class="sep"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;"></i></span>
-          <span style="color:var(--text-white);font-weight:600;">${oem.name}</span>
-        </nav>
+    <div class="blogs-page-wrap" style="min-height:100vh;">
+      <!-- Unified Page Hero Banner (Blue in light theme) -->
+      <section class="page-hero-banner">
+        <div class="container">
+          <!-- Breadcrumb -->
+          <nav class="breadcrumb-dark">
+            <a data-route="/">Home</a>
+            <span class="sep"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;"></i></span>
+            <a data-route="/blogs">OEM Blogs &amp; Tech Hub</a>
+            <span class="sep"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;"></i></span>
+            <span style="color:var(--text-white);font-weight:600;">${oem.name}</span>
+          </nav>
 
-        <!-- Selected OEM Banner -->
-        <div class="blogs-selected-header" style="border-top:3px solid ${oem.accentColor};">
-          <div class="blogs-selected-info">
-            <div class="blogs-selected-logo-wrap">
-              ${oem.logoSvg}
+          <!-- Selected OEM Banner -->
+          <div class="blogs-selected-header" style="border-top:3px solid ${oem.accentColor};margin-bottom:0;">
+            <div class="blogs-selected-info">
+              <div class="blogs-selected-logo-wrap">
+                ${oem.logoSvg}
+              </div>
+              <div class="blogs-selected-text">
+                <h2>${oem.name}</h2>
+                <p>${blog.headline || oem.description}</p>
+              </div>
             </div>
-            <div class="blogs-selected-text">
-              <h2>${oem.name}</h2>
-              <p>${blog.headline || oem.description}</p>
-            </div>
-          </div>
 
-          <div class="blogs-selected-actions">
-            <button class="btn-relay-dark" id="back-to-all-oems-btn">
-              <i class="fa-solid fa-arrow-left"></i> All OEMs
-            </button>
-            <a href="${blog.officialWebsite}" target="_blank" rel="noopener noreferrer" class="btn-relay-border" title="Open official website in new window">
-              <i class="fa-solid fa-arrow-up-right-from-square"></i> Official Portal
-            </a>
-            <a class="btn-relay-blue" href="#/contact?subject=technical&oem=${encodeURIComponent(oem.name)}">
-              <i class="fa-solid fa-paper-plane"></i> Technical Inquiry
-            </a>
+            <div class="blogs-selected-actions">
+              <button class="btn-relay-dark" id="back-to-all-oems-btn">
+                <i class="fa-solid fa-arrow-left"></i> All OEMs
+              </button>
+              <a href="${blog.officialWebsite}" target="_blank" rel="noopener noreferrer" class="btn-relay-border" title="Open official website in new window">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> Official Portal
+              </a>
+              <a class="btn-relay-blue" href="#/contact?subject=technical&oem=${encodeURIComponent(oem.name)}">
+                <i class="fa-solid fa-paper-plane"></i> Technical Inquiry
+              </a>
+            </div>
           </div>
         </div>
+      </section>
 
-        <!-- Content Type Filter Tabs -->
+      <!-- Main Content Area -->
+      <div class="page-main-body" style="padding-top:var(--space-8);padding-bottom:var(--space-20);">
+        <div class="container">
+
+          <!-- Content Type Filter Tabs -->
         <div class="blogs-content-tabs">
           <button class="blogs-tab-btn ${activeTab === 'all' ? 'active' : ''}" data-tab="all">
             <i class="fa-solid fa-border-all"></i> All Updates
@@ -488,6 +504,7 @@ function renderSingleOemBlogView(oem, blog, activeTab) {
           </div>
         </div>
 
+        </div>
       </div>
     </div>
 

@@ -9688,3 +9688,139 @@ html[data-theme="light"],
 [data-theme="light"] .red-section-title {
   color: #b91c1c !important;
 }
+
+/* ==========================================================================
+   Full-Width Unified Page Hero Banner System
+   Vibrant Brand Navy Blue for Light Theme (#0b1a3d / #0a1e5e) across All Pages
+   ========================================================================== */
+.page-hero-banner {
+  position: relative;
+  width: 100%;
+  padding-top: calc(var(--header-height, 74px) + 24px);
+  padding-bottom: 36px;
+  background: var(--bg-dark);
+  border-bottom: 1px solid var(--border-subtle);
+  overflow: hidden;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.page-hero-banner .container {
+  position: relative;
+  z-index: 2;
+}
+
+.page-main-body {
+  width: 100%;
+  position: relative;
+  background: transparent;
+}
+
+/* Light Theme: Rich Navy Blue Header Banner matching Brand Color Codes (#0b1a3d / #0a1e5e) */
+[data-theme="light"] .page-hero-banner {
+  background: #0b1a3d !important;
+  background: linear-gradient(135deg, #0a1e5e 0%, #10255c 50%, #0b1a3d 100%) !important;
+  border-bottom: 2px solid rgba(24, 59, 141, 0.45) !important;
+  box-shadow: 0 4px 24px rgba(11, 26, 61, 0.12) !important;
+}
+
+/* Breadcrumbs in Light Theme inside Page Hero Banner */
+[data-theme="light"] .page-hero-banner .breadcrumb-dark {
+  color: #94a3b8 !important;
+  margin-bottom: 18px !important;
+}
+
+[data-theme="light"] .page-hero-banner .breadcrumb-dark a {
+  color: #cbd5e1 !important;
+  text-decoration: none !important;
+  font-weight: 500 !important;
+  font-size: 0.92rem !important;
+  transition: color 0.2s ease !important;
+}
+
+[data-theme="light"] .page-hero-banner .breadcrumb-dark a:hover {
+  color: #ffffff !important;
+  text-decoration: underline !important;
+}
+
+[data-theme="light"] .page-hero-banner .breadcrumb-dark .sep,
+[data-theme="light"] .page-hero-banner .breadcrumb-dark .sep i {
+  color: rgba(255, 255, 255, 0.45) !important;
+  font-size: 0.7rem !important;
+}
+
+[data-theme="light"] .page-hero-banner .breadcrumb-dark span[style*="var(--text-white)"],
+[data-theme="light"] .page-hero-banner .breadcrumb-dark .crumb-current,
+[data-theme="light"] .page-hero-banner #contact-breadcrumb-active,
+[data-theme="light"] .page-hero-banner .breadcrumb-dark > span:last-child {
+  color: #ffffff !important;
+  font-size: 0.92rem !important;
+  font-weight: 600 !important;
+}
+
+/* Eyebrow Pill in Light Theme inside Page Hero Banner */
+[data-theme="light"] .page-hero-banner .page-eyebrow-pill {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(147, 197, 253, 0.35) !important;
+  color: #93c5fd !important;
+  box-shadow: 0 0 16px rgba(37, 99, 235, 0.2) !important;
+  margin-bottom: 16px !important;
+}
+
+[data-theme="light"] .page-hero-banner .page-eyebrow-pill .hub-dot-pulse {
+  background: #60a5fa !important;
+  box-shadow: 0 0 8px #60a5fa !important;
+}
+
+/* Page Title & Lead in Light Theme inside Page Hero Banner */
+[data-theme="light"] .page-hero-banner .page-title-unified {
+  color: #ffffff !important;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.45) !important;
+  margin-bottom: 14px !important;
+}
+
+[data-theme="light"] .page-hero-banner .page-lead-unified {
+  color: #cbd5e1 !important;
+  line-height: 1.7 !important;
+}
+
+/* Trust Badges Strips in Light Theme inside Page Hero Banner */
+[data-theme="light"] .page-hero-banner .services-trust-strip,
+[data-theme="light"] .page-hero-banner .partners-trust-strip {
+  border-bottom: none !important;
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+  margin-top: 24px !important;
+}
+
+[data-theme="light"] .page-hero-banner .services-trust-strip > div,
+[data-theme="light"] .page-hero-banner .partners-trust-strip > div {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+}
+
+[data-theme="light"] .page-hero-banner .catalog-trust-strip .catalog-trust-pill {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  color: #f1f5f9 !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+}
+
+/* Single OEM Selected Header inside Page Hero Banner */
+[data-theme="light"] .page-hero-banner .blogs-selected-header {
+  background: rgba(255, 255, 255, 0.04) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+[data-theme="light"] .page-hero-banner .blogs-selected-text h2 {
+  color: #ffffff !important;
+}
+[data-theme="light"] .page-hero-banner .blogs-selected-text p {
+  color: #cbd5e1 !important;
+}
+
+/* Page Main Body in Light Theme */
+[data-theme="light"] .page-main-body {
+  background: #ffffff !important;
+}

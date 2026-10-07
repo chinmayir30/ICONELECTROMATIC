@@ -6,48 +6,55 @@
 
 export function renderServicesPage() {
   return `
-    <div class="page-content services-page" style="padding-top:calc(var(--header-height) + 24px);padding-bottom:var(--space-24);background:var(--bg-dark);min-height:100vh;">
-      <div class="container">
-        
-        <!-- Breadcrumb -->
-        <nav class="breadcrumb-dark">
-          <a data-route="/">Home</a>
-          <span class="sep"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;"></i></span>
-          <span style="color:var(--text-white);font-weight:600;">Services</span>
-        </nav>
+    <div class="page-content services-page" style="min-height:100vh;">
+      <!-- Unified Page Hero Banner (Blue in light theme) -->
+      <section class="page-hero-banner">
+        <div class="container">
+          
+          <!-- Breadcrumb -->
+          <nav class="breadcrumb-dark">
+            <a data-route="/">Home</a>
+            <span class="sep"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;"></i></span>
+            <span style="color:var(--text-white);font-weight:600;">Services</span>
+          </nav>
 
-        <!-- Unified Page Header -->
-        <div class="page-header-unified">
-          <div class="page-eyebrow-pill">
-            <span class="hub-dot-pulse"></span>
-            <span>CAPABILITIES &amp; SERVICES</span>
+          <!-- Unified Page Header -->
+          <div class="page-header-unified" style="margin-bottom:0;">
+            <div class="page-eyebrow-pill">
+              <span class="hub-dot-pulse"></span>
+              <span>CAPABILITIES &amp; SERVICES</span>
+            </div>
+            <h1 class="page-title-unified">
+              Engineering Services &amp; Global Representation
+            </h1>
+            <p class="page-lead-unified">
+              We represent major RF, Microwave, mmWave, Semiconductors, Components, Subsystems and Power supplies manufacturers around the world, providing unparalleled support to electronic designers, manufacturers, engineers and researchers.
+            </p>
           </div>
-          <h1 class="page-title-unified">
-            Engineering Services &amp; Global Representation
-          </h1>
-          <p class="page-lead-unified">
-            We represent major RF, Microwave, mmWave, Semiconductors, Components, Subsystems and Power supplies manufacturers around the world, providing unparalleled support to electronic designers, manufacturers, engineers and researchers.
-          </p>
+
+          <!-- Trust Badges Strip -->
+          <div class="services-trust-strip" style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:24px;margin-bottom:0;padding-bottom:0;border-bottom:none;">
+            <div style="background:rgba(37,99,235,0.08);border:1px solid rgba(37,99,235,0.25);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#93C5FD;display:flex;align-items:center;gap:8px;">
+              <i class="fa-solid fa-handshake-angle" style="color:var(--logo-blue-light);"></i>
+              <span>Tier-1 Global Manufacturers Representation</span>
+            </div>
+            <div style="background:rgba(225,29,72,0.08);border:1px solid rgba(225,29,72,0.25);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#FDA4AF;display:flex;align-items:center;gap:8px;">
+              <i class="fa-solid fa-landmark" style="color:var(--logo-red-light);"></i>
+              <span>Indian Govt Tender Portals (GeM &amp; CPPP)</span>
+            </div>
+            <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#E2E8F0;display:flex;align-items:center;gap:8px;">
+              <i class="fa-solid fa-coins" style="color:#F59E0B;"></i>
+              <span>Global Multi-Currency Supply Logistics</span>
+            </div>
+          </div>
+
         </div>
+      </section>
 
-        <!-- Trust Badges Strip -->
-        <div class="services-trust-strip" style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:var(--space-16);padding-bottom:var(--space-8);border-bottom:1px solid var(--border-subtle);">
-          <div style="background:rgba(37,99,235,0.08);border:1px solid rgba(37,99,235,0.25);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#93C5FD;display:flex;align-items:center;gap:8px;">
-            <i class="fa-solid fa-handshake-angle" style="color:var(--logo-blue-light);"></i>
-            <span>Tier-1 Global Manufacturers Representation</span>
-          </div>
-          <div style="background:rgba(225,29,72,0.08);border:1px solid rgba(225,29,72,0.25);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#FDA4AF;display:flex;align-items:center;gap:8px;">
-            <i class="fa-solid fa-landmark" style="color:var(--logo-red-light);"></i>
-            <span>Indian Govt Tender Portals (GeM &amp; CPPP)</span>
-          </div>
-          <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#E2E8F0;display:flex;align-items:center;gap:8px;">
-            <i class="fa-solid fa-coins" style="color:#F59E0B;"></i>
-            <span>Global Multi-Currency Supply Logistics</span>
-          </div>
-        </div>
-
-        <!-- 4 Core Services Pillars -->
-        <div style="display:flex;flex-direction:column;gap:var(--space-16);margin-bottom:0;">
+      <!-- Main Content Area: 4 Core Services Pillars -->
+      <div class="page-main-body" style="padding-top:var(--space-12);padding-bottom:var(--space-24);">
+        <div class="container">
+          <div style="display:flex;flex-direction:column;gap:var(--space-16);margin-bottom:0;">
           
           <!-- Service 1: Global Distribution & Sourcing -->
           <div style="display:grid;grid-template-columns:1.15fr 1fr;gap:var(--space-12);align-items:center;" class="service-row-block">
@@ -321,9 +328,9 @@ export function renderServicesPage() {
           </div>
 
         </div>
-
       </div>
     </div>
+  </div>
   `;
 }
 

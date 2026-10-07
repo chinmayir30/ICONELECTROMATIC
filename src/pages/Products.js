@@ -35,10 +35,8 @@ export function renderProductsPage() {
   navState.categoryId = params.get('category') || null;
 
   return `
-    <div class="page-content catalog-page" id="catalog-page" style="padding-top:calc(var(--header-height) + 24px);padding-bottom:var(--space-24);background:var(--bg-dark);min-height:100vh;">
-      <div class="container">
-        ${renderPageShell()}
-      </div>
+    <div class="page-content catalog-page" id="catalog-page" style="min-height:100vh;">
+      ${renderPageShell()}
     </div>
   `;
 }
@@ -49,43 +47,52 @@ function renderPageShell() {
   const totalOEMs = getTotalOEMCount();
 
   return `
-    <!-- Interactive Breadcrumb matching all pages -->
-    <nav class="breadcrumb-dark catalog-breadcrumb-nav" id="catalog-breadcrumb">
-      ${renderBreadcrumb()}
-    </nav>
+    <!-- Unified Page Hero Banner (Blue in light theme) -->
+    <section class="page-hero-banner">
+      <div class="container">
+        <!-- Interactive Breadcrumb matching all pages -->
+        <nav class="breadcrumb-dark catalog-breadcrumb-nav" id="catalog-breadcrumb">
+          ${renderBreadcrumb()}
+        </nav>
 
-    <!-- Unified Page Header matching Partners, Services, Blogs, About -->
-    <div class="page-header-unified catalog-page-header">
-      <div class="page-eyebrow-pill">
-        <span class="hub-dot-pulse"></span>
-        <span>AUTHORIZED MANUFACTURER CATALOG</span>
+        <!-- Unified Page Header matching Partners, Services, Blogs, About -->
+        <div class="page-header-unified catalog-page-header" style="margin-bottom:0;">
+          <div class="page-eyebrow-pill">
+            <span class="hub-dot-pulse"></span>
+            <span>AUTHORIZED MANUFACTURER CATALOG</span>
+          </div>
+          <h1 class="page-title-unified">Product Portfolio &amp; Component Catalog</h1>
+          <p class="page-lead-unified">
+            Authorized distributor for world-leading RF, microwave, mmWave, semiconductor, and Hi-Rel materials manufacturers.
+            Explore authorized global OEM partners, multi-frequency categories, and specialized product lines.
+          </p>
+
+          <!-- Trust & Capability Highlights matching Partners and Services -->
+          <div class="catalog-trust-strip" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:24px;margin-bottom:0;">
+            <div class="catalog-trust-pill">
+              <i class="fa-solid fa-industry" style="color:var(--logo-blue-light);"></i>
+              <span>Global OEM Partners</span>
+            </div>
+            <div class="catalog-trust-pill">
+              <i class="fa-solid fa-shapes" style="color:var(--logo-red-light);"></i>
+              <span>Specialized Categories</span>
+            </div>
+            <div class="catalog-trust-pill">
+              <i class="fa-solid fa-microchip" style="color:#10B981;"></i>
+              <span>Precision Products &amp; Lines</span>
+            </div>
+          </div>
+        </div>
       </div>
-      <h1 class="page-title-unified">Product Portfolio &amp; Component Catalog</h1>
-      <p class="page-lead-unified">
-        Authorized distributor for world-leading RF, microwave, mmWave, semiconductor, and Hi-Rel materials manufacturers.
-        Explore authorized global OEM partners, multi-frequency categories, and specialized product lines.
-      </p>
+    </section>
 
-      <!-- Trust & Capability Highlights matching Partners and Services -->
-      <div class="catalog-trust-strip" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:24px;margin-bottom:var(--space-8);">
-        <div class="catalog-trust-pill">
-          <i class="fa-solid fa-industry" style="color:var(--logo-blue-light);"></i>
-          <span>Global OEM Partners</span>
-        </div>
-        <div class="catalog-trust-pill">
-          <i class="fa-solid fa-shapes" style="color:var(--logo-red-light);"></i>
-          <span>Specialized Categories</span>
-        </div>
-        <div class="catalog-trust-pill">
-          <i class="fa-solid fa-microchip" style="color:#10B981;"></i>
-          <span>Precision Products &amp; Lines</span>
+    <!-- Main Content View -->
+    <div class="page-main-body" style="padding-top:var(--space-8);padding-bottom:var(--space-24);">
+      <div class="container">
+        <div id="catalog-content">
+          ${renderCurrentLevel()}
         </div>
       </div>
-    </div>
-
-    <!-- Dynamic Content View -->
-    <div id="catalog-content">
-      ${renderCurrentLevel()}
     </div>
   `;
 }

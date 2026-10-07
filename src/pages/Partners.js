@@ -179,59 +179,67 @@ function renderPartnerCardMarkup(partner) {
 
 export function renderPartnersPage() {
   return `
-    <div class="page-content partners-page" style="padding-top:calc(var(--header-height) + 24px);padding-bottom:var(--space-24);background:var(--bg-dark);min-height:100vh;">
-      <div class="container">
-        
-        <!-- Breadcrumb -->
-        <nav class="breadcrumb-dark">
-          <a data-route="/">Home</a>
-          <span class="sep"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;"></i></span>
-          <span style="color:var(--text-white);font-weight:600;">Partners</span>
-        </nav>
+    <div class="page-content partners-page" style="min-height:100vh;">
+      <!-- Unified Page Hero Banner (Blue in light theme) -->
+      <section class="page-hero-banner">
+        <div class="container">
+          
+          <!-- Breadcrumb -->
+          <nav class="breadcrumb-dark">
+            <a data-route="/">Home</a>
+            <span class="sep"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;"></i></span>
+            <span style="color:var(--text-white);font-weight:600;">Partners</span>
+          </nav>
 
-        <!-- Unified Page Header -->
-        <div class="page-header-unified">
-          <div class="page-eyebrow-pill">
-            <span class="hub-dot-pulse"></span>
-            <span>GLOBAL TECHNOLOGY ECOSYSTEM</span>
+          <!-- Unified Page Header -->
+          <div class="page-header-unified" style="margin-bottom:0;">
+            <div class="page-eyebrow-pill">
+              <span class="hub-dot-pulse"></span>
+              <span>GLOBAL TECHNOLOGY ECOSYSTEM</span>
+            </div>
+            <h1 class="page-title-unified">
+              Authorized Technology Partners
+            </h1>
+            <p class="page-lead-unified">
+              We represent a diverse portfolio of OEMs across sectors, industries and application.<br />
+              To know more about their products, make an enquiry or request samples just get in touch with us.
+            </p>
           </div>
-          <h1 class="page-title-unified">
-            Authorized Technology Partners
-          </h1>
-          <p class="page-lead-unified">
-            We represent a diverse portfolio of OEMs across sectors, industries and application.<br />
-            To know more about their products, make an enquiry or request samples just get in touch with us.
-          </p>
+
+          <!-- Trust Badges Strip (Matching Services Page 1:1 in Spacing & Design) -->
+          <div class="services-trust-strip partners-trust-strip" style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:24px;margin-bottom:0;padding-bottom:0;border-bottom:none;">
+            <div style="background:rgba(37,99,235,0.08);border:1px solid rgba(37,99,235,0.25);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#93C5FD;display:flex;align-items:center;gap:8px;">
+              <i class="fa-solid fa-handshake-angle" style="color:var(--logo-blue-light);"></i>
+              <span><strong>12+</strong> Global Technology Partners</span>
+            </div>
+            <div style="background:rgba(225,29,72,0.08);border:1px solid rgba(225,29,72,0.25);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#FDA4AF;display:flex;align-items:center;gap:8px;">
+              <i class="fa-solid fa-shield-halved" style="color:var(--logo-red-light);"></i>
+              <span>Direct Factory Warranties &amp; CoCs</span>
+            </div>
+            <div style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#FCD34D;display:flex;align-items:center;gap:8px;">
+              <i class="fa-solid fa-certificate" style="color:#F59E0B;"></i>
+              <span>Space &amp; Mil-Spec Screening Support</span>
+            </div>
+            <div style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.25);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#6EE7B7;display:flex;align-items:center;gap:8px;">
+              <i class="fa-solid fa-location-dot" style="color:#10B981;"></i>
+              <span>India Distribution Hub (Bengaluru)</span>
+            </div>
+          </div>
+
         </div>
+      </section>
 
-        <!-- Trust Badges Strip (Matching Services Page 1:1 in Spacing, Design & Border Divider) -->
-        <div class="services-trust-strip partners-trust-strip" style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:var(--space-16);padding-bottom:var(--space-8);border-bottom:1px solid var(--border-subtle);">
-          <div style="background:rgba(37,99,235,0.08);border:1px solid rgba(37,99,235,0.25);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#93C5FD;display:flex;align-items:center;gap:8px;">
-            <i class="fa-solid fa-handshake-angle" style="color:var(--logo-blue-light);"></i>
-            <span><strong>12+</strong> Global Technology Partners</span>
-          </div>
-          <div style="background:rgba(225,29,72,0.08);border:1px solid rgba(225,29,72,0.25);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#FDA4AF;display:flex;align-items:center;gap:8px;">
-            <i class="fa-solid fa-shield-halved" style="color:var(--logo-red-light);"></i>
-            <span>Direct Factory Warranties &amp; CoCs</span>
-          </div>
-          <div style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#FCD34D;display:flex;align-items:center;gap:8px;">
-            <i class="fa-solid fa-certificate" style="color:#F59E0B;"></i>
-            <span>Space &amp; Mil-Spec Screening Support</span>
-          </div>
-          <div style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.25);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#6EE7B7;display:flex;align-items:center;gap:8px;">
-            <i class="fa-solid fa-location-dot" style="color:#10B981;"></i>
-            <span>India Distribution Hub (Bengaluru)</span>
+      <!-- Main Content Body -->
+      <div class="page-main-body" style="padding-top:var(--space-12);padding-bottom:var(--space-24);">
+        <div class="container">
+          <!-- Running OEM Logos Ticker (Full container-width, bounded between left and right card edges) -->
+          ${renderRunningLogoTicker(PARTNERS)}
+
+          <!-- Down Part: 100% STATIC Grid of Partner Cards (No moving rows) -->
+          <div id="partners-static-grid" class="partners-static-grid">
+            ${PARTNERS.map(p => renderPartnerCardMarkup(p)).join('')}
           </div>
         </div>
-
-        <!-- Running OEM Logos Ticker (Full container-width, bounded between left and right card edges) -->
-        ${renderRunningLogoTicker(PARTNERS)}
-
-        <!-- Down Part: 100% STATIC Grid of Partner Cards (No moving rows) -->
-        <div id="partners-static-grid" class="partners-static-grid">
-          ${PARTNERS.map(p => renderPartnerCardMarkup(p)).join('')}
-        </div>
-
       </div>
     </div>
   `;

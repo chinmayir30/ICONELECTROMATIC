@@ -63,36 +63,43 @@ export function renderContactPage() {
   const isRecruiting = activeTab === 'recruiting';
 
   return `
-    <div class="page-content" style="padding-top:calc(var(--header-height) + 24px);padding-bottom:var(--space-20);background:var(--bg-dark);min-height:100vh;">
-      <div class="container">
-        <!-- Breadcrumb -->
-        <nav class="breadcrumb-dark">
-          <a data-route="/">Home</a>
-          <span class="sep"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;"></i></span>
-          <span style="color:var(--text-white);font-weight:600;" id="contact-breadcrumb-active">
-            ${isRecruiting ? 'Careers &amp; Recruiting' : 'Contact &amp; RFQ'}
-          </span>
-        </nav>
+    <div class="page-content contact-page" style="min-height:100vh;">
+      <!-- Unified Page Hero Banner (Blue in light theme) -->
+      <section class="page-hero-banner">
+        <div class="container">
+          <!-- Breadcrumb -->
+          <nav class="breadcrumb-dark">
+            <a data-route="/">Home</a>
+            <span class="sep"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;"></i></span>
+            <span style="color:var(--text-white);font-weight:600;" id="contact-breadcrumb-active">
+              ${isRecruiting ? 'Careers &amp; Recruiting' : 'Contact &amp; RFQ'}
+            </span>
+          </nav>
 
-        <!-- Unified Page Header -->
-        <div class="page-header-unified">
-          <div class="page-eyebrow-pill" id="contact-eyebrow-pill">
-            <span class="hub-dot-pulse"></span>
-            <span id="contact-eyebrow-text">${isRecruiting ? 'ICON TALENT ACQUISITION' : 'CONNECT WITH ENGINEERING'}</span>
+          <!-- Unified Page Header -->
+          <div class="page-header-unified" style="margin-bottom:0;">
+            <div class="page-eyebrow-pill" id="contact-eyebrow-pill">
+              <span class="hub-dot-pulse"></span>
+              <span id="contact-eyebrow-text">${isRecruiting ? 'ICON TALENT ACQUISITION' : 'CONNECT WITH ENGINEERING'}</span>
+            </div>
+            <h1 class="page-title-unified" id="contact-page-title">
+              ${isRecruiting 
+                ? 'Join India’s Foremost RF &amp; Microwave Engineering Hub' 
+                : 'Send Us a Message &amp; Request Fast Quotes'}
+            </h1>
+            <p class="page-lead-unified" id="contact-page-lead">
+              ${isRecruiting 
+                ? 'Accelerate your career in millimeter-wave technology, defense electronics, and satellite communications. Explore engineering opportunities at ICON Electromatic.' 
+                : 'Whether you require component data sheets, custom waveguide machining, or volume pricing, our application engineering team in Bengaluru is ready to assist.'}
+            </p>
           </div>
-          <h1 class="page-title-unified" id="contact-page-title">
-            ${isRecruiting 
-              ? 'Join India’s Foremost RF &amp; Microwave Engineering Hub' 
-              : 'Send Us a Message &amp; Request Fast Quotes'}
-          </h1>
-          <p class="page-lead-unified" id="contact-page-lead">
-            ${isRecruiting 
-              ? 'Accelerate your career in millimeter-wave technology, defense electronics, and satellite communications. Explore engineering opportunities at ICON Electromatic.' 
-              : 'Whether you require component data sheets, custom waveguide machining, or volume pricing, our application engineering team in Bengaluru is ready to assist.'}
-          </p>
         </div>
+      </section>
 
-        <!-- Form Switcher Tabs -->
+      <!-- Main Content Area -->
+      <div class="page-main-body" style="padding-top:var(--space-8);padding-bottom:var(--space-20);">
+        <div class="container">
+          <!-- Form Switcher Tabs -->
         <div class="contact-tabs-wrapper">
           <div class="contact-form-tabs" role="tablist">
             <button 
@@ -452,6 +459,7 @@ export function renderContactPage() {
         </div>
       </div>
     </div>
+  </div>
   `;
 }
 

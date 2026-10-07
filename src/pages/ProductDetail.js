@@ -30,20 +30,27 @@ export function renderProductDetailPage(params) {
   const displayImage = getProductDisplayImage(product);
 
   return `
-    <div class="page-content" style="padding-top:calc(var(--header-height) + 24px);padding-bottom:var(--space-24);background:var(--bg-dark);min-height:100vh;">
-      <div class="container">
-        <!-- Breadcrumb -->
-        <nav class="breadcrumb-dark">
-          <a data-route="/">Home</a>
-          <span class="sep"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;"></i></span>
-          <a data-route="/products">Products</a>
-          <span class="sep"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;"></i></span>
-          <a data-route="/products?category=${product.category}">${product.categoryName}</a>
-          <span class="sep"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;"></i></span>
-          <span style="color:var(--text-white);font-weight:600;">${product.model}</span>
-        </nav>
+    <div class="page-content product-detail-page" style="min-height:100vh;">
+      <!-- Unified Page Hero Banner (Blue in light theme) -->
+      <section class="page-hero-banner" style="padding-bottom:20px;">
+        <div class="container">
+          <!-- Breadcrumb -->
+          <nav class="breadcrumb-dark" style="margin-bottom:0;">
+            <a data-route="/">Home</a>
+            <span class="sep"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;"></i></span>
+            <a data-route="/products">Products</a>
+            <span class="sep"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;"></i></span>
+            <a data-route="/products?category=${product.category}">${product.categoryName}</a>
+            <span class="sep"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;"></i></span>
+            <span style="color:var(--text-white);font-weight:600;">${product.model}</span>
+          </nav>
+        </div>
+      </section>
 
-        <div class="product-detail-layout" style="display:grid;grid-template-columns:1fr 1.15fr;gap:var(--space-12);margin-bottom:var(--space-16);margin-top:var(--space-4);">
+      <!-- Main Content Area -->
+      <div class="page-main-body" style="padding-top:var(--space-8);padding-bottom:var(--space-24);">
+        <div class="container">
+          <div class="product-detail-layout" style="display:grid;grid-template-columns:1fr 1.15fr;gap:var(--space-12);margin-bottom:var(--space-16);margin-top:var(--space-4);">
           <!-- Gallery -->
           <div>
             <div style="background:var(--bg-card);border:1px solid var(--border-card);border-radius:var(--radius-xl);overflow:hidden;box-shadow:0 20px 40px rgba(0,0,0,0.5);margin-bottom:var(--space-4);aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;padding:var(--space-4);">
@@ -124,6 +131,7 @@ export function renderProductDetailPage(params) {
             </div>
           </div>
         ` : ''}
+        </div>
       </div>
     </div>
   `;
