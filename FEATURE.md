@@ -13,6 +13,13 @@
 
 ### **2026-10-07**
 
+* **Category:** Footer / Home Page — Removal of ISO 9001:2015 | RoHS Compliant Bar
+  * **Page / Files:** [`src/components/Footer.js`](file:///d:/ICON%20ELECTROMATIC/src/components/Footer.js)
+  * **Type:** Content / Visual Cleanup (Dark & Light Themes)
+  * **Details:**
+    * Removed the `"ISO 9001:2015 | RoHS Compliant"` status badges from the footer copyright bar (`.footer-bottom-links`).
+    * Centered the official copyright statement across the bottom copyright bar in both dark and light themes for a clean, minimalist footer presentation.
+
 * **Category:** Products Page & All Pages — Trust Pills Visibility Restoration & Signature Red Hover Transition
   * **Page / Files:** [`src/pages/Products.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Products.js), [`src/styles/index.css`](file:///d:/ICON%20ELECTROMATIC/src/styles/index.css)
   * **Type:** Visual Bug Fix & Interactive Micro-Animation (Light Theme Brand Consistency)

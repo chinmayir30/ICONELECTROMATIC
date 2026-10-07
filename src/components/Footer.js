@@ -80,13 +80,8 @@ export function renderFooter() {
       </div>
 
       <div class="footer-copyright-bar">
-        <div class="container footer-copyright-inner">
+        <div class="container footer-copyright-inner" style="justify-content:center;text-align:center;">
           <p>&copy; ${year} ICON ELECTROMATIC PRIVATE LIMITED. All rights reserved.</p>
-          <div class="footer-bottom-links">
-            <span><i class="fa-solid fa-shield-halved" style="color:var(--logo-red);margin-right:4px;"></i> ISO 9001:2015</span>
-            <span class="sep">|</span>
-            <span><i class="fa-solid fa-leaf" style="color:var(--success, #10b981);margin-right:4px;"></i> RoHS Compliant</span>
-          </div>
         </div>
       </div>
     </footer>
