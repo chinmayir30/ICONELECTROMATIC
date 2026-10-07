@@ -13,6 +13,20 @@
 
 ### **2026-10-07**
 
+* **Category:** All Pages — Footer Differentiator & Surface Contrast System
+  * **Page / Files:** [`src/styles/index.css`](file:///d:/ICON%20ELECTROMATIC/src/styles/index.css), [`src/components/Footer.js`](file:///d:/ICON%20ELECTROMATIC/src/components/Footer.js)
+  * **Type:** UX/UI Layout Differentiation & Visual Separation (Dark & Light Themes)
+  * **Details:**
+    * **Signature Red Top Differentiator Border (`#e32726`):**
+      * Added a prominent 4px signature crimson red border (`border-top: 4px solid #e32726 !important;`) running across the full width at the top boundary of `.site-footer-white` across all pages.
+      * Positioned right at the transition between the page content cards and the footer, matching the user's marked boundary.
+    * **Enhanced Light Mode Surface Contrast (`#f8fafc`):**
+      * Changed the light theme footer background from plain white (`#ffffff`) to a sleek, cool light slate surface (`background: #f8fafc !important;`), paired with soft elevation shadow (`box-shadow: 0 -8px 24px rgba(15, 23, 42, 0.06);`).
+      * Provides crisp separation from the white cards above it while keeping transparent brand logos and text razor-sharp.
+      * Set copyright bar to `#f1f5f9` with subtle `#e2e8f0` divider.
+    * **Dark Theme Harmony:**
+      * Applied matching `border-top: 4px solid #e32726 !important;` and `box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.4);` across dark mode.
+
 * **Category:** Footer / Home Page — Removal of ISO 9001:2015 | RoHS Compliant Bar
   * **Page / Files:** [`src/components/Footer.js`](file:///d:/ICON%20ELECTROMATIC/src/components/Footer.js)
   * **Type:** Content / Visual Cleanup (Dark & Light Themes)
