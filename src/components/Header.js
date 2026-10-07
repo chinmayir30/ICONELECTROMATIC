@@ -17,6 +17,12 @@ export function renderHeaderInner(currentRoute) {
     { path: '/contact', label: 'Contact' },
   ];
 
+  const isLight = typeof window !== 'undefined' && (
+    new URLSearchParams(window.location.search).get('theme') === 'light' ||
+    localStorage.getItem('icon-theme') === 'light' ||
+    document.documentElement.getAttribute('data-theme') === 'light'
+  );
+
   return `
     <div class="header-inner">
       <a class="logo-container" data-route="/" title="ICON ELECTROMATIC Home">
@@ -35,8 +41,18 @@ export function renderHeaderInner(currentRoute) {
         <a class="btn-relay-border" data-route="/contact">
           Request Quote
         </a>
-        <button class="theme-toggle-btn" id="theme-toggle-btn" aria-label="Toggle light/dark theme" title="Switch Theme">
-          <i class="fa-solid fa-sun" id="theme-toggle-icon"></i>
+        <button class="theme-toggle-btn theme-toggle-switch ${isLight ? 'is-light' : ''}" id="theme-toggle-btn" role="switch" aria-checked="${isLight ? 'true' : 'false'}" aria-label="Toggle dark and light theme" title="${isLight ? 'Switch to Darker Version' : 'Switch to Lighter Version'}">
+          <span class="theme-switch-track">
+            <span class="theme-switch-icon theme-switch-moon" title="Darker Version">
+              <i class="fa-solid fa-moon"></i>
+            </span>
+            <span class="theme-switch-icon theme-switch-sun" title="Lighter Version">
+              <i class="fa-solid fa-sun"></i>
+            </span>
+            <span class="theme-switch-thumb">
+              <i class="fa-solid ${isLight ? 'fa-sun' : 'fa-moon'}" id="theme-toggle-icon"></i>
+            </span>
+          </span>
         </button>
       </div>
 
@@ -97,30 +113,27 @@ export function initHeader() {
   const urlTheme = new URLSearchParams(window.location.search).get('theme');
   const savedTheme = urlTheme || localStorage.getItem('icon-theme') || 'dark';
 
-  if (savedTheme === 'light') {
-    document.documentElement.setAttribute('data-theme', 'light');
-    if (toggleIcon) {
-      toggleIcon.className = 'fa-solid fa-moon';
+  const updateThemeUI = (theme) => {
+    const isLight = theme === 'light';
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('icon-theme', theme);
+
+    if (toggleBtn) {
+      toggleBtn.classList.toggle('is-light', isLight);
+      toggleBtn.setAttribute('aria-checked', isLight ? 'true' : 'false');
+      toggleBtn.setAttribute('title', isLight ? 'Switch to Darker Version' : 'Switch to Lighter Version');
     }
-  } else {
-    document.documentElement.setAttribute('data-theme', 'dark');
     if (toggleIcon) {
-      toggleIcon.className = 'fa-solid fa-sun';
+      toggleIcon.className = isLight ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
     }
-  }
+  };
+
+  updateThemeUI(savedTheme);
 
   if (toggleBtn) {
     toggleBtn.addEventListener('click', () => {
       const isLight = document.documentElement.getAttribute('data-theme') === 'light';
-      if (isLight) {
-        document.documentElement.setAttribute('data-theme', 'dark');
-        localStorage.setItem('icon-theme', 'dark');
-        if (toggleIcon) toggleIcon.className = 'fa-solid fa-sun';
-      } else {
-        document.documentElement.setAttribute('data-theme', 'light');
-        localStorage.setItem('icon-theme', 'light');
-        if (toggleIcon) toggleIcon.className = 'fa-solid fa-moon';
-      }
+      updateThemeUI(isLight ? 'dark' : 'light');
       // Ensure hero video keeps playing smoothly
       const heroVid = document.getElementById('hero-bg-video');
       if (heroVid) {

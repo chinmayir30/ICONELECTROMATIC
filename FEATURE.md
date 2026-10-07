@@ -13,6 +13,24 @@
 
 ### **2026-10-07**
 
+* **Category:** Products Page — Consistent Light Blue Background for Filter Controls & Header (Light Theme)
+  * **Page / Files:** [`src/styles/index.css`](file:///d:/ICON%20ELECTROMATIC/src/styles/index.css), [`src/pages/Products.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Products.js)
+  * **Type:** Visual Theme Alignment & Cohesion (Light Theme)
+  * **Details:**
+    * **Search Bar:** Added signature light blue background (`#e8f1fc`), deep navy text (`#123b7a`), and subtle border (`rgba(18, 59, 122, 0.22)`) to `.catalog-search-input` (placeholder: `"Search by company, specialty, category, or product..."`) with persistent focus state styling.
+    * **Specialty Dropdown:** Updated `.catalog-specialty-select` (`"All Specialties (14)"` and individual options) with `#e8f1fc` background, soft hover state (`#dbeafe`), and `#123b7a` text.
+    * **All 15 Specialty Track Pills:** Applied `#e8f1fc` background and `#123b7a` text to `.domain-filter-pill` buttons across the horizontal carousel track (`"All Specialties 14"`, `"High Frequency Laminates & Prepregs 1"`, `"RF and MW Components 1"`, `"High Power GaN Device and Beamforming IC 1"`, `"Thin Film Capacitors 1"`, `"Tunable Filters 1"`, `"High Power Switches and Limiter 1"`, `"Software Defined Radios 1"`, `"Ceramic Capacitors 1"`, `"Embedded Resistive Film 1"`, `"Temperature Sensors 1"`, `"3D Printed Dielectric Parts 1"`, `"PCB Fabrication 2"`, `"High Voltage Power Supplies 1"`, `"Perimeter Intrusion Detection System (PIDS) 1"`), with deep light blue hover (`#dbeafe`) and navy active state.
+    * **Section Header Badge:** Styled `.catalog-level-title` (`"Authorized Technology Manufacturers"`) as an inline badge with `#e8f1fc` background, `#123b7a` typography, rounded corners, and subtle elevation to maintain aesthetic consistency with the rest of the light theme.
+
+* **Category:** Header / Home Page — Dual-State Interactive Theme Toggle Switch
+  * **Page / Files:** [`src/components/Header.js`](file:///d:/ICON%20ELECTROMATIC/src/components/Header.js), [`src/styles/index.css`](file:///d:/ICON%20ELECTROMATIC/src/styles/index.css)
+  * **Type:** UX Component Upgrade (Global Header & Home Page)
+  * **Details:**
+    * **Toggle Switch Slider:** Replaced the single sun/moon icon button with a modern dual-state pill toggle switch (`.theme-toggle-switch`).
+    * **Dual Track Representation:** Track features both Moon (darker version indicator) on the left and Sun (lighter version indicator) on the right.
+    * **Sliding Thumb Mechanism:** Contains a sliding circular thumb that smoothly transitions (`translateX`) between the dark mode position (with illuminated blue moon icon) and the light mode position (with golden sun icon and amber glow).
+    * **Seamless Theme Persistence:** Maintains instantaneous synchronization with `localStorage` (`icon-theme`) and URL query parameters (`?theme=light`), ensuring zero visual flicker on navigation.
+
 * **Category:** Home Page — Connect with Engineering Cards Hover & Shadow Effects (Dark Theme)
   * **Page / Files:** [`src/styles/index.css`](file:///d:/ICON%20ELECTROMATIC/src/styles/index.css), [`src/pages/Home.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Home.js)
   * **Type:** UX/UI Micro-Interactions & Depth Effects (Dark Theme)
