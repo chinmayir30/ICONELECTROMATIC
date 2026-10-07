@@ -13,6 +13,18 @@
 
 ### **2026-10-07**
 
+* **Category:** Products & Blogs Pages — Removal of Outbound "Official Website" & "Official Portal" Links
+  * **Page / Files:** [`src/pages/Products.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Products.js), [`src/pages/Blogs.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Blogs.js)
+  * **Type:** Business Logic & Customer Retention (Zero Outbound OEM Referral Links)
+  * **Details:**
+    * **Products Page OEM Banner:**
+      * Removed the external `Official Website` button (`<a class="oem-external-site-btn">`) that previously appeared in the top banner when selecting any manufacturer (e.g. Rogers Corporation).
+      * Preserved clean navigation with the `All Companies` back button and catalog category browsing.
+    * **Blogs Page OEM Header & Tabs:**
+      * Removed the `Official Portal` button (`<a class="btn-relay-border">`) from the header action bar when viewing any OEM's blog release hub.
+      * Removed the `Official Portals` filter tab button and external links directory section (`Official Portals & Engineering Tools`), ensuring prospective customers interact exclusively with ICON Electromatic's application engineering team via the `Technical Inquiry` and quote request actions.
+      * Updated blog release description text and tab counts cleanly.
+
 * **Category:** All Pages — Footer Differentiator & Surface Contrast System
   * **Page / Files:** [`src/styles/index.css`](file:///d:/ICON%20ELECTROMATIC/src/styles/index.css), [`src/components/Footer.js`](file:///d:/ICON%20ELECTROMATIC/src/components/Footer.js)
   * **Type:** UX/UI Layout Differentiation & Visual Separation (Dark & Light Themes)

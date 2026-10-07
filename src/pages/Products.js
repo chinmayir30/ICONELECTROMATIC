@@ -354,12 +354,6 @@ function renderCategoriesLevel() {
           ${oem.logoImg ? `<img src="${oem.logoImg}" alt="${oem.name} Official Logo" class="oem-banner-logo-img" loading="eager" />` : oem.logoSvg}
         </div>
         <div class="catalog-oem-banner-links">
-          ${oem.website ? `
-            <a href="${oem.website}" target="_blank" rel="noopener noreferrer" class="oem-external-site-btn" style="color:${oem.accentColor}; border-color:${oem.accentColor}40;">
-              <i class="fa-solid fa-arrow-up-right-from-square"></i>
-              <span>Official Website</span>
-            </a>
-          ` : ''}
           <a class="oem-back-btn" data-nav-params="level=oems">
             <i class="fa-solid fa-arrow-left"></i>
             <span>All Companies</span>
