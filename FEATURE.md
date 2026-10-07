@@ -13,6 +13,23 @@
 
 ### **2026-10-07**
 
+* **Category:** Home Page — Catalog CTA Label & Category Chips Signature Red Hover
+  * **Page / Files:** [`src/pages/Home.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Home.js), [`src/styles/index.css`](file:///d:/ICON%20ELECTROMATIC/src/styles/index.css)
+  * **Type:** UX/UI Micro-Interactions & Copy Refinement (Dark & Light Themes)
+  * **Details:**
+    * **Explore Full Catalog CTA Text:**
+      * Updated button label from `Explore Full Catalog (15 OEMs) →` to `Explore Full Catalog (OEMs) →` across both dark and light themes, removing the specific count while preserving all surrounding styling and navigation routing.
+    * **Signature Red Hover Effect on Category Chips:**
+      * Applied the signature red hover styling (`#e32726` border, `rgba(227, 39, 38, 0.22)` glow, pure white text with soft text shadow, and -2px lift) to all 7 category labels in the Popular Products section:
+        * `All Popular (12)`
+        * `Rogers Laminates`
+        * `Qorvo GaN & ICs`
+        * `Ohmega-Ticer`
+        * `Fortify 3D Optics`
+        * `Mini-Circuits & RFuW`
+        * `Sensors & PCB`
+      * Works seamlessly in both **Dark** and **Light** themes.
+
 * **Category:** Home Page — Section Titles Color Alignment (Light Theme)
   * **Page / Files:** [`src/styles/index.css`](file:///d:/ICON%20ELECTROMATIC/src/styles/index.css), [`src/pages/Home.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Home.js)
   * **Type:** Visual Consistency & Brand Palette Harmonization (Light Theme)

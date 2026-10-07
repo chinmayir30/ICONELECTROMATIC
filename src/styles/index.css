@@ -3328,17 +3328,25 @@ html[data-theme="light"],
   color: #ffffff !important;
 }
 
-/* Filter Chips inside Products Section */
+/* Filter Chips inside Products Section — Signature Red Hover (Both Dark & Light Themes) */
 [data-theme="light"] .products-dark-section .filter-chip-dark {
   background: rgba(255, 255, 255, 0.08) !important;
   border: 1px solid rgba(255, 255, 255, 0.15) !important;
   color: #e0e5ed !important;
   border-radius: 5px !important;
+  transition: all 0.2s ease !important;
 }
 
+#home-category-tabs .filter-chip-dark:hover,
+.products-dark-section #home-category-tabs .filter-chip-dark:hover,
+[data-theme="light"] #home-category-tabs .filter-chip-dark:hover,
 [data-theme="light"] .products-dark-section .filter-chip-dark:hover {
-  background: rgba(255, 255, 255, 0.16) !important;
+  background: rgba(227, 39, 38, 0.22) !important;
+  border-color: #e32726 !important;
   color: #ffffff !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 16px rgba(227, 39, 38, 0.35) !important;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.6) !important;
 }
 
 [data-theme="light"] .products-dark-section .filter-chip-dark.active {

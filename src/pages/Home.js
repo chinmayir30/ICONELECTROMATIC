@@ -128,7 +128,7 @@ export function renderHomePage() {
           </div>
           <div>
             <a class="btn-relay-dark" data-route="/products">
-              Explore Full Catalog (15 OEMs) &rarr;
+              Explore Full Catalog (OEMs) &rarr;
             </a>
           </div>
         </div>
