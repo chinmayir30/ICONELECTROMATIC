@@ -13,6 +13,24 @@
 
 ### **2026-10-07**
 
+* **Category:** Engineering Chatbot Assistant — Light Theme UI & Brand Alignment
+  * **Page / Files:** [`src/styles/index.css`](file:///d:/ICON%20ELECTROMATIC/src/styles/index.css), [`src/components/Chatbot.js`](file:///d:/ICON%20ELECTROMATIC/src/components/Chatbot.js)
+  * **Type:** UX/UI Light Theme Accessibility & Visual Alignment
+  * **Details:**
+    * **Modal Surface & Header:**
+      * Styled `.chatbot-modal` with a pure white surface (`#ffffff`), clean `#e2e8f0` border, and soft navy elevation shadow (`rgba(18, 59, 122, 0.18)`).
+      * Header styled in the signature navy blue gradient (`linear-gradient(135deg, #123b7a, #1a4f9c)`) with a 2px signature red differentiator border (`#e32726`), pure white avatar, and crisp white typography.
+    * **Chat Body & Bubble Typography:**
+      * Converted `.chat-modal-body` from pitch black to a clean, light slate surface (`#f8fafc`) with subtle custom scrollbars.
+      * Bot message bubbles (`.chat-bubble-bot`) styled in crisp white cards with `#e2e8f0` borders and high-contrast dark slate typography (`#0f172a` headers, `#334155` body text).
+      * User bubbles (`.chat-bubble-user`) styled in rich navy blue gradient with pure white text and soft elevation shadow.
+    * **Action Badges & Quick Chips:**
+      * RFQ and action badges (`.chat-action-badge`) styled in soft crimson (`#fee2e2` with `#b91c1c` text and `#e32726` hover states) and light blue (`#e8f1fc` with `#123b7a` text for category navigation).
+      * Quick inquiry chips (`.chat-chip`) styled with white pills, subtle borders, and smooth blue hover transitions.
+    * **Input Bar & Controls:**
+      * Formatted `.chat-input-row` with white background, clean slate input field (`#f1f5f9`), subtle placeholder, and active navy focus ring.
+      * Send button styled in signature brand crimson (`#e32726`) with smooth hover micro-animations.
+
 * **Category:** Blogs Page — Official OEM Brand Logos (Card & Banner Showcases)
   * **Page / Files:** [`src/pages/Blogs.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Blogs.js), [`src/styles/index.css`](file:///d:/ICON%20ELECTROMATIC/src/styles/index.css)
   * **Type:** Visual Branding & UX Consistency (Dark & Light Themes)
