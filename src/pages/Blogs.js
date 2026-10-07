@@ -7,28 +7,6 @@
 import { CATALOG } from '../data/catalogData.js';
 import { OEM_BLOGS, getBlogDataForOem, getAllArticles, getAllVideos, getOemContentCount } from '../data/blogData.js';
 
-// Helper: Running OEM Logos Ticker (Matching Partners Page layout)
-function renderRunningLogoTicker(oems) {
-  const loopList = [...oems, ...oems, ...oems];
-  const itemsMarkup = loopList.map((oem) => `
-    <div class="oem-running-logo-item" data-oem-select="${oem.id}" title="${oem.name}">
-      <div class="oem-running-logo-box">
-        ${oem.logoImg 
-          ? `<img src="${oem.logoImg}" alt="${oem.name} Official Logo" class="oem-running-logo-img" loading="eager" />` 
-          : oem.logoSvg}
-      </div>
-    </div>
-  `).join('');
-
-  return `
-    <div class="oem-running-ticker-runthrough" style="margin-bottom:34px;">
-      <div class="oem-running-ticker-track">
-        ${itemsMarkup}
-      </div>
-    </div>
-  `;
-}
-
 export function renderBlogsPage() {
   const hash = window.location.hash || '';
   const queryStr = hash.includes('?') ? hash.slice(hash.indexOf('?') + 1) : '';
@@ -102,9 +80,6 @@ function renderAllOemsBlogView() {
       <!-- Main Content Area -->
       <div class="page-main-body" style="padding-top:var(--space-8);padding-bottom:var(--space-20);">
         <div class="container">
-          <!-- Running OEM Logos Marquee Ticker (Matching Partners page presentation) -->
-          ${renderRunningLogoTicker(CATALOG)}
-
           <!-- Quick Filter Chips by OEM -->
           <div class="blogs-oem-selector-bar">
             <button class="blogs-oem-chip active" data-filter="all">
