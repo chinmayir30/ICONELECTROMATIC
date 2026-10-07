@@ -3303,8 +3303,9 @@ html[data-theme="light"],
   border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
 }
 
-[data-theme="light"] .products-dark-section .section-tag-mono {
-  color: #fca5a5 !important;
+[data-theme="light"] .products-dark-section .section-tag-mono,
+[data-theme="light"] .products-dark-section .red-section-title {
+  color: #e32726 !important;
 }
 
 [data-theme="light"] .products-dark-section .section-h2 {
@@ -3663,8 +3664,9 @@ html[data-theme="light"],
   border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
 }
 
-[data-theme="light"] .insights-dark-section .section-tag-mono {
-  color: #fca5a5 !important;
+[data-theme="light"] .insights-dark-section .section-tag-mono,
+[data-theme="light"] .insights-dark-section .red-section-title {
+  color: #e32726 !important;
 }
 
 [data-theme="light"] .insights-dark-section .section-h2 {
@@ -3745,10 +3747,11 @@ html[data-theme="light"],
   border-top: 1px solid #e0e5ed !important;
 }
 
-[data-theme="light"] .contact-relay-section .section-tag-mono {
-  color: #616e85 !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.15em !important;
+[data-theme="light"] .contact-relay-section .section-tag-mono,
+[data-theme="light"] .contact-relay-section .red-section-title {
+  color: #e32726 !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.05em !important;
 }
 
 [data-theme="light"] .contact-relay-section .section-h2 {
@@ -4623,9 +4626,9 @@ html[data-theme="light"],
 }
 
 [data-theme="light"] .contact-relay-section .section-tag-mono {
-  color: #616e85 !important;
-  letter-spacing: 0.16em !important;
-  font-weight: 700 !important;
+  color: #e32726 !important;
+  letter-spacing: 0.05em !important;
+  font-weight: 800 !important;
 }
 
 [data-theme="light"] .contact-relay-section .section-h2 {
@@ -9811,7 +9814,7 @@ html[data-theme="light"],
   color: #ffffff !important;
 }
 [data-theme="light"] .contact-relay-section .section-tag-mono {
-  color: #94a3b8 !important;
+  color: #e32726 !important;
 }
 /* Widen layout to utilize empty left and right space */
 :root {
@@ -9868,7 +9871,7 @@ html[data-theme="light"],
 }
 
 [data-theme="light"] .red-section-title {
-  color: #b91c1c !important;
+  color: #e32726 !important;
 }
 
 /* ==========================================================================

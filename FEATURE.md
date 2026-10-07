@@ -13,6 +13,17 @@
 
 ### **2026-10-07**
 
+* **Category:** Home Page — Section Titles Color Alignment (Light Theme)
+  * **Page / Files:** [`src/styles/index.css`](file:///d:/ICON%20ELECTROMATIC/src/styles/index.css), [`src/pages/Home.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Home.js)
+  * **Type:** Visual Consistency & Brand Palette Harmonization (Light Theme)
+  * **Details:**
+    * **Signature Dark Red (`#e32726`) Headings in Light Theme:**
+      * Styled the three core Home page section headings in the website's signature brand red (`#e32726`):
+        1. **`Popular Products & Components`** (`.products-dark-section .section-tag-mono`, `.red-section-title`)
+        2. **`Insights`** (`.insights-dark-section .section-tag-mono`, `.red-section-title`)
+        3. **`Connect with Engineering`** (`.contact-relay-section .section-tag-mono`, `.red-section-title`)
+      * Resolved specificity conflicts where headings previously defaulted to washed-out pink (`#fca5a5`) or grey (`#94a3b8` / `#616e85`), delivering high visual contrast and 100% brand palette consistency across the light theme.
+
 * **Category:** Engineering Chatbot Assistant — Light Theme UI & Brand Alignment
   * **Page / Files:** [`src/styles/index.css`](file:///d:/ICON%20ELECTROMATIC/src/styles/index.css), [`src/components/Chatbot.js`](file:///d:/ICON%20ELECTROMATIC/src/components/Chatbot.js)
   * **Type:** UX/UI Light Theme Accessibility & Visual Alignment
