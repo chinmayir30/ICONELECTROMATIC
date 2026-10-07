@@ -13,18 +13,19 @@
 
 ### **2026-10-07**
 
-* **Category:** Products Page — OEM Cards Categories Preview Dark Red Background System
+* **Category:** Products Page — OEM Cards Categories Preview Lighter Crimson Red Background
   * **Page / Files:** [`src/styles/index.css`](file:///d:/ICON%20ELECTROMATIC/src/styles/index.css)
   * **Type:** UX/UI Design Accent & Card Section Contrast (Light Theme)
   * **Details:**
-    * **Dark Red Container for Categories Preview (`.oem-card-categories-preview`):**
-      * Styled the container box sitting behind the categories label and pills in every OEM card (`Categories: RT/Duroid, RO400 Series, RO300 Series, +4 more`) with a rich, refined dark crimson red background (`background: linear-gradient(135deg, #7a1518 0%, #600f12 100%)`).
-      * Added subtle depth border (`border: 1px solid rgba(227, 39, 38, 0.45)`) and inset shadow.
+    * **Lighter Crimson Red Container for Categories Preview (`.oem-card-categories-preview`):**
+      * Refined the container box sitting behind the categories label and pills in every OEM card (`Categories: RT/Duroid, RO400 Series, RO300 Series, +4 more`) from heavy dark maroon to a vibrant, lighter crimson red gradient (`background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%) !important;`).
+      * Replaced dark inset shadows with a soft elevation shadow (`box-shadow: 0 3px 10px rgba(197, 48, 48, 0.18);`) and crisp border (`rgba(229, 62, 62, 0.45)`).
     * **High-Contrast Internal Pills & Typography:**
-      * Label (`Categories:`) styled in soft rose-silver (`#fecaca`) for clear legibility.
-      * Category preview pills styled in crisp white translucent glass (`background: rgba(255, 255, 255, 0.16); color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.3);`), transforming to solid white on hover.
-      * Remaining badge (`+N more`) styled in soft rose (`#fca5a5`).
-    * **Card Isolation:** Only the background behind this specific Categories section is styled in dark red, keeping all other card sections (logo showcase, title, description, and meta counters) completely clean and intact.
+      * Category label (`Categories:`) styled in crisp pure white (`#ffffff`) at 95% opacity.
+      * Category pills styled with glass translucent white background (`rgba(255, 255, 255, 0.22)`), crisp white text (`#ffffff`), and defined white glass borders (`rgba(255, 255, 255, 0.38)`).
+      * On hover, pills invert cleanly to solid white background with `#c53030` text.
+      * Overflow pill (`+N more`) styled in readable semi-translucent white badge (`rgba(255, 255, 255, 0.18)`).
+    * **Card Isolation:** Strictly limited to the Categories preview container; all other card areas (logo showcase, title, description, and meta counters) remain clean and unaffected.
 
 * **Category:** Products & Blogs Pages — Removal of Outbound "Official Website" & "Official Portal" Links
   * **Page / Files:** [`src/pages/Products.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Products.js), [`src/pages/Blogs.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Blogs.js)
