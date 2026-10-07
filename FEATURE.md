@@ -13,6 +13,19 @@
 
 ### **2026-10-07**
 
+* **Category:** Products Page — OEM Cards Categories Preview Dark Red Background System
+  * **Page / Files:** [`src/styles/index.css`](file:///d:/ICON%20ELECTROMATIC/src/styles/index.css)
+  * **Type:** UX/UI Design Accent & Card Section Contrast (Light Theme)
+  * **Details:**
+    * **Dark Red Container for Categories Preview (`.oem-card-categories-preview`):**
+      * Styled the container box sitting behind the categories label and pills in every OEM card (`Categories: RT/Duroid, RO400 Series, RO300 Series, +4 more`) with a rich, refined dark crimson red background (`background: linear-gradient(135deg, #7a1518 0%, #600f12 100%)`).
+      * Added subtle depth border (`border: 1px solid rgba(227, 39, 38, 0.45)`) and inset shadow.
+    * **High-Contrast Internal Pills & Typography:**
+      * Label (`Categories:`) styled in soft rose-silver (`#fecaca`) for clear legibility.
+      * Category preview pills styled in crisp white translucent glass (`background: rgba(255, 255, 255, 0.16); color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.3);`), transforming to solid white on hover.
+      * Remaining badge (`+N more`) styled in soft rose (`#fca5a5`).
+    * **Card Isolation:** Only the background behind this specific Categories section is styled in dark red, keeping all other card sections (logo showcase, title, description, and meta counters) completely clean and intact.
+
 * **Category:** Products & Blogs Pages — Removal of Outbound "Official Website" & "Official Portal" Links
   * **Page / Files:** [`src/pages/Products.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Products.js), [`src/pages/Blogs.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Blogs.js)
   * **Type:** Business Logic & Customer Retention (Zero Outbound OEM Referral Links)
