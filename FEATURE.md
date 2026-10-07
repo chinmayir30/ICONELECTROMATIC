@@ -13,6 +13,17 @@
 
 ### **2026-10-07**
 
+* **Category:** Home Page — Connect with Engineering Cards Hover & Shadow Effects (Dark Theme)
+  * **Page / Files:** [`src/styles/index.css`](file:///d:/ICON%20ELECTROMATIC/src/styles/index.css), [`src/pages/Home.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Home.js)
+  * **Type:** UX/UI Micro-Interactions & Depth Effects (Dark Theme)
+  * **Details:**
+    * **Card Depth & Hover Lift (`.contact-relay-card`, `.contact-relay-form`):**
+      * Added baseline elevation shadow (`box-shadow: 0 10px 32px rgba(0, 0, 0, 0.45)`) and smooth transitions (`cubic-bezier(0.16, 1, 0.3, 1)`) to the Direct Engineering Reach, Quick Requirement Presets, and Message Form cards in the darker version.
+      * On hover, cards smoothly lift (`transform: translateY(-5px)`), gain an illuminated deep shadow (`box-shadow: 0 22px 50px rgba(0, 0, 0, 0.75)`), and glow with brand red (`rgba(227, 39, 38, 0.45)`) and brand blue borders.
+    * **Interactive Sub-Elements:**
+      * Contact meta rows shift smoothly on hover (`transform: translateX(4px)`) while contact icons expand and illuminate.
+      * Quick requirement presets feature red borders, active red backgrounds, and elevation on hover.
+
 * **Category:** Home Page — Catalog CTA Label & Category Chips Signature Red Hover
   * **Page / Files:** [`src/pages/Home.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Home.js), [`src/styles/index.css`](file:///d:/ICON%20ELECTROMATIC/src/styles/index.css)
   * **Type:** UX/UI Micro-Interactions & Copy Refinement (Dark & Light Themes)
