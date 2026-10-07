@@ -8776,55 +8776,46 @@ html[data-theme="light"],
   margin: 0 0 16px !important;
 }
 
-/* Categories Preview Box - Lighter, Vibrant Crimson Red in Light Theme */
+/* Categories Preview Box */
 [data-theme="light"] .oem-card-categories-preview {
-  background: #dc2626 !important;
-  background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%) !important;
-  border: 1px solid rgba(229, 62, 62, 0.45) !important;
+  background: #f8fafc !important;
+  border: 1px solid rgba(227, 39, 38, 0.15) !important;
   border-radius: 10px !important;
   padding: 10px 12px !important;
   margin-bottom: 18px !important;
   min-height: 86px !important;
   display: flex !important;
   flex-direction: column !important;
-  box-shadow: 0 3px 10px rgba(197, 48, 48, 0.18) !important;
 }
 
 [data-theme="light"] .preview-label {
-  color: #ffffff !important;
-  font-size: 0.72rem !important;
+  color: #0F172A !important;
+  font-size: 0.7rem !important;
   font-weight: 700 !important;
   text-transform: uppercase !important;
   letter-spacing: 0.08em !important;
-  opacity: 0.95 !important;
 }
 
-/* Preview Pills inside Lighter Red Categories Box */
+/* Preview Pills (Light Blue Background) */
 [data-theme="light"] .preview-pill {
-  background: rgba(255, 255, 255, 0.22) !important;
-  color: #ffffff !important;
-  border: 1px solid rgba(255, 255, 255, 0.38) !important;
+  background: #e8f1fc !important;
+  color: #123b7a !important;
+  border: 1px solid rgba(18, 59, 122, 0.22) !important;
   font-weight: 600 !important;
-  font-size: 0.75rem !important;
+  font-size: 0.74rem !important;
   padding: 3px 9px !important;
   border-radius: 6px !important;
-  backdrop-filter: blur(4px) !important;
-  -webkit-backdrop-filter: blur(4px) !important;
   transition: all 0.2s ease !important;
 }
 
 [data-theme="light"] .preview-pill:hover {
-  background: #ffffff !important;
-  color: #c53030 !important;
-  border-color: #ffffff !important;
-  transform: translateY(-1px) !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18) !important;
+  background: #dbeafe !important;
+  color: #123b7a !important;
+  border-color: #123b7a !important;
 }
 
 [data-theme="light"] .preview-pill-more {
-  background: rgba(255, 255, 255, 0.18) !important;
-  color: #ffffff !important;
-  border: 1px solid rgba(255, 255, 255, 0.32) !important;
+  color: #e32726 !important;
   font-weight: 700 !important;
 }
 
