@@ -10292,3 +10292,487 @@ html[data-theme="light"],
 [data-theme="light"] .page-main-body {
   background: #ffffff !important;
 }
+
+/* ==========================================================================
+   MASTER RESPONSIVE SYSTEM — MOBILE, TABLET, LAPTOP & LARGE DESKTOP
+   Strictly preserves 100% of desktop layout, fonts, colors and styling.
+   Only activates via targeted media queries on smaller viewports.
+   ========================================================================== */
+
+/* 1. Global Overflow Prevention & Asset Scaling Safeguards */
+html, body {
+  overflow-x: hidden !important;
+  max-width: 100% !important;
+  width: 100% !important;
+  position: relative !important;
+}
+
+#app,
+.page-content,
+.hero-relay,
+.site-header,
+.page-main-body,
+.page-hero-banner {
+  max-width: 100% !important;
+  overflow-x: clip;
+}
+
+img, video, iframe {
+  max-width: 100% !important;
+}
+
+.mobile-nav-cta {
+  display: none !important;
+}
+
+/* 2. Laptop Range (993px – 1200px) — Compact Fitted Desktop Navbar */
+@media (min-width: 993px) and (max-width: 1200px) {
+  :root {
+    --header-height: 84px !important;
+  }
+  .site-header {
+    height: 84px !important;
+    min-height: 84px !important;
+    max-height: 84px !important;
+  }
+  .header-inner {
+    padding: 0 var(--space-4) !important;
+  }
+  .logo-container {
+    padding: 4px 8px !important;
+  }
+  .logo-container img {
+    height: 52px !important;
+    max-height: 52px !important;
+  }
+  .main-nav {
+    gap: 12px !important;
+  }
+  .nav-link {
+    font-size: 0.95rem !important;
+    padding: 6px 0 !important;
+  }
+  .btn-relay-border {
+    padding: 7px 14px !important;
+    font-size: 0.8rem !important;
+  }
+  .theme-toggle-switch,
+  .theme-toggle-btn {
+    width: 60px !important;
+    height: 30px !important;
+  }
+}
+
+/* 3. Tablet Landscape & Portrait (<= 992px) — Hamburger Menu & Fluid Grid Breakpoints */
+@media (max-width: 992px) {
+  :root {
+    --header-height: 74px !important;
+  }
+  .site-header {
+    height: 74px !important;
+    min-height: 74px !important;
+    max-height: 74px !important;
+  }
+  .header-inner {
+    padding: 0 16px !important;
+  }
+  .logo-container {
+    padding: 4px 10px !important;
+  }
+  .logo-container img {
+    height: 44px !important;
+    max-height: 44px !important;
+  }
+  
+  /* Convert Navbar to Hamburger Menu */
+  .main-nav {
+    display: none !important;
+  }
+  .main-nav.mobile-active {
+    display: flex !important;
+    flex-direction: column !important;
+    position: fixed !important;
+    top: 74px !important;
+    left: 0 !important;
+    right: 0 !important;
+    background: #030712 !important;
+    border-bottom: 2px solid rgba(225, 29, 72, 0.4) !important;
+    padding: 20px 24px 30px !important;
+    gap: 12px !important;
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.95) !important;
+    z-index: 9999999 !important;
+    max-height: calc(100vh - 74px) !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  [data-theme="light"] .main-nav.mobile-active {
+    background: #ffffff !important;
+    border-bottom: 2px solid #e32726 !important;
+    box-shadow: 0 24px 48px rgba(11, 26, 61, 0.18) !important;
+  }
+  .main-nav.mobile-active .nav-link {
+    font-size: 1.15rem !important;
+    padding: 12px 16px !important;
+    border-radius: 10px !important;
+    display: block !important;
+    color: #e2e8f0 !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    transition: all 0.2s ease !important;
+  }
+  [data-theme="light"] .main-nav.mobile-active .nav-link {
+    color: #0f1d3d !important;
+    background: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+  }
+  .main-nav.mobile-active .nav-link.active {
+    color: #ffffff !important;
+    background: rgba(225, 29, 72, 0.18) !important;
+    border-color: #e11d48 !important;
+    font-weight: 700 !important;
+  }
+  [data-theme="light"] .main-nav.mobile-active .nav-link.active {
+    color: #e32726 !important;
+    background: #fff5f5 !important;
+    border-color: #e32726 !important;
+  }
+  .main-nav.mobile-active .nav-link:hover {
+    transform: translateX(4px) !important;
+  }
+  .main-nav.mobile-active .nav-link.active::after {
+    display: none !important;
+  }
+
+  /* Mobile Drawer CTA Button */
+  .mobile-nav-cta {
+    display: block !important;
+    margin-top: 10px !important;
+    padding-top: 14px !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+  }
+  [data-theme="light"] .mobile-nav-cta {
+    border-top-color: #e2e8f0 !important;
+  }
+  .mobile-nav-cta .mobile-drawer-cta {
+    width: 100% !important;
+    justify-content: center !important;
+    text-align: center !important;
+    padding: 12px 20px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    text-decoration: none !important;
+    font-size: 1rem !important;
+  }
+
+  .mobile-toggle {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 38px !important;
+    height: 38px !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+    border: 1px solid rgba(255, 255, 255, 0.16) !important;
+    border-radius: 8px !important;
+    cursor: pointer !important;
+  }
+  [data-theme="light"] .mobile-toggle {
+    background: #f1f5f9 !important;
+    border: 1px solid #cbd5e1 !important;
+  }
+  .mobile-toggle span {
+    transition: transform 0.25s ease, opacity 0.25s ease !important;
+  }
+  .mobile-toggle.active span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg) !important;
+  }
+  .mobile-toggle.active span:nth-child(2) {
+    opacity: 0 !important;
+  }
+  .mobile-toggle.active span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg) !important;
+  }
+
+  /* Multi-Column Sections Adaptive Stacking */
+  .capabilities-grid-dark {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 18px !important;
+  }
+  .site-footer-white .footer-main-inner {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 32px !important;
+  }
+  .about-hero-feature-card {
+    grid-template-columns: 1fr !important;
+    gap: 28px !important;
+    padding: 32px 24px !important;
+  }
+  .service-row-block {
+    grid-template-columns: 1fr !important;
+    gap: 28px !important;
+  }
+  .contact-relay-grid {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
+  .product-detail-layout {
+    grid-template-columns: 1fr !important;
+    gap: 28px !important;
+  }
+}
+
+/* 4. Tablet Portrait & Small Screens (<= 768px) */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 16px !important;
+  }
+
+  /* Hero Section */
+  .hero-relay {
+    padding-top: calc(74px + 20px) !important;
+    padding-bottom: var(--space-8) !important;
+    min-height: auto !important;
+  }
+  .hero-title-giant {
+    font-size: clamp(1.65rem, 6.2vw, 2.3rem) !important;
+    line-height: 1.22 !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+  }
+  .hero-description-clean {
+    font-size: 0.95rem !important;
+    margin-bottom: 20px !important;
+    line-height: 1.6 !important;
+  }
+
+  /* Hero Actions Button Stacking */
+  .hero-actions-row {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    width: 100% !important;
+    max-width: 420px !important;
+    gap: 12px !important;
+    margin-bottom: 24px !important;
+  }
+  .hero-actions-row .btn-relay-red,
+  .hero-actions-row .btn-relay-dark {
+    width: 100% !important;
+    justify-content: center !important;
+    text-align: center !important;
+    padding: 12px 18px !important;
+  }
+  
+  /* Hero Inline Stats — Stack into 2x2 cleanly */
+  .hero-inline-stats {
+    flex-wrap: wrap !important;
+    gap: 16px 20px !important;
+    margin-top: 28px !important;
+    padding-top: 20px !important;
+    justify-content: flex-start !important;
+  }
+  .hero-inline-stats .hero-stat-item {
+    flex: 1 1 calc(50% - 20px) !important;
+    min-width: 125px !important;
+  }
+  .hero-stat-number {
+    font-size: 1.75rem !important;
+  }
+  .hero-stat-label {
+    font-size: 0.72rem !important;
+  }
+
+  /* Section Headings */
+  .section-tag-mono.red-section-title,
+  .red-section-title {
+    font-size: clamp(1.5rem, 5.2vw, 2.1rem) !important;
+    line-height: 1.2 !important;
+  }
+  .section-h2 {
+    font-size: clamp(1.2rem, 4vw, 1.55rem) !important;
+    line-height: 1.3 !important;
+  }
+  .section-lead {
+    font-size: 0.95rem !important;
+    line-height: 1.6 !important;
+  }
+  .page-title-unified {
+    font-size: clamp(1.65rem, 5.2vw, 2.2rem) !important;
+    line-height: 1.25 !important;
+  }
+  .page-lead-unified {
+    font-size: 0.95rem !important;
+  }
+
+  /* Card Grids */
+  .capabilities-grid-dark {
+    grid-template-columns: 1fr !important;
+  }
+  .products-grid-dark {
+    grid-template-columns: 1fr !important;
+  }
+  .insights-grid-dark,
+  .testimonials-grid-dark {
+    grid-template-columns: 1fr !important;
+  }
+  .oem-cards-grid,
+  .category-cards-grid,
+  .product-cards-grid,
+  .partners-filtered-grid,
+  .partners-static-grid,
+  .blogs-articles-grid,
+  .blogs-videos-grid,
+  .blogs-whitepapers-grid,
+  .blogs-oem-grid,
+  .blogs-links-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+  .why-us-grid-dark {
+    grid-template-columns: 1fr !important;
+  }
+  .journey-grid-two {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Products Filter Toolbar */
+  .catalog-filter-toolbar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+  }
+  .catalog-search-wrap {
+    min-width: 0 !important;
+    width: 100% !important;
+  }
+  .catalog-toolbar-actions {
+    width: 100% !important;
+    justify-content: space-between !important;
+  }
+  .catalog-select-wrap {
+    flex: 1 !important;
+  }
+  .catalog-specialty-select {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  /* About Page Stats Grid & Vision/Mission Cards */
+  #stats-grid-wrapper,
+  .about-stats-banner #stats-grid-wrapper {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+  .about-page div[style*="grid-template-columns:1fr 1fr"],
+  .about-page div[style*="grid-template-columns: 1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+  .rf-radar-ambient {
+    display: none !important;
+  }
+
+  /* Footer Single Column */
+  .site-footer-white .footer-main-inner {
+    grid-template-columns: 1fr !important;
+    gap: 28px !important;
+  }
+  .footer-brand-col,
+  .footer-offices-col,
+  .footer-links-col {
+    width: 100% !important;
+  }
+  .footer-copyright-inner {
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    gap: 12px !important;
+  }
+  .footer-bottom-links {
+    justify-content: center !important;
+  }
+
+  /* Forms */
+  .relay-form-row {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Trust Strips */
+  .services-trust-strip,
+  .about-trust-strip,
+  .partners-trust-strip,
+  .contact-trust-strip,
+  .blogs-trust-strip {
+    gap: 8px 10px !important;
+  }
+  .services-trust-strip > div,
+  .about-trust-strip > div,
+  .partners-trust-strip > div,
+  .contact-trust-strip > div,
+  .blogs-trust-strip > div {
+    font-size: 0.8rem !important;
+    padding: 8px 14px !important;
+  }
+
+  /* Chatbot Modal */
+  .chatbot-modal {
+    width: calc(100vw - 24px) !important;
+    right: 12px !important;
+    bottom: 82px !important;
+    max-height: 82vh !important;
+  }
+}
+
+/* 5. Mobile Phones (<= 640px) — Clean Header & Touch-Friendly Sizing */
+@media (max-width: 640px) {
+  .header-inner {
+    padding: 0 12px !important;
+  }
+  /* On compact screens, hide the header bar quote button to prevent any overflow;
+     The mobile drawer provides a prominent full-width Quote button */
+  .header-actions .btn-relay-border {
+    display: none !important;
+  }
+  .header-actions {
+    gap: 8px !important;
+  }
+  .logo-container {
+    padding: 3px 8px !important;
+  }
+  .logo-container img {
+    height: 38px !important;
+    max-height: 38px !important;
+  }
+  .theme-toggle-switch,
+  .theme-toggle-btn,
+  [data-theme="light"] .theme-toggle-switch,
+  [data-theme="light"] .theme-toggle-btn {
+    width: 56px !important;
+    height: 28px !important;
+  }
+  .theme-switch-track {
+    padding: 0 5px !important;
+  }
+  .theme-switch-thumb {
+    width: 22px !important;
+    height: 22px !important;
+    top: 2px !important;
+    left: 2px !important;
+  }
+  [data-theme="light"] .theme-switch-thumb,
+  .theme-toggle-switch.is-light .theme-switch-thumb {
+    transform: translateX(27px) !important;
+  }
+  .mobile-toggle {
+    width: 36px !important;
+    height: 36px !important;
+    padding: 5px !important;
+  }
+  .mobile-toggle span {
+    width: 18px !important;
+  }
+
+  /* Quick Requirement Presets on Home & Contact */
+  .contact-relay-card div[style*="grid-template-columns: repeat(2, 1fr)"] {
+    grid-template-columns: 1fr !important;
+  }
+}

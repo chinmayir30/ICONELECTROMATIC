@@ -35,6 +35,11 @@ export function renderHeaderInner(currentRoute) {
             ${link.label}
           </a>
         `).join('')}
+        <div class="mobile-nav-cta">
+          <a class="btn-relay-red mobile-drawer-cta" data-route="/contact">
+            Request a Quote <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
       </nav>
 
       <div class="header-actions">
@@ -97,13 +102,25 @@ export function initHeader() {
   const mobileToggle = document.getElementById('mobile-toggle');
   const mainNav = document.getElementById('main-nav');
   if (mobileToggle && mainNav) {
-    mobileToggle.addEventListener('click', () => {
-      mainNav.classList.toggle('mobile-active');
+    mobileToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = mainNav.classList.toggle('mobile-active');
+      mobileToggle.classList.toggle('active', isOpen);
+      mobileToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
     });
     mainNav.querySelectorAll('.nav-link').forEach(link => {
       link.addEventListener('click', () => {
         mainNav.classList.remove('mobile-active');
+        mobileToggle.classList.remove('active');
+        mobileToggle.setAttribute('aria-expanded', 'false');
       });
+    });
+    document.addEventListener('click', (e) => {
+      if (mainNav.classList.contains('mobile-active') && !mainNav.contains(e.target) && !mobileToggle.contains(e.target)) {
+        mainNav.classList.remove('mobile-active');
+        mobileToggle.classList.remove('active');
+        mobileToggle.setAttribute('aria-expanded', 'false');
+      }
     });
   }
 
