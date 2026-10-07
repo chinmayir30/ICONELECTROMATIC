@@ -13,6 +13,21 @@
 
 ### **2026-10-07**
 
+* **Category:** All Pages — Hero Banner Ending Baseline & Blogs Double-Padding Alignment Fix
+  * **Page / Files:** [`src/pages/Blogs.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Blogs.js), [`src/pages/About.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/About.js), [`src/pages/Contact.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Contact.js), [`src/pages/Partners.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Partners.js), [`src/pages/Services.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Services.js), [`src/pages/Products.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Products.js), [`src/styles/index.css`](file:///d:/ICON%20ELECTROMATIC/src/styles/index.css)
+  * **Type:** Bug Fix & Layout Consistency (Pixel-Perfect Banner Alignment Across All Pages)
+  * **Details:**
+    * **Eliminated Awkward Vertical Gap on Blogs Page (Yellow Arrow Fix):**
+      * Identified and resolved double padding cause: `.blogs-page-wrap` had redundant `padding-top: calc(var(--header-height) + 24px)` stacked on top of `.page-hero-banner`'s padding.
+      * Reset `.blogs-page-wrap` padding-top to `0`, pulling the breadcrumbs (`Home > OEM Technical Blogs & Releases`) and title up into exact alignment with all other pages.
+    * **Unified Blue Ending Portion & Bottom Baseline Across All Pages:**
+      * Addressed the issue where one page's blue banner was ending shorter and another longer by setting `.page-hero-banner` with `min-height: 380px`, `display: flex`, `flex-direction: column`, and `justify-content: center`.
+      * Standardized top padding to `calc(var(--header-height, 74px) + 20px)` and bottom padding to `32px` across all pages.
+      * Added matching 4-pill highlight strips to `Blogs`, `About`, and `Contact` matching `Partners` and `Services` 1:1, guaranteeing an identical vertical footprint and bottom divider baseline on every single tab.
+    * **Preserved Full Functionality & Isolation:**
+      * Zero impact on catalog logic, product cards, filter panel, or mobile responsive layouts.
+      * Product detail page kept lightweight with `.product-detail-page .page-hero-banner { min-height: auto !important; }`.
+
 * **Category:** All Pages — Full-Width Navy Blue Hero Banner System (`[data-theme="light"]`)
   * **Page / Files:** [`src/pages/Partners.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Partners.js), [`src/pages/Services.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Services.js), [`src/pages/Products.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Products.js), [`src/pages/About.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/About.js), [`src/pages/Blogs.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Blogs.js), [`src/pages/Contact.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Contact.js), [`src/pages/ProductDetail.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/ProductDetail.js), [`src/styles/index.css`](file:///d:/ICON%20ELECTROMATIC/src/styles/index.css)
   * **Type:** UX/UI Visual Consistency & Theme Architecture (Light Theme Brand Identity)

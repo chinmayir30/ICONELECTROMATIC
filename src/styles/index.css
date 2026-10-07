@@ -6326,7 +6326,7 @@ html[data-theme="light"],
    Blogs & OEM Technical News Page (Relay Dark Architecture)
    ========================================================================== */
 .blogs-page-wrap {
-  padding-top: calc(var(--header-height) + 24px);
+  padding-top: 0;
   padding-bottom: var(--space-20);
   background: var(--bg-dark);
   min-height: 100vh;
@@ -9696,17 +9696,23 @@ html[data-theme="light"],
 .page-hero-banner {
   position: relative;
   width: 100%;
-  padding-top: calc(var(--header-height, 74px) + 24px);
-  padding-bottom: 36px;
+  padding-top: calc(var(--header-height, 74px) + 20px);
+  padding-bottom: 32px;
+  min-height: 380px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   background: var(--bg-dark);
   border-bottom: 1px solid var(--border-subtle);
   overflow: hidden;
+  box-sizing: border-box;
   transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 .page-hero-banner .container {
   position: relative;
   z-index: 2;
+  width: 100%;
 }
 
 .page-main-body {
@@ -9783,9 +9789,12 @@ html[data-theme="light"],
   line-height: 1.7 !important;
 }
 
-/* Trust Badges Strips in Light Theme inside Page Hero Banner */
+/* Trust Badges & Highlights Strips in Light Theme inside Page Hero Banner */
 [data-theme="light"] .page-hero-banner .services-trust-strip,
-[data-theme="light"] .page-hero-banner .partners-trust-strip {
+[data-theme="light"] .page-hero-banner .partners-trust-strip,
+[data-theme="light"] .page-hero-banner .blogs-trust-strip,
+[data-theme="light"] .page-hero-banner .about-trust-strip,
+[data-theme="light"] .page-hero-banner .contact-trust-strip {
   border-bottom: none !important;
   margin-bottom: 0 !important;
   padding-bottom: 0 !important;
@@ -9793,7 +9802,10 @@ html[data-theme="light"],
 }
 
 [data-theme="light"] .page-hero-banner .services-trust-strip > div,
-[data-theme="light"] .page-hero-banner .partners-trust-strip > div {
+[data-theme="light"] .page-hero-banner .partners-trust-strip > div,
+[data-theme="light"] .page-hero-banner .blogs-trust-strip > div,
+[data-theme="light"] .page-hero-banner .about-trust-strip > div,
+[data-theme="light"] .page-hero-banner .contact-trust-strip > div {
   background: rgba(255, 255, 255, 0.08) !important;
   border: 1px solid rgba(255, 255, 255, 0.18) !important;
   backdrop-filter: blur(8px) !important;
@@ -9806,6 +9818,11 @@ html[data-theme="light"],
   color: #f1f5f9 !important;
   backdrop-filter: blur(8px) !important;
   -webkit-backdrop-filter: blur(8px) !important;
+}
+
+.product-detail-page .page-hero-banner {
+  min-height: auto !important;
+  padding-bottom: 20px !important;
 }
 
 /* Single OEM Selected Header inside Page Hero Banner */

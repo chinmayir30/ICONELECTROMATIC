@@ -54,6 +54,26 @@ function renderAllOemsBlogView() {
               from ICON Electromatic's 15 global manufacturing partners.
             </p>
           </div>
+
+          <!-- Trust & Insights Highlights Strip (Matching Partners & Services 1:1) -->
+          <div class="services-trust-strip blogs-trust-strip" style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:24px;margin-bottom:0;padding-bottom:0;border-bottom:none;">
+            <div style="background:rgba(37,99,235,0.08);border:1px solid rgba(37,99,235,0.25);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#93C5FD;display:flex;align-items:center;gap:8px;">
+              <i class="fa-solid fa-building-columns" style="color:var(--logo-blue-light);"></i>
+              <span><strong>15</strong> Authorized Principals</span>
+            </div>
+            <div style="background:rgba(225,29,72,0.08);border:1px solid rgba(225,29,72,0.25);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#FDA4AF;display:flex;align-items:center;gap:8px;">
+              <i class="fa-solid fa-file-waveform" style="color:var(--logo-red-light);"></i>
+              <span>Application Whitepapers &amp; Notes</span>
+            </div>
+            <div style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#FCD34D;display:flex;align-items:center;gap:8px;">
+              <i class="fa-solid fa-circle-play" style="color:#F59E0B;"></i>
+              <span>Video Demos &amp; Technical Webinars</span>
+            </div>
+            <div style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.25);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#6EE7B7;display:flex;align-items:center;gap:8px;">
+              <i class="fa-solid fa-newspaper" style="color:#10B981;"></i>
+              <span>Direct Manufacturer Bulletins</span>
+            </div>
+          </div>
         </div>
       </section>
 
