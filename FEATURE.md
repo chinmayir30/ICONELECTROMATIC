@@ -13,6 +13,21 @@
 
 ### **2026-10-07**
 
+* **Category:** Blogs Page — Official OEM Brand Logos & Running Marquee Ticker
+  * **Page / Files:** [`src/pages/Blogs.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Blogs.js), [`src/styles/index.css`](file:///d:/ICON%20ELECTROMATIC/src/styles/index.css)
+  * **Type:** Visual Branding & UX Consistency (Dark & Light Themes)
+  * **Details:**
+    * **Authentic OEM Brand Logos on Cards & Details Banner:**
+      * Replaced the fallback SVG text blocks with authentic official OEM logo images (`oem.logoImg`) matching the presentation on the Products and Partners pages.
+      * Rendered inside `.oem-logo-badge-pod` on all 15 manufacturer cards in `renderAllOemsBlogView()`.
+      * Upgraded `.blogs-selected-logo-wrap` in `renderSingleOemBlogView()` to display the high-resolution logo image on a crisp white pod with smooth elevation shadows across both dark and light modes.
+    * **Running OEM Logos Marquee Ticker:**
+      * Added the continuous flowing marquee ticker (`renderRunningLogoTicker(CATALOG)`) right above the OEM filter selector bar, mirroring the Partners page design.
+      * Interactive: Clicking any logo in the running strip immediately routes to and focuses that OEM's technical releases and insights.
+    * **Full Theme Harmony:**
+      * Crisp white pods ensure 100% brand legibility in both Dark and Light themes.
+      * Light theme contrast rules applied for text and specialized logos (e.g., Fortify background inversion and multiply blending).
+
 * **Category:** Services Page — Core Services Primary & Secondary Title Interchange
   * **Page / Files:** [`src/pages/Services.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Services.js)
   * **Type:** UX/Content Hierarchy Alignment (Dark & Light Themes)

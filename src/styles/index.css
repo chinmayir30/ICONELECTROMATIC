@@ -6519,12 +6519,29 @@ html[data-theme="light"],
 }
 
 .blogs-selected-logo-wrap {
-  background: rgba(0, 0, 0, 0.4);
-  padding: 12px 18px;
+  background: #ffffff;
+  padding: 10px 22px;
   border-radius: var(--radius-lg);
-  border: 1px solid var(--border-card);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   display: flex;
   align-items: center;
+  justify-content: center;
+  min-height: 60px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+}
+
+.blogs-selected-logo-wrap .oem-logo-img {
+  max-height: 48px;
+  max-width: 220px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.blogs-selected-logo-wrap svg {
+  height: 44px;
+  max-height: 48px;
+  width: auto;
 }
 
 .blogs-selected-text h2 {
@@ -8705,14 +8722,16 @@ html[data-theme="light"],
 /* SVG logo text contrast on white pod */
 [data-theme="light"] .oem-card-logo-container svg text[fill="#FFFFFF"],
 [data-theme="light"] .oem-logo-badge-pod svg text[fill="#FFFFFF"],
-[data-theme="light"] .catalog-oem-banner-logo-box svg text[fill="#FFFFFF"] {
+[data-theme="light"] .catalog-oem-banner-logo-box svg text[fill="#FFFFFF"],
+[data-theme="light"] .blogs-selected-logo-wrap svg text[fill="#FFFFFF"] {
   fill: #0F172A !important;
 }
 
 /* Invert solid black background logo so it sits seamlessly on white pod */
 [data-theme="light"] .oem-card-logo-container img[src*="Fortify_Logo_Black_Bg"],
 [data-theme="light"] .oem-logo-badge-pod img[src*="Fortify_Logo_Black_Bg"],
-[data-theme="light"] .catalog-oem-banner-logo-box img[src*="Fortify_Logo_Black_Bg"] {
+[data-theme="light"] .catalog-oem-banner-logo-box img[src*="Fortify_Logo_Black_Bg"],
+[data-theme="light"] .blogs-selected-logo-wrap img[src*="Fortify_Logo_Black_Bg"] {
   filter: invert(1);
   mix-blend-mode: multiply;
 }
