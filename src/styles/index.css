@@ -5000,117 +5000,129 @@ html[data-theme="light"],
   box-shadow: 0 8px 24px rgba(24, 59, 141, 0.12) !important;
 }
 
-/* 4. Interactive Spotlight & Moving Border Beam Shimmer in Light Mode */
-[data-theme="light"] .about-interactive-card {
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, border-color 0.35s ease !important;
-  transform-style: preserve-3d;
-  will-change: transform, box-shadow;
+/* About Page Container Background — Matching Services Page */
+[data-theme="light"] .about-page,
+[data-theme="light"] .about-page .page-main-body {
+  background: #f4f6fa !important;
 }
 
+/* All Cards on About Us Page — Signature Light Red (#fff8f8) Background */
+[data-theme="light"] .about-page .about-interactive-card,
+[data-theme="light"] .about-hero-feature-card,
+[data-theme="light"] .about-subcard-blue,
+[data-theme="light"] .about-subcard-red,
+[data-theme="light"] .about-stats-banner,
+[data-theme="light"] .about-stats-banner .about-interactive-card,
+[data-theme="light"] .about-vision-card,
+[data-theme="light"] .about-mission-card,
+[data-theme="light"] .journey-milestone-card,
+[data-theme="light"] .journey-step-card,
+[data-theme="light"] .domain-sector-card,
+[data-theme="light"] .pillar-foundation-card,
+[data-theme="light"] .why-us-card {
+  background: #fff8f8 !important;
+  border: 1px solid rgba(227, 39, 38, 0.22) !important;
+  border-top: 3.5px solid #e32726 !important;
+  box-shadow: 0 16px 38px rgba(15, 29, 61, 0.1), 0 6px 16px rgba(227, 39, 38, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04) !important;
+  transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              box-shadow 0.35s ease,
+              border-color 0.35s ease,
+              background 0.35s ease !important;
+  position: relative !important;
+}
+
+/* Master Hover Effect Matching Services Page Exactly */
+[data-theme="light"] .about-page .about-interactive-card:hover,
+[data-theme="light"] .about-hero-feature-card:hover,
+[data-theme="light"] .about-subcard-blue:hover,
+[data-theme="light"] .about-subcard-red:hover,
+[data-theme="light"] .about-stats-banner .about-interactive-card:hover,
+[data-theme="light"] .about-vision-card:hover,
+[data-theme="light"] .about-mission-card:hover,
+[data-theme="light"] .journey-milestone-card:hover,
+[data-theme="light"] .journey-step-card:hover,
+[data-theme="light"] .domain-sector-card:hover,
+[data-theme="light"] .pillar-foundation-card:hover,
+[data-theme="light"] .why-us-card:hover {
+  background: #ffffff !important;
+  transform: translateY(-5px) !important;
+  border-color: #e32726 !important;
+  box-shadow: 0 24px 56px rgba(15, 29, 61, 0.16), 0 10px 24px rgba(227, 39, 38, 0.18), 0 0 24px rgba(227, 39, 38, 0.1) !important;
+}
+
+/* 4. Interactive Spotlight & Moving Border Beam Shimmer in Light Mode */
 [data-theme="light"] .about-interactive-card::before {
-  background: radial-gradient(circle, rgba(24, 59, 141, 0.16) 0%, transparent 70%) !important;
+  background: radial-gradient(circle, rgba(227, 39, 38, 0.14) 0%, transparent 70%) !important;
 }
 
 [data-theme="light"] .about-interactive-card.red-glow::before {
-  background: radial-gradient(circle, rgba(221, 43, 28, 0.14) 0%, transparent 70%) !important;
+  background: radial-gradient(circle, rgba(227, 39, 38, 0.18) 0%, transparent 70%) !important;
 }
 
 [data-theme="light"] .about-interactive-card::after {
-  background: linear-gradient(90deg, transparent, #2563EB, #60A5FA, transparent) !important;
+  background: linear-gradient(90deg, transparent, #e32726, #ff7170, transparent) !important;
   height: 3px !important;
 }
 
 [data-theme="light"] .about-interactive-card.red-glow::after {
-  background: linear-gradient(90deg, transparent, #dd2b1c, #f87171, transparent) !important;
+  background: linear-gradient(90deg, transparent, #e32726, #ff7170, transparent) !important;
   height: 3px !important;
 }
 
-/* 5. Section 2: Feature Card & Subcards Animation */
+/* 5. Section 2: Core Capabilities Feature Card & Subcards */
 [data-theme="light"] .about-hero-feature-card {
-  background: #ffffff !important;
-  border: 1px solid #e0e5ed !important;
-  border-radius: 16px !important;
-  box-shadow: 0 6px 24px rgba(24, 59, 141, 0.06) !important;
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
-}
-
-[data-theme="light"] .about-hero-feature-card:hover {
-  box-shadow: 0 18px 44px rgba(24, 59, 141, 0.11) !important;
+  border-radius: 20px !important;
 }
 
 [data-theme="light"] .about-hero-feature-card h2 {
-  color: #0f1d3d !important;
+  color: #0F172A !important;
+  font-weight: 800 !important;
+  transition: color 0.3s ease !important;
+}
+
+[data-theme="light"] .about-hero-feature-card:hover h2 {
+  color: #123b7a !important;
 }
 
 [data-theme="light"] .about-hero-feature-card p {
-  color: #616e85 !important;
+  color: #475569 !important;
 }
 
-[data-theme="light"] .about-subcard-blue {
-  background: #ffffff !important;
-  border: 1px solid #e0e5ed !important;
-  border-left: 3.5px solid #183b8d !important;
-  border-radius: 10px !important;
-  box-shadow: 0 4px 14px rgba(24, 59, 141, 0.04) !important;
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
-}
-
-[data-theme="light"] .about-subcard-blue:hover {
-  transform: translateY(-5px) !important;
-  border-left-width: 5.5px !important;
-  box-shadow: 0 14px 32px rgba(24, 59, 141, 0.12) !important;
-}
-
-[data-theme="light"] .about-subcard-blue .about-card-icon {
-  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease;
-}
-
-[data-theme="light"] .about-subcard-blue:hover .about-card-icon {
-  transform: scale(1.15) rotate(-6deg);
-  box-shadow: 0 8px 22px rgba(24, 59, 141, 0.25);
-}
-
-[data-theme="light"] .about-subcard-blue h3 {
-  color: #0f1d3d !important;
-}
-
-[data-theme="light"] .about-subcard-blue p {
-  color: #616e85 !important;
-}
-
+[data-theme="light"] .about-subcard-blue,
 [data-theme="light"] .about-subcard-red {
-  background: #ffffff !important;
-  border: 1px solid #e0e5ed !important;
-  border-left: 3.5px solid #dd2b1c !important;
-  border-radius: 10px !important;
-  box-shadow: 0 4px 14px rgba(221, 43, 28, 0.05) !important;
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  border-radius: 14px !important;
+  border-left: 3.5px solid #e32726 !important;
 }
 
-[data-theme="light"] .about-subcard-red:hover {
-  transform: translateY(-5px) !important;
-  border-left-width: 5.5px !important;
-  box-shadow: 0 14px 32px rgba(221, 43, 28, 0.12) !important;
-}
-
+[data-theme="light"] .about-subcard-blue .about-card-icon,
 [data-theme="light"] .about-subcard-red .about-card-icon {
   transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease;
 }
 
+[data-theme="light"] .about-subcard-blue:hover .about-card-icon,
 [data-theme="light"] .about-subcard-red:hover .about-card-icon {
   transform: scale(1.15) rotate(-6deg);
-  box-shadow: 0 8px 22px rgba(221, 43, 28, 0.25);
+  box-shadow: 0 8px 22px rgba(227, 39, 38, 0.25);
 }
 
+[data-theme="light"] .about-subcard-blue h3,
 [data-theme="light"] .about-subcard-red h3 {
-  color: #0f1d3d !important;
+  color: #0F172A !important;
+  font-weight: 700 !important;
+  transition: color 0.3s ease !important;
 }
 
+[data-theme="light"] .about-subcard-blue:hover h3,
+[data-theme="light"] .about-subcard-red:hover h3 {
+  color: #123b7a !important;
+}
+
+[data-theme="light"] .about-subcard-blue p,
 [data-theme="light"] .about-subcard-red p {
-  color: #616e85 !important;
+  color: #475569 !important;
 }
 
-/* 6. Section 3: The Numbers That Define Us Banner — Light Theme Animations */
+/* 6. Section 3: The Numbers That Define Us Banner */
 @keyframes bannerGlowStreamLight {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
@@ -5124,30 +5136,26 @@ html[data-theme="light"],
 }
 
 [data-theme="light"] .about-stats-banner {
-  background: linear-gradient(180deg, #f8faff 0%, #edf4fc 100%) !important;
-  border: 1px solid #dbeafe !important;
-  box-shadow: 0 10px 30px -5px rgba(24, 59, 141, 0.07), 0 2px 6px rgba(0, 0, 0, 0.02) !important;
   border-radius: 24px !important;
   padding: 48px 40px !important;
   margin-bottom: var(--space-16) !important;
-  transition: box-shadow 0.35s ease;
 }
 
 [data-theme="light"] .about-stats-banner:hover {
-  box-shadow: 0 16px 40px -5px rgba(24, 59, 141, 0.10) !important;
+  box-shadow: 0 24px 56px rgba(15, 29, 61, 0.14), 0 10px 24px rgba(227, 39, 38, 0.15) !important;
 }
 
 [data-theme="light"] .about-stats-banner-accent {
-  background: linear-gradient(90deg, transparent 0%, #183b8d 25%, #dd2b1c 50%, #183b8d 75%, transparent 100%) !important;
+  background: linear-gradient(90deg, transparent 0%, #e32726 25%, #183b8d 50%, #e32726 75%, transparent 100%) !important;
   background-size: 200% 100% !important;
   animation: bannerGlowStreamLight 5s linear infinite !important;
-  height: 3px !important;
+  height: 3.5px !important;
 }
 
 [data-theme="light"] .about-stats-eyebrow {
-  color: #dd2b1c !important;
-  background: rgba(221, 43, 28, 0.08) !important;
-  border: 1px solid rgba(221, 43, 28, 0.2) !important;
+  color: #e32726 !important;
+  background: rgba(227, 39, 38, 0.08) !important;
+  border: 1px solid rgba(227, 39, 38, 0.25) !important;
   transition: all 0.25s ease;
 }
 
@@ -5156,42 +5164,17 @@ html[data-theme="light"],
 }
 
 [data-theme="light"] .about-stats-h2 {
-  color: #0f1d3d !important;
+  color: #0F172A !important;
   font-weight: 800 !important;
 }
 
 [data-theme="light"] .about-stats-banner .about-interactive-card {
-  background: #ffffff !important;
-  border: 1px solid #e2e8f0 !important;
-  box-shadow: 0 4px 18px rgba(15, 29, 61, 0.05) !important;
-  border-radius: 16px !important;
+  border-radius: 18px !important;
   padding: 36px 24px !important;
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, border-color 0.35s ease !important;
-}
-
-[data-theme="light"] .about-stats-banner .about-interactive-card:hover {
-  transform: translateY(-8px) scale(1.015) !important;
-  box-shadow: 0 20px 42px rgba(15, 29, 61, 0.13) !important;
-}
-
-[data-theme="light"] .about-stats-banner .about-interactive-card.red-glow {
-  border-top: 3.5px solid #dd2b1c !important;
-}
-
-[data-theme="light"] .about-stats-banner .about-interactive-card.red-glow:hover {
-  border-color: #dd2b1c !important;
-}
-
-[data-theme="light"] .about-stats-banner .about-interactive-card.blue-glow {
-  border-top: 3.5px solid #183b8d !important;
-}
-
-[data-theme="light"] .about-stats-banner .about-interactive-card.blue-glow:hover {
-  border-color: #183b8d !important;
 }
 
 [data-theme="light"] .about-stats-banner .about-stat-label {
-  color: #0f1d3d !important;
+  color: #0F172A !important;
   font-weight: 700 !important;
 }
 
@@ -5205,14 +5188,14 @@ html[data-theme="light"],
 }
 
 [data-theme="light"] .about-stats-banner .about-stats-icon-red {
-  background: rgba(221, 43, 28, 0.08) !important;
-  color: #dd2b1c !important;
-  border: 1px solid rgba(221, 43, 28, 0.2) !important;
-  box-shadow: 0 2px 8px rgba(221, 43, 28, 0.08);
+  background: rgba(227, 39, 38, 0.08) !important;
+  color: #e32726 !important;
+  border: 1px solid rgba(227, 39, 38, 0.25) !important;
+  box-shadow: 0 2px 8px rgba(227, 39, 38, 0.08);
 }
 
 [data-theme="light"] .about-stats-banner .about-interactive-card:hover .about-stats-icon-red {
-  box-shadow: 0 8px 24px rgba(221, 43, 28, 0.32) !important;
+  box-shadow: 0 8px 24px rgba(227, 39, 38, 0.32) !important;
 }
 
 [data-theme="light"] .about-stats-banner .about-stats-icon-blue {
@@ -5227,7 +5210,7 @@ html[data-theme="light"],
 }
 
 [data-theme="light"] .about-stats-banner .stat-num-red {
-  color: #dd2b1c !important;
+  color: #e32726 !important;
   transition: transform 0.25s ease;
 }
 
@@ -5241,56 +5224,20 @@ html[data-theme="light"],
   transform: scale(1.05);
 }
 
-/* 7. Section 4: Vision & Mission Cards Micro-Animations */
-[data-theme="light"] .about-vision-card {
-  background: #ffffff !important;
-  border: 1px solid #e0e5ed !important;
-  border-top: 4px solid #dd2b1c !important;
-  box-shadow: 0 4px 18px rgba(24, 59, 141, 0.05) !important;
-  border-radius: 14px !important;
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, border-color 0.35s ease !important;
+/* 7. Section 4: Vision & Mission Cards */
+[data-theme="light"] .about-vision-card,
+[data-theme="light"] .about-mission-card {
+  border-radius: 18px !important;
 }
 
-[data-theme="light"] .about-vision-card:hover {
-  transform: translateY(-7px) !important;
-  box-shadow: 0 20px 44px rgba(221, 43, 28, 0.14) !important;
-  border-color: #dd2b1c !important;
-}
-
-[data-theme="light"] .about-vision-card .about-card-icon {
+[data-theme="light"] .about-vision-card .about-card-icon,
+[data-theme="light"] .about-mission-card .about-card-icon {
   transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease;
 }
 
 [data-theme="light"] .about-vision-card:hover .about-card-icon {
   transform: scale(1.16) rotate(8deg);
-  box-shadow: 0 8px 22px rgba(221, 43, 28, 0.28);
-}
-
-[data-theme="light"] .about-vision-card h2 {
-  color: #0f1d3d !important;
-}
-
-[data-theme="light"] .about-vision-card p {
-  color: #616e85 !important;
-}
-
-[data-theme="light"] .about-mission-card {
-  background: #ffffff !important;
-  border: 1px solid #e0e5ed !important;
-  border-top: 4px solid #183b8d !important;
-  box-shadow: 0 4px 18px rgba(24, 59, 141, 0.05) !important;
-  border-radius: 14px !important;
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, border-color 0.35s ease !important;
-}
-
-[data-theme="light"] .about-mission-card:hover {
-  transform: translateY(-7px) !important;
-  box-shadow: 0 20px 44px rgba(24, 59, 141, 0.14) !important;
-  border-color: #183b8d !important;
-}
-
-[data-theme="light"] .about-mission-card .about-card-icon {
-  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease;
+  box-shadow: 0 8px 22px rgba(227, 39, 38, 0.28);
 }
 
 [data-theme="light"] .about-mission-card:hover .about-card-icon {
@@ -5298,24 +5245,33 @@ html[data-theme="light"],
   box-shadow: 0 8px 22px rgba(24, 59, 141, 0.28);
 }
 
+[data-theme="light"] .about-vision-card h2,
 [data-theme="light"] .about-mission-card h2 {
-  color: #0f1d3d !important;
+  color: #0F172A !important;
+  font-weight: 800 !important;
+  transition: color 0.3s ease !important;
 }
 
+[data-theme="light"] .about-vision-card:hover h2,
+[data-theme="light"] .about-mission-card:hover h2 {
+  color: #123b7a !important;
+}
+
+[data-theme="light"] .about-vision-card p,
 [data-theme="light"] .about-mission-card p {
-  color: #616e85 !important;
+  color: #475569 !important;
 }
 
-/* 8. Section 5: Timeline Energy Pulse & Pulsing Milestone Ripple Nodes */
+/* 8. Section 5: Timeline Track & Chronology */
 @keyframes timelinePulseBeamLight {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
 }
 
 @keyframes nodeRippleRingRed {
-  0% { box-shadow: 0 0 0 0 rgba(221, 43, 28, 0.45); }
-  70% { box-shadow: 0 0 0 14px rgba(221, 43, 28, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(221, 43, 28, 0); }
+  0% { box-shadow: 0 0 0 0 rgba(227, 39, 38, 0.45); }
+  70% { box-shadow: 0 0 0 14px rgba(227, 39, 38, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(227, 39, 38, 0); }
 }
 
 @keyframes nodeRippleRingBlue {
@@ -5325,7 +5281,7 @@ html[data-theme="light"],
 }
 
 [data-theme="light"] .relay-timeline-rail-line {
-  background: linear-gradient(90deg, #dd2b1c 0%, #183b8d 50%, #dd2b1c 100%) !important;
+  background: linear-gradient(90deg, #e32726 0%, #183b8d 50%, #e32726 100%) !important;
   background-size: 200% 100% !important;
   animation: timelinePulseBeamLight 3.5s linear infinite !important;
   height: 3px !important;
@@ -5333,24 +5289,39 @@ html[data-theme="light"],
 
 [data-theme="light"] .timeline-node-circle {
   background: #ffffff !important;
-  border: 2.5px solid #dd2b1c !important;
-  color: #dd2b1c !important;
+  border: 2.5px solid #e32726 !important;
+  color: #e32726 !important;
   animation: nodeRippleRingRed 2.4s infinite !important;
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  box-shadow: 0 4px 16px rgba(15, 29, 61, 0.12), inset 0 2px 4px rgba(255, 255, 255, 0.8) !important;
 }
 
 [data-theme="light"] .timeline-node-circle:hover {
   transform: scale(1.2) !important;
 }
 
-[data-theme="light"] .timeline-node-circle.blue-node {
+[data-theme="light"] .timeline-node-circle.cyan-node {
+  border-color: #0284c7 !important;
+  color: #0284c7 !important;
+}
+
+[data-theme="light"] .timeline-node-circle.red-node {
+  border-color: #e32726 !important;
+  color: #e32726 !important;
+}
+
+[data-theme="light"] .timeline-node-circle.navy-node {
   border-color: #183b8d !important;
   color: #183b8d !important;
-  animation: nodeRippleRingBlue 2.4s infinite !important;
+}
+
+[data-theme="light"] .timeline-node-circle.amber-node {
+  border-color: #d97706 !important;
+  color: #d97706 !important;
 }
 
 [data-theme="light"] .timeline-node-year {
-  color: #dd2b1c !important;
+  color: #e32726 !important;
   font-weight: 800 !important;
 }
 
@@ -5359,77 +5330,13 @@ html[data-theme="light"],
 }
 
 [data-theme="light"] .timeline-stem-connector {
-  background: linear-gradient(180deg, #dd2b1c, rgba(221, 43, 28, 0.15)) !important;
+  background: linear-gradient(180deg, #e32726, rgba(227, 39, 38, 0.15)) !important;
 }
 
 [data-theme="light"] .timeline-stem-connector.blue-stem {
   background: linear-gradient(180deg, #183b8d, rgba(24, 59, 141, 0.15)) !important;
 }
 
-[data-theme="light"] .journey-step-card {
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
-}
-
-[data-theme="light"] .journey-step-card:hover {
-  transform: translateY(-7px) !important;
-  box-shadow: 0 20px 42px rgba(15, 29, 61, 0.12) !important;
-}
-
-[data-theme="light"] .journey-step-card.red-step {
-  background: #ffffff !important;
-  border: 1px solid #e0e5ed !important;
-  border-top: 3.5px solid #dd2b1c !important;
-  box-shadow: 0 4px 16px rgba(24, 59, 141, 0.04) !important;
-  border-radius: 12px !important;
-}
-
-[data-theme="light"] .journey-step-card.red-step h3 {
-  color: #0f1d3d !important;
-}
-
-[data-theme="light"] .journey-step-card.red-step p {
-  color: #616e85 !important;
-}
-
-[data-theme="light"] .journey-step-card.blue-step {
-  background: #ffffff !important;
-  border: 1px solid #e0e5ed !important;
-  border-top: 3.5px solid #183b8d !important;
-  box-shadow: 0 4px 16px rgba(24, 59, 141, 0.04) !important;
-  border-radius: 12px !important;
-}
-
-[data-theme="light"] .journey-step-card.blue-step h3 {
-  color: #0f1d3d !important;
-}
-
-[data-theme="light"] .journey-step-card.blue-step p {
-  color: #616e85 !important;
-}
-
-[data-theme="light"] .timeline-badge {
-  transition: transform 0.25s ease, box-shadow 0.25s ease !important;
-}
-
-[data-theme="light"] .journey-step-card:hover .timeline-badge {
-  transform: scale(1.06);
-}
-
-[data-theme="light"] .timeline-badge.red {
-  background: #dd2b1c !important;
-  color: #ffffff !important;
-  font-weight: 700 !important;
-  box-shadow: 0 2px 8px rgba(221, 43, 28, 0.25);
-}
-
-[data-theme="light"] .timeline-badge.blue {
-  background: #183b8d !important;
-  color: #ffffff !important;
-  font-weight: 700 !important;
-  box-shadow: 0 2px 8px rgba(24, 59, 141, 0.25);
-}
-
-/* Light Theme 4-Milestone Timeline & Domain Extensions */
 [data-theme="light"] .relay-timeline-rail-track {
   background: #e2e8f0 !important;
   border-color: #cbd5e1 !important;
@@ -5437,7 +5344,7 @@ html[data-theme="light"],
 }
 
 [data-theme="light"] .relay-timeline-rail-plasma {
-  background: linear-gradient(90deg, #0284c7 0%, #183b8d 25%, #dd2b1c 50%, #2563eb 75%, #d97706 100%) !important;
+  background: linear-gradient(90deg, #0284c7 0%, #183b8d 25%, #e32726 50%, #2563eb 75%, #d97706 100%) !important;
   opacity: 0.85 !important;
 }
 
@@ -5460,37 +5367,12 @@ html[data-theme="light"],
     0 0 45px rgba(37, 99, 235, 0.6) !important;
 }
 
-[data-theme="light"] .timeline-node-circle {
-  background: #ffffff !important;
-  box-shadow: 0 4px 16px rgba(15, 29, 61, 0.12), inset 0 2px 4px rgba(255, 255, 255, 0.8) !important;
-}
-
-[data-theme="light"] .timeline-node-circle.cyan-node {
-  border-color: #0284c7 !important;
-  color: #0284c7 !important;
-}
-
-[data-theme="light"] .timeline-node-circle.red-node {
-  border-color: #dd2b1c !important;
-  color: #dd2b1c !important;
-}
-
-[data-theme="light"] .timeline-node-circle.navy-node {
-  border-color: #183b8d !important;
-  color: #183b8d !important;
-}
-
-[data-theme="light"] .timeline-node-circle.amber-node {
-  border-color: #d97706 !important;
-  color: #d97706 !important;
-}
-
 [data-theme="light"] .node-radar-wave-ring {
   border-color: rgba(2, 132, 199, 0.35) !important;
 }
 
 [data-theme="light"] .node-radar-wave-ring.red-ring {
-  border-color: rgba(221, 43, 28, 0.35) !important;
+  border-color: rgba(227, 39, 38, 0.35) !important;
 }
 
 [data-theme="light"] .node-radar-wave-ring.navy-ring {
@@ -5517,8 +5399,8 @@ html[data-theme="light"],
 }
 
 [data-theme="light"] .timeline-node-year-pill.red-pill {
-  color: #dd2b1c !important;
-  border-color: #dd2b1c !important;
+  color: #e32726 !important;
+  border-color: #e32726 !important;
 }
 
 [data-theme="light"] .timeline-node-year-pill.navy-pill {
@@ -5536,34 +5418,23 @@ html[data-theme="light"],
   box-shadow: 0 0 8px #183b8d !important;
 }
 
-[data-theme="light"] .journey-milestone-card {
-  background: #ffffff !important;
-  border: 1px solid #e0e5ed !important;
-  box-shadow: 0 4px 18px rgba(15, 29, 61, 0.05) !important;
-}
-
-[data-theme="light"] .journey-milestone-card:hover {
-  transform: translateY(-8px) !important;
-  box-shadow: 0 20px 42px rgba(15, 29, 61, 0.12) !important;
-  border-color: #183b8d !important;
-}
-
-[data-theme="light"] .journey-milestone-card.card-accent-red:hover {
-  border-color: #dd2b1c !important;
-  box-shadow: 0 20px 42px rgba(221, 43, 28, 0.14) !important;
-}
-
-[data-theme="light"] .journey-milestone-card.card-accent-amber:hover {
-  border-color: #d97706 !important;
-  box-shadow: 0 20px 42px rgba(217, 119, 6, 0.14) !important;
+[data-theme="light"] .journey-milestone-card,
+[data-theme="light"] .journey-step-card {
+  border-radius: 18px !important;
 }
 
 [data-theme="light"] .journey-milestone-headline {
-  color: #0f1d3d !important;
+  color: #0F172A !important;
+  font-weight: 800 !important;
+  transition: color 0.3s ease !important;
+}
+
+[data-theme="light"] .journey-milestone-card:hover .journey-milestone-headline {
+  color: #123b7a !important;
 }
 
 [data-theme="light"] .journey-milestone-desc {
-  color: #616e85 !important;
+  color: #475569 !important;
 }
 
 [data-theme="light"] .timeline-stem-connector.cyan-stem {
@@ -5571,7 +5442,7 @@ html[data-theme="light"],
 }
 
 [data-theme="light"] .timeline-stem-connector.red-stem {
-  background: linear-gradient(180deg, #dd2b1c, rgba(221, 43, 28, 0.15)) !important;
+  background: linear-gradient(180deg, #e32726, rgba(227, 39, 38, 0.15)) !important;
 }
 
 [data-theme="light"] .timeline-stem-connector.navy-stem {
@@ -5582,50 +5453,43 @@ html[data-theme="light"],
   background: linear-gradient(180deg, #d97706, rgba(217, 119, 6, 0.15)) !important;
 }
 
+/* Strategic Application Domains */
 [data-theme="light"] .domain-sector-card {
-  background: #ffffff !important;
-  border: 1px solid #e0e5ed !important;
-  box-shadow: 0 4px 16px rgba(15, 29, 61, 0.04) !important;
-}
-
-[data-theme="light"] .domain-sector-card:hover {
-  transform: translateY(-6px) !important;
-  border-color: #183b8d !important;
-  box-shadow: 0 18px 36px rgba(24, 59, 141, 0.12) !important;
+  border-radius: 18px !important;
 }
 
 [data-theme="light"] .domain-sector-desc {
-  color: #616e85 !important;
+  color: #475569 !important;
 }
 
 [data-theme="light"] .domain-tag-pill {
-  background: rgba(24, 59, 141, 0.08) !important;
-  border-color: rgba(24, 59, 141, 0.2) !important;
-  color: #183b8d !important;
+  background: rgba(227, 39, 38, 0.08) !important;
+  border-color: rgba(227, 39, 38, 0.22) !important;
+  color: #e32726 !important;
 }
 
+/* Strategic Pillars */
 [data-theme="light"] .pillar-foundation-card {
-  background: #ffffff !important;
-  border: 1px solid #e0e5ed !important;
-  box-shadow: 0 4px 18px rgba(15, 29, 61, 0.05) !important;
-}
-
-[data-theme="light"] .pillar-foundation-card:hover {
-  transform: translateY(-6px) !important;
-  box-shadow: 0 18px 40px rgba(15, 29, 61, 0.12) !important;
+  border-radius: 18px !important;
 }
 
 [data-theme="light"] .pillar-content-title {
-  color: #0f1d3d !important;
+  color: #0F172A !important;
+  font-weight: 800 !important;
+  transition: color 0.3s ease !important;
+}
+
+[data-theme="light"] .pillar-foundation-card:hover .pillar-content-title {
+  color: #123b7a !important;
 }
 
 [data-theme="light"] .pillar-content-text {
-  color: #616e85 !important;
+  color: #475569 !important;
 }
 
 [data-theme="light"] .timeline-junction-divider::before,
 [data-theme="light"] .timeline-junction-divider::after {
-  background: linear-gradient(90deg, transparent, rgba(24, 59, 141, 0.25), transparent) !important;
+  background: linear-gradient(90deg, transparent, rgba(227, 39, 38, 0.25), transparent) !important;
 }
 
 [data-theme="light"] .timeline-modal-content {
@@ -5640,34 +5504,24 @@ html[data-theme="light"],
 }
 
 [data-theme="light"] .timeline-modal-header h3 {
-  color: #0f1d3d !important;
+  color: #0F172A !important;
 }
 
 [data-theme="light"] .timeline-modal-close {
   background: #e2e8f0 !important;
-  color: #0f1d3d !important;
+  color: #0F172A !important;
   border-color: #cbd5e1 !important;
 }
 
 [data-theme="light"] .timeline-modal-close:hover {
-  background: #dd2b1c !important;
+  background: #e32726 !important;
   color: #ffffff !important;
-  border-color: #dd2b1c !important;
+  border-color: #e32726 !important;
 }
 
-/* 9. Section 6: Why Us Grid Animated Numbers & Icon Pops */
+/* 9. Section 6: Why Us Grid Cards */
 [data-theme="light"] .why-us-card {
-  background: #ffffff !important;
-  border: 1px solid #e0e5ed !important;
-  box-shadow: 0 4px 16px rgba(24, 59, 141, 0.04) !important;
-  border-radius: 12px !important;
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, border-color 0.35s ease !important;
-}
-
-[data-theme="light"] .why-us-card:hover {
-  transform: translateY(-7px) !important;
-  box-shadow: 0 20px 44px rgba(24, 59, 141, 0.12) !important;
-  border-color: #183b8d !important;
+  border-radius: 18px !important;
 }
 
 [data-theme="light"] .why-us-card .about-card-icon {
@@ -5676,48 +5530,31 @@ html[data-theme="light"],
 
 [data-theme="light"] .why-us-card:hover .about-card-icon {
   transform: scale(1.18) rotate(-8deg);
-  box-shadow: 0 8px 22px rgba(24, 59, 141, 0.25);
-}
-
-[data-theme="light"] .why-us-card.red-accent:hover .about-card-icon {
-  box-shadow: 0 8px 22px rgba(221, 43, 28, 0.25);
+  box-shadow: 0 8px 22px rgba(227, 39, 38, 0.25);
 }
 
 [data-theme="light"] .why-us-card h3 {
-  color: #0f1d3d !important;
+  color: #0F172A !important;
+  font-weight: 800 !important;
+  transition: color 0.3s ease !important;
+}
+
+[data-theme="light"] .why-us-card:hover h3 {
+  color: #123b7a !important;
 }
 
 [data-theme="light"] .why-us-card p {
-  color: #616e85 !important;
-}
-
-[data-theme="light"] .why-us-card.red-accent {
-  border-top: 3.5px solid #dd2b1c !important;
-}
-
-[data-theme="light"] .why-us-card.red-accent:hover {
-  border-color: #dd2b1c !important;
+  color: #475569 !important;
 }
 
 [data-theme="light"] .why-us-card .why-card-number {
   transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  color: rgba(227, 39, 38, 0.18) !important;
 }
 
 [data-theme="light"] .why-us-card:hover .why-card-number {
   transform: translateY(-6px) scale(1.1) !important;
   opacity: 0.35 !important;
-}
-
-[data-theme="light"] .why-us-card.red-accent .why-card-number {
-  color: rgba(221, 43, 28, 0.18) !important;
-}
-
-[data-theme="light"] .why-us-card:not(.red-accent) {
-  border-top: 3.5px solid #183b8d !important;
-}
-
-[data-theme="light"] .why-us-card:not(.red-accent) .why-card-number {
-  color: rgba(24, 59, 141, 0.18) !important;
 }
 
 /* ==========================================================================
