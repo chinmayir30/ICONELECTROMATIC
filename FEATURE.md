@@ -13,6 +13,18 @@
 
 ### **2026-10-08**
 
+* **Category:** About Us Page — Advanced Light Theme Animation Suite & Micro-Interactions
+  * **Page / Files:** [`src/pages/About.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/About.js), [`src/styles/index.css`](file:///d:/ICON%20ELECTROMATIC/src/styles/index.css)
+  * **Type:** Animation & Interactive UX Upgrade (Light Theme Focused)
+  * **Details:**
+    * **Ambient Floating Orbs:** Added continuous organic floating mesh drift animations (`@keyframes floatOrbLight1`, `@keyframes floatOrbLight2`) to the ambient background light sources.
+    * **Multi-Layer Radar Ripples:** Upgraded the light theme RF ambient radar with multi-layered concentric ripple pulses (`@keyframes radarPulseLight`) and a rotating beam sweep (`@keyframes radarBeamSweepLight`).
+    * **Interactive 3D Subtle Card Tilt:** Added dynamic cursor-following 3D perspective tilt (`perspective(1000px) rotateX(...) rotateY(...)`) and glowing spotlight tracking to all `.about-interactive-card` components on mouse move, with smooth spring reset on mouse leave.
+    * **Moving Border Beam Shimmers:** Implemented radiant gradient beam glides (`#2563EB`/`#60A5FA` and `#dd2b1c`/`#f87171`) that sweep across card borders upon hover.
+    * **Stats Banner Accent Flow & Floating Icons:** Added continuous animated gradient streaming (`@keyframes bannerGlowStreamLight`) to the stats banner top accent bar, and subtle floating idle breath (`@keyframes statIconFloatLight`) to stat icon boxes with bouncy spring scaling on hover.
+    * **Timeline Energy Pulse & Node Ripple:** Implemented an electrical signal beam (`@keyframes timelinePulseBeamLight`) traveling along the timeline rail from 2009 to 2020, along with expanding radar ripple rings radiating from the milestone node circles.
+    * **Interactive "Why Us" & Vision/Mission Cards:** Enhanced cards with spring-bounce icon tilts (`scale(1.18) rotate(-8deg)`), number indicator parallax shifts (`translateY(-6px) scale(1.1)`), and expanded deep elevation shadows.
+
 * **Category:** About Us Page — Removal of ISO 9001 Badge & Light Theme Stats Banner Beautification
   * **Page / Files:** [`src/pages/About.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/About.js), [`src/styles/index.css`](file:///d:/ICON%20ELECTROMATIC/src/styles/index.css)
   * **Type:** Content Streamlining & UI/UX Beautification (Light Theme Focus)

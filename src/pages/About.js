@@ -11,8 +11,8 @@ export function renderAboutPage() {
       <!-- Unified Page Hero Banner (Blue in light theme) -->
       <section class="page-hero-banner" style="position:relative;overflow:hidden;">
         <!-- Ambient Lighting Effects -->
-        <div style="position:absolute;top:0;left:10%;width:500px;height:500px;background:radial-gradient(circle, rgba(37,99,235,0.12) 0%, transparent 70%);border-radius:50%;pointer-events:none;"></div>
-        <div style="position:absolute;top:300px;right:5%;width:600px;height:600px;background:radial-gradient(circle, rgba(225,29,72,0.08) 0%, transparent 70%);border-radius:50%;pointer-events:none;"></div>
+        <div class="about-ambient-orb about-ambient-orb-1" style="position:absolute;top:0;left:10%;width:500px;height:500px;background:radial-gradient(circle, rgba(37,99,235,0.12) 0%, transparent 70%);border-radius:50%;pointer-events:none;"></div>
+        <div class="about-ambient-orb about-ambient-orb-2" style="position:absolute;top:300px;right:5%;width:600px;height:600px;background:radial-gradient(circle, rgba(225,29,72,0.08) 0%, transparent 70%);border-radius:50%;pointer-events:none;"></div>
 
         <div class="container" style="position:relative;z-index:2;">
           <!-- Breadcrumb -->
@@ -381,7 +381,7 @@ export function renderAboutPage() {
 }
 
 export function initAboutPage() {
-  // 1. Mouse Spotlight Glow Effect on Cards
+  // 1. Mouse Spotlight Glow & Interactive 3D Subtle Tilt on Cards
   const cards = document.querySelectorAll('.about-interactive-card');
   cards.forEach(card => {
     card.addEventListener('mousemove', (e) => {
@@ -390,6 +390,17 @@ export function initAboutPage() {
       const y = e.clientY - rect.top;
       card.style.setProperty('--mouse-x', `${x}px`);
       card.style.setProperty('--mouse-y', `${y}px`);
+
+      // Dynamic subtle 3D tilt physics
+      const tiltX = ((y / rect.height) - 0.5) * -5;
+      const tiltY = ((x / rect.width) - 0.5) * 5;
+      card.style.transform = `perspective(1000px) rotateX(${tiltX.toFixed(2)}deg) rotateY(${tiltY.toFixed(2)}deg) translateY(-6px)`;
+    });
+
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+      card.style.removeProperty('--mouse-x');
+      card.style.removeProperty('--mouse-y');
     });
   });
 

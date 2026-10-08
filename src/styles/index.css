@@ -4069,23 +4069,124 @@ html[data-theme="light"],
 }
 
 /* ==========================================================================
-   ABOUT PAGE — B12 CLEAN ENGINEERING HIERARCHY
+   ABOUT PAGE — ADVANCED LIGHT THEME ANIMATIONS & MICRO-INTERACTIONS
    ========================================================================== */
 
-/* Section 1 Radar in Light Theme */
-[data-theme="light"] .rf-radar-ring {
-  border-color: rgba(24, 59, 141, 0.20) !important;
-}
-[data-theme="light"] .rf-radar-sweep {
-  background: conic-gradient(from 0deg, rgba(24, 59, 141, 0.14) 0deg, transparent 65deg, transparent 360deg) !important;
+/* 1. Ambient Floating Light Orbs Animation */
+@keyframes floatOrbLight1 {
+  0% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(50px, 35px) scale(1.12); }
+  66% { transform: translate(-30px, 45px) scale(0.95); }
+  100% { transform: translate(0, 0) scale(1); }
 }
 
-/* Section 2: Fulfillment Partners Intro Feature Card */
+@keyframes floatOrbLight2 {
+  0% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(-45px, -30px) scale(1.1); }
+  66% { transform: translate(35px, -40px) scale(0.92); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+[data-theme="light"] .about-ambient-orb-1 {
+  animation: floatOrbLight1 20s ease-in-out infinite !important;
+  opacity: 0.75 !important;
+}
+
+[data-theme="light"] .about-ambient-orb-2 {
+  animation: floatOrbLight2 24s ease-in-out infinite !important;
+  opacity: 0.75 !important;
+}
+
+/* 2. Section 1 Radar in Light Theme — Multi-ring Ripple Waves */
+@keyframes radarPulseLight {
+  0% { transform: translate(-50%, -50%) scale(0.92); opacity: 0.8; }
+  50% { transform: translate(-50%, -50%) scale(1.08); opacity: 0.35; }
+  100% { transform: translate(-50%, -50%) scale(0.92); opacity: 0.8; }
+}
+
+@keyframes radarBeamSweepLight {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+[data-theme="light"] .rf-radar-ambient {
+  opacity: 0.65 !important;
+}
+
+[data-theme="light"] .rf-radar-ring {
+  border-color: rgba(24, 59, 141, 0.22) !important;
+  box-shadow: 0 0 24px rgba(24, 59, 141, 0.08) !important;
+  animation: radarPulseLight 5s infinite cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+[data-theme="light"] .rf-radar-ring:nth-child(2) {
+  border-color: rgba(221, 43, 28, 0.25) !important;
+  box-shadow: 0 0 24px rgba(221, 43, 28, 0.08) !important;
+  animation-delay: 1.25s !important;
+}
+
+[data-theme="light"] .rf-radar-ring:nth-child(3) {
+  border-color: rgba(24, 59, 141, 0.20) !important;
+  animation-delay: 2.5s !important;
+}
+
+[data-theme="light"] .rf-radar-ring:nth-child(4) {
+  border-color: rgba(221, 43, 28, 0.18) !important;
+  animation-delay: 3.75s !important;
+}
+
+[data-theme="light"] .rf-radar-sweep {
+  background: conic-gradient(from 0deg, rgba(24, 59, 141, 0.20) 0deg, transparent 75deg, transparent 360deg) !important;
+  animation: radarBeamSweepLight 4.5s linear infinite !important;
+}
+
+/* 3. Hero Trust Strip Interactive Hover Float */
+[data-theme="light"] .about-trust-strip > div {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  cursor: default;
+}
+
+[data-theme="light"] .about-trust-strip > div:hover {
+  transform: translateY(-4px) scale(1.025) !important;
+  box-shadow: 0 8px 24px rgba(24, 59, 141, 0.12) !important;
+}
+
+/* 4. Interactive Spotlight & Moving Border Beam Shimmer in Light Mode */
+[data-theme="light"] .about-interactive-card {
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, border-color 0.35s ease !important;
+  transform-style: preserve-3d;
+  will-change: transform, box-shadow;
+}
+
+[data-theme="light"] .about-interactive-card::before {
+  background: radial-gradient(circle, rgba(24, 59, 141, 0.16) 0%, transparent 70%) !important;
+}
+
+[data-theme="light"] .about-interactive-card.red-glow::before {
+  background: radial-gradient(circle, rgba(221, 43, 28, 0.14) 0%, transparent 70%) !important;
+}
+
+[data-theme="light"] .about-interactive-card::after {
+  background: linear-gradient(90deg, transparent, #2563EB, #60A5FA, transparent) !important;
+  height: 3px !important;
+}
+
+[data-theme="light"] .about-interactive-card.red-glow::after {
+  background: linear-gradient(90deg, transparent, #dd2b1c, #f87171, transparent) !important;
+  height: 3px !important;
+}
+
+/* 5. Section 2: Feature Card & Subcards Animation */
 [data-theme="light"] .about-hero-feature-card {
   background: #ffffff !important;
   border: 1px solid #e0e5ed !important;
-  border-radius: 8px !important;
+  border-radius: 16px !important;
   box-shadow: 0 6px 24px rgba(24, 59, 141, 0.06) !important;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+[data-theme="light"] .about-hero-feature-card:hover {
+  box-shadow: 0 18px 44px rgba(24, 59, 141, 0.11) !important;
 }
 
 [data-theme="light"] .about-hero-feature-card h2 {
@@ -4100,8 +4201,24 @@ html[data-theme="light"],
   background: #ffffff !important;
   border: 1px solid #e0e5ed !important;
   border-left: 3.5px solid #183b8d !important;
-  border-radius: 6px !important;
+  border-radius: 10px !important;
   box-shadow: 0 4px 14px rgba(24, 59, 141, 0.04) !important;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+[data-theme="light"] .about-subcard-blue:hover {
+  transform: translateY(-5px) !important;
+  border-left-width: 5.5px !important;
+  box-shadow: 0 14px 32px rgba(24, 59, 141, 0.12) !important;
+}
+
+[data-theme="light"] .about-subcard-blue .about-card-icon {
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease;
+}
+
+[data-theme="light"] .about-subcard-blue:hover .about-card-icon {
+  transform: scale(1.15) rotate(-6deg);
+  box-shadow: 0 8px 22px rgba(24, 59, 141, 0.25);
 }
 
 [data-theme="light"] .about-subcard-blue h3 {
@@ -4116,8 +4233,24 @@ html[data-theme="light"],
   background: #ffffff !important;
   border: 1px solid #e0e5ed !important;
   border-left: 3.5px solid #dd2b1c !important;
-  border-radius: 6px !important;
+  border-radius: 10px !important;
   box-shadow: 0 4px 14px rgba(221, 43, 28, 0.05) !important;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+[data-theme="light"] .about-subcard-red:hover {
+  transform: translateY(-5px) !important;
+  border-left-width: 5.5px !important;
+  box-shadow: 0 14px 32px rgba(221, 43, 28, 0.12) !important;
+}
+
+[data-theme="light"] .about-subcard-red .about-card-icon {
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease;
+}
+
+[data-theme="light"] .about-subcard-red:hover .about-card-icon {
+  transform: scale(1.15) rotate(-6deg);
+  box-shadow: 0 8px 22px rgba(221, 43, 28, 0.25);
 }
 
 [data-theme="light"] .about-subcard-red h3 {
@@ -4128,7 +4261,19 @@ html[data-theme="light"],
   color: #616e85 !important;
 }
 
-/* Section 3: The Numbers That Define Us Banner — Light Theme Clean & Beautiful Alignment */
+/* 6. Section 3: The Numbers That Define Us Banner — Light Theme Animations */
+@keyframes bannerGlowStreamLight {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes statIconFloatLight {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+  100% { transform: translateY(0); }
+}
+
 [data-theme="light"] .about-stats-banner {
   background: linear-gradient(180deg, #f8faff 0%, #edf4fc 100%) !important;
   border: 1px solid #dbeafe !important;
@@ -4136,10 +4281,17 @@ html[data-theme="light"],
   border-radius: 24px !important;
   padding: 48px 40px !important;
   margin-bottom: var(--space-16) !important;
+  transition: box-shadow 0.35s ease;
+}
+
+[data-theme="light"] .about-stats-banner:hover {
+  box-shadow: 0 16px 40px -5px rgba(24, 59, 141, 0.10) !important;
 }
 
 [data-theme="light"] .about-stats-banner-accent {
-  background: linear-gradient(90deg, transparent, rgba(24, 59, 141, 0.35), rgba(221, 43, 28, 0.35), transparent) !important;
+  background: linear-gradient(90deg, transparent 0%, #183b8d 25%, #dd2b1c 50%, #183b8d 75%, transparent 100%) !important;
+  background-size: 200% 100% !important;
+  animation: bannerGlowStreamLight 5s linear infinite !important;
   height: 3px !important;
 }
 
@@ -4147,6 +4299,11 @@ html[data-theme="light"],
   color: #dd2b1c !important;
   background: rgba(221, 43, 28, 0.08) !important;
   border: 1px solid rgba(221, 43, 28, 0.2) !important;
+  transition: all 0.25s ease;
+}
+
+[data-theme="light"] .about-stats-banner:hover .about-stats-eyebrow {
+  transform: scale(1.04);
 }
 
 [data-theme="light"] .about-stats-h2 {
@@ -4160,12 +4317,12 @@ html[data-theme="light"],
   box-shadow: 0 4px 18px rgba(15, 29, 61, 0.05) !important;
   border-radius: 16px !important;
   padding: 36px 24px !important;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease !important;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, border-color 0.35s ease !important;
 }
 
 [data-theme="light"] .about-stats-banner .about-interactive-card:hover {
-  transform: translateY(-6px) !important;
-  box-shadow: 0 16px 36px rgba(15, 29, 61, 0.12) !important;
+  transform: translateY(-8px) scale(1.015) !important;
+  box-shadow: 0 20px 42px rgba(15, 29, 61, 0.13) !important;
 }
 
 [data-theme="light"] .about-stats-banner .about-interactive-card.red-glow {
@@ -4189,40 +4346,75 @@ html[data-theme="light"],
   font-weight: 700 !important;
 }
 
+[data-theme="light"] .about-stats-banner .about-stats-icon-box {
+  animation: statIconFloatLight 3.8s ease-in-out infinite !important;
+}
+
+[data-theme="light"] .about-stats-banner .about-interactive-card:hover .about-stats-icon-box {
+  animation: none !important;
+  transform: scale(1.18) rotate(-8deg) !important;
+}
+
 [data-theme="light"] .about-stats-banner .about-stats-icon-red {
   background: rgba(221, 43, 28, 0.08) !important;
   color: #dd2b1c !important;
   border: 1px solid rgba(221, 43, 28, 0.2) !important;
+  box-shadow: 0 2px 8px rgba(221, 43, 28, 0.08);
+}
+
+[data-theme="light"] .about-stats-banner .about-interactive-card:hover .about-stats-icon-red {
+  box-shadow: 0 8px 24px rgba(221, 43, 28, 0.32) !important;
 }
 
 [data-theme="light"] .about-stats-banner .about-stats-icon-blue {
   background: rgba(24, 59, 141, 0.08) !important;
   color: #183b8d !important;
   border: 1px solid rgba(24, 59, 141, 0.2) !important;
+  box-shadow: 0 2px 8px rgba(24, 59, 141, 0.08);
+}
+
+[data-theme="light"] .about-stats-banner .about-interactive-card:hover .about-stats-icon-blue {
+  box-shadow: 0 8px 24px rgba(24, 59, 141, 0.32) !important;
 }
 
 [data-theme="light"] .about-stats-banner .stat-num-red {
   color: #dd2b1c !important;
+  transition: transform 0.25s ease;
 }
 
 [data-theme="light"] .about-stats-banner .stat-num-blue {
   color: #183b8d !important;
+  transition: transform 0.25s ease;
 }
 
-/* Section 4: Vision & Mission Cards */
+[data-theme="light"] .about-stats-banner .about-interactive-card:hover .stat-num-red,
+[data-theme="light"] .about-stats-banner .about-interactive-card:hover .stat-num-blue {
+  transform: scale(1.05);
+}
+
+/* 7. Section 4: Vision & Mission Cards Micro-Animations */
 [data-theme="light"] .about-vision-card {
   background: #ffffff !important;
   border: 1px solid #e0e5ed !important;
   border-top: 4px solid #dd2b1c !important;
   box-shadow: 0 4px 18px rgba(24, 59, 141, 0.05) !important;
-  border-radius: 8px !important;
-  transition: transform 0.25s cubic-bezier(0.2, 0.72, 0.28, 1), box-shadow 0.25s ease, border-color 0.25s ease !important;
+  border-radius: 14px !important;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, border-color 0.35s ease !important;
 }
 
 [data-theme="light"] .about-vision-card:hover {
-  transform: translateY(-4px) !important;
-  box-shadow: 0 16px 36px rgba(221, 43, 28, 0.14) !important;
+  transform: translateY(-7px) !important;
+  box-shadow: 0 20px 44px rgba(221, 43, 28, 0.14) !important;
   border-color: #dd2b1c !important;
+}
+
+[data-theme="light"] .about-vision-card .about-card-icon {
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease;
+}
+
+[data-theme="light"] .about-vision-card:hover .about-card-icon {
+  transform: scale(1.16) rotate(8deg);
+  box-shadow: 0 8px 22px rgba(221, 43, 28, 0.28);
 }
 
 [data-theme="light"] .about-vision-card h2 {
@@ -4238,14 +4430,23 @@ html[data-theme="light"],
   border: 1px solid #e0e5ed !important;
   border-top: 4px solid #183b8d !important;
   box-shadow: 0 4px 18px rgba(24, 59, 141, 0.05) !important;
-  border-radius: 8px !important;
-  transition: transform 0.25s cubic-bezier(0.2, 0.72, 0.28, 1), box-shadow 0.25s ease, border-color 0.25s ease !important;
+  border-radius: 14px !important;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, border-color 0.35s ease !important;
 }
 
 [data-theme="light"] .about-mission-card:hover {
-  transform: translateY(-4px) !important;
-  box-shadow: 0 16px 36px rgba(24, 59, 141, 0.14) !important;
+  transform: translateY(-7px) !important;
+  box-shadow: 0 20px 44px rgba(24, 59, 141, 0.14) !important;
   border-color: #183b8d !important;
+}
+
+[data-theme="light"] .about-mission-card .about-card-icon {
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease;
+}
+
+[data-theme="light"] .about-mission-card:hover .about-card-icon {
+  transform: scale(1.16) rotate(8deg);
+  box-shadow: 0 8px 22px rgba(24, 59, 141, 0.28);
 }
 
 [data-theme="light"] .about-mission-card h2 {
@@ -4256,23 +4457,47 @@ html[data-theme="light"],
   color: #616e85 !important;
 }
 
-/* Section 5: Timeline Rail & Journey Cards */
+/* 8. Section 5: Timeline Energy Pulse & Pulsing Milestone Ripple Nodes */
+@keyframes timelinePulseBeamLight {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes nodeRippleRingRed {
+  0% { box-shadow: 0 0 0 0 rgba(221, 43, 28, 0.45); }
+  70% { box-shadow: 0 0 0 14px rgba(221, 43, 28, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(221, 43, 28, 0); }
+}
+
+@keyframes nodeRippleRingBlue {
+  0% { box-shadow: 0 0 0 0 rgba(24, 59, 141, 0.45); }
+  70% { box-shadow: 0 0 0 14px rgba(24, 59, 141, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(24, 59, 141, 0); }
+}
+
 [data-theme="light"] .relay-timeline-rail-line {
-  background: linear-gradient(90deg, #dd2b1c 0%, #183b8d 100%) !important;
-  height: 2.5px !important;
+  background: linear-gradient(90deg, #dd2b1c 0%, #183b8d 50%, #dd2b1c 100%) !important;
+  background-size: 200% 100% !important;
+  animation: timelinePulseBeamLight 3.5s linear infinite !important;
+  height: 3px !important;
 }
 
 [data-theme="light"] .timeline-node-circle {
   background: #ffffff !important;
   border: 2.5px solid #dd2b1c !important;
   color: #dd2b1c !important;
-  box-shadow: 0 2px 10px rgba(221, 43, 28, 0.20) !important;
+  animation: nodeRippleRingRed 2.4s infinite !important;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+[data-theme="light"] .timeline-node-circle:hover {
+  transform: scale(1.2) !important;
 }
 
 [data-theme="light"] .timeline-node-circle.blue-node {
   border-color: #183b8d !important;
   color: #183b8d !important;
-  box-shadow: 0 2px 10px rgba(24, 59, 141, 0.20) !important;
+  animation: nodeRippleRingBlue 2.4s infinite !important;
 }
 
 [data-theme="light"] .timeline-node-year {
@@ -4292,12 +4517,21 @@ html[data-theme="light"],
   background: linear-gradient(180deg, #183b8d, rgba(24, 59, 141, 0.15)) !important;
 }
 
+[data-theme="light"] .journey-step-card {
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+[data-theme="light"] .journey-step-card:hover {
+  transform: translateY(-7px) !important;
+  box-shadow: 0 20px 42px rgba(15, 29, 61, 0.12) !important;
+}
+
 [data-theme="light"] .journey-step-card.red-step {
   background: #ffffff !important;
   border: 1px solid #e0e5ed !important;
   border-top: 3.5px solid #dd2b1c !important;
   box-shadow: 0 4px 16px rgba(24, 59, 141, 0.04) !important;
-  border-radius: 8px !important;
+  border-radius: 12px !important;
 }
 
 [data-theme="light"] .journey-step-card.red-step h3 {
@@ -4313,7 +4547,7 @@ html[data-theme="light"],
   border: 1px solid #e0e5ed !important;
   border-top: 3.5px solid #183b8d !important;
   box-shadow: 0 4px 16px rgba(24, 59, 141, 0.04) !important;
-  border-radius: 8px !important;
+  border-radius: 12px !important;
 }
 
 [data-theme="light"] .journey-step-card.blue-step h3 {
@@ -4324,31 +4558,54 @@ html[data-theme="light"],
   color: #616e85 !important;
 }
 
+[data-theme="light"] .timeline-badge {
+  transition: transform 0.25s ease, box-shadow 0.25s ease !important;
+}
+
+[data-theme="light"] .journey-step-card:hover .timeline-badge {
+  transform: scale(1.06);
+}
+
 [data-theme="light"] .timeline-badge.red {
   background: #dd2b1c !important;
   color: #ffffff !important;
   font-weight: 700 !important;
+  box-shadow: 0 2px 8px rgba(221, 43, 28, 0.25);
 }
 
 [data-theme="light"] .timeline-badge.blue {
   background: #183b8d !important;
   color: #ffffff !important;
   font-weight: 700 !important;
+  box-shadow: 0 2px 8px rgba(24, 59, 141, 0.25);
 }
 
-/* Section 6: Why Us Grid (B12 Style) */
+/* 9. Section 6: Why Us Grid Animated Numbers & Icon Pops */
 [data-theme="light"] .why-us-card {
   background: #ffffff !important;
   border: 1px solid #e0e5ed !important;
   box-shadow: 0 4px 16px rgba(24, 59, 141, 0.04) !important;
-  border-radius: 8px !important;
-  transition: transform 0.25s cubic-bezier(0.2, 0.72, 0.28, 1), box-shadow 0.25s ease, border-color 0.25s ease !important;
+  border-radius: 12px !important;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, border-color 0.35s ease !important;
 }
 
 [data-theme="light"] .why-us-card:hover {
-  transform: translateY(-4px) !important;
-  box-shadow: 0 16px 36px rgba(24, 59, 141, 0.10) !important;
+  transform: translateY(-7px) !important;
+  box-shadow: 0 20px 44px rgba(24, 59, 141, 0.12) !important;
   border-color: #183b8d !important;
+}
+
+[data-theme="light"] .why-us-card .about-card-icon {
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease;
+}
+
+[data-theme="light"] .why-us-card:hover .about-card-icon {
+  transform: scale(1.18) rotate(-8deg);
+  box-shadow: 0 8px 22px rgba(24, 59, 141, 0.25);
+}
+
+[data-theme="light"] .why-us-card.red-accent:hover .about-card-icon {
+  box-shadow: 0 8px 22px rgba(221, 43, 28, 0.25);
 }
 
 [data-theme="light"] .why-us-card h3 {
@@ -4367,8 +4624,17 @@ html[data-theme="light"],
   border-color: #dd2b1c !important;
 }
 
+[data-theme="light"] .why-us-card .why-card-number {
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+[data-theme="light"] .why-us-card:hover .why-card-number {
+  transform: translateY(-6px) scale(1.1) !important;
+  opacity: 0.35 !important;
+}
+
 [data-theme="light"] .why-us-card.red-accent .why-card-number {
-  color: rgba(221, 43, 28, 0.15) !important;
+  color: rgba(221, 43, 28, 0.18) !important;
 }
 
 [data-theme="light"] .why-us-card:not(.red-accent) {
@@ -4376,7 +4642,7 @@ html[data-theme="light"],
 }
 
 [data-theme="light"] .why-us-card:not(.red-accent) .why-card-number {
-  color: rgba(24, 59, 141, 0.15) !important;
+  color: rgba(24, 59, 141, 0.18) !important;
 }
 
 /* ==========================================================================
