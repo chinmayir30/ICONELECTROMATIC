@@ -273,6 +273,7 @@ export function renderContactPage() {
             </div>
 
           </div>
+          </div>
 
           <!-- Right Column: Interactive Forms -->
           <div class="contact-relay-form">
