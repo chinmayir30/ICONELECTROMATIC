@@ -73,12 +73,12 @@ export function renderAboutPage() {
           <!-- Section 2: Fulfillment Partners & Origin (with Interactive Feature Badges & Downloads) -->
           <div style="display:grid;grid-template-columns:1.15fr 0.85fr;gap:40px;align-items:center;border-radius:24px;padding:44px 36px;margin-bottom:var(--space-16);" class="about-hero-feature-card about-interactive-card about-animate-fadeup">
           <div>
-            <span style="font-size:0.75rem;font-weight:700;color:var(--logo-red-light);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;display:inline-block;">
-              CORE CAPABILITIES
-            </span>
-            <h2 style="font-family:var(--font-display);font-size:clamp(1.7rem, 2.6vw, 2.2rem);font-weight:800;line-height:1.25;margin-bottom:18px;">
-              Fulfillment partners for your electronic ambitions
+            <h2 style="font-family:var(--font-display);font-size:clamp(1.85rem, 2.8vw, 2.35rem);font-weight:800;line-height:1.2;margin-bottom:10px;" class="about-hero-main-title">
+              Core Capabilities
             </h2>
+            <div style="font-family:var(--font-display);font-size:clamp(1.15rem, 1.6vw, 1.35rem);font-weight:700;color:var(--logo-red-light);line-height:1.35;margin-bottom:18px;" class="about-hero-sub-title">
+              Fulfillment partners for your electronic ambitions
+            </div>
             <p style="font-size:0.95rem;line-height:1.75;margin-bottom:14px;">
               Icon Electromatic was founded in 2009 in Bengaluru by engineers with decades of expertise in RF, Microwave, Semiconductors, and allied service industries. In 2020, the company transitioned into <strong>Icon Electromatic Private Limited</strong> and expanded its presence across India, Israel, Singapore, and the USA.
             </p>
