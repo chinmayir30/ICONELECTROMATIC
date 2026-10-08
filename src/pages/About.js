@@ -151,7 +151,7 @@ export function renderAboutPage() {
                 <i class="fa-solid fa-boxes-stacked"></i>
               </div>
               <div class="stat-num-red" style="font-family:var(--font-display);font-size:clamp(2.6rem, 3.8vw, 3.5rem);font-weight:900;color:var(--logo-red);line-height:1;margin-bottom:10px;">
-                <span class="stat-counter" data-target="1200">0</span><span>+</span>
+                <span class="stat-counter" data-target="1500">0</span><span>+</span>
               </div>
               <div class="about-stat-label" style="font-size:1.05rem;font-weight:700;letter-spacing:-0.01em;">Products</div>
             </div>
@@ -162,7 +162,7 @@ export function renderAboutPage() {
                 <i class="fa-solid fa-calendar-check"></i>
               </div>
               <div class="stat-num-blue" style="font-family:var(--font-display);font-size:clamp(2.6rem, 3.8vw, 3.5rem);font-weight:900;color:var(--logo-blue-light);line-height:1;margin-bottom:10px;">
-                <span class="stat-counter" data-target="120">0</span><span>+</span>
+                <span class="stat-counter" data-target="150">0</span><span>+</span>
               </div>
               <div class="about-stat-label" style="font-size:1.05rem;font-weight:700;letter-spacing:-0.01em;">Years of combined experience</div>
             </div>
@@ -173,7 +173,7 @@ export function renderAboutPage() {
                 <i class="fa-solid fa-handshake-angle"></i>
               </div>
               <div class="stat-num-red" style="font-family:var(--font-display);font-size:clamp(2.6rem, 3.8vw, 3.5rem);font-weight:900;color:var(--logo-red);line-height:1;margin-bottom:10px;">
-                <span class="stat-counter" data-target="12">0</span><span>+</span>
+                <span class="stat-counter" data-target="15">0</span><span>+</span>
               </div>
               <div class="about-stat-label" style="font-size:1.05rem;font-weight:700;letter-spacing:-0.01em;">Partners</div>
             </div>
@@ -354,21 +354,6 @@ export function renderAboutPage() {
               <p style="font-size:0.9rem;line-height:1.7;margin:0;">
                 Stay ahead with timely access to the latest RF, Microwave, mmWave, and Semiconductor innovations sourced from world-leading OEMs.
               </p>
-            </div>
-
-            <!-- Why Us Card 5 -->
-            <div class="why-us-card about-interactive-card red-accent red-glow about-animate-fadeup" style="border-top:3px solid var(--logo-red);grid-column:1/-1;max-width:680px;margin:0 auto;width:100%;">
-              <span class="why-card-number">05</span>
-              <div class="about-card-icon" style="width:48px;height:48px;border-radius:12px;background:rgba(225,29,72,0.12);border:1px solid rgba(225,29,72,0.3);color:var(--logo-red-light);display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:20px;">
-                <i class="fa-solid fa-headset"></i>
-              </div>
-              <h3 style="font-family:var(--font-display);font-size:1.25rem;font-weight:800;margin-bottom:12px;line-height:1.35;">
-                Dedicated Support
-              </h3>
-              <p style="font-size:0.9rem;line-height:1.7;margin:0;">
-                Our team is always available to help you with technical queries, product guidance, and project requirements—whenever you need us.
-              </p>
-            </div>
             </div>
 
           </div>
