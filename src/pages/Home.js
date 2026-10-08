@@ -280,31 +280,31 @@ export function renderHomePage() {
             <div class="contact-relay-card">
               <h3>Direct Engineering Reach</h3>
               <p>
-                Founded in 2009 in Bengaluru with expanded presence across Singapore, Israel, and the United States.
+                Founded in 2009 with corporate headquarters in Bengaluru and established international offices in Singapore and the United States.
               </p>
 
               <div class="contact-meta-list">
-                <div class="contact-meta-row">
-                  <div class="contact-meta-icon"><i class="fa-solid fa-location-dot"></i></div>
+                <div class="contact-meta-row" style="align-items:flex-start;">
+                  <div class="contact-meta-icon" style="margin-top:2px;"><i class="fa-solid fa-location-dot"></i></div>
                   <div class="contact-meta-text">
-                    <h5>Registered Headquarters</h5>
-                    <p>Bengaluru, Karnataka 560001, India</p>
+                    <h5>Registered Headquarters (India)</h5>
+                    <p>#303/2, 5th ‘A’ Cross, HRBR Layout, III Block,<br/>Kalyan Nagar, Bengaluru – 560043</p>
                   </div>
                 </div>
 
-                <div class="contact-meta-row">
-                  <div class="contact-meta-icon"><i class="fa-solid fa-phone"></i></div>
+                <div class="contact-meta-row" style="align-items:flex-start;">
+                  <div class="contact-meta-icon" style="margin-top:2px;"><i class="fa-solid fa-phone"></i></div>
                   <div class="contact-meta-text">
-                    <h5>Telephone</h5>
-                    <p>+91 80 4123 4567 / +91 98450 12345</p>
+                    <h5>Direct Telephone Reach</h5>
+                    <p><a href="tel:+918025429452">+91 80 2542 9452</a> (India) · <a href="tel:+14055935176">+1 405 593 5176</a> (USA)</p>
                   </div>
                 </div>
 
-                <div class="contact-meta-row">
-                  <div class="contact-meta-icon"><i class="fa-solid fa-envelope"></i></div>
+                <div class="contact-meta-row" style="align-items:flex-start;">
+                  <div class="contact-meta-icon" style="margin-top:2px;"><i class="fa-solid fa-envelope"></i></div>
                   <div class="contact-meta-text">
-                    <h5>Official Communications</h5>
-                    <p>sales@iconelectromatic.com · support@iconelectromatic.com</p>
+                    <h5>Official Regional Communications</h5>
+                    <p><a href="mailto:salesiepl@iconelectromatic.com" style="color:var(--logo-red-light);">salesiepl@iconelectromatic.com</a> (India)<br/><a href="mailto:IESing@iconelectromatic.com" style="color:var(--logo-red-light);">IESing@iconelectromatic.com</a> (Singapore)<br/><a href="mailto:salesiellc@iconelectromatic.com" style="color:var(--logo-red-light);">salesiellc@iconelectromatic.com</a> (USA)</p>
                   </div>
                 </div>
               </div>

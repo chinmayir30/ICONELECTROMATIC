@@ -194,7 +194,7 @@ export function getBotReply(userText) {
           <li><strong>Tri-TeQ</strong> — Harmonic Switched Filters</li>
           <li><strong>YTTEK</strong> — Ultra-Wideband Software Defined Radios (HyperSDR)</li>
           <li><strong>Spellman</strong> — High Voltage Power Supplies</li>
-          <li><strong>Thermosen, TecDia, Evans, NEE, AEE Israel, Transline Technology</strong></li>
+          <li><strong>Thermosen, TecDia, Evans, NEE, PowerFactor (PowerRF), AEE Israel, Transline Technology</strong></li>
         </ul>
         <div style="display:flex;flex-wrap:wrap;gap:6px;">
           <button class="chat-action-badge" style="background:rgba(37,99,235,0.15);border-color:rgba(37,99,235,0.4);color:var(--logo-blue-light);" data-route="/products">

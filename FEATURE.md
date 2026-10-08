@@ -11,6 +11,26 @@
 
 ---
 
+### **2026-10-08**
+
+* **Category:** Contact Page — Removal of Guaranteed Assurance & Active Priority Openings Cards
+  * **Page / Files:** [`src/pages/Contact.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Contact.js)
+  * **Type:** Content & Section Streamlining (Both Dark & Light Themes)
+  * **Details:**
+    * **Removed "Guaranteed Assurance" Card:** Removed the Quality Pledge card containing the ISO 9001:2015 certification, genuine OEM parts guarantee, and 24h quotation turnaround bullet points from the Sales & RFQ tab left column.
+    * **Removed "Active Priority Openings" Card:** Removed the priority position list pill tags and direct talent acquisition careers email contact box from the Careers & Recruiting tab left column.
+
+* **Category:** Contact, Home & Footer — Official Global Office Addresses Integration
+  * **Page / Files:** [`src/pages/Contact.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Contact.js), [`src/pages/Home.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Home.js), [`src/components/Footer.js`](file:///d:/ICON%20ELECTROMATIC/src/components/Footer.js)
+  * **Type:** Corporate Identity & Contact Details Alignment
+  * **Details:**
+    * **India HQ:** Added full address (`#303/2, 5th ‘A’ Cross, HRBR Layout, III Block, Kalyan Nagar, Bengaluru – 560043`), telephone (`+91 80 2542 9452`), and email (`salesiepl@iconelectromatic.com`).
+    * **Singapore Office:** Added full address (`204D Compassvale Drive #08-409, Singapore 544204`) and official email (`IESing@iconelectromatic.com`).
+    * **USA Office:** Added full address (`15412 Meadow Vista Dr, Edmond, Oklahoma 73013, USA`), telephone (`+1 405 593 5176`), and official email (`salesiellc@iconelectromatic.com`).
+    * Unified seamlessly across the Contact page, Home page Direct Engineering Reach card, and the global Footer.
+
+---
+
 ### **2026-10-07**
 
 * **Category:** Global Responsive Overhaul — Phone, Tablet, Laptop & Large Desktop Fluid Layouts

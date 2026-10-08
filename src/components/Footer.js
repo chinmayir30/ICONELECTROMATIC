@@ -40,7 +40,8 @@ export function renderFooter() {
               <div class="office-details">
                 <h5>Icon Electromatic Pvt. Ltd. (India)</h5>
                 <p>#303/2, 5th 'A' Cross, HRBR Layout, III Block,<br/>Kalyan Nagar, Bengaluru – 560043</p>
-                <p>Tel: +91 80 2542 9452</p>
+                <p>Tel: <a href="tel:+918025429452">+91 80 2542 9452</a></p>
+                <p>Email: <a href="mailto:salesiepl@iconelectromatic.com">salesiepl@iconelectromatic.com</a></p>
               </div>
             </div>
 
@@ -49,6 +50,7 @@ export function renderFooter() {
               <div class="office-details">
                 <h5>Icon Electromatic Singapore Pte Ltd</h5>
                 <p>204D Compassvale Drive #08-409<br/>Singapore 544204</p>
+                <p>Email: <a href="mailto:IESing@iconelectromatic.com">IESing@iconelectromatic.com</a></p>
               </div>
             </div>
 
@@ -57,7 +59,8 @@ export function renderFooter() {
               <div class="office-details">
                 <h5>Icon Electromatic LLC (USA)</h5>
                 <p>15412 Meadow Vista Dr, Edmond,<br/>Oklahoma 73013, USA</p>
-                <p>Tel: +1 405 593 5176</p>
+                <p>Tel: <a href="tel:+14055935176">+1 405 593 5176</a></p>
+                <p>Email: <a href="mailto:salesiellc@iconelectromatic.com">salesiellc@iconelectromatic.com</a></p>
               </div>
             </div>
           </div>

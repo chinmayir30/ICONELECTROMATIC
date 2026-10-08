@@ -153,42 +153,51 @@ export function renderContactPage() {
             <!-- 1A. INQUIRY INFO CARDS (Default) -->
             <div id="inquiry-info-column" style="${isRecruiting ? 'display:none;' : 'display:block;'}">
               <div class="contact-relay-card">
-                <h3>Corporate Headquarters</h3>
+                <h3>Office Addresses</h3>
                 <p>
-                  ICON ELECTROMATIC PRIVATE LIMITED is headquartered in Bengaluru, India with established 
-                  representation and technical partners across Singapore, Israel, and the United States.
+                  Direct access to our corporate headquarters in India and international liaison offices in Singapore and the United States.
                 </p>
 
                 <div class="contact-meta-list">
-                  <div class="contact-meta-row">
-                    <div class="contact-meta-icon"><i class="fa-solid fa-location-dot"></i></div>
+                  <!-- India Office -->
+                  <div class="contact-meta-row" style="align-items:flex-start;">
+                    <div class="contact-meta-icon" style="margin-top:2px;"><i class="fa-solid fa-location-dot"></i></div>
                     <div class="contact-meta-text">
-                      <h5>Registered Office</h5>
-                      <p>Bengaluru, Karnataka 560001, India</p>
+                      <h5>Icon Electromatic Pvt. Ltd (India)</h5>
+                      <p style="margin-bottom:4px;">#303/2, 5th ‘A’ Cross, HRBR Layout, III Block,<br/>Kalyan Nagar, Bengaluru – 560043</p>
+                      <p style="font-size:0.84rem;margin-bottom:2px;"><i class="fa-solid fa-phone" style="color:var(--logo-red);width:14px;margin-right:4px;"></i> Tel: <a href="tel:+918025429452">+91 80 2542 9452</a></p>
+                      <p style="font-size:0.84rem;"><i class="fa-solid fa-envelope" style="color:var(--logo-red);width:14px;margin-right:4px;"></i> Email: <a href="mailto:salesiepl@iconelectromatic.com" style="color:var(--logo-red-light);">salesiepl@iconelectromatic.com</a></p>
                     </div>
                   </div>
 
-                  <div class="contact-meta-row">
-                    <div class="contact-meta-icon"><i class="fa-solid fa-phone"></i></div>
+                  <!-- Singapore Office -->
+                  <div class="contact-meta-row" style="align-items:flex-start;margin-top:var(--space-4);padding-top:var(--space-4);border-top:1px solid var(--border-subtle);">
+                    <div class="contact-meta-icon" style="margin-top:2px;"><i class="fa-solid fa-globe"></i></div>
                     <div class="contact-meta-text">
-                      <h5>Telephone &amp; Fast Support</h5>
-                      <p>Sales: +91 80 4123 4567<br/>Technical Support: +91 98450 12345</p>
+                      <h5>Icon Electromatic Singapore Pte Ltd</h5>
+                      <p style="margin-bottom:4px;">204D Compassvale Drive #08-409<br/>Singapore 544204</p>
+                      <p style="font-size:0.84rem;"><i class="fa-solid fa-envelope" style="color:var(--logo-red);width:14px;margin-right:4px;"></i> Email: <a href="mailto:IESing@iconelectromatic.com" style="color:var(--logo-red-light);">IESing@iconelectromatic.com</a></p>
                     </div>
                   </div>
 
-                  <div class="contact-meta-row">
-                    <div class="contact-meta-icon"><i class="fa-solid fa-envelope"></i></div>
+                  <!-- USA Office -->
+                  <div class="contact-meta-row" style="align-items:flex-start;margin-top:var(--space-4);padding-top:var(--space-4);border-top:1px solid var(--border-subtle);">
+                    <div class="contact-meta-icon" style="margin-top:2px;"><i class="fa-solid fa-building"></i></div>
                     <div class="contact-meta-text">
-                      <h5>Electronic Mail</h5>
-                      <p>sales@iconelectromatic.com · info@iconelectromatic.com</p>
+                      <h5>Icon Electromatic LLC (USA)</h5>
+                      <p style="margin-bottom:4px;">15412 Meadow Vista Dr, Edmond,<br/>Oklahoma 73013, USA</p>
+                      <p style="font-size:0.84rem;margin-bottom:2px;"><i class="fa-solid fa-phone" style="color:var(--logo-red);width:14px;margin-right:4px;"></i> Tel: <a href="tel:+14055935176">+1 405 593 5176</a></p>
+                      <p style="font-size:0.84rem;"><i class="fa-solid fa-envelope" style="color:var(--logo-red);width:14px;margin-right:4px;"></i> Email: <a href="mailto:salesiellc@iconelectromatic.com" style="color:var(--logo-red-light);">salesiellc@iconelectromatic.com</a></p>
                     </div>
                   </div>
 
-                  <div class="contact-meta-row">
-                    <div class="contact-meta-icon"><i class="fa-solid fa-clock"></i></div>
+                  <!-- Hours -->
+                  <div class="contact-meta-row" style="align-items:flex-start;margin-top:var(--space-4);padding-top:var(--space-4);border-top:1px solid var(--border-subtle);">
+                    <div class="contact-meta-icon" style="margin-top:2px;"><i class="fa-solid fa-clock"></i></div>
                     <div class="contact-meta-text">
                       <h5>Business Operating Hours</h5>
-                      <p>Monday – Friday: 9:00 AM – 6:00 PM IST<br/>Saturday: 9:30 AM – 1:30 PM IST</p>
+                      <p style="font-size:0.84rem;margin-bottom:2px;">Monday – Friday: 9:00 AM – 6:00 PM IST</p>
+                      <p style="font-size:0.84rem;">Saturday: 9:30 AM – 1:30 PM IST</p>
                     </div>
                   </div>
                 </div>
@@ -208,17 +217,6 @@ export function renderContactPage() {
                 </div>
               </div>
 
-              <!-- Quality Pledge -->
-              <div class="contact-relay-card">
-                <h4 style="font-size:1rem;font-weight:700;color:var(--text-white);margin-bottom:var(--space-3);display:flex;align-items:center;gap:8px;">
-                  <i class="fa-solid fa-shield-halved" style="color:var(--logo-blue-light);"></i> Guaranteed Assurance
-                </h4>
-                <ul style="display:flex;flex-direction:column;gap:8px;font-size:0.85rem;color:var(--text-gray-400);">
-                  <li style="display:flex;align-items:center;gap:8px;"><i class="fa-solid fa-check" style="color:var(--success);"></i> Guaranteed genuine OEM parts with trace certificate</li>
-                  <li style="display:flex;align-items:center;gap:8px;"><i class="fa-solid fa-check" style="color:var(--success);"></i> ISO 9001:2015 certified quality management</li>
-                  <li style="display:flex;align-items:center;gap:8px;"><i class="fa-solid fa-check" style="color:var(--success);"></i> Quotation turnaround within 24 business hours</li>
-                </ul>
-              </div>
             </div>
 
             <!-- 1B. RECRUITING INFO CARDS (Shown on Careers tab) -->
@@ -270,29 +268,6 @@ export function renderContactPage() {
                 </div>
               </div>
 
-              <!-- Open Positions Preview -->
-              <div class="contact-relay-card">
-                <h4 style="font-size:1.05rem;font-weight:700;color:var(--text-white);margin-bottom:var(--space-2);display:flex;align-items:center;gap:8px;">
-                  <i class="fa-solid fa-briefcase" style="color:var(--logo-blue-light);"></i> Active Priority Openings
-                </h4>
-                <p style="font-size:0.82rem;color:var(--text-gray-400);margin-bottom:10px;">Select any position in the recruiting form to submit your application:</p>
-                <div class="recruiting-positions-tags">
-                  <span class="recruiting-pos-pill"><i class="fa-solid fa-check" style="color:var(--success);font-size:0.65rem;"></i> RF &amp; MW Design Engineer (DC–110 GHz)</span>
-                  <span class="recruiting-pos-pill"><i class="fa-solid fa-check" style="color:var(--success);font-size:0.65rem;"></i> Field Applications Engineer (FAE)</span>
-                  <span class="recruiting-pos-pill"><i class="fa-solid fa-check" style="color:var(--success);font-size:0.65rem;"></i> Technical Sales &amp; Account Manager</span>
-                  <span class="recruiting-pos-pill"><i class="fa-solid fa-check" style="color:var(--success);font-size:0.65rem;"></i> Radar &amp; EW Systems Specialist</span>
-                  <span class="recruiting-pos-pill"><i class="fa-solid fa-check" style="color:var(--success);font-size:0.65rem;"></i> RF Lab Test &amp; QA Engineer</span>
-                  <span class="recruiting-pos-pill"><i class="fa-solid fa-check" style="color:var(--success);font-size:0.65rem;"></i> Graduate RF Engineering Trainee</span>
-                </div>
-
-                <div style="margin-top:var(--space-4);padding:12px;background:rgba(255,255,255,0.03);border:1px solid var(--border-card);border-radius:var(--radius-md);">
-                  <div style="font-size:0.78rem;color:var(--text-gray-400);margin-bottom:3px;">Direct Talent Acquisition Desk:</div>
-                  <div style="font-size:0.88rem;color:var(--text-white);display:flex;align-items:center;gap:8px;">
-                    <i class="fa-solid fa-envelope" style="color:var(--logo-blue-light);"></i>
-                    <a href="mailto:careers@iconelectromatic.com" style="color:var(--logo-blue-light);text-decoration:none;font-weight:600;">careers@iconelectromatic.com</a>
-                  </div>
-                </div>
-              </div>
             </div>
 
           </div>

@@ -117,6 +117,16 @@ const PARTNERS = [
     description: 'Fortify enables advanced dielectric 3D printing materials for RF and microwave components, supporting complex geometries, rapid prototyping, and next-generation device development.',
   },
   {
+    id: 'powerfactor',
+    name: 'PowerFactor Electronics (PowerRF)',
+    domain: 'Power Electronics & RF Microwave Domains',
+    category: 'components',
+    accentColor: 'blue',
+    glowColor: 'rgba(234, 88, 12, 0.45)',
+    logoImg: '',
+    description: 'Specialized in R&D, design, testing, consultancy, and product development in Power Electronics and RF Microwave domains under the Make in India initiative.',
+  },
+  {
     id: 'nee',
     name: 'NEE International (New Era Electronics)',
     domain: 'Application PCBs for Microwave & Satellite Communication',
@@ -130,8 +140,9 @@ const PARTNERS = [
 
 // Helper: Running OEM Logos Ticker (Unconfined, full-width continuous flow of only large OEM logos)
 function renderRunningLogoTicker(partners) {
-  // Duplicate array 3 times for a completely seamless, continuous loop
-  const loopList = [...partners, ...partners, ...partners];
+  // Duplicate partners with available logos 3 times for a completely seamless, continuous loop
+  const tickerPartners = partners.filter(p => Boolean(p.logoImg));
+  const loopList = [...tickerPartners, ...tickerPartners, ...tickerPartners];
   const itemsMarkup = loopList.map((p, idx) => `
     <div class="oem-running-logo-item" data-partner-id="${p.id}" title="${p.name}">
       <div class="oem-running-logo-box">
@@ -156,7 +167,7 @@ function renderPartnerCardMarkup(partner) {
 
   const logoMarkup = partner.logoImg
     ? `<img src="${partner.logoImg}" alt="${partner.name} Official Logo" class="partner-logo-img" loading="eager" />`
-    : partner.logoSvg;
+    : (partner.logoSvg || '');
 
   return `
     <div class="partner-static-card ${accentClass}" data-partner-id="${partner.id}" data-category="${partner.category}" title="${partner.name}">
@@ -210,7 +221,7 @@ export function renderPartnersPage() {
           <div class="services-trust-strip partners-trust-strip" style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:24px;margin-bottom:0;padding-bottom:0;border-bottom:none;">
             <div style="background:rgba(37,99,235,0.08);border:1px solid rgba(37,99,235,0.25);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#93C5FD;display:flex;align-items:center;gap:8px;">
               <i class="fa-solid fa-handshake-angle" style="color:var(--logo-blue-light);"></i>
-              <span><strong>12+</strong> Global Technology Partners</span>
+              <span><strong>13+</strong> Global Technology Partners</span>
             </div>
             <div style="background:rgba(225,29,72,0.08);border:1px solid rgba(225,29,72,0.25);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#FDA4AF;display:flex;align-items:center;gap:8px;">
               <i class="fa-solid fa-shield-halved" style="color:var(--logo-red-light);"></i>
