@@ -88,10 +88,10 @@ export function renderAboutPage() {
 
             <!-- Authentic Action Downloads from the original page -->
             <div style="display:flex;flex-wrap:wrap;gap:14px;">
-              <a href="https://iconelectromatic2.lbimedia.in/wp-content/uploads/2026/02/ICON-Corporate-Presentation-MAPCON23.pptx" target="_blank" class="btn-relay btn-relay-primary" style="padding:11px 22px;font-size:0.85rem;">
+              <a href="/downloads/ICON_Corporate_Presentation_20Aug26.pptx" download="ICON Corporate  Presentation_20Aug26.pptx" class="btn-relay btn-relay-primary" style="padding:11px 22px;font-size:0.85rem;">
                 <i class="fa-solid fa-file-powerpoint" style="margin-right:6px;"></i>Corporate Presentation &darr;
               </a>
-              <a href="https://iconelectromatic2.lbimedia.in/wp-content/uploads/2026/01/ICON-ELECTROMATICv3-5-1.pdf" target="_blank" class="btn-relay btn-relay-secondary" style="padding:11px 22px;font-size:0.85rem;">
+              <a href="/downloads/ICON_ELECTROMATIC_FLYER.pdf" download="ICON ELECTROMATCI FLYER.pdf" class="btn-relay btn-relay-secondary" style="padding:11px 22px;font-size:0.85rem;">
                 <i class="fa-solid fa-file-pdf" style="color:var(--logo-red-light);margin-right:6px;"></i>Company Flyer &darr;
               </a>
             </div>
