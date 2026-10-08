@@ -51,10 +51,6 @@ export function renderAboutPage() {
 
           <!-- Highlights Strip (Matching Partners, Services, Blogs 1:1) -->
           <div class="services-trust-strip about-trust-strip" style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:24px;margin-bottom:0;padding-bottom:0;border-bottom:none;">
-            <div style="background:rgba(37,99,235,0.08);border:1px solid rgba(37,99,235,0.25);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#93C5FD;display:flex;align-items:center;gap:8px;">
-              <i class="fa-solid fa-shield-halved" style="color:var(--logo-blue-light);"></i>
-              <span>ISO 9001:2015 Operations</span>
-            </div>
             <div style="background:rgba(225,29,72,0.08);border:1px solid rgba(225,29,72,0.25);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#FDA4AF;display:flex;align-items:center;gap:8px;">
               <i class="fa-solid fa-award" style="color:var(--logo-red-light);"></i>
               <span>Multi-Decade Pedigree</span>
@@ -135,10 +131,10 @@ export function renderAboutPage() {
 
         <!-- Section 3: Some Quick Facts / The Numbers That Define Us (Animated Counters) -->
         <div class="about-stats-banner" id="about-stats-container">
-          <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg, transparent, var(--logo-blue), var(--logo-red), transparent);"></div>
+          <div class="about-stats-banner-accent"></div>
           
-          <div style="text-align:center;max-width:650px;margin:0 auto var(--space-10);">
-            <div style="display:inline-flex;align-items:center;gap:6px;font-size:0.75rem;font-weight:700;color:var(--logo-red-light);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:6px;">
+          <div style="text-align:center;max-width:650px;margin:0 auto var(--space-8);">
+            <div class="about-stats-eyebrow">
               <i class="fa-solid fa-chart-simple"></i>
               Some Quick Facts
             </div>
@@ -150,36 +146,36 @@ export function renderAboutPage() {
           <div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:28px;text-align:center;" id="stats-grid-wrapper">
             
             <!-- Stat 1 -->
-            <div class="about-interactive-card red-glow about-animate-fadeup" style="padding:32px 24px;">
-              <div class="about-card-icon" style="font-size:2rem;color:var(--logo-red-light);margin-bottom:12px;display:inline-block;">
+            <div class="about-interactive-card red-glow about-animate-fadeup" style="padding:36px 24px;">
+              <div class="about-stats-icon-box about-stats-icon-red">
                 <i class="fa-solid fa-boxes-stacked"></i>
               </div>
-              <div style="font-family:var(--font-display);font-size:clamp(2.8rem, 4vw, 3.8rem);font-weight:900;color:var(--logo-red);line-height:1;margin-bottom:10px;">
+              <div class="stat-num-red" style="font-family:var(--font-display);font-size:clamp(2.6rem, 3.8vw, 3.5rem);font-weight:900;color:var(--logo-red);line-height:1;margin-bottom:10px;">
                 <span class="stat-counter" data-target="1200">0</span><span>+</span>
               </div>
-              <div class="about-stat-label" style="font-size:1.1rem;font-weight:700;letter-spacing:-0.01em;">Products</div>
+              <div class="about-stat-label" style="font-size:1.05rem;font-weight:700;letter-spacing:-0.01em;">Products</div>
             </div>
 
             <!-- Stat 2 -->
-            <div class="about-interactive-card about-animate-fadeup" style="padding:32px 24px;">
-              <div class="about-card-icon" style="font-size:2rem;color:var(--logo-blue-light);margin-bottom:12px;display:inline-block;">
+            <div class="about-interactive-card blue-glow about-animate-fadeup" style="padding:36px 24px;">
+              <div class="about-stats-icon-box about-stats-icon-blue">
                 <i class="fa-solid fa-calendar-check"></i>
               </div>
-              <div style="font-family:var(--font-display);font-size:clamp(2.8rem, 4vw, 3.8rem);font-weight:900;color:var(--logo-blue-light);line-height:1;margin-bottom:10px;">
+              <div class="stat-num-blue" style="font-family:var(--font-display);font-size:clamp(2.6rem, 3.8vw, 3.5rem);font-weight:900;color:var(--logo-blue-light);line-height:1;margin-bottom:10px;">
                 <span class="stat-counter" data-target="120">0</span><span>+</span>
               </div>
-              <div class="about-stat-label" style="font-size:1.1rem;font-weight:700;letter-spacing:-0.01em;">Years of combined experience</div>
+              <div class="about-stat-label" style="font-size:1.05rem;font-weight:700;letter-spacing:-0.01em;">Years of combined experience</div>
             </div>
 
             <!-- Stat 3 -->
-            <div class="about-interactive-card red-glow about-animate-fadeup" style="padding:32px 24px;">
-              <div class="about-card-icon" style="font-size:2rem;color:var(--logo-red-light);margin-bottom:12px;display:inline-block;">
+            <div class="about-interactive-card red-glow about-animate-fadeup" style="padding:36px 24px;">
+              <div class="about-stats-icon-box about-stats-icon-red">
                 <i class="fa-solid fa-handshake-angle"></i>
               </div>
-              <div style="font-family:var(--font-display);font-size:clamp(2.8rem, 4vw, 3.8rem);font-weight:900;color:var(--logo-red);line-height:1;margin-bottom:10px;">
+              <div class="stat-num-red" style="font-family:var(--font-display);font-size:clamp(2.6rem, 3.8vw, 3.5rem);font-weight:900;color:var(--logo-red);line-height:1;margin-bottom:10px;">
                 <span class="stat-counter" data-target="12">0</span><span>+</span>
               </div>
-              <div class="about-stat-label" style="font-size:1.1rem;font-weight:700;letter-spacing:-0.01em;">Partners</div>
+              <div class="about-stat-label" style="font-size:1.05rem;font-weight:700;letter-spacing:-0.01em;">Partners</div>
             </div>
 
           </div>

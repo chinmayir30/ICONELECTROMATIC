@@ -2470,6 +2470,71 @@ h1, h2, h3, h4, h5, h6 {
   transform: translateY(0);
 }
 
+/* Section 3: The Numbers That Define Us Banner */
+.about-stats-banner {
+  position: relative;
+  border-radius: 24px;
+  padding: 48px 40px;
+  margin-bottom: var(--space-16);
+  background: rgba(8, 13, 26, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+}
+
+.about-stats-banner-accent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--logo-blue), var(--logo-red), transparent);
+}
+
+.about-stats-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--logo-red-light);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  padding: 5px 14px;
+  border-radius: 9999px;
+  background: rgba(225, 29, 72, 0.1);
+  border: 1px solid rgba(225, 29, 72, 0.25);
+}
+
+.about-stats-icon-box {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  margin: 0 auto 14px auto;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease;
+}
+
+.about-interactive-card:hover .about-stats-icon-box {
+  transform: scale(1.12) rotate(-4deg);
+}
+
+.about-stats-icon-red {
+  background: rgba(225, 29, 72, 0.12);
+  color: var(--logo-red-light);
+  border: 1px solid rgba(225, 29, 72, 0.28);
+}
+
+.about-stats-icon-blue {
+  background: rgba(37, 99, 235, 0.12);
+  color: var(--logo-blue-light);
+  border: 1px solid rgba(37, 99, 235, 0.28);
+}
+
 /* Animated Milestone Timeline */
 .about-timeline-track {
   position: relative;
@@ -4063,27 +4128,85 @@ html[data-theme="light"],
   color: #616e85 !important;
 }
 
-/* Section 3: The Numbers That Define Us Banner — B12 Anchoring Navy */
+/* Section 3: The Numbers That Define Us Banner — Light Theme Clean & Beautiful Alignment */
 [data-theme="light"] .about-stats-banner {
-  background: linear-gradient(135deg, #0a1329 0%, #183b8d 55%, #0a1329 100%) !important;
-  border: 1px solid rgba(24, 59, 141, 0.40) !important;
-  box-shadow: 0 20px 50px rgba(12, 32, 53, 0.25) !important;
-  border-radius: 12px !important;
+  background: linear-gradient(180deg, #f8faff 0%, #edf4fc 100%) !important;
+  border: 1px solid #dbeafe !important;
+  box-shadow: 0 10px 30px -5px rgba(24, 59, 141, 0.07), 0 2px 6px rgba(0, 0, 0, 0.02) !important;
+  border-radius: 24px !important;
+  padding: 48px 40px !important;
+  margin-bottom: var(--space-16) !important;
+}
+
+[data-theme="light"] .about-stats-banner-accent {
+  background: linear-gradient(90deg, transparent, rgba(24, 59, 141, 0.35), rgba(221, 43, 28, 0.35), transparent) !important;
+  height: 3px !important;
+}
+
+[data-theme="light"] .about-stats-eyebrow {
+  color: #dd2b1c !important;
+  background: rgba(221, 43, 28, 0.08) !important;
+  border: 1px solid rgba(221, 43, 28, 0.2) !important;
 }
 
 [data-theme="light"] .about-stats-h2 {
-  color: #ffffff !important;
+  color: #0f1d3d !important;
+  font-weight: 800 !important;
 }
 
 [data-theme="light"] .about-stats-banner .about-interactive-card {
   background: #ffffff !important;
-  border: 1px solid rgba(255, 255, 255, 0.35) !important;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16) !important;
-  border-radius: 8px !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 4px 18px rgba(15, 29, 61, 0.05) !important;
+  border-radius: 16px !important;
+  padding: 36px 24px !important;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease !important;
+}
+
+[data-theme="light"] .about-stats-banner .about-interactive-card:hover {
+  transform: translateY(-6px) !important;
+  box-shadow: 0 16px 36px rgba(15, 29, 61, 0.12) !important;
+}
+
+[data-theme="light"] .about-stats-banner .about-interactive-card.red-glow {
+  border-top: 3.5px solid #dd2b1c !important;
+}
+
+[data-theme="light"] .about-stats-banner .about-interactive-card.red-glow:hover {
+  border-color: #dd2b1c !important;
+}
+
+[data-theme="light"] .about-stats-banner .about-interactive-card.blue-glow {
+  border-top: 3.5px solid #183b8d !important;
+}
+
+[data-theme="light"] .about-stats-banner .about-interactive-card.blue-glow:hover {
+  border-color: #183b8d !important;
 }
 
 [data-theme="light"] .about-stats-banner .about-stat-label {
   color: #0f1d3d !important;
+  font-weight: 700 !important;
+}
+
+[data-theme="light"] .about-stats-banner .about-stats-icon-red {
+  background: rgba(221, 43, 28, 0.08) !important;
+  color: #dd2b1c !important;
+  border: 1px solid rgba(221, 43, 28, 0.2) !important;
+}
+
+[data-theme="light"] .about-stats-banner .about-stats-icon-blue {
+  background: rgba(24, 59, 141, 0.08) !important;
+  color: #183b8d !important;
+  border: 1px solid rgba(24, 59, 141, 0.2) !important;
+}
+
+[data-theme="light"] .about-stats-banner .stat-num-red {
+  color: #dd2b1c !important;
+}
+
+[data-theme="light"] .about-stats-banner .stat-num-blue {
+  color: #183b8d !important;
 }
 
 /* Section 4: Vision & Mission Cards */
@@ -10657,6 +10780,9 @@ img, video, iframe {
   }
 
   /* About Page Stats Grid & Vision/Mission Cards */
+  .about-stats-banner {
+    padding: 32px 18px !important;
+  }
   #stats-grid-wrapper,
   .about-stats-banner #stats-grid-wrapper {
     grid-template-columns: 1fr !important;

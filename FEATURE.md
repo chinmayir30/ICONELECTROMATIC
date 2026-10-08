@@ -13,6 +13,18 @@
 
 ### **2026-10-08**
 
+* **Category:** About Us Page — Removal of ISO 9001 Badge & Light Theme Stats Banner Beautification
+  * **Page / Files:** [`src/pages/About.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/About.js), [`src/styles/index.css`](file:///d:/ICON%20ELECTROMATIC/src/styles/index.css)
+  * **Type:** Content Streamlining & UI/UX Beautification (Light Theme Focus)
+  * **Details:**
+    * **Removed "ISO 9001:2015 Operations" Badge:** Removed the ISO operations badge from the About page hero trust highlights strip across both darker and lighter versions, leaving the remaining 3 badges (`Multi-Decade Pedigree`, `Defense & Telecom Solutions`, `Global OEM Representation`) balanced and centered.
+    * **Beautified "The Numbers That Define Us" Banner (Light Theme):**
+      * Replaced the heavy midnight navy background in the lighter theme with an airy, harmonious light gradient container (`linear-gradient(180deg, #f8faff 0%, #edf4fc 100%)`), crisp sky border (`#dbeafe`), and soft ambient shadow (`box-shadow: 0 10px 30px -5px rgba(24, 59, 141, 0.07)`).
+      * Enclosed all 3 stat cards (`1,200+ Products`, `120+ Years experience`, `12+ Partners`) with generous internal padding (`48px 40px` on desktop, `32px 18px` on mobile) so cards sit comfortably inside without awkward clipping or overflow.
+      * Fixed spacing separation between Section 3 and Section 4 (`margin-bottom: var(--space-16)`), completely resolving the collision with the "Our Vision" and "Our Mission" cards below.
+      * Enhanced stat cards in light mode with crisp `#ffffff` surface, `#e2e8f0` border, `16px` border-radius, top accent borders (`#dd2b1c` for Products/Partners and `#183b8d` for Experience), centered icon boxes with soft tinted backgrounds, and smooth interactive hover lift (`translateY(-6px)`).
+      * Styled eyebrow pill (`SOME QUICK FACTS`) and heading (`The Numbers That Define Us`) with deep navy `#0f1d3d` and brand red accents.
+
 * **Category:** Contact Page — Content Streamlining (Perks & Form Submission Confirmation)
   * **Page / Files:** [`src/pages/Contact.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Contact.js)
   * **Type:** Content & Confirmation Notice Streamlining (Both Dark & Light Themes)
