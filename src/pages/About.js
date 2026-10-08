@@ -215,21 +215,29 @@ export function renderAboutPage() {
 
         </div>
 
-        <!-- Section 5: Our Journey (Chronological Timeline Format) -->
+        <!-- Section 5: Our Journey (Chronological Timeline Format with 4 Milestones & Pillars) -->
         <div style="margin-bottom:var(--space-16);">
-          <div style="text-align:center;max-width:600px;margin:0 auto var(--space-8);">
+          <div style="text-align:center;max-width:720px;margin:0 auto var(--space-8);">
             <div style="display:inline-flex;align-items:center;gap:6px;font-size:0.75rem;font-weight:700;color:var(--logo-blue-light);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;">
               <i class="fa-solid fa-timeline"></i>
               CHRONOLOGY
             </div>
-            <h2 style="font-family:var(--font-display);font-size:clamp(1.8rem, 2.8vw, 2.4rem);font-weight:800;letter-spacing:-0.02em;">
+            <h2 style="font-family:var(--font-display);font-size:clamp(1.8rem, 2.8vw, 2.4rem);font-weight:800;letter-spacing:-0.02em;margin-bottom:12px;">
               Our Journey
             </h2>
+            <p style="font-size:0.95rem;line-height:1.7;color:var(--text-muted);margin:0 auto 16px;">
+              From our founding in Bengaluru in 2009 as RF &amp; Microwave specialists to global operations spanning Singapore, the USA, and India — empowering mission-critical Aerospace, Defence, Space, and SATCOM programs.
+            </p>
+            <div style="display:flex;justify-content:center;gap:12px;">
+              <button type="button" id="btn-view-infographic" class="btn-relay btn-relay-secondary" style="padding:9px 20px;font-size:0.82rem;display:inline-flex;align-items:center;gap:8px;cursor:pointer;">
+                <i class="fa-solid fa-expand"></i> View Slide Graphic
+              </button>
+            </div>
           </div>
 
           <div class="relay-timeline-wrapper">
-            <!-- Timeline Connecting Rail on Desktop -->
-            <div class="relay-timeline-rail">
+            <!-- 4-Node Timeline Connecting Rail on Desktop -->
+            <div class="relay-timeline-rail-4">
               <div class="relay-timeline-rail-line"></div>
               
               <!-- Node 1: 2009 -->
@@ -237,52 +245,258 @@ export function renderAboutPage() {
                 <div class="timeline-node-circle">
                   <i class="fa-solid fa-flag"></i>
                 </div>
-                <div class="timeline-node-year">2009</div>
+                <div class="timeline-node-year blue-text">2009</div>
+                <div class="timeline-stem-connector blue-stem"></div>
+              </div>
+
+              <!-- Node 2: 2018 -->
+              <div class="relay-timeline-node">
+                <div class="timeline-node-circle red-node">
+                  <i class="fa-solid fa-globe"></i>
+                </div>
+                <div class="timeline-node-year">2018</div>
                 <div class="timeline-stem-connector"></div>
               </div>
 
-              <!-- Node 2: 2020 -->
+              <!-- Node 3: May 2020 -->
               <div class="relay-timeline-node">
                 <div class="timeline-node-circle blue-node">
-                  <i class="fa-solid fa-building-circle-check"></i>
+                  <i class="fa-solid fa-plane-departure"></i>
                 </div>
-                <div class="timeline-node-year blue-text">2020</div>
+                <div class="timeline-node-year blue-text">May 2020</div>
                 <div class="timeline-stem-connector blue-stem"></div>
               </div>
+
+              <!-- Node 4: Nov 2020 -->
+              <div class="relay-timeline-node">
+                <div class="timeline-node-circle amber-node">
+                  <i class="fa-solid fa-building-circle-check"></i>
+                </div>
+                <div class="timeline-node-year amber-text">Nov 2020</div>
+                <div class="timeline-stem-connector amber-stem"></div>
+              </div>
             </div>
 
-            <!-- Milestone Cards Connected Along the Timeline -->
-            <div class="journey-grid-two">
+            <!-- 4 Chronological Milestone Cards -->
+            <div class="journey-grid-four">
               
-              <!-- 2009 Milestone Card -->
-              <div class="journey-step-card red-step about-interactive-card red-glow about-animate-fadeup" style="border-top:3px solid var(--logo-red);">
-                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
-                  <span class="timeline-badge red" style="font-size:0.95rem;padding:6px 16px;">2009 • THE INCEPTION</span>
-                  <span class="hub-dot-pulse red"></span>
+              <!-- Milestone 1: 2009 -->
+              <div class="journey-milestone-card about-interactive-card blue-glow about-animate-fadeup" style="border-top:3.5px solid var(--logo-blue);">
+                <div class="journey-arch-badge-wrapper">
+                  <div class="journey-arch-badge blue">2009</div>
                 </div>
-                <h3 style="font-family:var(--font-display);font-size:1.35rem;font-weight:800;margin-bottom:10px;line-height:1.3;">
+                <h3 class="journey-milestone-headline">
                   Founded in Bengaluru, India
                 </h3>
-                <p style="font-size:0.9rem;line-height:1.7;margin:0;">
-                  Established by veteran engineers with decades of expertise in RF, Microwave, Semiconductors, and allied service industries.
+                <div class="journey-photo-frame">
+                  <img src="/images/timeline/timeline-2009-bengaluru.jpg" alt="Icon Electromatic founded in Bengaluru 2009" loading="lazy" />
+                  <div class="journey-photo-caption">
+                    <i class="fa-solid fa-microchip" style="color:var(--logo-blue-light);"></i>
+                    <span>RF &amp; Microwave Specialists</span>
+                  </div>
+                </div>
+                <p class="journey-milestone-desc">
+                  Established by veteran engineers with decades of combined expertise in RF, Microwave, Semiconductors, and allied high-frequency electronic systems.
                 </p>
               </div>
 
-              <!-- 2020 Milestone Card -->
-              <div class="journey-step-card blue-step about-interactive-card about-animate-fadeup" style="border-top:3px solid var(--logo-blue);">
-                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
-                  <span class="timeline-badge blue" style="font-size:0.95rem;padding:6px 16px;">2020 • GLOBAL TRANSFORMATION</span>
-                  <span class="hub-dot-pulse"></span>
+              <!-- Milestone 2: 2018 -->
+              <div class="journey-milestone-card card-accent-red about-interactive-card red-glow about-animate-fadeup" style="border-top:3.5px solid var(--logo-red);">
+                <div class="journey-arch-badge-wrapper">
+                  <div class="journey-arch-badge red">2018</div>
                 </div>
-                <h3 style="font-family:var(--font-display);font-size:1.35rem;font-weight:800;margin-bottom:10px;line-height:1.3;">
-                  ICON Electromatic transitions into Icon Electromatic Private Limited
+                <h3 class="journey-milestone-headline">
+                  Expansion to Singapore
                 </h3>
-                <p style="font-size:0.9rem;line-height:1.7;margin:0;">
-                  Expanded international footprint and global technology partnership operations across India, Israel, Singapore, and the USA.
+                <div class="journey-photo-frame">
+                  <img src="/images/timeline/timeline-2018-singapore.jpg" alt="Icon Electromatic expansion to Singapore 2018" loading="lazy" />
+                  <div class="journey-photo-caption">
+                    <i class="fa-solid fa-city" style="color:var(--logo-red-light);"></i>
+                    <span>Expansion to Singapore</span>
+                  </div>
+                </div>
+                <p class="journey-milestone-desc">
+                  Expanded international operations to Singapore, establishing a vital APAC supply gateway and strategic ties with leading semiconductor manufacturers.
+                </p>
+              </div>
+
+              <!-- Milestone 3: May 2020 -->
+              <div class="journey-milestone-card card-accent-navy about-interactive-card blue-glow about-animate-fadeup" style="border-top:3.5px solid #1e40af;">
+                <div class="journey-arch-badge-wrapper">
+                  <div class="journey-arch-badge navy-flag">May 2020</div>
+                </div>
+                <h3 class="journey-milestone-headline">
+                  Expansion to United States
+                </h3>
+                <div class="journey-photo-frame">
+                  <img src="/images/timeline/timeline-2020-usa.jpg" alt="Icon Electromatic expansion to United States May 2020" loading="lazy" />
+                  <div class="journey-photo-caption">
+                    <i class="fa-solid fa-landmark" style="color:var(--logo-blue-light);"></i>
+                    <span>Expansion to United States</span>
+                  </div>
+                </div>
+                <p class="journey-milestone-desc">
+                  Expanded transatlantic footprint to the United States to collaborate directly with premier American microwave OEMs, ITAR suppliers, and global innovators.
+                </p>
+              </div>
+
+              <!-- Milestone 4: Nov 2020 -->
+              <div class="journey-milestone-card card-accent-amber about-interactive-card about-animate-fadeup" style="border-top:3.5px solid #d97706;">
+                <div class="journey-arch-badge-wrapper">
+                  <div class="journey-arch-badge amber">Nov 2020</div>
+                </div>
+                <h3 class="journey-milestone-headline">
+                  Incorporation in India
+                </h3>
+                <div class="journey-photo-frame">
+                  <img src="/images/timeline/timeline-2020-india.jpg" alt="Icon Electromatic incorporation in India Nov 2020" loading="lazy" />
+                  <div class="journey-photo-caption">
+                    <i class="fa-solid fa-building" style="color:#fbbf24;"></i>
+                    <span>Incorporation in India</span>
+                  </div>
+                </div>
+                <p class="journey-milestone-desc">
+                  Transitioned and formally incorporated as <strong>Icon Electromatic Private Limited</strong>, scaling nationwide operations and advancing “Make in India” initiatives.
                 </p>
               </div>
 
             </div>
+
+            <!-- Central Junction Connector to Strategic Sectors -->
+            <div class="timeline-central-junction about-animate-fadeup">
+              <div class="timeline-junction-divider">
+                <div class="timeline-junction-orb">
+                  <i class="fa-solid fa-satellite-dish"></i>
+                </div>
+              </div>
+              <div style="display:inline-flex;align-items:center;gap:6px;font-size:0.75rem;font-weight:700;color:var(--logo-red-light);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;">
+                <i class="fa-solid fa-layer-group"></i>
+                STRATEGIC APPLICATION DOMAINS
+              </div>
+              <h3 style="font-family:var(--font-display);font-size:clamp(1.5rem, 2.2vw, 1.9rem);font-weight:800;letter-spacing:-0.01em;margin-bottom:8px;">
+                Where Our Technology Operates
+              </h3>
+              <p style="font-size:0.9rem;line-height:1.6;color:var(--text-muted);max-width:620px;margin:0 auto 28px;">
+                Delivering mission-critical electronic components, high-reliability assemblies, and custom microwave engineering across four strategic arenas.
+              </p>
+            </div>
+
+            <!-- 4 Domain Sector Cards -->
+            <div class="journey-domains-grid">
+              
+              <!-- Sector 1: Aerospace & Defence -->
+              <div class="domain-sector-card about-interactive-card blue-glow about-animate-fadeup">
+                <div class="domain-photo-frame">
+                  <img src="/images/timeline/domain-aerospace-defence.jpg" alt="Aerospace and Defence applications" loading="lazy" />
+                  <div class="domain-photo-badge">
+                    Aerospace &amp; Defence
+                  </div>
+                </div>
+                <p class="domain-sector-desc">
+                  High-power GaN amplifiers, RF filters, waveguides, and radar subsystems for tactical airborne, naval, and ground-based defense platforms.
+                </p>
+                <span class="domain-tag-pill">
+                  <i class="fa-solid fa-jet-fighter" style="margin-right:4px;"></i>Radar &amp; EW Systems
+                </span>
+              </div>
+
+              <!-- Sector 2: Hi-Rel Space -->
+              <div class="domain-sector-card about-interactive-card blue-glow about-animate-fadeup">
+                <div class="domain-photo-frame">
+                  <img src="/images/timeline/domain-hirel-space.jpg" alt="Hi-Rel Space electronic solutions" loading="lazy" />
+                  <div class="domain-photo-badge">
+                    Hi-Rel Space
+                  </div>
+                </div>
+                <p class="domain-sector-desc">
+                  Spaceflight-qualified, radiation-tolerant microwave components and low-loss substrates engineered for orbital payloads and satellites.
+                </p>
+                <span class="domain-tag-pill">
+                  <i class="fa-solid fa-satellite" style="margin-right:4px;"></i>Space-Grade Qualified
+                </span>
+              </div>
+
+              <!-- Sector 3: 5G & SATCOM -->
+              <div class="domain-sector-card about-interactive-card red-glow about-animate-fadeup">
+                <div class="domain-photo-frame">
+                  <img src="/images/timeline/domain-5g-satcom.jpg" alt="5G and SATCOM communications" loading="lazy" />
+                  <div class="domain-photo-badge">
+                    5G &amp; SATCOM
+                  </div>
+                </div>
+                <p class="domain-sector-desc">
+                  Ultra-wideband mmWave components, parabolic antenna feed networks, beamformers, and ground station transceivers.
+                </p>
+                <span class="domain-tag-pill" style="color:var(--logo-red-light);background:rgba(225,29,72,0.1);border-color:rgba(225,29,72,0.25);">
+                  <i class="fa-solid fa-tower-cell" style="margin-right:4px;"></i>Next-Gen Telecom
+                </span>
+              </div>
+
+              <!-- Sector 4: Homeland Security & Smart City -->
+              <div class="domain-sector-card about-interactive-card blue-glow about-animate-fadeup">
+                <div class="domain-photo-frame">
+                  <img src="/images/timeline/domain-homeland-security.jpg" alt="Homeland Security and Smart City infrastructure" loading="lazy" />
+                  <div class="domain-photo-badge">
+                    Homeland Security &amp; Smart City
+                  </div>
+                </div>
+                <p class="domain-sector-desc">
+                  Perimeter intrusion detection systems (PIDS), tactical perimeter radar sensors, and smart city surveillance electronics.
+                </p>
+                <span class="domain-tag-pill">
+                  <i class="fa-solid fa-shield-halved" style="margin-right:4px;"></i>Intrusion &amp; Radar
+                </span>
+              </div>
+
+            </div>
+
+            <!-- 2 Foundational Strategic Pillars -->
+            <div class="journey-pillars-grid">
+              
+              <!-- Pillar 1: Global Partnerships -->
+              <div class="pillar-foundation-card blue-pillar about-interactive-card blue-glow about-animate-fadeup" style="border-left:4px solid var(--logo-blue);">
+                <div class="pillar-photo-frame">
+                  <img src="/images/timeline/pillar-global-partnerships.jpg" alt="Global Partnerships - Advanced Technologies" loading="lazy" />
+                </div>
+                <div>
+                  <div style="font-size:0.75rem;font-weight:700;color:var(--logo-blue-light);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:4px;">
+                    GLOBAL ALLIANCES
+                  </div>
+                  <h3 class="pillar-content-title">
+                    Global Partnerships
+                  </h3>
+                  <div class="pillar-content-sub">
+                    Advanced Technologies
+                  </div>
+                  <p class="pillar-content-text">
+                    Direct OEM partnerships with premier global innovators (Qorvo, Rogers, Tecdia, Mini-Circuits, and more), delivering verified authentic high-performance components to Indian industries.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Pillar 2: Bespoke Solutions -->
+              <div class="pillar-foundation-card red-pillar about-interactive-card red-glow about-animate-fadeup" style="border-left:4px solid var(--logo-red);">
+                <div class="pillar-photo-frame">
+                  <img src="/images/timeline/pillar-bespoke-solutions.jpg" alt="Bespoke Solutions - RF and Design Services" loading="lazy" />
+                </div>
+                <div>
+                  <div style="font-size:0.75rem;font-weight:700;color:var(--logo-red-light);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:4px;">
+                    ENGINEERING EXPERTISE
+                  </div>
+                  <h3 class="pillar-content-title">
+                    Bespoke Solutions
+                  </h3>
+                  <div class="pillar-content-sub">
+                    RF &amp; Design Services
+                  </div>
+                  <p class="pillar-content-text">
+                    End-to-end design-in consultancy, specialized microwave simulation, prototyping, and custom RF assembly integration tailored precisely to mission specifications.
+                  </p>
+                </div>
+              </div>
+
+            </div>
+
           </div>
         </div>
 
@@ -361,6 +575,22 @@ export function renderAboutPage() {
 
         </div>
       </div>
+
+      <!-- Infographic Lightbox Modal -->
+      <div id="timeline-infographic-modal" class="timeline-modal-backdrop" aria-hidden="true">
+        <div class="timeline-modal-content">
+          <div class="timeline-modal-header">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <span class="domain-tag-pill" style="font-size:0.72rem;">OFFICIAL PRESENTATION SLIDE</span>
+              <h3 style="font-family:var(--font-display);font-size:1.1rem;font-weight:800;margin:0;">Icon Electromatic — Chronology &amp; Core Focus</h3>
+            </div>
+            <button type="button" id="close-timeline-modal-btn" class="timeline-modal-close" aria-label="Close modal">&times;</button>
+          </div>
+          <div class="timeline-modal-body">
+            <img src="/images/timeline/icon-journey-infographic-full.png" alt="Official Icon Electromatic Chronology and Core Focus Infographic" style="width:100%;height:auto;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.5);display:block;" />
+          </div>
+        </div>
+      </div>
     </div>
   `;
 }
@@ -373,6 +603,7 @@ export function initAboutPage() {
       const rect = card.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
+
       card.style.setProperty('--mouse-x', `${x}px`);
       card.style.setProperty('--mouse-y', `${y}px`);
 
@@ -444,4 +675,42 @@ export function initAboutPage() {
 
     animatedCards.forEach(c => cardObserver.observe(c));
   }
+
+  // 4. Official Infographic Modal Lightbox
+  const openModalBtn = document.getElementById('btn-view-infographic');
+  const modal = document.getElementById('timeline-infographic-modal');
+  const closeModalBtn = document.getElementById('close-timeline-modal-btn');
+
+  if (openModalBtn && modal) {
+    const openModal = () => {
+      modal.classList.add('is-active');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    };
+
+    const closeModal = () => {
+      modal.classList.remove('is-active');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    };
+
+    openModalBtn.addEventListener('click', openModal);
+
+    if (closeModalBtn) {
+      closeModalBtn.addEventListener('click', closeModal);
+    }
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        closeModal();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('is-active')) {
+        closeModal();
+      }
+    });
+  }
 }
+
