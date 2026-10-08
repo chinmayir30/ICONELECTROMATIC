@@ -266,14 +266,6 @@ export function renderContactPage() {
                     <div>
                       <strong>Advanced Microwave Measurement Lab:</strong>
                       Hands-on exposure to Vector Network Analyzers (VNA up to 67 GHz), noise figure meters, and RF anechoic test chambers.
-                    </div>
-                  </div>
-                  <div class="recruiting-perk-item">
-                    <i class="fa-solid fa-chart-line" style="color:var(--success);"></i>
-                    <div>
-                      <strong>Competitive CTC &amp; Growth Trajectory:</strong>
-                      Attractive compensation, performance bonuses, health coverage, technical certifications, and global vendor trainings.
-                    </div>
                   </div>
                 </div>
               </div>
@@ -595,7 +587,6 @@ export function initContactPage() {
     inquiryForm.addEventListener('submit', (e) => {
       e.preventDefault();
       const name = document.getElementById('c-fullname').value || 'Customer';
-      const refId = 'ICON-' + Math.floor(100000 + Math.random() * 900000);
 
       if (inquiryPanel) {
         inquiryPanel.innerHTML = `
@@ -605,11 +596,8 @@ export function initContactPage() {
             </div>
             <h3 style="font-size:1.5rem;font-weight:800;color:var(--text-white);margin-bottom:8px;">Thank You, ${name}!</h3>
             <p style="color:var(--text-gray-400);font-size:1rem;max-width:480px;margin:0 auto var(--space-6);line-height:1.6;">
-              Your inquiry has been logged with ICON Electromatic Technical Dispatch. A specialized RF application engineer will review your specifications and contact you within 24 hours.
+              Your inquiry has been logged with ICON Electromatic Technical Dispatch.
             </p>
-            <div style="display:inline-block;padding:10px 20px;background:rgba(255,255,255,0.05);border:1px solid var(--border-card);border-radius:var(--radius-md);font-family:var(--font-display);font-size:0.95rem;color:var(--text-white);margin-bottom:var(--space-6);">
-              Inquiry Reference: <span style="color:var(--logo-red-light);font-weight:800;">${refId}</span>
-            </div>
             <div>
               <button class="btn-relay-secondary" id="reset-inquiry-btn" style="padding:8px 18px;font-size:0.85rem;">
                 <i class="fa-solid fa-rotate-left"></i> Send Another Inquiry

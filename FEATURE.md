@@ -13,6 +13,13 @@
 
 ### **2026-10-08**
 
+* **Category:** Contact Page — Content Streamlining (Perks & Form Submission Confirmation)
+  * **Page / Files:** [`src/pages/Contact.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Contact.js)
+  * **Type:** Content & Confirmation Notice Streamlining (Both Dark & Light Themes)
+  * **Details:**
+    * **Recruiting Perks List:** Removed `"Competitive CTC & Growth Trajectory: Attractive compensation, performance bonuses, health coverage, technical certifications, and global vendor trainings."` from the Careers & Talent Acquisition left column perks list in both dark and light modes.
+    * **Inquiry Form Submission Confirmation:** Upon clicking the `"Send Message to Engineering Team"` button, removed the review notice (`"A specialized RF application engineer will review your specifications and contact you within 24 hours."`) and the reference tracking box (`"Inquiry Reference: ICON-XXXXXX"`), maintaining a clean `"Thank You, [Name]!"` confirmation message and the reset button.
+
 * **Category:** Contact Page — Quick Requirement Presets Alignment (14 Component Domain Buttons)
   * **Page / Files:** [`src/pages/Contact.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Contact.js)
   * **Type:** UX Component & Content Alignment (Both Dark & Light Themes)
