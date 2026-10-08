@@ -5084,9 +5084,20 @@ html[data-theme="light"],
   color: #123b7a !important;
 }
 
-[data-theme="light"] .about-hero-feature-card .about-hero-sub-title {
+[data-theme="light"] .about-hero-feature-card .about-hero-sub-title,
+[data-theme="light"] .about-section-sub-title {
   color: #e32726 !important;
   font-weight: 700 !important;
+}
+
+.about-section-sub-title {
+  color: var(--logo-red-light);
+  font-weight: 700;
+}
+
+[data-theme="light"] .about-page h2,
+[data-theme="light"] .about-page h3 {
+  color: #0F172A;
 }
 
 [data-theme="light"] .about-hero-feature-card p {

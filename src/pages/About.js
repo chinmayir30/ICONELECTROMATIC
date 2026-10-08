@@ -34,14 +34,14 @@ export function renderAboutPage() {
             </div>
 
             <div style="position:relative;z-index:3;">
-              <div class="page-eyebrow-pill">
-                <span class="hub-dot-pulse"></span>
-                <span>ABOUT ICON ELECTROMATIC</span>
-              </div>
-              
-              <h1 class="page-title-unified">
-                About Us
+              <h1 class="page-title-unified" style="margin-bottom:8px;">
+                About Icon Electromatic
               </h1>
+              
+              <div class="about-section-sub-title" style="font-family:var(--font-display);font-size:clamp(1.15rem, 1.8vw, 1.4rem);font-weight:700;color:var(--logo-red-light);margin-bottom:18px;display:inline-flex;align-items:center;gap:8px;">
+                <span class="hub-dot-pulse"></span>
+                <span>About Us</span>
+              </div>
               
               <p class="page-lead-unified">
                 Driven by decades of engineering expertise and global collaborations, Icon Electromatic Private Limited delivers advanced components and tailored solutions that transform design ambitions into reality.
@@ -134,13 +134,12 @@ export function renderAboutPage() {
           <div class="about-stats-banner-accent"></div>
           
           <div style="text-align:center;max-width:650px;margin:0 auto var(--space-8);">
-            <div class="about-stats-eyebrow">
-              <i class="fa-solid fa-chart-simple"></i>
+            <h2 class="about-stats-h2" style="font-family:var(--font-display);font-size:clamp(1.85rem, 2.8vw, 2.4rem);font-weight:800;letter-spacing:-0.02em;margin-bottom:8px;">
               Some Quick Facts
-            </div>
-            <h2 class="about-stats-h2" style="font-family:var(--font-display);font-size:clamp(1.8rem, 2.8vw, 2.4rem);font-weight:800;letter-spacing:-0.02em;">
-              The Numbers That Define Us
             </h2>
+            <div class="about-section-sub-title" style="font-family:var(--font-display);font-size:clamp(1.15rem, 1.6vw, 1.35rem);font-weight:700;color:var(--logo-red-light);line-height:1.35;margin-bottom:12px;">
+              The Numbers That Define Us
+            </div>
           </div>
 
           <div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:28px;text-align:center;" id="stats-grid-wrapper">
@@ -218,13 +217,12 @@ export function renderAboutPage() {
         <!-- Section 5: Our Journey (Chronological Timeline Format with 4 Milestones & Pillars) -->
         <div style="margin-bottom:var(--space-16);">
           <div style="text-align:center;max-width:720px;margin:0 auto var(--space-8);">
-            <div style="display:inline-flex;align-items:center;gap:6px;font-size:0.75rem;font-weight:700;color:var(--logo-blue-light);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;">
-              <i class="fa-solid fa-timeline"></i>
-              CHRONOLOGY
-            </div>
-            <h2 style="font-family:var(--font-display);font-size:clamp(1.8rem, 2.8vw, 2.4rem);font-weight:800;letter-spacing:-0.02em;margin-bottom:12px;">
-              Our Journey
+            <h2 style="font-family:var(--font-display);font-size:clamp(1.85rem, 2.8vw, 2.4rem);font-weight:800;letter-spacing:-0.02em;margin-bottom:8px;">
+              Chronology
             </h2>
+            <div class="about-section-sub-title" style="font-family:var(--font-display);font-size:clamp(1.15rem, 1.6vw, 1.35rem);font-weight:700;color:var(--logo-red-light);line-height:1.35;margin-bottom:14px;">
+              Our Journey
+            </div>
             <p style="font-size:0.95rem;line-height:1.7;color:var(--text-muted);margin:0 auto 16px;">
               From our founding in Bengaluru in 2009 as RF &amp; Microwave specialists to global operations spanning Singapore, the USA, and India — empowering mission-critical Aerospace, Defence, Space, and SATCOM programs.
             </p>
@@ -440,13 +438,12 @@ export function renderAboutPage() {
                   <i class="fa-solid fa-satellite-dish"></i>
                 </div>
               </div>
-              <div style="display:inline-flex;align-items:center;gap:6px;font-size:0.75rem;font-weight:700;color:var(--logo-red-light);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;">
-                <i class="fa-solid fa-layer-group"></i>
-                STRATEGIC APPLICATION DOMAINS
-              </div>
-              <h3 style="font-family:var(--font-display);font-size:clamp(1.5rem, 2.2vw, 1.9rem);font-weight:800;letter-spacing:-0.01em;margin-bottom:8px;">
-                Where Our Technology Operates
+              <h3 style="font-family:var(--font-display);font-size:clamp(1.65rem, 2.4vw, 2.05rem);font-weight:800;letter-spacing:-0.01em;margin-bottom:8px;">
+                Strategic Application Domains
               </h3>
+              <div class="about-section-sub-title" style="font-family:var(--font-display);font-size:clamp(1.1rem, 1.5vw, 1.3rem);font-weight:700;color:var(--logo-red-light);line-height:1.35;margin-bottom:14px;">
+                Where Our Technology Operates
+              </div>
               <p style="font-size:0.9rem;line-height:1.6;color:var(--text-muted);max-width:620px;margin:0 auto 28px;">
                 Delivering mission-critical electronic components, high-reliability assemblies, and custom microwave engineering across four strategic arenas.
               </p>
@@ -574,13 +571,12 @@ export function renderAboutPage() {
         <!-- Section 6: Why Us (Exact 5 Points from Original Site with Interactive 3D Glow Cards) -->
         <div style="margin-bottom:var(--space-12);">
           <div style="text-align:center;max-width:600px;margin:0 auto var(--space-10);">
-            <div style="display:inline-flex;align-items:center;gap:6px;font-size:0.75rem;font-weight:700;color:var(--logo-red-light);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;">
-              <i class="fa-solid fa-award"></i>
-              OUR ADVANTAGE
-            </div>
-            <h2 style="font-family:var(--font-display);font-size:clamp(1.8rem, 2.8vw, 2.4rem);font-weight:800;letter-spacing:-0.02em;">
-              Why Us
+            <h2 style="font-family:var(--font-display);font-size:clamp(1.85rem, 2.8vw, 2.4rem);font-weight:800;letter-spacing:-0.02em;margin-bottom:8px;">
+              Our Advantage
             </h2>
+            <div class="about-section-sub-title" style="font-family:var(--font-display);font-size:clamp(1.15rem, 1.6vw, 1.35rem);font-weight:700;color:var(--logo-red-light);line-height:1.35;margin-bottom:14px;">
+              Why Us
+            </div>
           </div>
 
           <div class="why-us-grid-dark">
