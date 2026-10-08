@@ -236,44 +236,107 @@ export function renderAboutPage() {
           </div>
 
           <div class="relay-timeline-wrapper">
-            <!-- 4-Node Timeline Connecting Rail on Desktop -->
+            <!-- 4-Node Timeline Connecting Rail with Passing Neon Wave -->
             <div class="relay-timeline-rail-4">
-              <div class="relay-timeline-rail-line"></div>
+              <!-- High-Tech Rail Track with Neon Wave Plasma -->
+              <div class="relay-timeline-rail-track">
+                <div class="relay-timeline-rail-plasma"></div>
+                <div class="relay-timeline-rail-ticks"></div>
+                <!-- Dynamic Neon Wave Passing across the Timeline -->
+                <div class="relay-neon-wave-beam"></div>
+                <div class="relay-neon-wave-droplet"></div>
+              </div>
               
-              <!-- Node 1: 2009 -->
-              <div class="relay-timeline-node">
-                <div class="timeline-node-circle">
-                  <i class="fa-solid fa-flag"></i>
+              <!-- Node 1: 2009 (RF & Microwave Genesis) -->
+              <div class="relay-timeline-node node-step-1" data-milestone="2009">
+                <div class="node-radar-wave-ring"></div>
+                <div class="node-radar-wave-ring delay"></div>
+                <div class="node-tech-reticle"></div>
+                <div class="timeline-node-circle cyan-node">
+                  <svg class="node-tech-svg" viewBox="0 0 32 32" fill="none" stroke="currentColor">
+                    <path d="M16 8v15M13 23h6M12 17h8M14 12h4" stroke-width="1.8" stroke-linecap="round"/>
+                    <circle cx="16" cy="7" r="2.5" fill="currentColor"/>
+                    <path d="M11 4.5A7 7 0 0 0 11 9.5" stroke-width="1.8" stroke-linecap="round" class="svg-wave-left-1"/>
+                    <path d="M7.5 2.5A12 12 0 0 0 7.5 11.5" stroke-width="1.6" stroke-linecap="round" class="svg-wave-left-2"/>
+                    <path d="M21 4.5A7 7 0 0 1 21 9.5" stroke-width="1.8" stroke-linecap="round" class="svg-wave-right-1"/>
+                    <path d="M24.5 2.5A12 12 0 0 1 24.5 11.5" stroke-width="1.6" stroke-linecap="round" class="svg-wave-right-2"/>
+                    <path d="M10 27l6-3 6 3" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
                 </div>
-                <div class="timeline-node-year blue-text">2009</div>
-                <div class="timeline-stem-connector blue-stem"></div>
+                <div class="timeline-node-year-pill cyan-pill">
+                  <span class="node-year-text">2009</span>
+                  <span class="node-live-dot"></span>
+                </div>
+                <div class="timeline-stem-connector cyan-stem">
+                  <div class="stem-photon-drop"></div>
+                </div>
               </div>
 
-              <!-- Node 2: 2018 -->
-              <div class="relay-timeline-node">
+              <!-- Node 2: 2018 (Singapore APAC Gateway) -->
+              <div class="relay-timeline-node node-step-2" data-milestone="2018">
+                <div class="node-radar-wave-ring red-ring"></div>
+                <div class="node-radar-wave-ring red-ring delay"></div>
+                <div class="node-tech-reticle"></div>
                 <div class="timeline-node-circle red-node">
-                  <i class="fa-solid fa-globe"></i>
+                  <svg class="node-tech-svg" viewBox="0 0 32 32" fill="none" stroke="currentColor">
+                    <circle cx="16" cy="16" r="11" stroke-width="1.8"/>
+                    <ellipse cx="16" cy="16" rx="5" ry="11" stroke-width="1.4"/>
+                    <path d="M5.5 16h21M7.5 10.5h17M7.5 21.5h17" stroke-width="1.2" stroke-linecap="round"/>
+                    <ellipse cx="16" cy="16" rx="14" ry="4.5" stroke-width="1.6" stroke-dasharray="3 2" transform="rotate(-25 16 16)" class="svg-orbit-ring"/>
+                    <circle cx="26" cy="11" r="2" fill="currentColor"/>
+                    <circle cx="16" cy="16" r="2.5" fill="currentColor"/>
+                  </svg>
                 </div>
-                <div class="timeline-node-year">2018</div>
-                <div class="timeline-stem-connector"></div>
+                <div class="timeline-node-year-pill red-pill">
+                  <span class="node-year-text">2018</span>
+                  <span class="node-live-dot"></span>
+                </div>
+                <div class="timeline-stem-connector red-stem">
+                  <div class="stem-photon-drop"></div>
+                </div>
               </div>
 
-              <!-- Node 3: May 2020 -->
-              <div class="relay-timeline-node">
-                <div class="timeline-node-circle blue-node">
-                  <i class="fa-solid fa-plane-departure"></i>
+              <!-- Node 3: May 2020 (USA Transatlantic Corridor) -->
+              <div class="relay-timeline-node node-step-3" data-milestone="May 2020">
+                <div class="node-radar-wave-ring navy-ring"></div>
+                <div class="node-radar-wave-ring navy-ring delay"></div>
+                <div class="node-tech-reticle"></div>
+                <div class="timeline-node-circle navy-node">
+                  <svg class="node-tech-svg" viewBox="0 0 32 32" fill="none" stroke="currentColor">
+                    <circle cx="16" cy="16" r="11.5" stroke-width="1.2" stroke-dasharray="2 2" opacity="0.6"/>
+                    <path d="M25 7l-6 13-3-3-5 3 2-6-3-3 15-4z" stroke-width="1.8" stroke-linejoin="round" fill="rgba(59,130,246,0.25)"/>
+                    <path d="M10 23l-4 4M13 22l-5 5M12 25l-4 4" stroke-width="1.5" stroke-linecap="round" class="svg-thrust-trail"/>
+                    <path d="M16 2v3M16 27v3M2 16h3M27 16h3" stroke-width="1.5" stroke-linecap="round"/>
+                  </svg>
                 </div>
-                <div class="timeline-node-year blue-text">May 2020</div>
-                <div class="timeline-stem-connector blue-stem"></div>
+                <div class="timeline-node-year-pill navy-pill">
+                  <span class="node-year-text">May 2020</span>
+                  <span class="node-live-dot"></span>
+                </div>
+                <div class="timeline-stem-connector navy-stem">
+                  <div class="stem-photon-drop"></div>
+                </div>
               </div>
 
-              <!-- Node 4: Nov 2020 -->
-              <div class="relay-timeline-node">
+              <!-- Node 4: Nov 2020 (India Incorporation & Enterprise Crest) -->
+              <div class="relay-timeline-node node-step-4" data-milestone="Nov 2020">
+                <div class="node-radar-wave-ring amber-ring"></div>
+                <div class="node-radar-wave-ring amber-ring delay"></div>
+                <div class="node-tech-reticle"></div>
                 <div class="timeline-node-circle amber-node">
-                  <i class="fa-solid fa-building-circle-check"></i>
+                  <svg class="node-tech-svg" viewBox="0 0 32 32" fill="none" stroke="currentColor">
+                    <path d="M16 3l10 4v8c0 7-5 12-10 14C11 27 6 22 6 15V7l10-4z" stroke-width="1.8" stroke-linejoin="round" fill="rgba(245,158,11,0.2)"/>
+                    <path d="M16 9l2 4.5 4.5 1-3.5 3 1 4.5-4-2.5-4 2.5 1-4.5-3.5-3 4.5-1L16 9z" fill="currentColor" stroke-width="1" stroke-linejoin="round"/>
+                    <path d="M10 29h12" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
                 </div>
-                <div class="timeline-node-year amber-text">Nov 2020</div>
-                <div class="timeline-stem-connector amber-stem"></div>
+                <div class="timeline-node-year-pill amber-pill">
+                  <span class="node-year-text">Nov 2020</span>
+                  <span class="node-live-dot"></span>
+                </div>
+                <div class="timeline-stem-connector amber-stem">
+                  <div class="stem-photon-drop"></div>
+                </div>
               </div>
             </div>
 
@@ -283,7 +346,9 @@ export function renderAboutPage() {
               <!-- Milestone 1: 2009 -->
               <div class="journey-milestone-card about-interactive-card blue-glow about-animate-fadeup" style="border-top:3.5px solid var(--logo-blue);">
                 <div class="journey-arch-badge-wrapper">
-                  <div class="journey-arch-badge blue">2009</div>
+                  <div class="journey-arch-badge blue">
+                    <span class="badge-dot-glow"></span>2009
+                  </div>
                 </div>
                 <h3 class="journey-milestone-headline">
                   Founded in Bengaluru, India
@@ -291,7 +356,7 @@ export function renderAboutPage() {
                 <div class="journey-photo-frame">
                   <img src="/images/timeline/timeline-2009-bengaluru.jpg" alt="Icon Electromatic founded in Bengaluru 2009" loading="lazy" />
                   <div class="journey-photo-caption">
-                    <i class="fa-solid fa-microchip" style="color:var(--logo-blue-light);"></i>
+                    <i class="fa-solid fa-satellite-dish" style="color:#00E5FF;margin-right:6px;"></i>
                     <span>RF &amp; Microwave Specialists</span>
                   </div>
                 </div>
@@ -303,7 +368,9 @@ export function renderAboutPage() {
               <!-- Milestone 2: 2018 -->
               <div class="journey-milestone-card card-accent-red about-interactive-card red-glow about-animate-fadeup" style="border-top:3.5px solid var(--logo-red);">
                 <div class="journey-arch-badge-wrapper">
-                  <div class="journey-arch-badge red">2018</div>
+                  <div class="journey-arch-badge red">
+                    <span class="badge-dot-glow red"></span>2018
+                  </div>
                 </div>
                 <h3 class="journey-milestone-headline">
                   Expansion to Singapore
@@ -311,7 +378,7 @@ export function renderAboutPage() {
                 <div class="journey-photo-frame">
                   <img src="/images/timeline/timeline-2018-singapore.jpg" alt="Icon Electromatic expansion to Singapore 2018" loading="lazy" />
                   <div class="journey-photo-caption">
-                    <i class="fa-solid fa-city" style="color:var(--logo-red-light);"></i>
+                    <i class="fa-solid fa-earth-asia" style="color:#FB7185;margin-right:6px;"></i>
                     <span>Expansion to Singapore</span>
                   </div>
                 </div>
@@ -323,7 +390,9 @@ export function renderAboutPage() {
               <!-- Milestone 3: May 2020 -->
               <div class="journey-milestone-card card-accent-navy about-interactive-card blue-glow about-animate-fadeup" style="border-top:3.5px solid #1e40af;">
                 <div class="journey-arch-badge-wrapper">
-                  <div class="journey-arch-badge navy-flag">May 2020</div>
+                  <div class="journey-arch-badge navy-flag">
+                    <span class="badge-dot-glow navy"></span>May 2020
+                  </div>
                 </div>
                 <h3 class="journey-milestone-headline">
                   Expansion to United States
@@ -331,7 +400,7 @@ export function renderAboutPage() {
                 <div class="journey-photo-frame">
                   <img src="/images/timeline/timeline-2020-usa.jpg" alt="Icon Electromatic expansion to United States May 2020" loading="lazy" />
                   <div class="journey-photo-caption">
-                    <i class="fa-solid fa-landmark" style="color:var(--logo-blue-light);"></i>
+                    <i class="fa-solid fa-plane-up" style="color:#60A5FA;margin-right:6px;"></i>
                     <span>Expansion to United States</span>
                   </div>
                 </div>
@@ -343,7 +412,9 @@ export function renderAboutPage() {
               <!-- Milestone 4: Nov 2020 -->
               <div class="journey-milestone-card card-accent-amber about-interactive-card about-animate-fadeup" style="border-top:3.5px solid #d97706;">
                 <div class="journey-arch-badge-wrapper">
-                  <div class="journey-arch-badge amber">Nov 2020</div>
+                  <div class="journey-arch-badge amber">
+                    <span class="badge-dot-glow amber"></span>Nov 2020
+                  </div>
                 </div>
                 <h3 class="journey-milestone-headline">
                   Incorporation in India
@@ -351,7 +422,7 @@ export function renderAboutPage() {
                 <div class="journey-photo-frame">
                   <img src="/images/timeline/timeline-2020-india.jpg" alt="Icon Electromatic incorporation in India Nov 2020" loading="lazy" />
                   <div class="journey-photo-caption">
-                    <i class="fa-solid fa-building" style="color:#fbbf24;"></i>
+                    <i class="fa-solid fa-shield-halved" style="color:#FBBF24;margin-right:6px;"></i>
                     <span>Incorporation in India</span>
                   </div>
                 </div>
