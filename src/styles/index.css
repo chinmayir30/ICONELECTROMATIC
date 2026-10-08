@@ -6112,6 +6112,35 @@ html[data-theme="light"],
   transform: scale(1.04);
 }
 
+/* TecDia Logo Prominent Display Matching Qorvo Visual Weight across Products, Partners & Blogs */
+.oem-card-logo-container img[src*="Tecdia"],
+.oem-logo-badge-pod img[src*="Tecdia"],
+.catalog-oem-banner-logo-box img[src*="Tecdia"],
+.blogs-selected-logo-wrap img[src*="Tecdia"] {
+  max-height: 52px !important;
+  transform: scale(1.18);
+  transition: transform 0.25s ease;
+}
+
+.partner-stream-card-logo-box img[src*="Tecdia"],
+.partner-logo-img[src*="Tecdia"] {
+  max-height: 66px !important;
+  transform: scale(1.22);
+  transition: transform 0.25s ease;
+}
+
+.oem-running-logo-box img[src*="Tecdia"],
+.oem-running-logo-img[src*="Tecdia"] {
+  max-height: 60px !important;
+  transform: scale(1.18);
+  transition: transform 0.25s ease;
+}
+
+.oem-card:hover .oem-card-logo-container img[src*="Tecdia"],
+.partner-stream-card:hover .partner-logo-img[src*="Tecdia"] {
+  transform: scale(1.26) !important;
+}
+
 .oem-card-auth-badge {
   display: inline-flex;
   align-items: center;

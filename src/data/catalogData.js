@@ -2071,68 +2071,6 @@ export const CATALOG = [
     ]
   },
   {
-    id: "spellman",
-    name: "Spellman",
-    shortName: "Spellman",
-    specialty: "High Voltage Power Supplies",
-    tagline: "High Voltage Power Supplies, X-Ray Generators & Sources",
-    description: "Spellman is the world's leading manufacturer of precision modular and rack-mount high-voltage power supplies, Monoblock\u00ae X-ray sources, and custom power systems for defense, medical, and industrial use.",
-    website: "https://www.spellmanhv.com",
-    accentColor: "#0284C7",
-    glowColor: "rgba(2, 132, 199, 0.4)",
-    defaultImage: "/images/hero-amplifier.jpg",
-    logoSvg: "<svg viewBox=\"0 0 200 42\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"2\" y=\"2\" width=\"38\" height=\"38\" rx=\"8\" fill=\"#0284C7\"/><path d=\"M21 8l-8 14h7l-3 12 11-16h-7l4-10h-4z\" fill=\"#FFFFFF\"/><text x=\"48\" y=\"23\" fill=\"#FFFFFF\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"900\" font-size=\"16\" letter-spacing=\"1\">SPELLMAN</text><text x=\"49\" y=\"34\" fill=\"#38BDF8\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"800\" font-size=\"7.5\" letter-spacing=\"1.8\">HIGH VOLTAGE</text></svg>",
-    categories: [
-      {
-        id: "high-voltage-power-supplies",
-        name: "high voltage power supplies",
-        description: "Modular High Voltage Power Supply\nRack Mount High Voltage Power Supply\nX-Ray Generator\nX-Ray Source (Monoblock\u00ae)\nCustom High Voltage Power Supply\nApplication Specific High Voltage Power Supply\nPortable NDT X-Ray Imagi...",
-        products: [
-          {
-            id: "high-voltage-power-supplies-128",
-            name: "high voltage power supplies",
-            category: "high voltage power supplies",
-            description: "Modular High Voltage Power Supply\nRack Mount High Voltage Power Supply\nX-Ray Generator\nX-Ray Source (Monoblock\u00ae)\nCustom High Voltage Power Supply\nApplication Specific High Voltage Power Supply\nPortable NDT X-Ray Imaging Products",
-            applications: "These power supplies are used in a wide variety of applications: Ion Beam Implantation, Electron Beam Welding, Electrostatic Separators, Electron Beam Evaporation, Ion Milling, Neutron Generators, Plasma Igniters, Sputtering, Marx Generators, Electrostatic Lenses and Oil Well Data Logging.",
-            link: "High Voltage Power Supplies, X-Ray Generator and Monoblock\u00ae X-Ray Source Manufacturer",
-            image: "/images/hero-amplifier.jpg"
-          },
-        ]
-      },
-    ]
-  },
-  {
-    id: "aee-isarael",
-    name: "AEE ISARAEL",
-    shortName: "AEE Israel",
-    specialty: "Perimeter Intrusion Detection System (PIDS)",
-    tagline: "Perimeter Intrusion Detection Systems (PIDS) & Radar Security",
-    description: "AEE Israel provides advanced perimeter intrusion detection, C4I security management, tactical radar systems, anti-drone jammers, and AI-powered deep learning video analytics for national infrastructure defense.",
-    website: "https://www.aee-security.com",
-    accentColor: "#8B5CF6",
-    glowColor: "rgba(139, 92, 246, 0.4)",
-    defaultImage: "/images/defense-satcom.jpg",
-    logoSvg: "<svg viewBox=\"0 0 200 42\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"2\" y=\"2\" width=\"38\" height=\"38\" rx=\"9\" fill=\"rgba(139,92,246,0.2)\" stroke=\"#8B5CF6\" stroke-width=\"1.8\"/><circle cx=\"21\" cy=\"21\" r=\"10\" stroke=\"#A78BFA\" stroke-width=\"1.8\" fill=\"none\"/><path d=\"M21 21L28 14\" stroke=\"#A78BFA\" stroke-width=\"2\" stroke-linecap=\"round\"/><circle cx=\"21\" cy=\"21\" r=\"2.5\" fill=\"#8B5CF6\"/><text x=\"48\" y=\"23\" fill=\"#FFFFFF\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"900\" font-size=\"16\" letter-spacing=\"1\">AEE ISRAEL</text><text x=\"49\" y=\"34\" fill=\"#C4B5FD\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"800\" font-size=\"7.5\" letter-spacing=\"1.5\">PIDS & DEFENSE</text></svg>",
-    categories: [
-      {
-        id: "perimeter-intrusion-detection-system-pids",
-        name: "Perimeter Intrusion Detection System (PIDS)",
-        description: "High Security Fencing, Industrial and Residential fencing systems\nCommand and Control C4I and Security Management Systems\nTaut wire and Electric fences\nismic systems\nFence mounted vibration ranging systems (Copper &Fi...",
-        products: [
-          {
-            id: "perimeter-intrusion-detection-system-pids-145",
-            name: "Perimeter Intrusion Detection System (PIDS)",
-            category: "Perimeter Intrusion Detection System (PIDS)",
-            description: "High Security Fencing, Industrial and Residential fencing systems\nCommand and Control C4I and Security Management Systems\nTaut wire and Electric fences\nismic systems\nFence mounted vibration ranging systems (Copper &Fiber)\nDrone Systems, Jammer equipment and Anti-Drone Systems\nRadar\nAesthetic Smart Decorative Detection Fences\nFire & Smoke Detection system for forest and other environment\nVideo Analytic (3D) and Behavior base on AI and deep learning\nFace Recognition Systems base on AI and deep learning\nLaser Sensor & Infra-Red Towers & Microwave systems\nBarrier & Bollards solutions\nBalloon and Tactical and Innovative Persistent Surveillance System\nBuriBuried cable systems and many other systems for the security\nmarket",
-            applications: "Aerospace, Defense, Radar, Telecommunications, Space",
-            link: "https://www.aee-security.com",
-            image: "/images/defense-satcom.jpg"
-          },
-        ]
-      },
-    ]
-  },
-  {
     id: "transline-technology",
     name: "Transline Technology",
     shortName: "Transline Technology",
@@ -2188,7 +2126,6 @@ export function getPopularProducts() {
     { oemId: 'minicircuits', catId: 'rf-mw-amplifiers', prodName: 'RF/MW Amplifiers' },
     { oemId: 'triteq', catId: 'harmonic-switched-filters', prodName: 'Harmonic Switched Filters' },
     { oemId: 'yttek', catId: 'hypersdr', prodName: 'HyperSDR' },
-    { oemId: 'spellman', catId: 'high-voltage-power-supplies', prodName: 'high voltage power supplies' },
     { oemId: 'nee', catId: 'rf-microwave-pcb', prodName: 'RF/Microwave PCB' }
   ];
 
