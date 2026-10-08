@@ -17,7 +17,7 @@ export function renderAboutPage() {
         <div class="container" style="position:relative;z-index:2;">
           <!-- Breadcrumb -->
           <nav class="breadcrumb-dark">
-            <a data-route="/">Home</a>
+            <a href="#/" data-route="/">Home</a>
             <span class="sep"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;"></i></span>
             <span class="crumb-current" style="color:var(--text-white);font-weight:600;">About Us</span>
           </nav>
@@ -34,14 +34,14 @@ export function renderAboutPage() {
             </div>
 
             <div style="position:relative;z-index:3;">
-              <h1 class="page-title-unified" style="margin-bottom:8px;">
-                About Icon Electromatic
-              </h1>
-              
-              <div class="about-section-sub-title" style="font-family:var(--font-display);font-size:clamp(1.15rem, 1.8vw, 1.4rem);font-weight:700;color:var(--logo-red-light);margin-bottom:18px;display:inline-flex;align-items:center;gap:8px;">
+              <div class="page-eyebrow-pill">
                 <span class="hub-dot-pulse"></span>
-                <span>About Us</span>
+                <span>ABOUT ICON ELECTROMATIC</span>
               </div>
+              
+              <h1 class="page-title-unified">
+                About Us
+              </h1>
               
               <p class="page-lead-unified">
                 Driven by decades of engineering expertise and global collaborations, Icon Electromatic Private Limited delivers advanced components and tailored solutions that transform design ambitions into reality.
