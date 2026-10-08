@@ -2980,8 +2980,8 @@ h1, h2, h3, h4, h5, h6 {
 .relay-timeline-rail-track {
   position: absolute;
   top: 36px;
-  left: 90px;
-  right: 90px;
+  left: 106px;
+  right: 106px;
   height: 8px;
   background: rgba(10, 16, 32, 0.95);
   border: 1px solid rgba(255, 255, 255, 0.14);
@@ -2989,6 +2989,7 @@ h1, h2, h3, h4, h5, h6 {
   transform: translateY(-50%);
   z-index: 1;
   overflow: visible;
+  clip-path: inset(-25px 0 -25px 0);
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.7), inset 0 1px 3px rgba(0, 0, 0, 0.6);
 }
 
@@ -3018,12 +3019,12 @@ h1, h2, h3, h4, h5, h6 {
   pointer-events: none;
 }
 
-/* DYNAMIC NEON WAVE PASSING BEAM */
+/* DYNAMIC NEON WAVE PASSING BEAM - Confined strictly between 2009 and 2020 */
 .relay-neon-wave-beam {
   position: absolute;
   top: -7px;
-  left: -15%;
-  width: 160px;
+  left: 0;
+  width: 130px;
   height: 22px;
   border-radius: 999px;
   background: linear-gradient(90deg, 
@@ -3045,18 +3046,18 @@ h1, h2, h3, h4, h5, h6 {
   z-index: 2;
 }
 
-/* SECONDARY NEON PULSE DROPLET */
+/* SECONDARY NEON PULSE DROPLET - Confined strictly between 2009 and 2020 */
 .relay-neon-wave-droplet {
   position: absolute;
   top: -4px;
-  left: -5%;
-  width: 32px;
+  left: 0;
+  width: 28px;
   height: 16px;
   border-radius: 50%;
   background: #ffffff;
   box-shadow: 0 0 20px #ffffff, 0 0 40px #e11d48;
-  animation: neonWavePass 3.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-  animation-delay: -0.4s;
+  animation: neonDropletPass 3.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  animation-delay: -0.35s;
   pointer-events: none;
   opacity: 0.85;
   z-index: 2;
@@ -3064,11 +3065,11 @@ h1, h2, h3, h4, h5, h6 {
 
 @keyframes neonWavePass {
   0% {
-    left: -18%;
+    left: 0%;
     opacity: 0;
-    transform: scaleX(0.7);
+    transform: scaleX(0.5);
   }
-  8% {
+  6% {
     opacity: 1;
     transform: scaleX(1);
   }
@@ -3077,9 +3078,30 @@ h1, h2, h3, h4, h5, h6 {
     transform: scaleX(1);
   }
   100% {
-    left: 108%;
+    left: calc(100% - 130px);
     opacity: 0;
-    transform: scaleX(0.7);
+    transform: scaleX(0.5);
+  }
+}
+
+@keyframes neonDropletPass {
+  0% {
+    left: 0%;
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  8% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  90% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    left: calc(100% - 28px);
+    opacity: 0;
+    transform: scale(0.5);
   }
 }
 
@@ -5357,6 +5379,7 @@ html[data-theme="light"],
   background: #e2e8f0 !important;
   border-color: #cbd5e1 !important;
   box-shadow: 0 2px 8px rgba(15, 29, 61, 0.08), inset 0 1px 2px rgba(0, 0, 0, 0.06) !important;
+  clip-path: inset(-25px 0 -25px 0) !important;
 }
 
 [data-theme="light"] .relay-timeline-rail-plasma {
