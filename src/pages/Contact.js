@@ -356,24 +356,12 @@ export function renderContactPage() {
                   </div>
                 </div>
 
-                <!-- Row 2: Phone & Current Location -->
+                <!-- Row 2: Position & Phone -->
                 <div class="relay-form-row">
                   <div class="relay-field">
-                    <label for="r-phone">Phone / Mobile Number *</label>
-                    <input type="tel" id="r-phone" name="phone" placeholder="+91 98765 43210" required />
-                  </div>
-                  <div class="relay-field">
-                    <label for="r-city">Current Location / City *</label>
-                    <input type="text" id="r-city" name="city" placeholder="e.g. Bengaluru, Hyderabad, Pune, Chennai" required />
-                  </div>
-                </div>
-
-                <!-- Row 3: Target Role & Experience Level -->
-                <div class="relay-form-row">
-                  <div class="relay-field">
-                    <label for="r-position">Target Position / Domain *</label>
+                    <label for="r-position">Position *</label>
                     <select id="r-position" name="position" required>
-                      <option value="" disabled selected>Select an engineering position...</option>
+                      <option value="" disabled selected>Select Position...</option>
                       <option value="RF & Microwave Design Engineer (DC–110 GHz)">RF &amp; Microwave Design Engineer (DC – 110 GHz)</option>
                       <option value="Field Applications Engineer (FAE) - RF Components">Field Applications Engineer (FAE) – RF Components</option>
                       <option value="Technical Sales & OEM Account Manager">Technical Sales &amp; OEM Account Manager</option>
@@ -381,8 +369,20 @@ export function renderContactPage() {
                       <option value="RF Lab Test & Measurement Specialist (VNA/Spectrum)">RF Lab Test &amp; Measurement Specialist (VNA/Spectrum)</option>
                       <option value="High-Frequency PCB & PTFE Substrates Specialist">High-Frequency PCB &amp; PTFE Substrates Specialist</option>
                       <option value="Graduate RF Engineering Trainee / Intern">Graduate RF Engineering Trainee / Intern</option>
-                      <option value="Other Engineering / Technical Specialist">Other Technical / Engineering Role</option>
+                      <option value="Other Technical / Engineering Specialist">Other Technical / Engineering Role</option>
                     </select>
+                  </div>
+                  <div class="relay-field">
+                    <label for="r-phone">Phone / Mobile Number *</label>
+                    <input type="tel" id="r-phone" name="phone" placeholder="+91 98765 43210" required />
+                  </div>
+                </div>
+
+                <!-- Row 3: Current Location & Experience Level -->
+                <div class="relay-form-row">
+                  <div class="relay-field">
+                    <label for="r-city">Current Location / City *</label>
+                    <input type="text" id="r-city" name="city" placeholder="e.g. Bengaluru, Hyderabad, Pune, Chennai" required />
                   </div>
                   <div class="relay-field">
                     <label for="r-experience">Total Experience *</label>

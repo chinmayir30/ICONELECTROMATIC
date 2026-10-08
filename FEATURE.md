@@ -13,6 +13,15 @@
 
 ### **2026-10-08**
 
+* **Category:** Contact Page — Prominent "Position" Field in Talent Acquisition Form
+  * **Page / Files:** [`src/pages/Contact.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Contact.js)
+  * **Type:** UX / Form Input Alignment (Both Dark & Light Themes)
+  * **Details:**
+    * Under the `"Talent Acquisition · Bengaluru & Pan-India"` careers section, added a dedicated and prominent form field labeled **`Position *`** right in Row 2 alongside Mobile Number.
+    * Pre-populated with engineering career tracks (`RF & Microwave Design Engineer`, `Field Applications Engineer (FAE)`, `Technical Sales & OEM Account Manager`, `Radar, EW & SATCOM Systems Specialist`, `RF Lab Test & Measurement Specialist`, `High-Frequency PCB Specialist`, `Graduate RF Engineering Trainee`, `Other Technical Role`).
+    * Full design consistency and responsiveness maintained across both dark and light versions.
+
+
 * **Category:** Contact Page — Removal of Guaranteed Assurance & Active Priority Openings Cards
   * **Page / Files:** [`src/pages/Contact.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Contact.js)
   * **Type:** Content & Section Streamlining (Both Dark & Light Themes)
