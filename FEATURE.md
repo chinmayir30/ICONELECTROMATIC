@@ -13,6 +13,22 @@
 
 ### **2026-10-08**
 
+* **Category:** Contact Page — Quick Requirement Presets Alignment (14 Component Domain Buttons)
+  * **Page / Files:** [`src/pages/Contact.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Contact.js)
+  * **Type:** UX Component & Content Alignment (Both Dark & Light Themes)
+  * **Details:**
+    * Aligned the **Quick Requirement Presets** card under the Sales & RFQ tab with the Home page layout, rendering all 14 component domain labels in a structured 2-column grid:
+      1. `High Frequency Laminates` | `Embedded Resistive Film`
+      2. `3D Printed Dielectrics` | `GaN & Beamforming IC`
+      3. `High Power Switches` | `RF & MW Components`
+      4. `Tunable Filters` | `Software Defined Radios`
+      5. `HV Power Supplies` | `Temperature Sensors`
+      6. `Thin Film Capacitors` | `Ceramic Capacitors`
+      7. `PCB Fabrication` | `PIDS`
+    * Each preset button automatically prefills the message textarea (`c-message`) with the corresponding requirement and focuses the field for immediate inquiry completion.
+    * Fully responsive (adapts to 1 column on mobile phones) and styled in both **Dark** and **Light** themes.
+
+
 * **Category:** Contact Page — Prominent "Position" Field in Talent Acquisition Form
   * **Page / Files:** [`src/pages/Contact.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Contact.js)
   * **Type:** UX / Form Input Alignment (Both Dark & Light Themes)

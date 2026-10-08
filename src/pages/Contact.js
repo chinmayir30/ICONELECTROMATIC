@@ -209,11 +209,21 @@ export function renderContactPage() {
                   <i class="fa-solid fa-bolt" style="color:var(--logo-red);"></i> Quick Requirement Presets
                 </h4>
                 <p style="font-size:0.85rem;color:var(--text-gray-400);margin-bottom:var(--space-3);">Click any preset to prefill your inquiry message:</p>
-                <div style="display:flex;flex-wrap:wrap;gap:8px;">
-                  <button class="filter-chip-dark quick-preset" data-preset="We require official quotation and pricing for RF Amplifiers (frequency range DC to 18 GHz).">RF Amplifiers RFQ</button>
-                  <button class="filter-chip-dark quick-preset" data-preset="Inquiring about high-Q cavity bandpass filters for aerospace radar systems.">Cavity Filters Radar</button>
-                  <button class="filter-chip-dark quick-preset" data-preset="Requesting stock availability and volume discounts for coaxial attenuators and terminations.">Attenuators Volume</button>
-                  <button class="filter-chip-dark quick-preset" data-preset="We have a custom frequency requirement and need bespoke RF component design support.">Bespoke Design</button>
+                <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">
+                  <button class="filter-chip-dark quick-preset" data-preset="Inquiring about High Frequency Laminates & Prepregs.">High Frequency Laminates</button>
+                  <button class="filter-chip-dark quick-preset" data-preset="Inquiring about Embedded Resistive Film.">Embedded Resistive Film</button>
+                  <button class="filter-chip-dark quick-preset" data-preset="Inquiring about 3D Printed Dielectric Parts.">3D Printed Dielectrics</button>
+                  <button class="filter-chip-dark quick-preset" data-preset="Inquiring about High Power GaN Device and Beamforming IC.">GaN & Beamforming IC</button>
+                  <button class="filter-chip-dark quick-preset" data-preset="Inquiring about High Power Switches and Limiter.">High Power Switches</button>
+                  <button class="filter-chip-dark quick-preset" data-preset="Inquiring about RF and MW Components.">RF & MW Components</button>
+                  <button class="filter-chip-dark quick-preset" data-preset="Inquiring about Tunable Filters.">Tunable Filters</button>
+                  <button class="filter-chip-dark quick-preset" data-preset="Inquiring about Software Defined Radios.">Software Defined Radios</button>
+                  <button class="filter-chip-dark quick-preset" data-preset="Inquiring about high voltage power supplies.">HV Power Supplies</button>
+                  <button class="filter-chip-dark quick-preset" data-preset="Inquiring about Temperature Sensors.">Temperature Sensors</button>
+                  <button class="filter-chip-dark quick-preset" data-preset="Inquiring about Thin Film Capacitors.">Thin Film Capacitors</button>
+                  <button class="filter-chip-dark quick-preset" data-preset="Inquiring about Ceramic Capacitors.">Ceramic Capacitors</button>
+                  <button class="filter-chip-dark quick-preset" data-preset="Inquiring about PCB Fabrication.">PCB Fabrication</button>
+                  <button class="filter-chip-dark quick-preset" data-preset="Inquiring about Perimeter Intrusion Detection System (PIDS).">PIDS</button>
                 </div>
               </div>
 
