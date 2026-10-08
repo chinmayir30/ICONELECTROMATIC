@@ -2,7 +2,7 @@
  * Header Component — ICON ELECTROMATIC
  * Sleek Minimalist Dark Header matching the Relay Framer reference
  */
-import { getCurrentPath } from '../router.js';
+import { getCurrentPath, navigate } from '../router.js';
 
 export function renderHeaderInner(currentRoute) {
   const route = currentRoute || getCurrentPath();
@@ -25,25 +25,25 @@ export function renderHeaderInner(currentRoute) {
 
   return `
     <div class="header-inner">
-      <a class="logo-container" data-route="/" title="ICON ELECTROMATIC Home">
+      <a href="#/" class="logo-container" data-route="/" title="ICON ELECTROMATIC Home">
         <img src="/icon-logo-transparent.png" alt="ICON ELECTROMATIC" />
       </a>
 
       <nav class="main-nav" id="main-nav">
         ${navLinks.map(link => `
-          <a class="nav-link ${route === link.path ? 'active' : ''}" data-route="${link.path}">
+          <a href="#${link.path}" class="nav-link ${route === link.path ? 'active' : ''}" data-route="${link.path}">
             ${link.label}
           </a>
         `).join('')}
         <div class="mobile-nav-cta">
-          <a class="btn-relay-red mobile-drawer-cta" data-route="/contact">
+          <a href="#/contact" class="btn-relay-red mobile-drawer-cta" data-route="/contact">
             Request a Quote <i class="fa-solid fa-arrow-right"></i>
           </a>
         </div>
       </nav>
 
       <div class="header-actions">
-        <a class="btn-relay-border" data-route="/contact">
+        <a href="#/contact" class="btn-relay-border" data-route="/contact">
           Request Quote
         </a>
         <button class="theme-toggle-btn theme-toggle-switch ${isLight ? 'is-light' : ''}" id="theme-toggle-btn" role="switch" aria-checked="${isLight ? 'true' : 'false'}" aria-label="Toggle dark and light theme" title="${isLight ? 'Switch to Darker Version' : 'Switch to Lighter Version'}">
@@ -98,7 +98,7 @@ export function initHeader() {
     }
   }
 
-  // Mobile menu toggle
+  // Mobile menu toggle & link navigation
   const mobileToggle = document.getElementById('mobile-toggle');
   const mainNav = document.getElementById('main-nav');
   if (mobileToggle && mainNav) {
@@ -108,13 +108,19 @@ export function initHeader() {
       mobileToggle.classList.toggle('active', isOpen);
       mobileToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
     });
-    mainNav.querySelectorAll('.nav-link').forEach(link => {
-      link.addEventListener('click', () => {
+
+    mainNav.querySelectorAll('.nav-link, .mobile-drawer-cta').forEach(link => {
+      link.addEventListener('click', (e) => {
+        const targetRoute = link.getAttribute('data-route') || link.getAttribute('href')?.replace(/^#/, '');
+        if (targetRoute) {
+          navigate(targetRoute);
+        }
         mainNav.classList.remove('mobile-active');
         mobileToggle.classList.remove('active');
         mobileToggle.setAttribute('aria-expanded', 'false');
       });
     });
+
     document.addEventListener('click', (e) => {
       if (mainNav.classList.contains('mobile-active') && !mainNav.contains(e.target) && !mobileToggle.contains(e.target)) {
         mainNav.classList.remove('mobile-active');

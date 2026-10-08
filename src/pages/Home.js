@@ -35,10 +35,10 @@ export function renderHomePage() {
           </p>
 
           <div class="hero-actions-row">
-            <a class="btn-relay-red" data-route="/products">
+            <a href="#/products" class="btn-relay-red" data-route="/products">
               Explore Products <i class="fa-solid fa-arrow-right"></i>
             </a>
-            <a class="btn-relay-dark" style="background:#ffffff; color:#000000;" data-route="/contact">
+            <a href="#/contact" class="btn-relay-dark" style="background:#ffffff; color:#000000;" data-route="/contact">
               Request a Quote
             </a>
           </div>

@@ -14,7 +14,7 @@ export function renderFooter() {
           
           <!-- Left: Logo, Text, Socials -->
           <div class="footer-brand-col">
-            <a data-route="/" class="footer-logo-link">
+            <a href="#/" data-route="/" class="footer-logo-link">
               <img src="/icon-logo-transparent.png" alt="ICON ELECTROMATIC" />
             </a>
             <p class="footer-tagline">
@@ -69,13 +69,13 @@ export function renderFooter() {
           <div class="footer-links-col">
             <h4 class="footer-heading">Quick Links</h4>
             <ul>
-              <li><a data-route="/"><i class="fa-solid fa-chevron-right"></i> Home</a></li>
-              <li><a data-route="/about"><i class="fa-solid fa-chevron-right"></i> About Us</a></li>
-              <li><a data-route="/products"><i class="fa-solid fa-chevron-right"></i> Products</a></li>
-              <li><a data-route="/services"><i class="fa-solid fa-chevron-right"></i> Services</a></li>
-              <li><a data-route="/partners"><i class="fa-solid fa-chevron-right"></i> Partners</a></li>
-              <li><a data-route="/blogs"><i class="fa-solid fa-chevron-right"></i> Blogs</a></li>
-              <li><a data-route="/contact"><i class="fa-solid fa-chevron-right"></i> Contact Us</a></li>
+              <li><a href="#/" data-route="/"><i class="fa-solid fa-chevron-right"></i> Home</a></li>
+              <li><a href="#/about" data-route="/about"><i class="fa-solid fa-chevron-right"></i> About Us</a></li>
+              <li><a href="#/products" data-route="/products"><i class="fa-solid fa-chevron-right"></i> Products</a></li>
+              <li><a href="#/services" data-route="/services"><i class="fa-solid fa-chevron-right"></i> Services</a></li>
+              <li><a href="#/partners" data-route="/partners"><i class="fa-solid fa-chevron-right"></i> Partners</a></li>
+              <li><a href="#/blogs" data-route="/blogs"><i class="fa-solid fa-chevron-right"></i> Blogs</a></li>
+              <li><a href="#/contact" data-route="/contact"><i class="fa-solid fa-chevron-right"></i> Contact Us</a></li>
             </ul>
           </div>
 

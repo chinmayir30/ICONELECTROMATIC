@@ -40,8 +40,18 @@ function renderPage(content, initFn) {
     initHeader();
   } else {
     header.querySelectorAll('.nav-link').forEach(link => {
-      link.classList.toggle('active', link.getAttribute('data-route') === currentPath);
+      const linkRoute = link.getAttribute('data-route') || link.getAttribute('href')?.replace(/^#/, '');
+      link.classList.toggle('active', linkRoute === currentPath);
     });
+  }
+
+  // Always close mobile navigation drawer when a route loads
+  const mainNav = document.getElementById('main-nav');
+  const mobileToggle = document.getElementById('mobile-toggle');
+  if (mainNav) mainNav.classList.remove('mobile-active');
+  if (mobileToggle) {
+    mobileToggle.classList.remove('active');
+    mobileToggle.setAttribute('aria-expanded', 'false');
   }
 
   app.innerHTML = content + renderFooter() + renderBackToTop() + renderChatbot();
