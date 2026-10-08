@@ -36,11 +36,11 @@ export function renderAboutPage() {
             <div style="position:relative;z-index:3;">
               <div class="page-eyebrow-pill">
                 <span class="hub-dot-pulse"></span>
-                <span>ABOUT US</span>
+                <span>ABOUT ICON ELECTROMATIC</span>
               </div>
               
               <h1 class="page-title-unified">
-                About Icon Electromatic
+                About Us
               </h1>
               
               <p class="page-lead-unified">
@@ -74,10 +74,10 @@ export function renderAboutPage() {
           <div style="display:grid;grid-template-columns:1.15fr 0.85fr;gap:40px;align-items:center;border-radius:24px;padding:44px 36px;margin-bottom:var(--space-16);" class="about-hero-feature-card about-interactive-card about-animate-fadeup">
           <div>
             <span style="font-size:0.75rem;font-weight:700;color:var(--logo-red-light);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;display:inline-block;">
-              FULFILLMENT PARTNERS FOR YOUR ELECTRONIC AMBITIONS
+              CORE CAPABILITIES
             </span>
             <h2 style="font-family:var(--font-display);font-size:clamp(1.7rem, 2.6vw, 2.2rem);font-weight:800;line-height:1.25;margin-bottom:18px;">
-              Core Capabilities
+              Fulfillment partners for your electronic ambitions
             </h2>
             <p style="font-size:0.95rem;line-height:1.75;margin-bottom:14px;">
               Icon Electromatic was founded in 2009 in Bengaluru by engineers with decades of expertise in RF, Microwave, Semiconductors, and allied service industries. In 2020, the company transitioned into <strong>Icon Electromatic Private Limited</strong> and expanded its presence across India, Israel, Singapore, and the USA.
@@ -136,10 +136,10 @@ export function renderAboutPage() {
           <div style="text-align:center;max-width:650px;margin:0 auto var(--space-8);">
             <div class="about-stats-eyebrow">
               <i class="fa-solid fa-chart-simple"></i>
-              The Numbers That Define Us
+              Some Quick Facts
             </div>
             <h2 class="about-stats-h2" style="font-family:var(--font-display);font-size:clamp(1.8rem, 2.8vw, 2.4rem);font-weight:800;letter-spacing:-0.02em;">
-              Some Quick Facts
+              The Numbers That Define Us
             </h2>
           </div>
 
@@ -220,10 +220,10 @@ export function renderAboutPage() {
           <div style="text-align:center;max-width:720px;margin:0 auto var(--space-8);">
             <div style="display:inline-flex;align-items:center;gap:6px;font-size:0.75rem;font-weight:700;color:var(--logo-blue-light);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;">
               <i class="fa-solid fa-timeline"></i>
-              OUR JOURNEY
+              CHRONOLOGY
             </div>
             <h2 style="font-family:var(--font-display);font-size:clamp(1.8rem, 2.8vw, 2.4rem);font-weight:800;letter-spacing:-0.02em;margin-bottom:12px;">
-              Chronology
+              Our Journey
             </h2>
             <p style="font-size:0.95rem;line-height:1.7;color:var(--text-muted);margin:0 auto 16px;">
               From our founding in Bengaluru in 2009 as RF &amp; Microwave specialists to global operations spanning Singapore, the USA, and India — empowering mission-critical Aerospace, Defence, Space, and SATCOM programs.
@@ -442,10 +442,10 @@ export function renderAboutPage() {
               </div>
               <div style="display:inline-flex;align-items:center;gap:6px;font-size:0.75rem;font-weight:700;color:var(--logo-red-light);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;">
                 <i class="fa-solid fa-layer-group"></i>
-                WHERE OUR TECHNOLOGY OPERATES
+                STRATEGIC APPLICATION DOMAINS
               </div>
               <h3 style="font-family:var(--font-display);font-size:clamp(1.5rem, 2.2vw, 1.9rem);font-weight:800;letter-spacing:-0.01em;margin-bottom:8px;">
-                Strategic Application Domains
+                Where Our Technology Operates
               </h3>
               <p style="font-size:0.9rem;line-height:1.6;color:var(--text-muted);max-width:620px;margin:0 auto 28px;">
                 Delivering mission-critical electronic components, high-reliability assemblies, and custom microwave engineering across four strategic arenas.
@@ -576,10 +576,10 @@ export function renderAboutPage() {
           <div style="text-align:center;max-width:600px;margin:0 auto var(--space-10);">
             <div style="display:inline-flex;align-items:center;gap:6px;font-size:0.75rem;font-weight:700;color:var(--logo-red-light);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;">
               <i class="fa-solid fa-award"></i>
-              WHY US
+              OUR ADVANTAGE
             </div>
             <h2 style="font-family:var(--font-display);font-size:clamp(1.8rem, 2.8vw, 2.4rem);font-weight:800;letter-spacing:-0.02em;">
-              Our Advantage
+              Why Us
             </h2>
           </div>
 
