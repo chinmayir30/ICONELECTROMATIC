@@ -95,20 +95,20 @@ export function renderContactPage() {
           </div>
 
           <!-- Highlights Strip (Matching Partners, Services, Blogs 1:1) -->
-          <div class="services-trust-strip contact-trust-strip" style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:24px;margin-bottom:0;padding-bottom:0;border-bottom:none;">
-            <div style="background:rgba(37,99,235,0.08);border:1px solid rgba(37,99,235,0.25);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#93C5FD;display:flex;align-items:center;gap:8px;">
+          <div class="services-trust-strip contact-trust-strip" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:16px;margin-bottom:0;padding-bottom:0;border-bottom:none;">
+            <div style="background:rgba(37,99,235,0.08);border:1px solid rgba(37,99,235,0.25);border-radius:8px;padding:7px 14px;font-size:0.82rem;color:#93C5FD;display:flex;align-items:center;gap:7px;">
               <i class="fa-solid fa-bolt" style="color:var(--logo-blue-light);"></i>
               <span>24-Hour RFQ Turnaround</span>
             </div>
-            <div style="background:rgba(225,29,72,0.08);border:1px solid rgba(225,29,72,0.25);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#FDA4AF;display:flex;align-items:center;gap:8px;">
+            <div style="background:rgba(225,29,72,0.08);border:1px solid rgba(225,29,72,0.25);border-radius:8px;padding:7px 14px;font-size:0.82rem;color:#FDA4AF;display:flex;align-items:center;gap:7px;">
               <i class="fa-solid fa-users-gear" style="color:var(--logo-red-light);"></i>
               <span>Bengaluru Engineering Hub</span>
             </div>
-            <div style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#FCD34D;display:flex;align-items:center;gap:8px;">
+            <div style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25);border-radius:8px;padding:7px 14px;font-size:0.82rem;color:#FCD34D;display:flex;align-items:center;gap:7px;">
               <i class="fa-solid fa-dolly" style="color:#F59E0B;"></i>
               <span>Global Sourcing &amp; Logistics</span>
             </div>
-            <div style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.25);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#6EE7B7;display:flex;align-items:center;gap:8px;">
+            <div style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.25);border-radius:8px;padding:7px 14px;font-size:0.82rem;color:#6EE7B7;display:flex;align-items:center;gap:7px;">
               <i class="fa-solid fa-shield-halved" style="color:#10B981;"></i>
               <span>Defense &amp; Commercial Pricing</span>
             </div>
@@ -117,10 +117,10 @@ export function renderContactPage() {
       </section>
 
       <!-- Main Content Area -->
-      <div class="page-main-body" style="padding-top:var(--space-8);padding-bottom:var(--space-20);">
+      <div class="page-main-body" style="padding-top:var(--space-4);padding-bottom:var(--space-16);">
         <div class="container">
           <!-- Form Switcher Tabs -->
-        <div class="contact-tabs-wrapper">
+        <div class="contact-tabs-wrapper" style="margin-bottom:var(--space-4);">
           <div class="contact-form-tabs" role="tablist">
             <button 
               class="contact-tab-btn ${!isRecruiting ? 'active' : ''}" 
