@@ -11,6 +11,23 @@
 
 ---
 
+### **2026-10-10**
+
+* **Category:** Home Page — Hero Header & Stats Strip Content Refinement
+  * **Page / Files:** [`src/pages/Home.js`](file:///c:/ICON%20ELECTROMATIC/src/pages/Home.js)
+  * **Type:** Content Streamlining & UI Polish
+  * **Details:**
+    * **Removed "ICON ELECTROMATIC" Eyebrow Tag:** Removed the redundant `<div class="hero-eyebrow-tag">` located above the main hero title, allowing the headline to immediately lead the page.
+    * **Removed "86 GHz MAX FREQUENCY" Stat Item:** Removed the 86 GHz stat block from the inline statistics row. The remaining 3 stats (`4,000+ PRODUCTS AVAILABLE`, `24+ COMPONENT LINES`, and `100% ROHS & ISO 9001`) now display in a balanced 3-column arrangement with optimized max-width.
+
+* **Category:** Home Page — Popular Products & Components OEM Label Styling (Lighter Version)
+  * **Page / Files:** [`src/components/ProductCard.js`](file:///c:/ICON%20ELECTROMATIC/src/components/ProductCard.js), [`src/styles/index.css`](file:///c:/ICON%20ELECTROMATIC/src/styles/index.css), [`vercel.css`](file:///c:/ICON%20ELECTROMATIC/vercel.css)
+  * **Type:** Visual Consistency & Contrast Enhancement (Light Theme)
+  * **Details:**
+    * **Pure White Font for All OEM Pills:** Ensured that across all product cards in the lighter theme (`[data-theme="light"]`), all OEM company names (Rogers Corporation, Qorvo, Ohmega-Ticer, Fortify, Mini-Circuits, RFuW Engineering, Spellman, Thermosen, etc.) render with pure white text (`#ffffff !important`) over high-contrast translucent badges, both in default and hover states.
+
+---
+
 ### **2026-10-08**
 
 * **Category:** About Us Page — Advanced Light Theme Animation Suite & Micro-Interactions

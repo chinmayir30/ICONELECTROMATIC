@@ -19,11 +19,6 @@ export function renderHomePage() {
 
       <div class="container" style="position:relative;z-index:3;width:100%;">
         <div class="hero-relay-content">
-          <div class="hero-eyebrow-tag" style="margin-bottom: var(--space-6);">
-            <span class="hero-eyebrow-line" style="display:inline-block; width:24px; height:2px; background:var(--logo-red);"></span> 
-            <span><span class="slash"></span> ICON ELECTROMATIC</span>
-          </div>
-
           <h1 class="hero-title-giant" style="font-size: clamp(2.2rem, 4.5vw, 4.2rem);">
             ICON ELECTROMATIC turns 
             complex high-frequency requirements into <span class="accent-red" style="color: var(--logo-red);">mission-ready hardware.</span>
@@ -44,7 +39,7 @@ export function renderHomePage() {
           </div>
 
           <!-- Integrated Stats -->
-          <div class="hero-inline-stats" style="margin-top: 60px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.2); display: flex; justify-content: space-between; align-items: center; max-width: 900px; gap: 20px;">
+          <div class="hero-inline-stats" style="margin-top: 60px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.2); display: flex; justify-content: space-between; align-items: center; max-width: 760px; gap: 20px;">
             <div class="hero-stat-item" style="flex-direction: column; align-items: flex-start; gap: 4px;">
               <span class="hero-stat-number" style="color: var(--logo-red);">4,000<span class="hero-stat-suffix" style="color: var(--logo-red);">+</span></span>
               <span class="hero-stat-label" style="color: #cbd5e1;">PRODUCTS AVAILABLE</span>
@@ -53,11 +48,6 @@ export function renderHomePage() {
             <div class="hero-stat-item" style="flex-direction: column; align-items: flex-start; gap: 4px;">
               <span class="hero-stat-number" style="color: var(--logo-red);">24<span class="hero-stat-suffix" style="color: var(--logo-red);">+</span></span>
               <span class="hero-stat-label" style="color: #cbd5e1;">COMPONENT LINES</span>
-            </div>
-
-            <div class="hero-stat-item" style="flex-direction: column; align-items: flex-start; gap: 4px;">
-              <span class="hero-stat-number" style="color: var(--logo-red);">86 <span class="hero-stat-suffix" style="color: var(--logo-red);">GHz</span></span>
-              <span class="hero-stat-label" style="color: #cbd5e1;">MAX FREQUENCY</span>
             </div>
 
             <div class="hero-stat-item" style="flex-direction: column; align-items: flex-start; gap: 4px;">

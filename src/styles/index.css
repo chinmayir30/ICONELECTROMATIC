@@ -4466,6 +4466,23 @@ html[data-theme="light"],
   transform: scale(1.08) !important;
 }
 
+/* OEM Company Pill — Pure White Font for All OEMs in Lighter Version */
+[data-theme="light"] .products-dark-section .relay-oem-pill,
+[data-theme="light"] .product-card-relay .relay-oem-pill,
+[data-theme="light"] .relay-oem-pill {
+  color: #ffffff !important;
+  background: rgba(10, 18, 36, 0.9) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6) !important;
+}
+
+[data-theme="light"] .products-dark-section .product-card-relay:hover .relay-oem-pill,
+[data-theme="light"] .product-card-relay:hover .relay-oem-pill {
+  color: #ffffff !important;
+  background: rgba(10, 18, 36, 0.95) !important;
+  border-color: rgba(255, 255, 255, 0.45) !important;
+}
+
 [data-theme="light"] .products-dark-section .relay-cat-label {
   color: #fca5a5 !important;
   font-weight: 700 !important;
