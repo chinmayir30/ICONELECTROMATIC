@@ -42,10 +42,6 @@ function renderAllOemsBlogView() {
 
           <!-- Page Header -->
           <div class="page-header-unified blogs-hero" style="margin-bottom:0;">
-            <div class="page-eyebrow-pill">
-              <span class="hub-dot-pulse"></span>
-              <span>MANUFACTURER RELEASES &amp; TECH INSIGHTS</span>
-            </div>
             <h1 class="page-title-unified">
               OEM Technical News, Video Demos &amp; Insights
             </h1>
@@ -150,7 +146,6 @@ function renderAllOemsBlogView() {
         <div style="margin-top:var(--space-12);padding-top:var(--space-8);border-top:1px solid var(--border-card);">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-6);flex-wrap:wrap;gap:12px;">
             <div>
-              <span class="page-eyebrow-pill" style="margin-bottom:6px;">LATEST OEM BULLETINS</span>
               <h2 style="font-size:1.45rem;font-weight:800;color:var(--text-white);margin:0;">
                 Recent Technical News &amp; Product Announcements
               </h2>
@@ -193,9 +188,6 @@ function renderAllOemsBlogView() {
         <div style="margin-top:var(--space-8);">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-6);flex-wrap:wrap;gap:12px;">
             <div>
-              <span class="page-eyebrow-pill" style="margin-bottom:6px;background:rgba(225,29,72,0.12);border-color:rgba(225,29,72,0.3);color:var(--logo-red-light);">
-                <i class="fa-solid fa-circle-play" style="margin-right:4px;"></i> LAB DEMONSTRATIONS &amp; WEBINARS
-              </span>
               <h2 style="font-size:1.45rem;font-weight:800;color:var(--text-white);margin:0;">
                 Featured Engineering Video Releases
               </h2>
@@ -355,7 +347,6 @@ function renderSingleOemBlogView(oem, blog, activeTab) {
         ${(activeTab === 'all' || activeTab === 'articles') && articles.length > 0 ? `
           <div style="margin-bottom:var(--space-10);">
             <div style="margin-bottom:var(--space-4);display:flex;align-items:center;gap:10px;">
-              <span class="hub-dot-pulse" style="background:${oem.accentColor};"></span>
               <h3 style="font-size:1.25rem;font-weight:800;color:var(--text-white);margin:0;">
                 Technical News &amp; Product Releases from ${oem.shortName}
               </h3>

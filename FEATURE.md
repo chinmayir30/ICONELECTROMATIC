@@ -13,6 +13,13 @@
 
 ### **2026-10-10**
 
+* **Category:** Global Site Consistency — Removal of Eyebrow Animation Badges & Pulsing Circles Above All Page Headings
+  * **Page / Files:** [`src/pages/About.js`](file:///c:/ICON%20ELECTROMATIC/src/pages/About.js), [`src/pages/Contact.js`](file:///c:/ICON%20ELECTROMATIC/src/pages/Contact.js), [`src/pages/Services.js`](file:///c:/ICON%20ELECTROMATIC/src/pages/Services.js), [`src/pages/Partners.js`](file:///c:/ICON%20ELECTROMATIC/src/pages/Partners.js), [`src/pages/Products.js`](file:///c:/ICON%20ELECTROMATIC/src/pages/Products.js), [`src/pages/ProductDetail.js`](file:///c:/ICON%20ELECTROMATIC/src/pages/ProductDetail.js), [`src/pages/Blogs.js`](file:///c:/ICON%20ELECTROMATIC/src/pages/Blogs.js)
+  * **Type:** Visual Cleanliness, Content Streamlining & Cross-Page Header Uniformity
+  * **Details:**
+    * **Removed "ABOUT ICON ELECTROMATIC" & Animated Pulsing Dots:** Removed the top eyebrow pill (`.page-eyebrow-pill`) along with its pulsing animated circular dot (`.hub-dot-pulse`) above the main heading across the About Us page.
+    * **Applied Uniformity Across All Pages:** In alignment with the Home page header, removed all corresponding animated eyebrow badges and pulsing circle indicators above headings on the Contact Us, Services, Partners, Products catalog, Product Detail, and Blogs pages, maintaining a cohesive, distraction-free aesthetic throughout the entire website.
+
 * **Category:** Home Page — Hero Header & Stats Strip Content Refinement
   * **Page / Files:** [`src/pages/Home.js`](file:///c:/ICON%20ELECTROMATIC/src/pages/Home.js)
   * **Type:** Content Streamlining & UI Polish

@@ -65,10 +65,6 @@ export function renderProductDetailPage(params) {
 
           <!-- Product Details -->
           <div>
-            <div class="page-eyebrow-pill" style="margin-bottom:12px;">
-              <span class="hub-dot-pulse"></span>
-              <span>${product.categoryName}</span>
-            </div>
             <h1 class="page-title-unified" style="font-size:clamp(2rem, 3.5vw, 2.75rem);margin-bottom:10px;">
               ${product.model}
             </h1>

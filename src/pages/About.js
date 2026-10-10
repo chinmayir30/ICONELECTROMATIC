@@ -34,11 +34,6 @@ export function renderAboutPage() {
             </div>
 
             <div style="position:relative;z-index:3;">
-              <div class="page-eyebrow-pill">
-                <span class="hub-dot-pulse"></span>
-                <span>ABOUT ICON ELECTROMATIC</span>
-              </div>
-              
               <h1 class="page-title-unified">
                 About Us
               </h1>

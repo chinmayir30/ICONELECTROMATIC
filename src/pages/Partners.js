@@ -204,10 +204,6 @@ export function renderPartnersPage() {
 
           <!-- Unified Page Header -->
           <div class="page-header-unified" style="margin-bottom:0;">
-            <div class="page-eyebrow-pill">
-              <span class="hub-dot-pulse"></span>
-              <span>GLOBAL TECHNOLOGY ECOSYSTEM</span>
-            </div>
             <h1 class="page-title-unified">
               Authorized Technology Partners
             </h1>

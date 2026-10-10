@@ -57,10 +57,6 @@ function renderPageShell() {
 
         <!-- Unified Page Header matching Partners, Services, Blogs, About -->
         <div class="page-header-unified catalog-page-header" style="margin-bottom:0;">
-          <div class="page-eyebrow-pill">
-            <span class="hub-dot-pulse"></span>
-            <span>AUTHORIZED MANUFACTURER CATALOG</span>
-          </div>
           <h1 class="page-title-unified">Product Portfolio &amp; Component Catalog</h1>
           <p class="page-lead-unified">
             Authorized distributor for world-leading RF, microwave, mmWave, semiconductor, and Hi-Rel materials manufacturers.

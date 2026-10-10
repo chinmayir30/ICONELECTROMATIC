@@ -78,10 +78,6 @@ export function renderContactPage() {
 
           <!-- Unified Page Header -->
           <div class="page-header-unified" style="margin-bottom:0;">
-            <div class="page-eyebrow-pill" id="contact-eyebrow-pill">
-              <span class="hub-dot-pulse"></span>
-              <span id="contact-eyebrow-text">${isRecruiting ? 'ICON TALENT ACQUISITION' : 'CONNECT WITH ENGINEERING'}</span>
-            </div>
             <h1 class="page-title-unified" id="contact-page-title">
               ${isRecruiting 
                 ? 'Join India’s Foremost RF &amp; Microwave Engineering Hub' 

@@ -20,10 +20,6 @@ export function renderServicesPage() {
 
           <!-- Unified Page Header -->
           <div class="page-header-unified" style="margin-bottom:0;">
-            <div class="page-eyebrow-pill">
-              <span class="hub-dot-pulse"></span>
-              <span>CAPABILITIES &amp; SERVICES</span>
-            </div>
             <h1 class="page-title-unified">
               Engineering Services &amp; Global Representation
             </h1>
