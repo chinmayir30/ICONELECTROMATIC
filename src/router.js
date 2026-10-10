@@ -82,10 +82,28 @@ export function handleRoute() {
 
   if (matchedHandler) {
     currentPath = route;
-    matchedHandler(params);
+    try {
+      matchedHandler(params);
+    } catch (err) {
+      console.error('Error rendering route:', route, err);
+      const app = document.getElementById('app');
+      if (app) {
+        app.innerHTML = `
+          <div style="min-height: 80vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px; color: #fff;">
+            <h1 style="font-size: 2rem; margin-bottom: 16px; color: #dd2b1c;">Unable to display page</h1>
+            <p style="color: #94a3b8; max-width: 500px; margin-bottom: 24px;">An error occurred while loading this section.</p>
+            <a href="#/" class="btn-relay-red" onclick="window.location.reload()">Reload Home</a>
+          </div>
+        `;
+      }
+    }
   } else if (routes['/']) {
     currentPath = '/';
-    routes['/'](params);
+    try {
+      routes['/'](params);
+    } catch (err) {
+      console.error('Error rendering root fallback route:', err);
+    }
   }
 
   // Scroll to top cleanly
@@ -128,14 +146,15 @@ export function initRouter() {
 
   document.addEventListener('click', handleNavClick, { passive: false });
 
-  // Initial route handling
+  // Initial route normalization
   if (!window.location.hash || window.location.hash === '#' || window.location.hash === '#/') {
     if (window.location.pathname && window.location.pathname !== '/' && window.location.pathname !== '/index.html') {
       window.location.hash = '#' + window.location.pathname;
     } else {
       window.location.hash = '#/';
     }
-  } else {
-    handleRoute();
   }
+
+  // Always invoke handleRoute on startup to render the matched view immediately!
+  handleRoute();
 }

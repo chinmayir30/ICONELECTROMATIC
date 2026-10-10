@@ -26,6 +26,14 @@
   * **Details:**
     * **Pure White Font for All OEM Pills:** Ensured that across all product cards in the lighter theme (`[data-theme="light"]`), all OEM company names (Rogers Corporation, Qorvo, Ohmega-Ticer, Fortify, Mini-Circuits, RFuW Engineering, Spellman, Thermosen, etc.) render with pure white text (`#ffffff !important`) over high-contrast translucent badges, both in default and hover states.
 
+* **Category:** Routing & Startup — Resolved Blank Dark Screen on Vercel Production
+  * **Page / Files:** [`src/router.js`](file:///c:/ICON%20ELECTROMATIC/src/router.js), [`src/main.js`](file:///c:/ICON%20ELECTROMATIC/src/main.js)
+  * **Type:** Critical Bug Fix & Startup Performance
+  * **Details:**
+    * **Always Execute handleRoute on Startup:** Resolved issue where visiting `#` or `#/` skipped `handleRoute()` execution inside an `else` branch, resulting in no route handler rendering and leaving an unpopulated dark screen.
+    * **Removed Artificial Startup Delay & Unstyled Overlay:** Removed the 600ms `setTimeout` delay and unstyled placeholder overlay in `src/main.js`, mounting the router and initial view synchronously on load.
+    * **Added Route Error Boundary:** Wrapped route handler execution in `handleRoute()` with a resilient `try...catch` block displaying a recovery banner if an error occurs rather than failing silently into a blank dark screen.
+
 ---
 
 ### **2026-10-08**

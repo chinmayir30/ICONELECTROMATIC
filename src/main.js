@@ -17,13 +17,6 @@ import { initCustomCursor } from './components/CustomCursor.js';
 
 const app = document.getElementById('app');
 
-app.innerHTML = `
-  <div class="loading-overlay" id="loading-overlay">
-    <div class="loading-spinner"></div>
-    <p>Loading ICON ELECTROMATIC...</p>
-  </div>
-`;
-
 function renderPage(content, initFn) {
   const currentPath = getCurrentPath();
   let header = document.getElementById('site-header');
@@ -84,12 +77,6 @@ registerRoute('/blogs', (params) => renderPage(renderBlogsPage(params), () => in
 registerRoute('/blog', (params) => renderPage(renderBlogsPage(params), () => initBlogsPage(params)));
 registerRoute('/contact', () => renderPage(renderContactPage(), initContactPage));
 
-setTimeout(() => {
-  initRouter();
-  initCustomCursor();
-  const overlay = document.getElementById('loading-overlay');
-  if (overlay) {
-    overlay.classList.add('hidden');
-    setTimeout(() => overlay.remove(), 500);
-  }
-}, 600);
+// Initialize router and components immediately
+initRouter();
+initCustomCursor();
