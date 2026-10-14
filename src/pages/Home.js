@@ -187,7 +187,7 @@ export function renderHomePage() {
       <div class="container">
         <div class="section-head-minimal">
           <h2 class="section-tag-mono red-section-title" style="text-transform: uppercase; font-size: 2.75rem; font-weight: 800; letter-spacing: 0.05em; margin: 0; line-height: 1.2;">Connect with Engineering</h2>
-          <h3 class="section-h2" style="font-size: 2rem; font-weight: 600; line-height: 1.3; margin-top: 8px; margin-bottom: 16px;">Initiate an inquiry or request pricing.</h3>
+          <h3 class="section-h2" style="font-size: 2rem; font-weight: 600; line-height: 1.3; margin-top: 8px; margin-bottom: 16px;">Initiate an enquiry or request pricing.</h3>
           <p class="section-lead">
             Direct access to our senior RF applications team in Bengaluru. Fast turnarounds on quotations and custom requirements.
           </p>
@@ -233,25 +233,25 @@ export function renderHomePage() {
               <h4 style="font-size:1.05rem;font-weight:700;color:var(--text-white);margin-bottom:var(--space-2);display:flex;align-items:center;gap:8px;">
                 <i class="fa-solid fa-bolt" style="color:var(--logo-red);"></i> Quick Requirement Presets
               </h4>
-              <p style="font-size:0.85rem;color:var(--text-gray-400);margin-bottom:var(--space-3);">Click any preset to prefill your inquiry message:</p>
+              <p style="font-size:0.85rem;color:var(--text-gray-400);margin-bottom:var(--space-3);">Click any preset to prefill your enquiry message:</p>
               <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">
                 ${(contact.presets || [
-                  'Inquiring about High Frequency Laminates & Prepregs.',
-                  'Inquiring about Embedded Resistive Film.',
-                  'Inquiring about 3D Printed Dielectric Parts.',
-                  'Inquiring about High Power GaN Device and Beamforming IC.',
-                  'Inquiring about High Power Switches and Limiter.',
-                  'Inquiring about RF and MW Components.',
-                  'Inquiring about Tunable Filters.',
-                  'Inquiring about Software Defined Radios.',
-                  'Inquiring about high voltage power supplies.',
-                  'Inquiring about Temperature Sensors.',
-                  'Inquiring about Thin Film Capacitors.',
-                  'Inquiring about Ceramic Capacitors.',
-                  'Inquiring about PCB Fabrication.',
-                  'Inquiring about Perimeter Intrusion Detection System (PIDS).'
+                  'Enquiring about High Frequency Laminates & Prepregs.',
+                  'Enquiring about Embedded Resistive Film.',
+                  'Enquiring about 3D Printed Dielectric Parts.',
+                  'Enquiring about High Power GaN Device and Beamforming IC.',
+                  'Enquiring about High Power Switches and Limiter.',
+                  'Enquiring about RF and MW Components.',
+                  'Enquiring about Tunable Filters.',
+                  'Enquiring about Software Defined Radios.',
+                  'Enquiring about high voltage power supplies.',
+                  'Enquiring about Temperature Sensors.',
+                  'Enquiring about Thin Film Capacitors.',
+                  'Enquiring about Ceramic Capacitors.',
+                  'Enquiring about PCB Fabrication.',
+                  'Enquiring about Perimeter Intrusion Detection System (PIDS).'
                 ]).map(p => `
-                  <button class="filter-chip-dark quick-preset" data-preset="${p}">${p.replace(/^Inquiring about /, '').replace(/\.$/, '')}</button>
+                  <button class="filter-chip-dark quick-preset" data-preset="${p}">${p.replace(/^(?:Inquiring|Enquiring) about /, '').replace(/\.$/, '')}</button>
                 `).join('')}
               </div>
             </div>
@@ -286,13 +286,13 @@ export function renderHomePage() {
               </div>
 
               <div class="relay-field">
-                <label for="h-subject">Subject / Inquiry Domain *</label>
+                <label for="h-subject">Subject / Enquiry Domain *</label>
                 <select id="h-subject" required>
                   <option value="rfq">Request for Quotation (RFQ)</option>
                   <option value="technical">Technical Consultation & Design-In</option>
                   <option value="bespoke">Bespoke RF Microwave Engineering</option>
                   <option value="delivery">Delivery Timeline & Stock Availability</option>
-                  <option value="general">Partnership & General Inquiry</option>
+                  <option value="general">Partnership & General Enquiry</option>
                 </select>
               </div>
 
@@ -302,7 +302,7 @@ export function renderHomePage() {
               </div>
 
               <button type="submit" class="btn-relay-red" style="width:100%; justify-content:center;">
-                Transmit Inquiry <i class="fa-solid fa-paper-plane" style="margin-left:8px;"></i>
+                Transmit Enquiry <i class="fa-solid fa-paper-plane" style="margin-left:8px;"></i>
               </button>
             </form>
           </div>
@@ -400,10 +400,10 @@ export function initHomePage() {
           </div>
           <h3 style="font-size:1.4rem;font-weight:800;color:var(--text-white);margin-bottom:8px;">Thank You, ${name}!</h3>
           <p style="color:var(--text-gray-400);font-size:0.95rem;margin-bottom:var(--space-4);">
-            Your message has been logged. A specialized RF application engineer will review your inquiry and contact you within 24 hours.
+            Your message has been logged. A specialized RF application engineer will review your enquiry and contact you within 24 hours.
           </p>
           <div style="display:inline-block;padding:8px 16px;background:rgba(255,255,255,0.05);border:1px solid var(--border-card);border-radius:var(--radius-md);font-family:var(--font-display);font-size:0.85rem;color:var(--text-white);">
-            Inquiry Tracking Ref: <strong style="color:var(--logo-red-light);">${refId}</strong>
+            Enquiry Tracking Ref: <strong style="color:var(--logo-red-light);">${refId}</strong>
           </div>
         </div>
       `;

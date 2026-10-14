@@ -3,7 +3,7 @@ import { OEM_BLOGS } from './blogData.js';
 import { ImageStorage } from './ImageStorage.js';
 
 // ─── Version key: bump this to ensure fresh schema sync with existing localStorage ───
-const CMS_VERSION = 'v5';
+const CMS_VERSION = 'v6';
 
 const INITIAL_CONTENT = {
   header: {
@@ -487,20 +487,20 @@ const INITIAL_CONTENT = {
     hoursWeekday: 'Monday – Friday: 9:00 AM – 6:00 PM IST',
     hoursWeekend: 'Saturday: 9:30 AM – 1:30 PM IST',
     presets: [
-      'Inquiring about High Frequency Laminates & Prepregs.',
-      'Inquiring about Embedded Resistive Film.',
-      'Inquiring about 3D Printed Dielectric Parts.',
-      'Inquiring about High Power GaN Device and Beamforming IC.',
-      'Inquiring about High Power Switches and Limiter.',
-      'Inquiring about RF and MW Components.',
-      'Inquiring about Tunable Filters.',
-      'Inquiring about Software Defined Radios.',
-      'Inquiring about high voltage power supplies.',
-      'Inquiring about Temperature Sensors.',
-      'Inquiring about Thin Film Capacitors.',
-      'Inquiring about Ceramic Capacitors.',
-      'Inquiring about PCB Fabrication.',
-      'Inquiring about Perimeter Intrusion Detection System (PIDS).',
+      'Enquiring about High Frequency Laminates & Prepregs.',
+      'Enquiring about Embedded Resistive Film.',
+      'Enquiring about 3D Printed Dielectric Parts.',
+      'Enquiring about High Power GaN Device and Beamforming IC.',
+      'Enquiring about High Power Switches and Limiter.',
+      'Enquiring about RF and MW Components.',
+      'Enquiring about Tunable Filters.',
+      'Enquiring about Software Defined Radios.',
+      'Enquiring about high voltage power supplies.',
+      'Enquiring about Temperature Sensors.',
+      'Enquiring about Thin Film Capacitors.',
+      'Enquiring about Ceramic Capacitors.',
+      'Enquiring about PCB Fabrication.',
+      'Enquiring about Perimeter Intrusion Detection System (PIDS).',
     ],
   },
   seo: {

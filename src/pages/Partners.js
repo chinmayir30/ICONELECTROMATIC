@@ -41,7 +41,7 @@ function renderPartnerCardMarkup(partner) {
     : (partner.logoSvg || `<span style="color:#94a3b8; font-size:0.9rem; font-weight:600;">${partner.name}</span>`);
 
   return `
-    <div class="partner-static-card ${accentClass}" data-partner-id="${partner.id}" data-category="${partner.category || ''}" title="${partner.name}">
+    <div class="partner-static-card ${accentClass}" data-partner-id="${partner.id}" data-category="${partner.category || ''}" title="Explore ${partner.name} Products">
       <!-- Card Top: Centered Brand Logo Box -->
       <div class="partner-stream-card-top" style="justify-content:center;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,0.07);">
         <div class="partner-stream-card-logo-box" style="width:100%;display:flex;justify-content:center;align-items:center;">
@@ -54,7 +54,13 @@ function renderPartnerCardMarkup(partner) {
       <div class="partner-stream-card-domain">${partner.domain || ''}</div>
 
       <!-- Description of the Partner Association -->
-      <p class="partner-stream-card-desc" style="margin-bottom:0;">${partner.description || ''}</p>
+      <p class="partner-stream-card-desc" style="margin-bottom:16px;">${partner.description || ''}</p>
+
+      <!-- View Products Link Indicator -->
+      <div class="partner-card-action-row" style="margin-top:auto;display:flex;align-items:center;gap:6px;font-size:0.85rem;font-weight:700;color:${isRed ? 'var(--logo-red-light)' : 'var(--logo-blue-light)'};">
+        <span>View Products &amp; Catalog</span>
+        <i class="fa-solid fa-arrow-right" style="font-size:0.75rem;"></i>
+      </div>
     </div>
   `;
 }
@@ -125,6 +131,23 @@ export function renderPartnersPage() {
   `;
 }
 
+const PARTNER_TO_OEM_MAP = {
+  'rogers': 'rogers-corporation',
+  'mini-circuits': 'minicircuits',
+  'qorvo': 'qorvo',
+  'tecdia': 'tecdia',
+  'tri-teq': 'triteq',
+  'rfuw': 'rfuw-engineering',
+  'yttek': 'yttek',
+  'quantic-eulex': 'evans',
+  'quantic-ohmega': 'ohmega-ticer',
+  'thermosen': 'thermosen',
+  'fortify': 'fortify',
+  'powerfactor': 'powerfactor',
+  'nee': 'nee',
+  'transline-technology': 'transline-technology'
+};
+
 export function initPartnersPage() {
   document.querySelectorAll('.oem-running-logo-item').forEach(item => {
     item.addEventListener('click', () => {
@@ -144,7 +167,8 @@ export function initPartnersPage() {
     card.addEventListener('click', () => {
       const pid = card.getAttribute('data-partner-id');
       if (pid) {
-        window.location.hash = `#/blogs?oem=${pid === 'rogers' ? 'rogers-corporation' : pid}`;
+        const oemId = PARTNER_TO_OEM_MAP[pid] || pid;
+        window.location.hash = `#/products?level=categories&oem=${encodeURIComponent(oemId)}`;
       }
     });
   });

@@ -94,10 +94,6 @@ export function renderContactPage() {
 
           <!-- Highlights Strip (Matching Partners, Services, Blogs 1:1) -->
           <div class="services-trust-strip contact-trust-strip" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:16px;margin-bottom:0;padding-bottom:0;border-bottom:none;">
-            <div style="background:rgba(37,99,235,0.08);border:1px solid rgba(37,99,235,0.25);border-radius:8px;padding:7px 14px;font-size:0.82rem;color:#93C5FD;display:flex;align-items:center;gap:7px;">
-              <i class="fa-solid fa-bolt" style="color:var(--logo-blue-light);"></i>
-              <span>24-Hour RFQ Turnaround</span>
-            </div>
             <div style="background:rgba(225,29,72,0.08);border:1px solid rgba(225,29,72,0.25);border-radius:8px;padding:7px 14px;font-size:0.82rem;color:#FDA4AF;display:flex;align-items:center;gap:7px;">
               <i class="fa-solid fa-users-gear" style="color:var(--logo-red-light);"></i>
               <span>Bengaluru Engineering Hub</span>
