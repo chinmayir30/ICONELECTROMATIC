@@ -20,7 +20,6 @@ export function renderHeaderInner(currentRoute) {
   const route = currentRoute || getCurrentPath();
 
   const data = ContentService.getData('header');
-  const logoSrc = ContentService.resolveImg(data.logoUrl || '/icon-logo-transparent.png');
   const ctaText = data.ctaLabel || data.ctaText || 'Request Quote';
   const ctaLink = data.ctaLink || '/contact';
 
@@ -40,11 +39,23 @@ export function renderHeaderInner(currentRoute) {
     document.documentElement.getAttribute('data-theme') === 'light'
   );
 
+  const logoSrc = ContentService.resolveImg(
+    isLight ? '/lighter-version-logo.png' : '/darker-version-logo.png'
+  );
+
   return `
     <div class="header-inner">
-      <a href="#/" class="logo-container" data-route="/" title="ICON ELECTROMATIC Home">
-        <img src="${logoSrc}" alt="ICON ELECTROMATIC" />
-      </a>
+      <div class="header-left-cluster" style="display:flex;align-items:center;gap:12px;">
+        <button class="header-sidebar-toggle" id="header-sidebar-toggle" aria-label="Open navigation sidebar" aria-expanded="false" title="Menu" style="margin-left:0;margin-right:2px;">
+          <span class="sidebar-bar"></span>
+          <span class="sidebar-bar"></span>
+          <span class="sidebar-bar"></span>
+        </button>
+
+        <a href="#/" class="logo-container" data-route="/" title="ICON ELECTROMATIC Home">
+          <img src="${logoSrc}" alt="ICON ELECTROMATIC" class="site-header-logo-img" />
+        </a>
+      </div>
 
       <nav class="main-nav" id="main-nav">
         ${navLinks.map(link => `
@@ -76,14 +87,9 @@ export function renderHeaderInner(currentRoute) {
             </span>
           </span>
         </button>
-        <button class="header-sidebar-toggle" id="header-sidebar-toggle" aria-label="Open navigation sidebar" aria-expanded="false" title="Menu">
-          <span class="sidebar-bar"></span>
-          <span class="sidebar-bar"></span>
-          <span class="sidebar-bar"></span>
-        </button>
       </div>
 
-      <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle navigation">
+      <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle navigation" style="display:none;">
         <span></span>
         <span></span>
         <span></span>
@@ -105,9 +111,14 @@ export function renderHeader() {
  * Mounted directly to document.body to avoid CSS transform containing blocks.
  */
 function renderSidebarDrawerHTML(currentRoute) {
-  const route = currentRoute || getCurrentPath();
-  const data = ContentService.getData('header');
-  const logoSrc = ContentService.resolveImg(data.logoUrl || '/icon-logo-transparent.png');
+  const isLight = typeof window !== 'undefined' && (
+    new URLSearchParams(window.location.search).get('theme') === 'light' ||
+    localStorage.getItem('icon-theme') === 'light' ||
+    document.documentElement.getAttribute('data-theme') === 'light'
+  );
+  const logoSrc = ContentService.resolveImg(
+    isLight ? '/lighter-version-logo.png' : '/darker-version-logo.png'
+  );
   const ctaText = data.ctaLabel || data.ctaText || 'Request Quote';
   const ctaLink = data.ctaLink || '/contact';
 
@@ -361,6 +372,12 @@ export function initHeader() {
     if (toggleIcon) {
       toggleIcon.className = isLight ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
     }
+
+    // Dynamic logo switch for both lighter and darker versions
+    const activeLogo = isLight ? '/lighter-version-logo.png' : '/darker-version-logo.png';
+    document.querySelectorAll('.logo-container img, .drawer-logo img, .footer-logo-link img').forEach(img => {
+      img.src = activeLogo;
+    });
   };
 
   updateThemeUI(savedTheme);

@@ -3,11 +3,13 @@ import { OEM_BLOGS } from './blogData.js';
 import { ImageStorage } from './ImageStorage.js';
 
 // ─── Version key: bump this to ensure fresh schema sync with existing localStorage ───
-const CMS_VERSION = 'v6';
+const CMS_VERSION = 'v7';
 
 const INITIAL_CONTENT = {
   header: {
-    logoUrl: '/icon-logo-transparent.png',
+    logoUrl: '/darker-version-logo.png',
+    logoDarkUrl: '/darker-version-logo.png',
+    logoLightUrl: '/lighter-version-logo.png',
     ctaLabel: 'Request Quote',
     ctaLink: '/contact',
     navHome: 'Home',
@@ -19,7 +21,9 @@ const INITIAL_CONTENT = {
     navContact: 'Contact',
   },
   footer: {
-    logoUrl: '/icon-logo-transparent.png',
+    logoUrl: '/darker-version-logo.png',
+    logoDarkUrl: '/darker-version-logo.png',
+    logoLightUrl: '/lighter-version-logo.png',
     tagline: 'Delivering advanced RF, Microwave, and High-Rel electronic components from DC to 86 GHz for aerospace, defense, SATCOM, and telecommunications.',
     copyrightText: '© 2026 ICON ELECTROMATIC PRIVATE LIMITED. All rights reserved.',
     // India Office

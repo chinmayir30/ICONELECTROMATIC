@@ -6,7 +6,14 @@ import { ContentService } from '../data/ContentService.js';
 
 export function renderFooter() {
   const d = ContentService.getData('footer');
-  const logoSrc = ContentService.resolveImg(d.logoUrl || '/icon-logo-transparent.png');
+  const isLight = typeof window !== 'undefined' && (
+    new URLSearchParams(window.location.search).get('theme') === 'light' ||
+    localStorage.getItem('icon-theme') === 'light' ||
+    document.documentElement.getAttribute('data-theme') === 'light'
+  );
+  const logoSrc = ContentService.resolveImg(
+    isLight ? '/lighter-version-logo.png' : '/darker-version-logo.png'
+  );
   const year = new Date().getFullYear();
 
   return `
