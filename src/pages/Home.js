@@ -10,9 +10,6 @@ import { ContentService } from '../data/ContentService.js';
 export function renderHomePage() {
   const popular = getPopularProducts();
   const data = ContentService.getData('home');
-  const testimonials = ContentService.getData('testimonials');
-  const projects = ContentService.getData('projects');
-  const gallery = ContentService.getData('gallery');
   const contact = ContentService.getData('contact');
   const blogs = ContentService.getData('blogs');
 
@@ -29,9 +26,6 @@ export function renderHomePage() {
     { title: 'Test & Measurement', desc: 'Precision calibration adapters, armored low-loss RF test cables, and laboratory attenuator modules up to 86 GHz.', linkText: 'Explore Solutions →', linkUrl: '/products?category=test-solutions', icon: 'fa-solid fa-flask-vial' },
   ];
 
-  const testList = testimonials?.items || [];
-  const projList = (projects?.items || []).slice(0, 4);
-  const galList = (gallery?.items || []).slice(0, 8);
   const blogList = (blogs || []).slice(0, 3);
 
   const heroVideo = ContentService.resolveImg(data.heroBgVideo || '/icon-video.mp4');
@@ -134,139 +128,6 @@ export function renderHomePage() {
         <!-- Product Cards Grid -->
         <div class="products-grid-dark" id="home-products-grid">
           ${popular.map((p, i) => renderProductCard(p, i)).join('')}
-        </div>
-      </div>
-    </section>
-
-    <!-- FEATURED PROJECTS SHOWCASE -->
-    <section class="section-dark" style="background:#040812; border-top:1px solid rgba(255,255,255,0.06); padding:var(--space-20) 0;">
-      <div class="container">
-        <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:var(--space-10);flex-wrap:wrap;gap:var(--space-4);">
-          <div>
-            <h2 class="section-tag-mono red-section-title" style="text-transform: uppercase; font-size: 2.75rem; font-weight: 800; letter-spacing: 0.05em; margin: 0; line-height: 1.2;">
-              ${data.projectsTitle || 'Featured Projects'}
-            </h2>
-            <h3 class="section-h2" style="font-size: 2rem; font-weight: 600; line-height: 1.3; margin-top: 8px; margin-bottom: 0;">
-              ${data.projectsSubtitle || 'Mission-Ready Hardware Deployments'}
-            </h3>
-            <p class="section-lead" style="margin-top:10px;">
-              ${data.projectsLead || 'Direct contributions to premier radar, aerospace, and high-frequency communication programs.'}
-            </p>
-          </div>
-          <div>
-            <a class="btn-relay-border" data-route="/contact">
-              Discuss Your Project &rarr;
-            </a>
-          </div>
-        </div>
-
-        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;">
-          ${projList.map(proj => {
-            const img = ContentService.resolveImg(proj.image || '/images/defense-satcom.jpg');
-            return `
-              <div class="about-interactive-card" style="background:#080D1A; border:1px solid rgba(255,255,255,0.08); border-radius:16px; overflow:hidden; display:flex; flex-direction:column; transition:transform 0.2s;">
-                <div style="height:190px; overflow:hidden; position:relative; background:#000;">
-                  <img src="${img}" alt="${proj.title}" style="width:100%; height:100%; object-fit:cover; opacity:0.9;" loading="lazy" />
-                  <span style="position:absolute; top:12px; right:12px; background:rgba(0,0,0,0.7); backdrop-filter:blur(6px); border:1px solid rgba(255,255,255,0.15); color:var(--logo-red-light); font-size:0.75rem; font-weight:700; padding:3px 10px; border-radius:20px;">
-                    ${proj.status || 'Active'}
-                  </span>
-                  <span style="position:absolute; bottom:12px; left:12px; background:rgba(37,99,235,0.85); color:#fff; font-size:0.72rem; font-weight:600; padding:2px 8px; border-radius:4px;">
-                    ${proj.category || 'Engineering'}
-                  </span>
-                </div>
-                <div style="padding:22px; flex:1; display:flex; flex-direction:column;">
-                  <h4 style="font-size:1.15rem; font-weight:700; color:#fff; margin-bottom:8px; line-height:1.35;">${proj.title}</h4>
-                  <div style="font-size:0.8rem; color:var(--logo-blue-light); margin-bottom:12px; font-weight:600;">${proj.clientSector || ''} · ${proj.date || ''}</div>
-                  <p style="font-size:0.88rem; color:var(--text-gray-300); line-height:1.6; margin-bottom:16px; flex:1;">${proj.desc || ''}</p>
-                  <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:auto;">
-                    ${(proj.tags || []).map(t => `<span style="font-size:0.7rem; color:#94a3b8; background:rgba(255,255,255,0.05); padding:2px 8px; border-radius:4px; border:1px solid rgba(255,255,255,0.06);">${t}</span>`).join('')}
-                  </div>
-                </div>
-              </div>
-            `;
-          }).join('')}
-        </div>
-      </div>
-    </section>
-
-    <!-- HARDWARE & COMPONENT GALLERY -->
-    <section class="section-dark" style="background:var(--bg-surface); padding:var(--space-20) 0; border-top:1px solid rgba(255,255,255,0.06);">
-      <div class="container">
-        <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:var(--space-10);flex-wrap:wrap;gap:var(--space-4);">
-          <div>
-            <h2 class="section-tag-mono red-section-title" style="text-transform: uppercase; font-size: 2.75rem; font-weight: 800; letter-spacing: 0.05em; margin: 0; line-height: 1.2;">
-              ${data.galleryTitle || 'Hardware Gallery'}
-            </h2>
-            <h3 class="section-h2" style="font-size: 2rem; font-weight: 600; line-height: 1.3; margin-top: 8px; margin-bottom: 0;">
-              ${data.gallerySubtitle || 'High-Rel Components in Action'}
-            </h3>
-            <p class="section-lead" style="margin-top:10px;">
-              ${data.galleryLead || 'Precision microwave active devices, passives, waveguide transitions, and advanced materials.'}
-            </p>
-          </div>
-          <div>
-            <a class="btn-relay-dark" data-route="/products">
-              Explore Products &rarr;
-            </a>
-          </div>
-        </div>
-
-        <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px;">
-          ${galList.map(item => {
-            const img = ContentService.resolveImg(item.image);
-            return `
-              <div class="about-interactive-card" style="background:#080D1A; border:1px solid rgba(255,255,255,0.07); border-radius:14px; overflow:hidden; display:flex; flex-direction:column;">
-                <div style="height:180px; overflow:hidden; background:#000;">
-                  <img src="${img}" alt="${item.title}" style="width:100%; height:100%; object-fit:cover; transition:transform 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" loading="lazy" />
-                </div>
-                <div style="padding:16px;">
-                  <div style="font-size:0.72rem; color:var(--logo-red-light); font-weight:700; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px;">${item.category || 'Component'}</div>
-                  <h4 style="font-size:0.95rem; font-weight:700; color:#fff; margin-bottom:4px;">${item.title}</h4>
-                  <p style="font-size:0.8rem; color:#94a3b8; line-height:1.4; margin:0;">${item.caption || ''}</p>
-                </div>
-              </div>
-            `;
-          }).join('')}
-        </div>
-      </div>
-    </section>
-
-    <!-- TESTIMONIALS SECTION -->
-    <section class="testimonials-dark-section">
-      <div class="container">
-        <div style="text-align:center; max-width:800px; margin:0 auto var(--space-12);">
-          <h2 class="section-tag-mono red-section-title" style="text-transform: uppercase; font-size: 2.75rem; font-weight: 800; letter-spacing: 0.05em; margin: 0; line-height: 1.2;">
-            ${data.testimonialsTitle || 'Trusted by Industry Leaders'}
-          </h2>
-          <h3 class="section-h2" style="font-size: 2rem; font-weight: 600; line-height: 1.3; margin-top: 8px; margin-bottom: 12px;">
-            ${data.testimonialsSubtitle || 'What Defense, Space & Aerospace Engineers Say'}
-          </h3>
-          <p class="section-lead" style="margin:0 auto;">
-            ${data.testimonialsLead || 'Engineered components and bespoke solutions deployed in mission-critical radar, satellite payloads, and defense communications across India and globally.'}
-          </p>
-        </div>
-
-        <div class="testimonials-grid-dark">
-          ${testList.map(t => {
-            const avatar = ContentService.resolveImg(t.avatar);
-            const stars = Array.from({ length: t.stars || 5 }).map(() => '<i class="fa-solid fa-star"></i>').join('');
-            return `
-              <div class="testimonial-card-relay">
-                <div class="testimonial-stars">${stars}</div>
-                <p class="testimonial-quote">"${t.quote}"</p>
-                <div class="testimonial-author-block">
-                  <div class="testimonial-avatar" style="${avatar ? `background-image:url('${avatar}'); background-size:cover; background-position:center;` : ''}">
-                    ${avatar ? '' : (t.name.split(' ').map(n=>n[0]).join('').substring(0,2))}
-                  </div>
-                  <div class="testimonial-author-details">
-                    <h4>${t.name}</h4>
-                    <p>${t.role} · ${t.company}</p>
-                    <span class="testimonial-industry-tag">${t.industry || 'Defense & Space'}</span>
-                  </div>
-                </div>
-              </div>
-            `;
-          }).join('')}
         </div>
       </div>
     </section>
