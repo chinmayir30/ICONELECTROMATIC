@@ -292,7 +292,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .mobile-toggle {
-  display: none;
+  display: none !important;
   flex-direction: column;
   gap: 5px;
   cursor: pointer;
@@ -1078,6 +1078,9 @@ h1, h2, h3, h4, h5, h6 {
   flex-direction: column;
   gap: 6px;
   margin-bottom: var(--space-4);
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .relay-field label {
@@ -1090,6 +1093,10 @@ h1, h2, h3, h4, h5, h6 {
 .relay-field input,
 .relay-field select,
 .relay-field textarea {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   padding: 11px 14px;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid var(--border-card);
@@ -1753,7 +1760,7 @@ h1, h2, h3, h4, h5, h6 {
     box-shadow: 0 16px 36px rgba(0, 0, 0, 0.12) !important;
   }
   .mobile-toggle {
-    display: flex;
+    display: none !important;
   }
   .hero-title-giant {
     font-size: 2.75rem;
@@ -11926,19 +11933,10 @@ img, video, iframe {
   }
 
   .mobile-toggle {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    width: 38px !important;
-    height: 38px !important;
-    background: rgba(255, 255, 255, 0.06) !important;
-    border: 1px solid rgba(255, 255, 255, 0.16) !important;
-    border-radius: 8px !important;
-    cursor: pointer !important;
+    display: none !important;
   }
   [data-theme="light"] .mobile-toggle {
-    background: #f1f5f9 !important;
-    border: 1px solid #cbd5e1 !important;
+    display: none !important;
   }
   .mobile-toggle span {
     transition: transform 0.25s ease, opacity 0.25s ease !important;
@@ -12229,16 +12227,173 @@ img, video, iframe {
     transform: translateX(27px) !important;
   }
   .mobile-toggle {
-    width: 36px !important;
-    height: 36px !important;
-    padding: 5px !important;
-  }
-  .mobile-toggle span {
-    width: 18px !important;
+    display: none !important;
   }
 
   /* Quick Requirement Presets on Home & Contact */
   .contact-relay-card div[style*="grid-template-columns: repeat(2, 1fr)"] {
     grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+}
+
+/* ==========================================================================
+   Mobile Contact Page Full Alignment & Layout Polish (<= 768px)
+   ========================================================================== */
+@media (max-width: 768px) {
+  .contact-relay-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    gap: 20px !important;
+  }
+
+  .contact-relay-form,
+  .contact-relay-card,
+  [data-theme="light"] .contact-relay-form,
+  [data-theme="light"] .contact-relay-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 22px 16px !important;
+    overflow: hidden !important;
+    border-radius: var(--radius-lg) !important;
+  }
+
+  .contact-relay-form h3,
+  .contact-relay-card h3 {
+    font-size: 1.3rem !important;
+    line-height: 1.3 !important;
+  }
+
+  .contact-relay-form p.subtitle,
+  .contact-relay-card p {
+    font-size: 0.88rem !important;
+    line-height: 1.5 !important;
+  }
+
+  /* Form Row & Field Sizing */
+  .relay-form-row {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    gap: 14px !important;
+    margin-bottom: 14px !important;
+  }
+
+  .relay-field {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    margin-bottom: 0 !important;
+  }
+
+  .relay-field input,
+  .relay-field select,
+  .relay-field textarea,
+  [data-theme="light"] .contact-relay-form input,
+  [data-theme="light"] .contact-relay-form select,
+  [data-theme="light"] .contact-relay-form textarea {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    font-size: 0.9rem !important;
+    padding: 11px 12px !important;
+  }
+
+  .contact-relay-form button[type="submit"],
+  .contact-relay-form .btn-relay-blue {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    justify-content: center !important;
+    font-size: 0.92rem !important;
+    padding: 13px 16px !important;
+  }
+
+  /* Tabs Alignment on Mobile */
+  .contact-tabs-wrapper {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-bottom: 18px !important;
+  }
+
+  .contact-form-tabs {
+    display: flex !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    gap: 6px !important;
+    padding: 4px !important;
+    box-sizing: border-box !important;
+  }
+
+  .contact-tab-btn {
+    flex: 1 1 50% !important;
+    padding: 10px 8px !important;
+    font-size: 0.8rem !important;
+    justify-content: center !important;
+    white-space: normal !important;
+    text-align: center !important;
+    gap: 6px !important;
+    min-height: 44px !important;
+  }
+
+  .tab-hiring-pill {
+    display: none !important;
+  }
+
+  /* Trust Strip on Mobile */
+  .contact-trust-strip {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+    width: 100% !important;
+    margin-top: 14px !important;
+  }
+
+  .contact-trust-strip > div {
+    width: 100% !important;
+    box-sizing: border-box !important;
+    justify-content: flex-start !important;
+  }
+
+  /* Preset buttons */
+  .contact-relay-card .quick-preset,
+  .quick-preset {
+    width: 100% !important;
+    box-sizing: border-box !important;
+    text-align: left !important;
+    white-space: normal !important;
+    font-size: 0.8rem !important;
+    padding: 9px 12px !important;
+    line-height: 1.4 !important;
+    border-radius: 8px !important;
+  }
+
+  /* Office Addresses Details */
+  .contact-meta-row {
+    gap: 12px !important;
+  }
+
+  .contact-meta-text {
+    min-width: 0 !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+  }
+
+  .contact-meta-text p {
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+  }
+
+  .resume-upload-box {
+    width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 18px 12px !important;
   }
 }
