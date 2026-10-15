@@ -2317,6 +2317,70 @@ export const CATALOG = [
       },
     ]
   },
+  {
+    id: "spellman",
+    name: "Spellman",
+    shortName: "Spellman",
+    specialty: "high voltage power supplies",
+    tagline: "High Voltage Power Supplies, X-Ray Generators and Monoblock® X-Ray Sources",
+    description: "Spellman High Voltage Electronics Corporation is a world leader in high-voltage DC power supplies, modular power converters, X-ray generators, and custom power solutions for defense, aerospace, medical, and industrial applications.",
+    website: "https://www.spellmanhv.com",
+    accentColor: "#0284C7",
+    glowColor: "rgba(2, 132, 199, 0.4)",
+    defaultImage: "/images/gan-power-chip.jpg",
+    logoImg: "/images/gan-power-chip.jpg",
+    logoSvg: "<svg viewBox=\"0 0 210 42\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"2\" y=\"2\" width=\"38\" height=\"38\" rx=\"9\" fill=\"rgba(2,132,199,0.2)\" stroke=\"#0284C7\" stroke-width=\"1.8\"/><path d=\"M21 11l-7 11h8l-2 9 9-12h-8l3-8h-3z\" fill=\"#38BDF8\"/><text x=\"48\" y=\"23\" fill=\"#FFFFFF\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"900\" font-size=\"15\" letter-spacing=\"1\">SPELLMAN</text><text x=\"49\" y=\"34\" fill=\"#38BDF8\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"800\" font-size=\"7.5\" letter-spacing=\"1.5\">HIGH VOLTAGE POWER</text></svg>",
+    categories: [
+      {
+        id: "high-voltage-power-supplies",
+        name: "high voltage power supplies",
+        description: "Modular High Voltage Power Supply, Rack Mount Power Supply, X-Ray Generators, and Monoblock® Sources",
+        products: [
+          {
+            id: "spellman-hv-1",
+            name: "High Voltage Power Supplies & X-Ray Sources",
+            category: "high voltage power supplies",
+            description: "Modular High Voltage Power Supply, Rack Mount High Voltage Power Supply, X-Ray Generator, X-Ray Source (Monoblock®), Custom High Voltage Power Supply, Application Specific High Voltage Power Supply, Portable NDT X-Ray Imaging Products",
+            applications: "Ion Beam Implantation, Electron Beam Welding, Electrostatic Separators, Electron Beam Evaporation, Ion Milling, Neutron Generators, Plasma Igniters, Sputtering, Marx Generators, Electrostatic Lenses, Oil Well Data Logging",
+            link: "https://www.spellmanhv.com",
+            image: "/images/gan-power-chip.jpg"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: "aee-isarael",
+    name: "AEE ISARAEL",
+    shortName: "AEE Israel",
+    specialty: "Perimeter Intrusion Detection System (PIDS)",
+    tagline: "Perimeter Intrusion Detection Systems (PIDS) & Integrated Defense Solutions",
+    description: "AEE Israel specializes in high-security physical and electronic perimeter detection, fiber-optic boundary sensing, taut-wire fences, drone defense, and command & control security management systems.",
+    website: "https://www.aee-israel.com",
+    accentColor: "#DC2626",
+    glowColor: "rgba(220, 38, 38, 0.4)",
+    defaultImage: "/images/rf-filter.jpg",
+    logoImg: "/images/rf-filter.jpg",
+    logoSvg: "<svg viewBox=\"0 0 210 42\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"2\" y=\"2\" width=\"38\" height=\"38\" rx=\"9\" fill=\"rgba(220,38,38,0.2)\" stroke=\"#DC2626\" stroke-width=\"1.8\"/><path d=\"M21 11l9 4v7c0 6-4 10-9 12-5-2-9-6-9-12v-7l9-4z\" fill=\"#EF4444\"/><text x=\"48\" y=\"23\" fill=\"#FFFFFF\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"900\" font-size=\"15\" letter-spacing=\"1\">AEE ISRAEL</text><text x=\"49\" y=\"34\" fill=\"#EF4444\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"800\" font-size=\"7.5\" letter-spacing=\"1.5\">PERIMETER DEFENSE (PIDS)</text></svg>",
+    categories: [
+      {
+        id: "perimeter-intrusion-detection-system-pids",
+        name: "Perimeter Intrusion Detection System (PIDS)",
+        description: "High security fencing, C4I security management, fiber & copper vibration systems, seismic sensors, and anti-drone defense",
+        products: [
+          {
+            id: "aee-pids-1",
+            name: "Perimeter Intrusion Detection System (PIDS)",
+            category: "Perimeter Intrusion Detection System (PIDS)",
+            description: "High Security Fencing, Industrial and Residential fencing systems, Command and Control C4I and Security Management Systems, Taut wire and Electric fences, Seismic systems, Fence mounted vibration ranging systems (Copper & Fiber), Drone Systems, Jammer equipment and Anti-Drone Systems, Radar, Aesthetic Smart Decorative Detection Fences, Fire & Smoke Detection system, Video Analytic (3D) and Behavior based on AI, Face Recognition Systems, Laser Sensor & Infra-Red Towers, Barrier & Bollards, Balloon Tactical Surveillance, Buried cable systems",
+            applications: "Military Bases, Radar Installations, Aerospace Test Facilities, Critical Infrastructure, Industrial and Defense Perimeters",
+            link: "https://www.aee-israel.com",
+            image: "/images/rf-filter.jpg"
+          }
+        ]
+      }
+    ]
+  },
 ];
 
 // Helper query utilities

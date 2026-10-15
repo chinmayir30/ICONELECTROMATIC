@@ -531,7 +531,15 @@ export const ContentService = {
     const local = localStorage.getItem(`cms_${pageKey}`);
     if (local) {
       try {
-        return JSON.parse(local);
+        const parsed = JSON.parse(local);
+        if (pageKey === 'products') {
+          // If cached products don't have categories (stale schema), ignore and reseed
+          if (Array.isArray(parsed) && parsed.length > 0 && Array.isArray(parsed[0].categories)) {
+            return parsed;
+          }
+        } else {
+          return parsed;
+        }
       } catch (e) {
         console.error('Failed to parse cached CMS data for', pageKey, e);
       }
@@ -542,12 +550,34 @@ export const ContentService = {
       const initial = CATALOG.map(oem => ({
         id: oem.id,
         name: oem.name,
+        shortName: oem.shortName || oem.name,
         specialty: oem.specialty,
-        tagline: oem.tagline,
-        description: oem.description,
-        website: oem.website,
-        logoImg: oem.logoImg,
         category: oem.specialty,
+        tagline: oem.tagline || '',
+        description: oem.description || '',
+        website: oem.website || '',
+        logoImg: oem.logoImg || '',
+        logoSvg: oem.logoSvg || '',
+        defaultImage: oem.defaultImage || '',
+        accentColor: oem.accentColor || '#2563EB',
+        glowColor: oem.glowColor || 'rgba(37,99,235,0.4)',
+        visible: oem.visible !== false,
+        categories: (oem.categories || []).map(cat => ({
+          id: cat.id,
+          name: cat.name,
+          description: cat.description || '',
+          visible: cat.visible !== false,
+          products: (cat.products || []).map(prod => ({
+            id: prod.id || `${cat.id}-${Math.random().toString(36).substr(2,6)}`,
+            name: prod.name,
+            category: prod.category || cat.name,
+            description: prod.description || '',
+            applications: prod.applications || '',
+            link: prod.link || '',
+            image: prod.image || oem.defaultImage || '',
+            visible: prod.visible !== false,
+          }))
+        }))
       }));
       localStorage.setItem('cms_products', JSON.stringify(initial));
       return initial;

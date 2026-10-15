@@ -1696,129 +1696,643 @@ function bindContactTabEvents() {
 }
 
 // ─── PRODUCTS / OEMS TAB ─────────────────────────────────────────────────────
-function renderProductsTab() {
-  const products = ContentService.getData('products') || [];
+const expandedOemIds = new Set();
+let catalogSearchQuery = '';
 
-  const rows = products.map((p, idx) => {
-    const logo = ImageStorage.resolveImageUrl(p.logoImg);
-    return `
-      <tr>
-        <td style="width:90px;">
-          <div class="a-reorder-group">
-            <button class="a-btn-reorder btn-move-prod" data-dir="up" data-idx="${idx}" ${idx === 0 ? 'disabled' : ''}><i class="fa-solid fa-arrow-up"></i></button>
-            <button class="a-btn-reorder btn-move-prod" data-dir="down" data-idx="${idx}" ${idx === products.length - 1 ? 'disabled' : ''}><i class="fa-solid fa-arrow-down"></i></button>
+function renderProductsTab() {
+  const oems = ContentService.getData('products') || [];
+
+  const totalOems = oems.length;
+  const visibleOemsCount = oems.filter(o => o.visible !== false).length;
+  let totalProductsCount = 0;
+  oems.forEach(o => {
+    (o.categories || []).forEach(cat => {
+      totalProductsCount += (cat.products || []).length;
+    });
+  });
+
+  const q = (catalogSearchQuery || '').trim().toLowerCase();
+  const filteredOems = oems.filter(o => {
+    if (!q) return true;
+    if ((o.name || '').toLowerCase().includes(q)) return true;
+    if ((o.specialty || '').toLowerCase().includes(q)) return true;
+    if ((o.description || '').toLowerCase().includes(q)) return true;
+    return (o.categories || []).some(cat => {
+      if ((cat.name || '').toLowerCase().includes(q)) return true;
+      return (cat.products || []).some(p => {
+        return (p.name || '').toLowerCase().includes(q) ||
+               (p.description || '').toLowerCase().includes(q) ||
+               (p.applications || '').toLowerCase().includes(q);
+      });
+    });
+  });
+
+  const oemCardsHtml = filteredOems.map(oem => {
+    const origIdx = oems.indexOf(oem);
+    const resolvedLogo = ImageStorage.resolveImageUrl(oem.logoImg);
+
+    const oemProds = [];
+    (oem.categories || []).forEach((cat, catIdx) => {
+      (cat.products || []).forEach((prod, prodIdx) => {
+        oemProds.push({
+          ...prod,
+          catId: cat.id,
+          catName: cat.name,
+          catIdx,
+          prodIdx,
+        });
+      });
+    });
+
+    const prodCount = oemProds.length;
+    const catCount = (oem.categories || []).length;
+    const isExpanded = expandedOemIds.has(oem.id) || (q.length > 0);
+    const isHidden = oem.visible === false;
+
+    let productsPanelHtml = '';
+    if (isExpanded) {
+      const productRows = oemProds.map((p, pIdx) => {
+        const prodImg = ImageStorage.resolveImageUrl(p.image || oem.defaultImage);
+        const isProdHidden = p.visible === false;
+        const catProds = oem.categories[p.catIdx]?.products || [];
+
+        return `
+          <tr class="${isProdHidden ? 'a-row-hidden' : ''}">
+            <td style="width: 80px;">
+              <div class="a-reorder-group">
+                <button type="button" class="a-btn-reorder btn-move-prod" data-oem-idx="${origIdx}" data-cat-idx="${p.catIdx}" data-prod-idx="${p.prodIdx}" data-dir="up" ${p.prodIdx === 0 ? 'disabled' : ''} title="Move Up"><i class="fa-solid fa-arrow-up"></i></button>
+                <button type="button" class="a-btn-reorder btn-move-prod" data-oem-idx="${origIdx}" data-cat-idx="${p.catIdx}" data-prod-idx="${p.prodIdx}" data-dir="down" ${p.prodIdx === catProds.length - 1 ? 'disabled' : ''} title="Move Down"><i class="fa-solid fa-arrow-down"></i></button>
+              </div>
+            </td>
+            <td style="width: 60px;">
+              <div class="a-prod-thumb-box">
+                ${prodImg ? `<img src="${prodImg}" alt="${p.name}" />` : '<i class="fa-solid fa-microchip" style="color:#64748b;"></i>'}
+              </div>
+            </td>
+            <td>
+              <div class="a-prod-name-box">
+                <strong>${p.name || 'Unnamed Product'}</strong>
+                <span>ID: ${p.id || '—'}</span>
+              </div>
+            </td>
+            <td>
+              <span class="a-badge a-badge-blue">${p.catName || p.category || 'General'}</span>
+            </td>
+            <td>
+              <div class="a-prod-text-snippet" title="${p.description || ''}">
+                ${p.description || '<span style="color:#94a3b8;font-style:italic;">No description</span>'}
+              </div>
+              ${p.applications ? `<div class="a-prod-text-snippet" style="color:#2563eb;font-size:0.7rem;margin-top:2px;" title="${p.applications}"><i class="fa-solid fa-bullseye"></i> ${p.applications}</div>` : ''}
+            </td>
+            <td>
+              ${p.link ? `<a href="${p.link}" target="_blank" rel="noopener" class="a-btn a-btn-outline a-btn-sm" style="padding:3px 8px;font-size:0.72rem;"><i class="fa-solid fa-arrow-up-right-from-square"></i> Link</a>` : '<span style="color:#94a3b8;font-size:0.72rem;">None</span>'}
+            </td>
+            <td>
+              <button type="button" class="a-btn a-btn-sm btn-toggle-prod-vis" data-oem-idx="${origIdx}" data-cat-idx="${p.catIdx}" data-prod-idx="${p.prodIdx}" title="Click to toggle visibility" style="${isProdHidden ? 'opacity:0.6;background:#f1f5f9;color:#64748b;' : 'background:#ecfdf5;color:#059669;border-color:#a7f3d0;'}">
+                <i class="fa-solid ${isProdHidden ? 'fa-eye-slash' : 'fa-eye'}"></i> ${isProdHidden ? 'Hidden' : 'Visible'}
+              </button>
+            </td>
+            <td style="white-space: nowrap;">
+              <button type="button" class="a-btn a-btn-outline a-btn-sm btn-edit-product" data-oem-idx="${origIdx}" data-cat-idx="${p.catIdx}" data-prod-idx="${p.prodIdx}"><i class="fa-solid fa-pen"></i> Edit</button>
+              <button type="button" class="a-btn a-btn-danger a-btn-sm btn-del-product" data-oem-idx="${origIdx}" data-cat-idx="${p.catIdx}" data-prod-idx="${p.prodIdx}" style="margin-left:4px;"><i class="fa-solid fa-trash"></i></button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      productsPanelHtml = `
+        <div class="a-oem-panel">
+          <div class="a-oem-panel-top">
+            <div>
+              <strong style="color:#0f172a; font-size:0.88rem;">Products &amp; Lines under ${oem.name} (${prodCount})</strong>
+              <div style="font-size:0.75rem; color:var(--a-muted); margin-top:2px;">Edit specifications, replace photos, reorder, or add variants</div>
+            </div>
+            <button type="button" class="a-btn a-btn-primary a-btn-sm btn-add-prod-to-oem" data-oem-idx="${origIdx}">
+              <i class="fa-solid fa-plus"></i> Add Product to ${oem.shortName || oem.name}
+            </button>
           </div>
-        </td>
-        <td>
-          ${logo ? `<img src="${logo}" class="a-img-preview" alt="${p.name}">` : '<span style="color:#94a3b8; font-size:0.75rem;">No logo</span>'}
-        </td>
-        <td><strong>${p.name}</strong></td>
-        <td style="color:var(--a-muted); font-size:0.8rem;">${p.specialty || p.category || '—'}</td>
-        <td>
-          <button class="a-btn a-btn-outline a-btn-sm prod-edit-btn" data-idx="${idx}">
-            <i class="fa-solid fa-pen"></i> Edit
-          </button>
-          <button class="a-btn a-btn-danger a-btn-sm prod-del-btn" data-idx="${idx}" style="margin-left:6px;">
-            <i class="fa-solid fa-trash"></i>
-          </button>
-        </td>
-      </tr>
+          <div class="a-table-wrap">
+            <table class="a-sub-table">
+              <thead>
+                <tr>
+                  <th>Order</th>
+                  <th>Image</th>
+                  <th>Product Model</th>
+                  <th>Category</th>
+                  <th>Description &amp; Applications</th>
+                  <th>Datasheet</th>
+                  <th>Visibility</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${productRows || '<tr><td colspan="8" style="text-align:center;padding:24px;color:var(--a-muted);">No products registered under this OEM yet. Click "+ Add Product to ' + (oem.shortName || oem.name) + '" above.</td></tr>'}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    return `
+      <div class="a-oem-card ${isHidden ? 'oem-hidden' : ''}" id="oem-card-${oem.id}">
+        <div class="a-oem-header">
+          <div class="a-oem-header-left">
+            <div class="a-reorder-group">
+              <button type="button" class="a-btn-reorder btn-move-oem" data-dir="up" data-idx="${origIdx}" ${origIdx === 0 ? 'disabled' : ''} title="Move OEM Up"><i class="fa-solid fa-arrow-up"></i></button>
+              <button type="button" class="a-btn-reorder btn-move-oem" data-dir="down" data-idx="${origIdx}" ${origIdx === oems.length - 1 ? 'disabled' : ''} title="Move OEM Down"><i class="fa-solid fa-arrow-down"></i></button>
+            </div>
+            <div class="a-oem-logo-thumb">
+              ${resolvedLogo ? `<img src="${resolvedLogo}" alt="${oem.name}" />` : (oem.logoSvg || '<i class="fa-solid fa-industry" style="color:#94a3b8;"></i>')}
+            </div>
+            <div class="a-oem-info">
+              <div class="a-oem-name-row">
+                <span class="a-oem-title">${oem.name}</span>
+                <span class="a-badge a-badge-blue">${oem.specialty || oem.category || 'RF & Microwave'}</span>
+                ${isHidden ? '<span class="a-badge" style="background:#64748b;color:#fff;"><i class="fa-solid fa-eye-slash"></i> Hidden</span>' : '<span class="a-badge a-badge-green"><i class="fa-solid fa-eye"></i> Visible</span>'}
+              </div>
+              <div class="a-oem-meta-row">
+                <span><i class="fa-solid fa-folder-tree"></i> ${catCount} ${catCount === 1 ? 'Category' : 'Categories'}</span>
+                <span>&bull;</span>
+                <span><i class="fa-solid fa-microchip"></i> <strong>${prodCount}</strong> ${prodCount === 1 ? 'Product' : 'Products & Lines'}</span>
+                ${oem.website ? `<span>&bull;</span> <a href="${oem.website}" target="_blank" rel="noopener" style="color:var(--a-blue);text-decoration:none;"><i class="fa-solid fa-globe"></i> Website</a>` : ''}
+              </div>
+            </div>
+          </div>
+
+          <div class="a-oem-header-actions">
+            <button type="button" class="a-btn a-btn-outline a-btn-sm btn-toggle-oem-vis" data-idx="${origIdx}" title="${isHidden ? 'Show on public site' : 'Hide from public site'}">
+              <i class="fa-solid ${isHidden ? 'fa-eye' : 'fa-eye-slash'}"></i> ${isHidden ? 'Show' : 'Hide'}
+            </button>
+            <button type="button" class="a-btn a-btn-primary a-btn-sm btn-toggle-oem-expand" data-oem-id="${oem.id}">
+              <i class="fa-solid ${isExpanded ? 'fa-chevron-up' : 'fa-chevron-down'}"></i>
+              <span>${isExpanded ? 'Collapse' : 'Expand'} Products (${prodCount})</span>
+            </button>
+            <button type="button" class="a-btn a-btn-outline a-btn-sm btn-edit-oem" data-idx="${origIdx}">
+              <i class="fa-solid fa-pen"></i> Edit OEM
+            </button>
+            <button type="button" class="a-btn a-btn-danger a-btn-sm btn-del-oem" data-idx="${origIdx}" title="Delete OEM and its products">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </div>
+        </div>
+
+        ${productsPanelHtml}
+      </div>
     `;
   }).join('');
 
   return `
     <div class="a-cards-box">
-      <div class="a-cards-box-header">
+      <div class="a-cards-box-header" style="align-items:flex-start;">
         <div>
-          <h3>All OEMs / Manufacturing Partners (${products.length})</h3>
-          <p>Add, edit, delete, and reorder authorized principals with logo upload</p>
+          <h3>OEM Principals &amp; Product Portfolio Catalog</h3>
+          <p>Manage all 15 authorized global manufacturing partners and every associated product line. Expand any OEM to edit models, upload hardware photos, and adjust specifications.</p>
         </div>
-        <button type="button" class="a-btn a-btn-primary a-btn-sm" id="prod-add-btn"><i class="fa-solid fa-plus"></i> Add New OEM</button>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button type="button" class="a-btn a-btn-outline a-btn-sm" id="btn-expand-all"><i class="fa-solid fa-angles-down"></i> Expand All</button>
+          <button type="button" class="a-btn a-btn-outline a-btn-sm" id="btn-collapse-all"><i class="fa-solid fa-angles-up"></i> Collapse All</button>
+          <button type="button" class="a-btn a-btn-primary a-btn-sm" id="btn-add-new-oem"><i class="fa-solid fa-plus"></i> Add New OEM</button>
+        </div>
       </div>
-      <div class="a-table-wrap">
-        <table class="a-table">
-          <thead><tr><th>Reorder</th><th>Logo</th><th>Principal Name</th><th>Specialty / Category</th><th>Actions</th></tr></thead>
-          <tbody>${rows || '<tr><td colspan="5">No products.</td></tr>'}</tbody>
-        </table>
+
+      <div class="a-catalog-toolbar">
+        <div class="a-catalog-stats-strip">
+          <div class="a-catalog-stat-badge">
+            <span>Visible OEMs:</span>
+            <strong>${visibleOemsCount}</strong>
+            <span style="color:var(--a-muted);">/ ${totalOems}</span>
+          </div>
+          <div class="a-catalog-stat-badge">
+            <span>Total Catalog Products:</span>
+            <strong>${totalProductsCount}</strong>
+          </div>
+        </div>
+
+        <div style="flex:1;max-width:420px;position:relative;">
+          <input type="text" id="admin-catalog-search-input" class="a-input" placeholder="Search OEMs, products, categories, or keywords..." value="${catalogSearchQuery || ''}" style="padding-left:36px;" />
+          <i class="fa-solid fa-magnifying-glass" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--a-muted);font-size:0.85rem;"></i>
+          ${catalogSearchQuery ? '<button type="button" id="admin-catalog-search-clear" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--a-muted);cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>' : ''}
+        </div>
+      </div>
+
+      <div class="a-oem-accordions-list">
+        ${oemCardsHtml || '<div class="a-empty-state" style="padding:40px;text-align:center;background:#fff;border-radius:12px;border:1px dashed var(--a-border);">No OEMs found matching your search.</div>'}
       </div>
     </div>
   `;
 }
 
 function bindProductsTabEvents() {
-  const products = ContentService.getData('products') || [];
+  const oems = ContentService.getData('products') || [];
 
-  document.getElementById('prod-add-btn')?.addEventListener('click', () => {
-    openModal('Add New Principal / OEM', `
-      <div class="a-field"><label class="a-label">OEM / Principal Name</label><input class="a-input" name="name" required /></div>
-      <div class="a-field" style="margin-top:12px;"><label class="a-label">Specialty / Category</label><input class="a-input" name="specialty" placeholder="e.g. RF & Microwave Components" /></div>
-      ${renderImageUploadField('logoImg', 'Principal Logo Image', '', 'Upload PNG/SVG logo with transparent background')}
-      <div class="a-field" style="margin-top:12px;"><label class="a-label">Official Website URL</label><input class="a-input" name="website" placeholder="https://..." /></div>
-      <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Tagline</label><input class="a-input" name="tagline" /></div>
-      <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Description</label><textarea class="a-textarea" name="description"></textarea></div>
-    `, (data) => {
-      products.push({
-        id: 'oem-' + Date.now(),
-        name: data.name,
-        specialty: data.specialty,
-        category: data.specialty,
-        logoImg: data.logoImg,
-        website: data.website,
-        tagline: data.tagline,
-        description: data.description,
-      });
-      ContentService.saveData('products', products);
-    });
+  // Search input
+  const searchInput = document.getElementById('admin-catalog-search-input');
+  searchInput?.addEventListener('input', (e) => {
+    catalogSearchQuery = e.target.value;
+    rerender();
+    // Re-focus search input and restore cursor position
+    const newInp = document.getElementById('admin-catalog-search-input');
+    if (newInp) {
+      newInp.focus();
+      newInp.selectionStart = newInp.selectionEnd = newInp.value.length;
+    }
   });
 
-  document.querySelectorAll('.prod-edit-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const idx = parseInt(btn.getAttribute('data-idx'), 10);
-      const p = products[idx];
-      openModal('Edit Principal: ' + p.name, `
-        <div class="a-field"><label class="a-label">OEM / Principal Name</label><input class="a-input" name="name" value="${p.name}" required /></div>
-        <div class="a-field" style="margin-top:12px;"><label class="a-label">Specialty / Category</label><input class="a-input" name="specialty" value="${p.specialty || p.category || ''}" /></div>
-        ${renderImageUploadField('logoImg', 'Principal Logo Image', p.logoImg || '', 'Upload PNG/SVG logo with transparent background')}
-        <div class="a-field" style="margin-top:12px;"><label class="a-label">Official Website URL</label><input class="a-input" name="website" value="${p.website || ''}" /></div>
-        <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Tagline</label><input class="a-input" name="tagline" value="${p.tagline || ''}" /></div>
-        <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Description</label><textarea class="a-textarea" name="description">${p.description || ''}</textarea></div>
-      `, (data) => {
-        products[idx] = {
-          ...p,
-          name: data.name,
-          specialty: data.specialty,
-          category: data.specialty,
-          logoImg: data.logoImg,
-          website: data.website,
-          tagline: data.tagline,
-          description: data.description,
-        };
-        ContentService.saveData('products', products);
-      });
-    });
+  document.getElementById('admin-catalog-search-clear')?.addEventListener('click', () => {
+    catalogSearchQuery = '';
+    rerender();
   });
 
-  document.querySelectorAll('.prod-del-btn').forEach(btn => {
+  // Expand / Collapse All
+  document.getElementById('btn-expand-all')?.addEventListener('click', () => {
+    oems.forEach(o => expandedOemIds.add(o.id));
+    rerender();
+  });
+
+  document.getElementById('btn-collapse-all')?.addEventListener('click', () => {
+    expandedOemIds.clear();
+    rerender();
+  });
+
+  // Toggle individual OEM expand
+  document.querySelectorAll('.btn-toggle-oem-expand').forEach(btn => {
     btn.addEventListener('click', () => {
-      const idx = parseInt(btn.getAttribute('data-idx'), 10);
-      if (confirm('Delete this product/OEM?')) {
-        products.splice(idx, 1);
-        ContentService.saveData('products', products);
-        rerender();
-        showToast('Product deleted.', '');
+      const oemId = btn.getAttribute('data-oem-id');
+      if (expandedOemIds.has(oemId)) {
+        expandedOemIds.delete(oemId);
+      } else {
+        expandedOemIds.add(oemId);
       }
+      rerender();
     });
   });
 
-  document.querySelectorAll('.btn-move-prod').forEach(btn => {
+  // Toggle OEM visibility
+  document.querySelectorAll('.btn-toggle-oem-vis').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const o = oems[idx];
+      o.visible = o.visible === false ? true : false;
+      ContentService.saveData('products', oems);
+      rerender();
+      showToast(`OEM "${o.name}" is now ${o.visible ? 'visible' : 'hidden'}.`, 'success');
+    });
+  });
+
+  // Move OEM up / down
+  document.querySelectorAll('.btn-move-oem').forEach(btn => {
     btn.addEventListener('click', () => {
       const idx = parseInt(btn.getAttribute('data-idx'), 10);
       const dir = btn.getAttribute('data-dir');
       const targetIdx = dir === 'up' ? idx - 1 : idx + 1;
-      const reordered = reorderArray(products, idx, targetIdx);
+      const reordered = reorderArray(oems, idx, targetIdx);
       ContentService.saveData('products', reordered);
       rerender();
+      showToast('OEMs reordered!', 'success');
+    });
+  });
+
+  // Add New OEM
+  document.getElementById('btn-add-new-oem')?.addEventListener('click', () => {
+    openModal('Add New Manufacturing Partner / OEM', `
+      <div class="a-field"><label class="a-label">OEM / Principal Name *</label><input class="a-input" name="name" required placeholder="e.g. Rogers Corporation" /></div>
+      <div class="a-field" style="margin-top:12px;"><label class="a-label">Short Display Name *</label><input class="a-input" name="shortName" required placeholder="e.g. Rogers" /></div>
+      <div class="a-field" style="margin-top:12px;"><label class="a-label">Specialty / Domain *</label><input class="a-input" name="specialty" required placeholder="e.g. High Frequency Laminates & Prepregs" /></div>
+      <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Tagline</label><input class="a-input" name="tagline" placeholder="High Performance Materials for RF/Microwave" /></div>
+      <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Description</label><textarea class="a-textarea" name="description" rows="3"></textarea></div>
+      <div class="a-field" style="margin-top:12px;"><label class="a-label">Official Website URL</label><input class="a-input" name="website" placeholder="https://..." /></div>
+      <div class="a-field" style="margin-top:12px;"><label class="a-label">Accent Theme Color</label><input class="a-input" name="accentColor" value="#2563EB" placeholder="#2563EB" /></div>
+      <div class="a-field" style="margin-top:12px;">
+        <label class="a-label">Visibility Status</label>
+        <select class="a-input" name="visible">
+          <option value="true" selected>Visible in Public Catalog</option>
+          <option value="false">Hidden (Draft / Archive)</option>
+        </select>
+      </div>
+      ${renderImageUploadField('logoImg', 'Principal Logo Image', '', 'Upload PNG/SVG logo with transparent background')}
+    `, (data) => {
+      const slug = (data.shortName || data.name).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+      const newOem = {
+        id: slug + '-' + Date.now(),
+        name: data.name,
+        shortName: data.shortName || data.name,
+        specialty: data.specialty,
+        category: data.specialty,
+        tagline: data.tagline || '',
+        description: data.description || '',
+        website: data.website || '',
+        accentColor: data.accentColor || '#2563EB',
+        glowColor: (data.accentColor || '#2563EB') + '40',
+        logoImg: data.logoImg || '',
+        visible: data.visible === 'true',
+        categories: [
+          {
+            id: 'general',
+            name: 'General Products',
+            description: '',
+            visible: true,
+            products: []
+          }
+        ]
+      };
+      oems.push(newOem);
+      expandedOemIds.add(newOem.id);
+      ContentService.saveData('products', oems);
+      rerender();
+      showToast(`Added OEM "${newOem.name}"!`, 'success');
+    });
+  });
+
+  // Edit OEM
+  document.querySelectorAll('.btn-edit-oem').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const o = oems[idx];
+
+      openModal('Edit OEM: ' + o.name, `
+        <div class="a-field"><label class="a-label">OEM / Principal Name *</label><input class="a-input" name="name" value="${o.name}" required /></div>
+        <div class="a-field" style="margin-top:12px;"><label class="a-label">Short Display Name *</label><input class="a-input" name="shortName" value="${o.shortName || o.name}" required /></div>
+        <div class="a-field" style="margin-top:12px;"><label class="a-label">Specialty / Domain *</label><input class="a-input" name="specialty" value="${o.specialty || o.category || ''}" required /></div>
+        <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Tagline</label><input class="a-input" name="tagline" value="${o.tagline || ''}" /></div>
+        <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Description</label><textarea class="a-textarea" name="description" rows="3">${o.description || ''}</textarea></div>
+        <div class="a-field" style="margin-top:12px;"><label class="a-label">Official Website URL</label><input class="a-input" name="website" value="${o.website || ''}" /></div>
+        <div class="a-field" style="margin-top:12px;"><label class="a-label">Accent Theme Color</label><input class="a-input" name="accentColor" value="${o.accentColor || '#2563EB'}" /></div>
+        <div class="a-field" style="margin-top:12px;">
+          <label class="a-label">Visibility Status</label>
+          <select class="a-input" name="visible">
+            <option value="true" ${o.visible !== false ? 'selected' : ''}>Visible in Public Catalog</option>
+            <option value="false" ${o.visible === false ? 'selected' : ''}>Hidden (Draft / Archive)</option>
+          </select>
+        </div>
+        ${renderImageUploadField('logoImg', 'Principal Logo Image', o.logoImg || '', 'Upload PNG/SVG logo with transparent background')}
+      `, (data) => {
+        oems[idx] = {
+          ...o,
+          name: data.name,
+          shortName: data.shortName || data.name,
+          specialty: data.specialty,
+          category: data.specialty,
+          tagline: data.tagline || '',
+          description: data.description || '',
+          website: data.website || '',
+          accentColor: data.accentColor || '#2563EB',
+          glowColor: (data.accentColor || '#2563EB') + '40',
+          logoImg: data.logoImg,
+          visible: data.visible === 'true',
+        };
+        ContentService.saveData('products', oems);
+        rerender();
+        showToast(`OEM "${data.name}" updated successfully!`, 'success');
+      });
+    });
+  });
+
+  // Delete OEM
+  document.querySelectorAll('.btn-del-oem').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const o = oems[idx];
+      let pCount = 0;
+      (o.categories || []).forEach(c => pCount += (c.products || []).length);
+
+      if (confirm(`Are you sure you want to delete OEM "${o.name}" and all of its ${pCount} products?\n\nThis cannot be undone.`)) {
+        expandedOemIds.delete(o.id);
+        oems.splice(idx, 1);
+        ContentService.saveData('products', oems);
+        rerender();
+        showToast(`Deleted OEM "${o.name}".`, '');
+      }
+    });
+  });
+
+  // Add Product to OEM
+  document.querySelectorAll('.btn-add-prod-to-oem').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const oemIdx = parseInt(btn.getAttribute('data-oem-idx'), 10);
+      const oem = oems[oemIdx];
+      const existingCats = (oem.categories || []).map(c => c.name);
+
+      const catOptions = existingCats.map(c => `<option value="${c}">${c}</option>`).join('');
+
+      openModal(`Add Product to ${oem.name}`, `
+        <div class="a-field">
+          <label class="a-label">Product Model / Name *</label>
+          <input class="a-input" name="name" required placeholder="e.g. RT/duroid 5880 or QPA2211" />
+        </div>
+        <div class="a-field" style="margin-top:12px;">
+          <label class="a-label">Category Name *</label>
+          <input class="a-input" name="category" list="cat-suggestions" required placeholder="Select existing or type new category..." value="${existingCats[0] || 'General'}" />
+          <datalist id="cat-suggestions">
+            ${catOptions}
+          </datalist>
+          <small style="color:var(--a-muted);font-size:0.75rem;">Pick from existing categories above or type a new category name.</small>
+        </div>
+        <div class="a-field" style="margin-top:12px;">
+          <label class="a-label">Visibility Status</label>
+          <select class="a-input" name="visible">
+            <option value="true" selected>Visible in Public Catalog</option>
+            <option value="false">Hidden (Draft / Archive)</option>
+          </select>
+        </div>
+        ${renderImageUploadField('image', 'Product Image / Hardware Photo', '', 'Upload high-resolution component photo or diagram')}
+        <div class="a-field span2" style="margin-top:12px;">
+          <label class="a-label">Technical Description</label>
+          <textarea class="a-textarea" name="description" rows="3" placeholder="Key electrical characteristics, frequency range, packaging, etc."></textarea>
+        </div>
+        <div class="a-field span2" style="margin-top:12px;">
+          <label class="a-label">Specifications &amp; Target Applications</label>
+          <textarea class="a-textarea" name="applications" rows="3" placeholder="e.g. Military Radar, Satellite Communications, 5G mmWave..."></textarea>
+        </div>
+        <div class="a-field span2" style="margin-top:12px;">
+          <label class="a-label">Datasheet / Official Product URL</label>
+          <input class="a-input" name="link" placeholder="https://..." />
+        </div>
+      `, (data) => {
+        if (!oem.categories) oem.categories = [];
+        const catName = (data.category || 'General').trim();
+        let targetCat = oem.categories.find(c => c.name.toLowerCase() === catName.toLowerCase());
+
+        if (!targetCat) {
+          const catSlug = catName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+          targetCat = {
+            id: catSlug || ('cat-' + Date.now()),
+            name: catName,
+            description: '',
+            visible: true,
+            products: []
+          };
+          oem.categories.push(targetCat);
+        }
+
+        const newProd = {
+          id: (data.name.toLowerCase().replace(/[^a-z0-9]+/g, '-') || 'prod') + '-' + Date.now().toString().slice(-4),
+          name: data.name,
+          category: catName,
+          image: data.image || oem.defaultImage || '',
+          description: data.description || '',
+          applications: data.applications || '',
+          link: data.link || '',
+          visible: data.visible === 'true',
+        };
+
+        targetCat.products.push(newProd);
+        expandedOemIds.add(oem.id);
+        ContentService.saveData('products', oems);
+        rerender();
+        showToast(`Added product "${newProd.name}" to ${oem.shortName || oem.name}!`, 'success');
+      });
+    });
+  });
+
+  // Edit Product
+  document.querySelectorAll('.btn-edit-product').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const oemIdx = parseInt(btn.getAttribute('data-oem-idx'), 10);
+      const catIdx = parseInt(btn.getAttribute('data-cat-idx'), 10);
+      const prodIdx = parseInt(btn.getAttribute('data-prod-idx'), 10);
+
+      const oem = oems[oemIdx];
+      const cat = oem?.categories?.[catIdx];
+      const prod = cat?.products?.[prodIdx];
+      if (!oem || !cat || !prod) return;
+
+      const existingCats = (oem.categories || []).map(c => c.name);
+      const catOptions = existingCats.map(c => `<option value="${c}">${c}</option>`).join('');
+
+      openModal(`Edit Product: ${prod.name}`, `
+        <div class="a-field">
+          <label class="a-label">Product Model / Name *</label>
+          <input class="a-input" name="name" value="${prod.name || ''}" required />
+        </div>
+        <div class="a-field" style="margin-top:12px;">
+          <label class="a-label">Category Name *</label>
+          <input class="a-input" name="category" list="cat-suggestions" value="${cat.name}" required />
+          <datalist id="cat-suggestions">
+            ${catOptions}
+          </datalist>
+          <small style="color:var(--a-muted);font-size:0.75rem;">Modify to move this product into a different category.</small>
+        </div>
+        <div class="a-field" style="margin-top:12px;">
+          <label class="a-label">Visibility Status</label>
+          <select class="a-input" name="visible">
+            <option value="true" ${prod.visible !== false ? 'selected' : ''}>Visible in Public Catalog</option>
+            <option value="false" ${prod.visible === false ? 'selected' : ''}>Hidden (Draft / Archive)</option>
+          </select>
+        </div>
+        ${renderImageUploadField('image', 'Product Image / Hardware Photo', prod.image || '', 'Upload high-resolution component photo or diagram')}
+        <div class="a-field span2" style="margin-top:12px;">
+          <label class="a-label">Technical Description</label>
+          <textarea class="a-textarea" name="description" rows="3">${prod.description || ''}</textarea>
+        </div>
+        <div class="a-field span2" style="margin-top:12px;">
+          <label class="a-label">Specifications &amp; Target Applications</label>
+          <textarea class="a-textarea" name="applications" rows="3">${prod.applications || ''}</textarea>
+        </div>
+        <div class="a-field span2" style="margin-top:12px;">
+          <label class="a-label">Datasheet / Official Product URL</label>
+          <input class="a-input" name="link" value="${prod.link || ''}" />
+        </div>
+      `, (data) => {
+        const newCatName = (data.category || cat.name).trim();
+        const updatedProd = {
+          ...prod,
+          name: data.name,
+          category: newCatName,
+          image: data.image,
+          description: data.description || '',
+          applications: data.applications || '',
+          link: data.link || '',
+          visible: data.visible === 'true',
+        };
+
+        if (newCatName.toLowerCase() === cat.name.toLowerCase()) {
+          // Update in-place
+          cat.products[prodIdx] = updatedProd;
+        } else {
+          // Moved category: remove from old category
+          cat.products.splice(prodIdx, 1);
+          // Find or create target category
+          let targetCat = oem.categories.find(c => c.name.toLowerCase() === newCatName.toLowerCase());
+          if (!targetCat) {
+            const catSlug = newCatName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+            targetCat = {
+              id: catSlug || ('cat-' + Date.now()),
+              name: newCatName,
+              description: '',
+              visible: true,
+              products: []
+            };
+            oem.categories.push(targetCat);
+          }
+          targetCat.products.push(updatedProd);
+        }
+
+        expandedOemIds.add(oem.id);
+        ContentService.saveData('products', oems);
+        rerender();
+        showToast(`Product "${updatedProd.name}" updated successfully!`, 'success');
+      });
+    });
+  });
+
+  // Delete Product
+  document.querySelectorAll('.btn-del-product').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const oemIdx = parseInt(btn.getAttribute('data-oem-idx'), 10);
+      const catIdx = parseInt(btn.getAttribute('data-cat-idx'), 10);
+      const prodIdx = parseInt(btn.getAttribute('data-prod-idx'), 10);
+
+      const oem = oems[oemIdx];
+      const cat = oem?.categories?.[catIdx];
+      const prod = cat?.products?.[prodIdx];
+      if (!oem || !cat || !prod) return;
+
+      if (confirm(`Delete product "${prod.name}" from ${oem.name}?`)) {
+        cat.products.splice(prodIdx, 1);
+        ContentService.saveData('products', oems);
+        rerender();
+        showToast(`Deleted product "${prod.name}".`, '');
+      }
+    });
+  });
+
+  // Move Product Up / Down within Category
+  document.querySelectorAll('.btn-move-prod').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const oemIdx = parseInt(btn.getAttribute('data-oem-idx'), 10);
+      const catIdx = parseInt(btn.getAttribute('data-cat-idx'), 10);
+      const prodIdx = parseInt(btn.getAttribute('data-prod-idx'), 10);
+      const dir = btn.getAttribute('data-dir');
+
+      const oem = oems[oemIdx];
+      const cat = oem?.categories?.[catIdx];
+      if (!cat || !cat.products) return;
+
+      const targetIdx = dir === 'up' ? prodIdx - 1 : prodIdx + 1;
+      cat.products = reorderArray(cat.products, prodIdx, targetIdx);
+      ContentService.saveData('products', oems);
+      rerender();
       showToast('Products reordered!', 'success');
+    });
+  });
+
+  // Toggle Product Visibility
+  document.querySelectorAll('.btn-toggle-prod-vis').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const oemIdx = parseInt(btn.getAttribute('data-oem-idx'), 10);
+      const catIdx = parseInt(btn.getAttribute('data-cat-idx'), 10);
+      const prodIdx = parseInt(btn.getAttribute('data-prod-idx'), 10);
+
+      const oem = oems[oemIdx];
+      const cat = oem?.categories?.[catIdx];
+      const prod = cat?.products?.[prodIdx];
+      if (!prod) return;
+
+      prod.visible = prod.visible === false ? true : false;
+      ContentService.saveData('products', oems);
+      rerender();
+      showToast(`Product "${prod.name}" is now ${prod.visible ? 'visible' : 'hidden'}.`, 'success');
     });
   });
 }

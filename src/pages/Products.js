@@ -17,29 +17,54 @@ import {
 } from '../data/catalogData.js';
 import { ContentService } from '../data/ContentService.js';
 
-function getActiveOEMs() {
+function getAllOEMs() {
   const cmsProds = ContentService.getData('products');
   if (Array.isArray(cmsProds) && cmsProds.length > 0) {
-    const defaultOems = getOEMs();
-    const defaultMap = new Map(defaultOems.map(o => [o.id, o]));
-    return cmsProds.map(p => {
-      const orig = defaultMap.get(p.id) || {};
-      return {
-        ...orig,
-        ...p,
-        name: p.name || orig.name,
-        specialty: p.specialty || orig.specialty || p.category,
-        logoImg: p.logoImg || orig.logoImg,
-        tagline: p.tagline || orig.tagline,
-        description: p.description || orig.description,
-        website: p.website || orig.website,
-        categories: orig.categories || [],
-        accentColor: orig.accentColor || '#2563EB',
-        glowColor: orig.glowColor || 'rgba(37,99,235,0.3)',
-      };
-    });
+    return cmsProds;
   }
   return getOEMs();
+}
+
+function getActiveOEMs() {
+  return getAllOEMs().filter(o => o.visible !== false);
+}
+
+function getActiveOEM(oemId) {
+  return getAllOEMs().find(o => o.id === oemId) || null;
+}
+
+function getActiveCategories(oemId) {
+  const oem = getActiveOEM(oemId);
+  if (!oem || !Array.isArray(oem.categories)) return [];
+  return oem.categories.filter(c => c.visible !== false);
+}
+
+function getActiveCategory(oemId, categoryId) {
+  const cats = getActiveCategories(oemId);
+  return cats.find(c => c.id === categoryId) || null;
+}
+
+function getActiveProductsForCategory(oemId, categoryId) {
+  const cat = getActiveCategory(oemId, categoryId);
+  if (!cat || !Array.isArray(cat.products)) return [];
+  return cat.products.filter(p => p.visible !== false);
+}
+
+function getActiveTotalOEMCount() {
+  return getActiveOEMs().length;
+}
+
+function getActiveTotalCategoryCount() {
+  return getActiveOEMs().reduce((sum, o) => sum + (o.categories ? o.categories.filter(c => c.visible !== false).length : 0), 0);
+}
+
+function getActiveTotalProductCount() {
+  return getActiveOEMs().reduce((sum, o) => {
+    if (!o.categories) return sum;
+    return sum + o.categories.filter(c => c.visible !== false).reduce((pSum, c) => {
+      return pSum + (c.products ? c.products.filter(p => p.visible !== false).length : 0);
+    }, 0);
+  }, 0);
 }
 
 let navState = {
@@ -68,9 +93,9 @@ export function renderProductsPage() {
 }
 
 function renderPageShell() {
-  const totalProds = getTotalProductCount();
-  const totalCats = getTotalCategoryCount();
-  const totalOEMs = getTotalOEMCount();
+  const totalProds = getActiveTotalProductCount();
+  const totalCats = getActiveTotalCategoryCount();
+  const totalOEMs = getActiveTotalOEMCount();
 
   return `
     <!-- Unified Page Hero Banner (Blue in light theme) -->
@@ -93,15 +118,15 @@ function renderPageShell() {
           <div class="catalog-trust-strip" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:24px;margin-bottom:0;">
             <div class="catalog-trust-pill">
               <i class="fa-solid fa-industry" style="color:var(--logo-blue-light);"></i>
-              <span>Global OEM Partners</span>
+              <span><strong>${totalOEMs}</strong> Global OEM Partners</span>
             </div>
             <div class="catalog-trust-pill">
               <i class="fa-solid fa-shapes" style="color:var(--logo-red-light);"></i>
-              <span>Specialized Categories</span>
+              <span><strong>${totalCats}</strong> Specialized Categories</span>
             </div>
             <div class="catalog-trust-pill">
               <i class="fa-solid fa-microchip" style="color:#10B981;"></i>
-              <span>Precision Products &amp; Lines</span>
+              <span><strong>${totalProds}</strong> Precision Products &amp; Lines</span>
             </div>
           </div>
         </div>
@@ -126,7 +151,7 @@ function renderBreadcrumb() {
   ];
 
   if (navState.oemId) {
-    const oem = getOEM(navState.oemId);
+    const oem = getActiveOEM(navState.oemId);
     crumbs.push({
       label: oem ? oem.shortName : navState.oemId,
       level: 'categories',
@@ -135,7 +160,7 @@ function renderBreadcrumb() {
   }
 
   if (navState.categoryId && navState.oemId) {
-    const cat = getCategory(navState.oemId, navState.categoryId);
+    const cat = getActiveCategory(navState.oemId, navState.categoryId);
     crumbs.push({
       label: cat ? cat.name : navState.categoryId,
       level: 'products',
@@ -286,17 +311,18 @@ function renderOEMsLevel() {
 }
 
 function renderOEMCard(oem) {
-  const totalProducts = oem.categories.reduce((acc, cat) => acc + cat.products.length, 0);
-  const totalCategories = oem.categories.length;
+  const visibleCategories = (oem.categories || []).filter(c => c.visible !== false);
+  const totalProducts = visibleCategories.reduce((acc, cat) => acc + (cat.products ? cat.products.filter(p => p.visible !== false).length : 0), 0);
+  const totalCategories = visibleCategories.length;
   const params = buildNavParams('categories', oem.id);
 
   // Standardize preview categories to maximum 2-line footprint
-  let previewCats = oem.categories.slice(0, 3);
+  let previewCats = visibleCategories.slice(0, 3);
   const totalLength = previewCats.reduce((sum, c) => sum + c.name.length, 0);
-  if (totalLength > 36 && oem.categories.length > 2) {
-    previewCats = oem.categories.slice(0, 2);
+  if (totalLength > 36 && visibleCategories.length > 2) {
+    previewCats = visibleCategories.slice(0, 2);
   }
-  const remainingCount = oem.categories.length - previewCats.length;
+  const remainingCount = visibleCategories.length - previewCats.length;
 
   return `
     <div class="oem-card" data-nav-params="${params}" data-oem-id="${oem.id}" data-specialty="${oem.specialty}" style="--oem-accent: ${oem.accentColor}; --oem-glow: ${oem.glowColor};">
@@ -354,7 +380,7 @@ function renderOEMCard(oem) {
 // LEVEL 2: CATEGORIES (When OEM is selected)
 // ═════════════════════════════════════════════════════════════════════════════
 function renderCategoriesLevel() {
-  const oem = getOEM(navState.oemId);
+  const oem = getActiveOEM(navState.oemId);
   if (!oem) {
     return `
       <div class="catalog-empty-state">
@@ -366,7 +392,8 @@ function renderCategoriesLevel() {
     `;
   }
 
-  const totalProducts = oem.categories.reduce((acc, cat) => acc + cat.products.length, 0);
+  const categories = getActiveCategories(navState.oemId);
+  const totalProducts = categories.reduce((acc, cat) => acc + (cat.products ? cat.products.filter(p => p.visible !== false).length : 0), 0);
 
   return `
     <!-- OEM Header Banner -->
@@ -390,7 +417,7 @@ function renderCategoriesLevel() {
             <span>Specialty: ${oem.specialty}</span>
           </span>
           <span class="catalog-oem-count-badge">
-            <i class="fa-solid fa-box-open"></i> ${totalProducts} Products / Lines across ${oem.categories.length} Categories
+            <i class="fa-solid fa-box-open"></i> ${totalProducts} Products / Lines across ${categories.length} Categories
           </span>
         </div>
         <h2 class="catalog-oem-name">${oem.name}</h2>
@@ -408,7 +435,7 @@ function renderCategoriesLevel() {
 
     <!-- Categories Grid -->
     <div class="category-cards-grid">
-      ${oem.categories.map(cat => renderCategoryCard(oem, cat)).join('')}
+      ${categories.map(cat => renderCategoryCard(oem, cat)).join('')}
     </div>
   `;
 }
@@ -470,9 +497,9 @@ function renderCategoryCard(oem, cat) {
 // LEVEL 3: PRODUCTS (Visual Cards with Product Pictures + Detailed Table)
 // ═════════════════════════════════════════════════════════════════════════════
 function renderProductsLevel() {
-  const oem = getOEM(navState.oemId);
-  const cat = getCategory(navState.oemId, navState.categoryId);
-  const products = getProductsForCategory(navState.oemId, navState.categoryId);
+  const oem = getActiveOEM(navState.oemId);
+  const cat = getActiveCategory(navState.oemId, navState.categoryId);
+  const products = getActiveProductsForCategory(navState.oemId, navState.categoryId);
 
   if (!oem || !cat) {
     return `
@@ -493,7 +520,7 @@ function renderProductsLevel() {
       <div class="cpl-left">
         <div class="cpl-oem-badge-row">
           <div class="cpl-logo-inline">
-            ${oem.logoImg ? `<img src="${oem.logoImg}" alt="${oem.name}" class="cpl-inline-logo-img" />` : oem.logoSvg}
+            ${oem.logoImg ? `<img src="${ContentService.resolveImg(oem.logoImg)}" alt="${oem.name}" class="cpl-inline-logo-img" />` : (oem.logoSvg || '')}
           </div>
           <span class="cpl-divider">/</span>
           <span class="cpl-cat-tag">${cat.name}</span>
