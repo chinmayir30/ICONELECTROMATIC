@@ -4082,10 +4082,10 @@ html[data-theme="light"],
 
 [data-theme="light"] .logo-container img {
   filter: none !important;
-  height: 85px !important;
-  max-height: 85px !important;
   width: auto !important;
+  object-fit: contain !important;
   display: block !important;
+  transition: transform 0.25s ease;
 }
 
 [data-theme="light"] .nav-link {
@@ -11798,12 +11798,16 @@ img, video, iframe {
   .header-inner {
     padding: 0 var(--space-4) !important;
   }
-  .logo-container {
+  .logo-container,
+  [data-theme="light"] .logo-container {
     padding: 4px 8px !important;
   }
-  .logo-container img {
+  .logo-container img,
+  [data-theme="light"] .logo-container img {
     height: 52px !important;
     max-height: 52px !important;
+    width: auto !important;
+    object-fit: contain !important;
   }
   .main-nav {
     gap: 12px !important;
@@ -11838,12 +11842,16 @@ img, video, iframe {
   .header-inner {
     padding: 0 16px !important;
   }
-  .logo-container {
+  .logo-container,
+  [data-theme="light"] .logo-container {
     padding: 4px 10px !important;
   }
-  .logo-container img {
+  .logo-container img,
+  [data-theme="light"] .logo-container img {
     height: 44px !important;
     max-height: 44px !important;
+    width: auto !important;
+    object-fit: contain !important;
   }
   
   /* Convert Navbar to Hamburger Menu */
@@ -12199,12 +12207,20 @@ img, video, iframe {
   .header-actions {
     gap: 8px !important;
   }
-  .logo-container {
-    padding: 3px 8px !important;
+  .logo-container,
+  [data-theme="light"] .logo-container {
+    padding: 2px 6px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    background: transparent !important;
   }
-  .logo-container img {
+  .logo-container img,
+  [data-theme="light"] .logo-container img {
     height: 38px !important;
     max-height: 38px !important;
+    width: auto !important;
+    object-fit: contain !important;
+    display: block !important;
   }
   .theme-toggle-switch,
   .theme-toggle-btn,
