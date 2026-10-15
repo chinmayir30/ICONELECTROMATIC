@@ -4,6 +4,25 @@
    Supports both Dark Mode (Dark Navy #080D1A) and Light Mode (Clean White #FFFFFF)
    ========================================================================== */
 
+/* ─── 0. Header Left Cluster (Hamburger & Logo Separation) ───────────────── */
+.header-left-cluster {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+}
+
+@media (max-width: 992px) {
+  .header-left-cluster {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 640px) {
+  .header-left-cluster {
+    gap: 16px;
+  }
+}
+
 /* ─── 1. Header Hamburger Toggle Button ──────────────────────────────────── */
 .header-sidebar-toggle {
   display: inline-flex;
@@ -12,10 +31,10 @@
   align-items: center;
   gap: 5px;
   width: 40px;
-  height: 32px;
+  height: 34px;
   padding: 0;
-  margin-left: 2px;
-  border-radius: 8px;
+  margin: 0;
+  border-radius: 9px;
   background: rgba(15, 23, 42, 0.85);
   border: 1.5px solid rgba(255, 255, 255, 0.2);
   cursor: pointer;
@@ -132,22 +151,24 @@
   background: rgba(15, 23, 42, 0.45);
 }
 
-/* ─── 3. Sidebar Drawer Container ────────────────────────────────────────── */
+/* ─── 3. Sidebar Drawer Container (Slides in from Left to Right) ────────── */
 .sidebar-drawer {
   position: fixed;
   top: 0;
-  right: 0;
+  left: 0;
+  right: auto;
   width: 380px;
   max-width: 88vw;
   height: 100vh;
   height: 100dvh;
   z-index: 99999999;
   background: #080d1a; /* Dark Navy Brand Background */
-  border-left: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: -10px 0 35px rgba(0, 0, 0, 0.75);
+  border-right: 1px solid rgba(255, 255, 255, 0.12);
+  border-left: none;
+  box-shadow: 10px 0 35px rgba(0, 0, 0, 0.75);
   display: flex;
   flex-direction: column;
-  transform: translateX(105%);
+  transform: translateX(-105%);
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
   overflow: hidden;
   box-sizing: border-box;
@@ -155,18 +176,19 @@
 
 .sidebar-drawer.open {
   transform: translateX(0);
-  box-shadow: -15px 0 50px rgba(0, 0, 0, 0.85);
+  box-shadow: 15px 0 50px rgba(0, 0, 0, 0.85);
 }
 
 /* Light Theme Drawer Container */
 [data-theme="light"] .sidebar-drawer {
   background: #ffffff; /* Clean White Background */
-  border-left: 1px solid #e2e8f0;
-  box-shadow: -10px 0 35px rgba(15, 23, 42, 0.12);
+  border-right: 1px solid #e2e8f0;
+  border-left: none;
+  box-shadow: 10px 0 35px rgba(15, 23, 42, 0.12);
 }
 
 [data-theme="light"] .sidebar-drawer.open {
-  box-shadow: -15px 0 50px rgba(15, 23, 42, 0.18);
+  box-shadow: 15px 0 50px rgba(15, 23, 42, 0.18);
 }
 
 /* Lock page scroll when drawer is open */
@@ -519,13 +541,13 @@ body.sidebar-drawer-open {
 
 @media (max-width: 640px) {
   .header-sidebar-toggle {
-    width: 36px;
-    height: 28px;
-    gap: 4px;
-    margin-left: 0;
+    width: 38px;
+    height: 32px;
+    gap: 4.5px;
+    margin: 0;
   }
   .header-sidebar-toggle .sidebar-bar {
-    width: 16px;
+    width: 17px;
   }
   .sidebar-drawer {
     width: 320px;

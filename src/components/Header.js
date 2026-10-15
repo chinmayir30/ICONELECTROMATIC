@@ -45,8 +45,8 @@ export function renderHeaderInner(currentRoute) {
 
   return `
     <div class="header-inner">
-      <div class="header-left-cluster" style="display:flex;align-items:center;gap:12px;">
-        <button class="header-sidebar-toggle" id="header-sidebar-toggle" aria-label="Open navigation sidebar" aria-expanded="false" title="Menu" style="margin-left:0;margin-right:2px;">
+      <div class="header-left-cluster">
+        <button class="header-sidebar-toggle" id="header-sidebar-toggle" aria-label="Open navigation sidebar" aria-expanded="false" title="Menu">
           <span class="sidebar-bar"></span>
           <span class="sidebar-bar"></span>
           <span class="sidebar-bar"></span>
