@@ -111,6 +111,8 @@ export function renderHeader() {
  * Mounted directly to document.body to avoid CSS transform containing blocks.
  */
 function renderSidebarDrawerHTML(currentRoute) {
+  const route = currentRoute || getCurrentPath();
+  const data = ContentService.getData('header') || {};
   const isLight = typeof window !== 'undefined' && (
     new URLSearchParams(window.location.search).get('theme') === 'light' ||
     localStorage.getItem('icon-theme') === 'light' ||
