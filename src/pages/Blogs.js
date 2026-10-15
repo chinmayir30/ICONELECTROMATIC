@@ -720,7 +720,7 @@ export function initBlogsPage() {
             <div style="width:68px;height:68px;border-radius:50%;background:rgba(225,29,72,0.9);display:flex;align-items:center;justify-content:center;font-size:1.6rem;box-shadow:0 12px 30px rgba(225,29,72,0.5);">
               <i class="fa-solid fa-play" style="margin-left:4px;"></i>
             </div>
-            <span style="font-size:0.85rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;background:rgba(0,0,0,0.7);padding:4px 12px;border-radius:4px;">
+            <span style="font-size:0.85rem;font-weight:700;letter-spacing:1px;background:rgba(0,0,0,0.7);padding:4px 12px;border-radius:4px;">
               Session Stream Ready · ${video.duration}
             </span>
           </div>

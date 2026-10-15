@@ -696,6 +696,19 @@ export const ContentService = {
               oemBlogs: parsed
             };
           }
+        } else if (pageKey === 'partners') {
+          if (parsed && Array.isArray(parsed.partners)) {
+            return parsed;
+          }
+          if (Array.isArray(parsed)) {
+            return {
+              heroTitle: 'Authorized Technology Partners',
+              heroLead: 'We represent a diverse portfolio of OEMs across sectors, industries and application.<br />To know more about their products, make an enquiry or request samples just get in touch with us.',
+              trustBadge1: '10+ Global Technology Partners',
+              trustBadge2: 'Space & Mil-Spec Screening Support',
+              partners: parsed
+            };
+          }
         } else if (pageKey === 'contact') {
           const defaults = INITIAL_CONTENT.contact;
           const mergedCareers = {
@@ -760,7 +773,7 @@ export const ContentService = {
 
     if (pageKey === 'partners') {
       // Seed all 13 authentic partners
-      const initial = [
+      const initialPartners = [
         { id: 'rogers', name: 'Rogers Corporation', domain: 'High-Frequency Laminates & Prepregs', category: 'materials', accentColor: 'red', logoImg: '/images/oem-logos/Rogers_Logo_no_bg.png', description: 'A global leader in engineered materials, Rogers provides high-frequency laminates and prepregs widely used in radar, aerospace, defence, and high-speed communication systems where signal integrity and reliability are critical.', website: 'https://www.rogerscorp.com' },
         { id: 'mini-circuits', name: 'Mini-Circuits', domain: 'RF & Microwave Components', category: 'components', accentColor: 'red', logoImg: '/images/oem-logos/mini-circuits-seeklogo.png', description: 'Mini-Circuits offers an extensive portfolio of RF and microwave components supporting design, prototyping, and production across defence, SATCOM, test & measurement, and advanced communication platforms.', website: 'https://www.minicircuits.com' },
         { id: 'qorvo', name: 'Qorvo', domain: 'RF, mmWave & Active Antenna Solutions', category: 'semiconductors', accentColor: 'blue', logoImg: '/images/oem-logos/Qorvo_logo_wb.png', description: 'Qorvo develops advanced RF and mmWave technologies including RFICs, Power amplifiers, Switches, Converters, and Active antenna ASICs, enabling high-performance Radar, SATCOM, and next-generation Wireless systems.', website: 'https://www.qorvo.com' },
@@ -775,6 +788,13 @@ export const ContentService = {
         { id: 'powerfactor', name: 'PowerFactor Electronics (PowerRF)', domain: 'Power Electronics & RF Microwave Domains', category: 'components', accentColor: 'blue', logoImg: '/PICTURES/PowerRFlogo Vert Logo1.jpg', description: 'Specialized in R&D, design, testing, consultancy, and product development in Power Electronics and RF Microwave domains under the Make in India initiative.', website: 'https://powerrf.in' },
         { id: 'nee', name: 'NEE International (New Era Electronics)', domain: 'Application PCBs for Microwave & Satellite Communication', category: 'sensors', accentColor: 'red', logoImg: '/images/oem-logos/NEE_Logo_wb.png', description: 'NEE International is a leading fabricator of microwave and satellite communication PCBs, supporting high-frequency and space-grade electronic applications.', website: 'https://neeinternational.com' },
       ];
+      const initial = {
+        heroTitle: 'Authorized Technology Partners',
+        heroLead: 'We represent a diverse portfolio of OEMs across sectors, industries and application.<br />To know more about their products, make an enquiry or request samples just get in touch with us.',
+        trustBadge1: '10+ Global Technology Partners',
+        trustBadge2: 'Space & Mil-Spec Screening Support',
+        partners: initialPartners
+      };
       localStorage.setItem('cms_partners', JSON.stringify(initial));
       return initial;
     }

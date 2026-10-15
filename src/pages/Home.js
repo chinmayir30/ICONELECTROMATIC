@@ -26,7 +26,33 @@ export function renderHomePage() {
     { title: 'Test & Measurement', desc: 'Precision calibration adapters, armored low-loss RF test cables, and laboratory attenuator modules up to 86 GHz.', linkText: 'Explore Solutions →', linkUrl: '/products?category=test-solutions', icon: 'fa-solid fa-flask-vial' },
   ];
 
-  const blogList = (blogs || []).slice(0, 3);
+  let blogList = [];
+  if (Array.isArray(blogs)) {
+    blogList = blogs.slice(0, 3);
+  } else if (blogs && Array.isArray(blogs.oemBlogs)) {
+    const allArticles = [];
+    blogs.oemBlogs.forEach(oem => {
+      if (oem.visible !== false && Array.isArray(oem.articles)) {
+        oem.articles.forEach(art => {
+          if (art.visible !== false) {
+            allArticles.push({
+              headline: art.title,
+              title: art.title,
+              excerpt: art.summary,
+              desc: art.summary,
+              tag: art.category,
+              category: art.category,
+              readTime: art.readTime,
+              date: art.date,
+              coverImg: art.image,
+              author: art.author || oem.portalName || 'Technical Team'
+            });
+          }
+        });
+      }
+    });
+    blogList = allArticles.slice(0, 3);
+  }
 
   const heroVideo = ContentService.resolveImg(data.heroBgVideo || '/icon-video.mp4');
 
@@ -75,7 +101,7 @@ export function renderHomePage() {
     <section class="section-dark">
       <div class="container">
         <div class="section-head-minimal">
-          <h2 class="section-tag-mono red-section-title" style="text-transform: uppercase; font-size: 2.75rem; font-weight: 800; letter-spacing: 0.05em; margin: 0; line-height: 1.2;">${data.coreCapabilitiesTitle || 'Core Capabilities'}</h2>
+          <h2 class="section-tag-mono red-section-title" style="font-size: 2.75rem; font-weight: 800; letter-spacing: 0.05em; margin: 0; line-height: 1.2;">${data.coreCapabilitiesTitle || 'Core Capabilities'}</h2>
           <h3 class="section-h2" style="font-size: 2rem; font-weight: 600; line-height: 1.3; margin-top: 8px; margin-bottom: 16px;">${data.coreCapabilitiesSubtitle || 'Engineered for extreme performance.'}</h3>
           <p class="section-lead" style="font-size: 1.25rem; max-width: 800px; margin: 0;">
             ${data.coreCapabilitiesLead || 'From millimeter-wave defense radar to satellite ground infrastructure, we provide the verified hardware engineers depend on.'}
@@ -101,7 +127,7 @@ export function renderHomePage() {
         <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:var(--space-8);flex-wrap:wrap;gap:var(--space-4);">
           <div>
             <div class="popular-header" style="margin-bottom: 24px;">
-              <h2 class="section-tag-mono red-section-title" style="text-transform: uppercase; font-size: 2.75rem; font-weight: 800; letter-spacing: 0.05em; margin: 0; line-height: 1.2;">${data.popularTitle || 'Popular Products &amp; Components'}</h2>
+              <h2 class="section-tag-mono red-section-title" style="font-size: 2.75rem; font-weight: 800; letter-spacing: 0.05em; margin: 0; line-height: 1.2;">${data.popularTitle || 'Popular Products &amp; Components'}</h2>
             </div>
             <p class="section-lead" style="font-size: 1.25rem; max-width: 850px; color: #e2e8f0; margin: 0;">
               ${data.popularLead || 'High-frequency laminates, precision GaN semiconductors, 3D metamaterial optics, and microwave modules from our global OEM partners.'}
@@ -137,7 +163,7 @@ export function renderHomePage() {
       <div class="container">
         <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:var(--space-10);flex-wrap:wrap;gap:var(--space-4);">
           <div>
-            <h2 class="section-tag-mono red-section-title" style="text-transform: uppercase; font-size: 2.75rem; font-weight: 800; letter-spacing: 0.05em; margin: 0; line-height: 1.2;">${data.insightsTitle || 'Insights'}</h2>
+            <h2 class="section-tag-mono red-section-title" style="font-size: 2.75rem; font-weight: 800; letter-spacing: 0.05em; margin: 0; line-height: 1.2;">${data.insightsTitle || 'Insights'}</h2>
             <h3 class="section-h2" style="font-size: 2rem; font-weight: 600; line-height: 1.3; margin-top: 8px; margin-bottom: 0;">${data.insightsSubtitle || 'Latest Blogs'}</h3>
             <p class="section-lead">
               ${data.insightsLead || 'Engineering articles, application notes, and microwave design breakthroughs from our technical team.'}
@@ -186,7 +212,7 @@ export function renderHomePage() {
     <section class="contact-relay-section">
       <div class="container">
         <div class="section-head-minimal">
-          <h2 class="section-tag-mono red-section-title" style="text-transform: uppercase; font-size: 2.75rem; font-weight: 800; letter-spacing: 0.05em; margin: 0; line-height: 1.2;">Connect with Engineering</h2>
+          <h2 class="section-tag-mono red-section-title" style="font-size: 2.75rem; font-weight: 800; letter-spacing: 0.05em; margin: 0; line-height: 1.2;">Connect with Engineering</h2>
           <h3 class="section-h2" style="font-size: 2rem; font-weight: 600; line-height: 1.3; margin-top: 8px; margin-bottom: 16px;">Initiate an enquiry or request pricing.</h3>
           <p class="section-lead">
             Direct access to our senior RF applications team in Bengaluru. Fast turnarounds on quotations and custom requirements.

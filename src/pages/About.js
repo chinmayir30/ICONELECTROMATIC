@@ -429,7 +429,7 @@ export function renderAboutPage() {
                       <img src="${img}" alt="${pil.title}" loading="lazy" />
                     </div>
                     <div>
-                      <div style="font-size:0.75rem;font-weight:700;color:var(--logo-${pil.color || 'blue'}-light);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:4px;">
+                      <div style="font-size:0.75rem;font-weight:700;color:var(--logo-${pil.color || 'blue'}-light);letter-spacing:0.08em;margin-bottom:4px;">
                         ${pil.eyebrow || 'FOUNDATIONAL PILLAR'}
                       </div>
                       <h3 class="pillar-content-title">

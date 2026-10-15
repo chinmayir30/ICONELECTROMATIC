@@ -3473,7 +3473,12 @@ function bindProductsTabEvents() {
 
 // ─── PARTNERS TAB ────────────────────────────────────────────────────────────
 function renderPartnersTab() {
-  const partners = ContentService.getData('partners') || [];
+  const d = ContentService.getData('partners') || {};
+  const partners = Array.isArray(d) ? d : (d.partners || []);
+  const heroTitle = d.heroTitle || 'Authorized Technology Partners';
+  const heroLead = d.heroLead || 'We represent a diverse portfolio of OEMs across sectors, industries and application.<br />To know more about their products, make an enquiry or request samples just get in touch with us.';
+  const trustBadge1 = d.trustBadge1 || '<strong>10+</strong> Global Technology Partners';
+  const trustBadge2 = d.trustBadge2 || 'Space &amp; Mil-Spec Screening Support';
 
   const rows = partners.map((p, idx) => {
     const logo = ImageStorage.resolveImageUrl(p.logoImg);
@@ -3497,6 +3502,39 @@ function renderPartnersTab() {
   }).join('');
 
   return `
+    <!-- Partners Page Header & Trust Badges Editor -->
+    <div class="a-cards-box" style="margin-bottom:24px;">
+      <div class="a-cards-box-header">
+        <div>
+          <h3>Partners Page Hero &amp; Badges</h3>
+          <p>Customize banner title, introductory lead, and trust counters (supports lowercase/capital edits)</p>
+        </div>
+      </div>
+      <form id="a-partners-hero-form" style="padding:16px 20px;">
+        <div class="a-field">
+          <label class="a-label">Page Title</label>
+          <input class="a-input" name="heroTitle" value="${heroTitle}" required />
+        </div>
+        <div class="a-field" style="margin-top:12px;">
+          <label class="a-label">Introductory Lead Text</label>
+          <textarea class="a-textarea" name="heroLead" rows="2" required>${heroLead}</textarea>
+        </div>
+        <div class="a-field-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;">
+          <div class="a-field">
+            <label class="a-label">Trust Badge 1</label>
+            <input class="a-input" name="trustBadge1" value="${trustBadge1}" required />
+          </div>
+          <div class="a-field">
+            <label class="a-label">Trust Badge 2</label>
+            <input class="a-input" name="trustBadge2" value="${trustBadge2}" required />
+          </div>
+        </div>
+        <div style="margin-top:16px;text-align:right;">
+          <button type="submit" class="a-btn a-btn-primary a-btn-sm"><i class="fa-solid fa-floppy-disk"></i> Save Hero &amp; Badges</button>
+        </div>
+      </form>
+    </div>
+
     <div class="a-cards-box">
       <div class="a-cards-box-header">
         <div>
@@ -3516,7 +3554,29 @@ function renderPartnersTab() {
 }
 
 function bindPartnersTabEvents() {
-  const partners = ContentService.getData('partners') || [];
+  const d = ContentService.getData('partners') || {};
+  const partners = Array.isArray(d) ? d : (d.partners || []);
+
+  const saveAll = (newPartners) => {
+    if (Array.isArray(d)) {
+      ContentService.saveData('partners', newPartners);
+    } else {
+      d.partners = newPartners;
+      ContentService.saveData('partners', d);
+    }
+    rerender();
+  };
+
+  document.getElementById('a-partners-hero-form')?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    const existing = ContentService.getData('partners') || {};
+    const updated = Array.isArray(existing) ? { partners: existing } : { ...existing };
+    fd.forEach((v, k) => { updated[k] = v; });
+    ContentService.saveData('partners', updated);
+    rerender();
+    showToast('Partners hero banner updated!', 'success');
+  });
 
   document.getElementById('partner-add-btn')?.addEventListener('click', () => {
     openModal('Add New Technology Partner', `
@@ -3531,7 +3591,8 @@ function bindPartnersTabEvents() {
         id: 'partner-' + Date.now(),
         ...data,
       });
-      ContentService.saveData('partners', partners);
+      saveAll(partners);
+      showToast('Partner added.', 'success');
     });
   });
 
@@ -3548,7 +3609,8 @@ function bindPartnersTabEvents() {
         <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Description</label><textarea class="a-textarea" name="description">${p.description || ''}</textarea></div>
       `, (data) => {
         partners[idx] = { ...p, ...data };
-        ContentService.saveData('partners', partners);
+        saveAll(partners);
+        showToast('Partner updated.', 'success');
       });
     });
   });
@@ -3558,8 +3620,7 @@ function bindPartnersTabEvents() {
       const idx = parseInt(btn.getAttribute('data-idx'), 10);
       if (confirm('Delete this partner?')) {
         partners.splice(idx, 1);
-        ContentService.saveData('partners', partners);
-        rerender();
+        saveAll(partners);
         showToast('Partner deleted.', '');
       }
     });
@@ -3571,8 +3632,7 @@ function bindPartnersTabEvents() {
       const dir = btn.getAttribute('data-dir');
       const targetIdx = dir === 'up' ? idx - 1 : idx + 1;
       const reordered = reorderArray(partners, idx, targetIdx);
-      ContentService.saveData('partners', reordered);
-      rerender();
+      saveAll(reordered);
       showToast('Partners reordered!', 'success');
     });
   });

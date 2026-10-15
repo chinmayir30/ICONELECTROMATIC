@@ -66,7 +66,12 @@ function renderPartnerCardMarkup(partner) {
 }
 
 export function renderPartnersPage() {
-  const partners = ContentService.getData('partners') || [];
+  const d = ContentService.getData('partners') || {};
+  const partners = Array.isArray(d) ? d : (d.partners || []);
+  const heroTitle = d.heroTitle || 'Authorized Technology Partners';
+  const heroLead = d.heroLead || 'We represent a diverse portfolio of OEMs across sectors, industries and application.<br />To know more about their products, make an enquiry or request samples just get in touch with us.';
+  const trustBadge1 = d.trustBadge1 || '<strong>10+</strong> Global Technology Partners';
+  const trustBadge2 = d.trustBadge2 || 'Space &amp; Mil-Spec Screening Support';
 
   return `
     <div class="page-content partners-page" style="min-height:100vh;">
@@ -84,11 +89,10 @@ export function renderPartnersPage() {
           <!-- Unified Page Header -->
           <div class="page-header-unified" style="margin-bottom:0;">
             <h1 class="page-title-unified">
-              Authorized Technology Partners
+              ${heroTitle}
             </h1>
             <p class="page-lead-unified">
-              We represent a diverse portfolio of OEMs across sectors, industries and application.<br />
-              To know more about their products, make an enquiry or request samples just get in touch with us.
+              ${heroLead}
             </p>
           </div>
 
@@ -96,11 +100,11 @@ export function renderPartnersPage() {
           <div class="services-trust-strip partners-trust-strip" style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:24px;margin-bottom:0;padding-bottom:0;border-bottom:none;">
             <div style="background:rgba(37,99,235,0.08);border:1px solid rgba(37,99,235,0.25);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#93C5FD;display:flex;align-items:center;gap:8px;">
               <i class="fa-solid fa-handshake-angle" style="color:var(--logo-blue-light);"></i>
-              <span><strong>10+</strong> Global Technology Partners</span>
+              <span>${trustBadge1}</span>
             </div>
             <div style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#FCD34D;display:flex;align-items:center;gap:8px;">
               <i class="fa-solid fa-certificate" style="color:#F59E0B;"></i>
-              <span>Space &amp; Mil-Spec Screening Support</span>
+              <span>${trustBadge2}</span>
             </div>
           </div>
 

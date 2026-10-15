@@ -438,7 +438,7 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 0.8rem;
   font-weight: 600;
   color: var(--text-gray-300);
-  text-transform: uppercase;
+  text-transform: none;
   letter-spacing: 0.12em;
   margin-bottom: var(--space-6);
   text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8);
@@ -539,7 +539,7 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 0.75rem;
   font-weight: 700;
   color: #475569;
-  text-transform: uppercase;
+  text-transform: none;
   letter-spacing: 0.05em;
 }
 
@@ -580,7 +580,7 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 0.8rem;
   font-weight: 600;
   color: var(--logo-blue-light);
-  text-transform: uppercase;
+  text-transform: none;
   letter-spacing: 0.12em;
   margin-bottom: var(--space-2);
   display: block;
@@ -825,7 +825,7 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 0.7rem;
   font-weight: 700;
   color: #94A3B8;
-  text-transform: uppercase;
+  text-transform: none;
   letter-spacing: 0.08em;
   display: block;
   margin-bottom: 4px;
@@ -1552,7 +1552,7 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
   color: var(--logo-blue-light);
   letter-spacing: 0.09em;
-  text-transform: uppercase;
+  text-transform: none;
   margin-bottom: 16px;
   box-shadow: 0 0 16px rgba(37, 99, 235, 0.15);
   backdrop-filter: blur(8px);
@@ -1917,7 +1917,7 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
   padding: 3px 9px;
   border-radius: 20px;
-  text-transform: uppercase;
+  text-transform: none;
   letter-spacing: 0.06em;
   z-index: 2;
 }
@@ -2512,7 +2512,7 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
   color: var(--logo-red-light);
   letter-spacing: 0.12em;
-  text-transform: uppercase;
+  text-transform: none;
   margin-bottom: 10px;
   padding: 5px 14px;
   border-radius: 9999px;
@@ -5670,7 +5670,7 @@ html[data-theme="light"],
   font-family: var(--font-display);
   font-size: 0.74rem;
   font-weight: 700;
-  text-transform: uppercase;
+  text-transform: none;
   letter-spacing: 0.08em;
 }
 
@@ -6644,7 +6644,7 @@ html[data-theme="light"],
 .catalog-stat-label {
   font-size: 0.72rem;
   color: var(--text-gray-400);
-  text-transform: uppercase;
+  text-transform: none;
   letter-spacing: 0.08em;
   margin-top: 6px;
   font-weight: 600;
@@ -7131,7 +7131,7 @@ html[data-theme="light"],
   border-radius: 12px;
   font-size: 0.7rem;
   font-weight: 700;
-  text-transform: uppercase;
+  text-transform: none;
   letter-spacing: 0.06em;
   white-space: nowrap;
 }
@@ -7218,7 +7218,7 @@ html[data-theme="light"],
 .preview-label {
   display: block;
   font-size: 0.7rem;
-  text-transform: uppercase;
+  text-transform: none;
   letter-spacing: 0.08em;
   font-weight: 700;
   color: var(--text-gray-500);
@@ -7503,7 +7503,7 @@ html[data-theme="light"],
 
 .category-preview-title {
   font-size: 0.68rem;
-  text-transform: uppercase;
+  text-transform: none;
   letter-spacing: 0.08em;
   font-weight: 700;
   color: var(--text-gray-500);
@@ -7788,7 +7788,7 @@ html[data-theme="light"],
 .product-card-apps-title {
   display: block;
   font-size: 0.72rem;
-  text-transform: uppercase;
+  text-transform: none;
   letter-spacing: 0.08em;
   font-weight: 700;
   color: var(--text-gray-400);
@@ -7878,7 +7878,7 @@ html[data-theme="light"],
 
 .products-table-header .ptable-col {
   font-size: 0.7rem;
-  text-transform: uppercase;
+  text-transform: none;
   letter-spacing: 0.08em;
   font-weight: 700;
   color: var(--text-gray-400);
@@ -7942,7 +7942,7 @@ html[data-theme="light"],
   display: block;
   font-size: 0.7rem;
   font-weight: 700;
-  text-transform: uppercase;
+  text-transform: none;
   letter-spacing: 0.05em;
   margin-top: 2px;
 }
@@ -9314,7 +9314,7 @@ html[data-theme="light"],
   font-weight: 800;
   color: #34D399;
   letter-spacing: 0.5px;
-  text-transform: uppercase;
+  text-transform: none;
 }
 
 .hiring-dot {
@@ -9338,7 +9338,7 @@ html[data-theme="light"],
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.5px;
-  text-transform: uppercase;
+  text-transform: none;
   margin-bottom: 10px;
 }
 
@@ -9761,7 +9761,7 @@ html[data-theme="light"],
   font-weight: 700;
   padding: 4px 10px;
   border-radius: 20px;
-  text-transform: uppercase;
+  text-transform: none;
   letter-spacing: 0.08em;
   white-space: nowrap;
   flex-shrink: 0;
@@ -10553,7 +10553,7 @@ html[data-theme="light"],
   color: #0F172A !important;
   font-size: 0.7rem !important;
   font-weight: 700 !important;
-  text-transform: uppercase !important;
+  text-transform: none !important;
   letter-spacing: 0.08em !important;
 }
 
