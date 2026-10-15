@@ -6,6 +6,7 @@
  *   2. Engineering Careers & Recruiting Form (talent acquisition for RF/Microwave engineers)
  */
 import { ContentService } from '../data/ContentService.js';
+import { ImageStorage } from '../data/ImageStorage.js';
 
 export function getInquiryDetails() {
   const hash = window.location.hash || '';
@@ -62,7 +63,8 @@ export function getInquiryDetails() {
 export function renderContactPage() {
   const { subjectVal, targetModel, prefillMessage, activeTab } = getInquiryDetails();
   const isRecruiting = activeTab === 'recruiting';
-  const c = ContentService.getData('contact');
+  const c = ContentService.getData('contact') || {};
+  const careers = c.careers || {};
 
   return `
     <div class="page-content contact-page" style="min-height:100vh;">
@@ -74,7 +76,7 @@ export function renderContactPage() {
             <a data-route="/">Home</a>
             <span class="sep"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;"></i></span>
             <span class="crumb-current" style="color:var(--text-white);font-weight:600;" id="contact-breadcrumb-active">
-              ${isRecruiting ? 'Careers &amp; Recruiting' : 'Contact &amp; RFQ'}
+              ${isRecruiting ? (careers.breadcrumbCareers || 'Careers &amp; Recruiting') : 'Contact &amp; RFQ'}
             </span>
           </nav>
 
@@ -82,12 +84,12 @@ export function renderContactPage() {
           <div class="page-header-unified" style="margin-bottom:0;">
             <h1 class="page-title-unified" id="contact-page-title">
               ${isRecruiting 
-                ? (c.careersTitle || 'Join India’s Foremost RF &amp; Microwave Engineering Hub') 
+                ? (careers.careersTitle || c.careersTitle || 'Join India’s Foremost RF &amp; Microwave Engineering Hub') 
                 : (c.heroTitle || 'Send Us a Message &amp; Request Fast Quotes')}
             </h1>
             <p class="page-lead-unified" id="contact-page-lead">
               ${isRecruiting 
-                ? (c.careersLead || 'Accelerate your career in millimeter-wave technology, defense electronics, and satellite communications. Explore engineering opportunities at ICON Electromatic.') 
+                ? (careers.careersLead || c.careersLead || 'Accelerate your career in millimeter-wave technology, defense electronics, and satellite communications. Explore engineering opportunities at ICON Electromatic.') 
                 : (c.heroLead || 'Whether you require component data sheets, custom waveguide machining, or volume pricing, our application engineering team in Bengaluru is ready to assist.')}
             </p>
           </div>
@@ -124,7 +126,7 @@ export function renderContactPage() {
               aria-selected="${!isRecruiting}"
             >
               <i class="fa-solid fa-paper-plane"></i>
-              <span>Sales &amp; RFQ Inquiry</span>
+              <span>${careers.tabLabelSales || 'Sales &amp; RFQ Inquiry'}</span>
             </button>
             <button 
               class="contact-tab-btn ${isRecruiting ? 'active' : ''}" 
@@ -134,8 +136,10 @@ export function renderContactPage() {
               aria-selected="${isRecruiting}"
             >
               <i class="fa-solid fa-user-plus"></i>
-              <span>Careers &amp; Recruiting</span>
-              <span class="tab-hiring-pill"><span class="hiring-dot"></span> We're Hiring</span>
+              <span>${careers.tabLabelCareers || 'Careers &amp; Recruiting'}</span>
+              ${careers.showHiringBadge !== false ? `
+                <span class="tab-hiring-pill"><span class="hiring-dot"></span> ${careers.hiringBadgeText || "We're Hiring"}</span>
+              ` : ''}
             </button>
           </div>
         </div>
@@ -232,45 +236,38 @@ export function renderContactPage() {
               <div class="contact-relay-card">
                 <div style="display:flex;align-items:center;gap:10px;margin-bottom:var(--space-3);">
                   <div style="width:38px;height:38px;border-radius:10px;background:rgba(37,99,235,0.15);color:var(--logo-blue-light);display:flex;align-items:center;justify-content:center;font-size:1.1rem;">
-                    <i class="fa-solid fa-users"></i>
+                    <i class="${careers.introIcon || 'fa-solid fa-users'}"></i>
                   </div>
                   <div>
-                    <h3 style="font-size:1.25rem;font-weight:800;color:var(--text-white);margin:0;">Why Build Your Career at ICON?</h3>
-                    <span style="font-size:0.75rem;color:var(--logo-blue-light);font-weight:700;">RF &amp; MICROWAVE EXCELLENCE</span>
+                    <h3 style="font-size:1.25rem;font-weight:800;color:var(--text-white);margin:0;">${careers.introTitle || 'Why Build Your Career at ICON?'}</h3>
+                    <span style="font-size:0.75rem;color:var(--logo-blue-light);font-weight:700;">${careers.introSubtitle || 'RF &amp; MICROWAVE EXCELLENCE'}</span>
                   </div>
                 </div>
 
+                ${careers.careersHeroImage ? `
+                  <div style="margin-bottom:var(--space-4);border-radius:var(--radius-md);overflow:hidden;border:1px solid var(--border-card);">
+                    <img src="${ImageStorage.resolveImageUrl(careers.careersHeroImage)}" alt="Careers Team" style="width:100%;height:auto;display:block;" />
+                  </div>
+                ` : ''}
+
                 <p style="font-size:0.88rem;color:var(--text-gray-300);line-height:1.6;margin-bottom:var(--space-4);">
-                  ICON ELECTROMATIC represents the world’s foremost RF, microwave, and high-frequency component manufacturers in India. Our engineers work at the bleeding edge of radar, space satellites, defense EW systems, and 5G/6G research.
+                  ${careers.introDescription || 'ICON ELECTROMATIC represents the world’s foremost RF, microwave, and high-frequency component manufacturers in India. Our engineers work at the bleeding edge of radar, space satellites, defense EW systems, and 5G/6G research.'}
                 </p>
 
                 <div class="recruiting-perks-list">
-                  <div class="recruiting-perk-item">
-                    <i class="fa-solid fa-microchip" style="color:var(--logo-blue-light);"></i>
-                    <div>
-                      <strong>Global OEM Partnerships:</strong>
-                      Direct technical engagement with leaders like Rogers Corporation, Qorvo, Spellman, Fortify, and YTTEK.
+                  ${(careers.benefits || []).map(b => `
+                    <div class="recruiting-perk-item">
+                      <i class="${b.icon || 'fa-solid fa-microchip'}" style="color:${b.iconColor || 'var(--logo-blue-light)'};"></i>
+                      <div>
+                        <strong>${b.title}${b.title.endsWith(':') ? '' : ':'}</strong>
+                        ${b.description}
+                      </div>
                     </div>
-                  </div>
-                  <div class="recruiting-perk-item">
-                    <i class="fa-solid fa-satellite-dish" style="color:var(--logo-red-light);"></i>
-                    <div>
-                      <strong>Strategic Defense &amp; Space Missions:</strong>
-                      Contribute to critical airborne radars, missile guidance receivers, SATCOM transponders, and ISRO payloads.
-                    </div>
-                  </div>
-                  <div class="recruiting-perk-item">
-                    <i class="fa-solid fa-flask-vial" style="color:#A855F7;"></i>
-                    <div>
-                      <strong>Advanced Microwave Measurement Lab:</strong>
-                      Hands-on exposure to Vector Network Analyzers (VNA up to 67 GHz), noise figure meters, and RF anechoic test chambers.
-                  </div>
+                  `).join('')}
                 </div>
               </div>
-
             </div>
 
-          </div>
           </div>
 
           <!-- Right Column: Interactive Forms -->
@@ -338,62 +335,53 @@ export function renderContactPage() {
             <!-- FORM 2: ENGINEERING CAREERS & RECRUITING FORM               -->
             <!-- ═══════════════════════════════════════════════════════════ -->
             <div id="recruiting-form-panel" style="${isRecruiting ? 'display:block;' : 'display:none;'}">
-              <div class="form-badge-recruiting">
-                <i class="fa-solid fa-briefcase"></i> Talent Acquisition · Bengaluru &amp; Pan-India
-              </div>
-              <h3>Apply for an Engineering Career</h3>
-              <p class="subtitle">Join ICON Electromatic's elite RF &amp; Microwave applications team. Fill out the application form below and our technical panel will review your profile.</p>
+              ${careers.showFormBadge !== false ? `
+                <div class="form-badge-recruiting">
+                  <i class="${careers.formBadgeIcon || 'fa-solid fa-briefcase'}"></i> ${careers.formBadgeText || 'Talent Acquisition · Bengaluru &amp; Pan-India'}
+                </div>
+              ` : ''}
+              <h3>${careers.formTitle || 'Apply for an Engineering Career'}</h3>
+              <p class="subtitle">${careers.formSubtitle || "Join ICON Electromatic's elite RF &amp; Microwave applications team. Fill out the application form below and our technical panel will review your profile."}</p>
 
               <form id="recruiting-full-form">
                 <!-- Row 1: Candidate Name & Email -->
                 <div class="relay-form-row">
                   <div class="relay-field">
-                    <label for="r-fullname">Full Name *</label>
-                    <input type="text" id="r-fullname" name="fullname" placeholder="e.g. Vikram Sharma" required />
+                    <label for="r-fullname">${careers.nameLabel || 'Full Name *'}</label>
+                    <input type="text" id="r-fullname" name="fullname" placeholder="${careers.namePlaceholder || 'e.g. Vikram Sharma'}" ${careers.nameRequired !== false ? 'required' : ''} />
                   </div>
                   <div class="relay-field">
-                    <label for="r-email">Email Address *</label>
-                    <input type="email" id="r-email" name="email" placeholder="vikram.sharma@example.com" required />
+                    <label for="r-email">${careers.emailLabel || 'Email Address *'}</label>
+                    <input type="email" id="r-email" name="email" placeholder="${careers.emailPlaceholder || 'vikram.sharma@example.com'}" ${careers.emailRequired !== false ? 'required' : ''} />
                   </div>
                 </div>
 
                 <!-- Row 2: Position & Phone -->
                 <div class="relay-form-row">
                   <div class="relay-field">
-                    <label for="r-position">Position *</label>
-                    <select id="r-position" name="position" required>
-                      <option value="" disabled selected>Select Position...</option>
-                      <option value="RF & Microwave Design Engineer (DC–110 GHz)">RF &amp; Microwave Design Engineer (DC – 110 GHz)</option>
-                      <option value="Field Applications Engineer (FAE) - RF Components">Field Applications Engineer (FAE) – RF Components</option>
-                      <option value="Technical Sales & OEM Account Manager">Technical Sales &amp; OEM Account Manager</option>
-                      <option value="Radar, EW & SATCOM Systems Application Specialist">Radar, EW &amp; SATCOM Systems Application Specialist</option>
-                      <option value="RF Lab Test & Measurement Specialist (VNA/Spectrum)">RF Lab Test &amp; Measurement Specialist (VNA/Spectrum)</option>
-                      <option value="High-Frequency PCB & PTFE Substrates Specialist">High-Frequency PCB &amp; PTFE Substrates Specialist</option>
-                      <option value="Graduate RF Engineering Trainee / Intern">Graduate RF Engineering Trainee / Intern</option>
-                      <option value="Other Technical / Engineering Specialist">Other Technical / Engineering Role</option>
+                    <label for="r-position">${careers.positionLabel || 'Position *'}</label>
+                    <select id="r-position" name="position" ${careers.positionRequired !== false ? 'required' : ''}>
+                      <option value="" disabled selected>${careers.positionPlaceholder || 'Select Position...'}</option>
+                      ${(careers.positions || []).map(pos => `<option value="${pos}">${pos}</option>`).join('')}
                     </select>
                   </div>
                   <div class="relay-field">
-                    <label for="r-phone">Phone / Mobile Number *</label>
-                    <input type="tel" id="r-phone" name="phone" placeholder="+91 98765 43210" required />
+                    <label for="r-phone">${careers.phoneLabel || 'Phone / Mobile Number *'}</label>
+                    <input type="tel" id="r-phone" name="phone" placeholder="${careers.phonePlaceholder || '+91 98765 43210'}" ${careers.phoneRequired !== false ? 'required' : ''} />
                   </div>
                 </div>
 
                 <!-- Row 3: Current Location & Experience Level -->
                 <div class="relay-form-row">
                   <div class="relay-field">
-                    <label for="r-city">Current Location / City *</label>
-                    <input type="text" id="r-city" name="city" placeholder="e.g. Bengaluru, Hyderabad, Pune, Chennai" required />
+                    <label for="r-city">${careers.cityLabel || 'Current Location / City *'}</label>
+                    <input type="text" id="r-city" name="city" placeholder="${careers.cityPlaceholder || 'e.g. Bengaluru, Hyderabad, Pune, Chennai'}" ${careers.cityRequired !== false ? 'required' : ''} />
                   </div>
                   <div class="relay-field">
-                    <label for="r-experience">Total Experience *</label>
-                    <select id="r-experience" name="experience" required>
-                      <option value="" disabled selected>Select experience level...</option>
-                      <option value="Fresh Graduate / Final Year (< 1 Year)">Fresh Graduate / Final Year (&lt; 1 Year)</option>
-                      <option value="1 – 3 Years Experience">1 – 3 Years Experience</option>
-                      <option value="3 – 5 Years (Mid-Level Engineer)">3 – 5 Years (Mid-Level Engineer)</option>
-                      <option value="5 – 8 Years (Senior RF Specialist)">5 – 8 Years (Senior RF Specialist)</option>
-                      <option value="8+ Years (Principal / Lead Engineer)">8+ Years (Principal / Lead Engineer)</option>
+                    <label for="r-experience">${careers.experienceLabel || 'Total Experience *'}</label>
+                    <select id="r-experience" name="experience" ${careers.experienceRequired !== false ? 'required' : ''}>
+                      <option value="" disabled selected>${careers.experiencePlaceholder || 'Select experience level...'}</option>
+                      ${(careers.experienceLevels || []).map(exp => `<option value="${exp}">${exp}</option>`).join('')}
                     </select>
                   </div>
                 </div>
@@ -401,39 +389,38 @@ export function renderContactPage() {
                 <!-- Row 4: Current Employer & Notice Period -->
                 <div class="relay-form-row">
                   <div class="relay-field">
-                    <label for="r-organization">Current Company or University *</label>
-                    <input type="text" id="r-organization" name="organization" placeholder="e.g. BEL, DRDO, Astra Microwave, IISc, IIT" required />
+                    <label for="r-organization">${careers.organizationLabel || 'Current Company or University *'}</label>
+                    <input type="text" id="r-organization" name="organization" placeholder="${careers.organizationPlaceholder || 'e.g. BEL, DRDO, Astra Microwave, IISc, IIT'}" ${careers.organizationRequired !== false ? 'required' : ''} />
                   </div>
                   <div class="relay-field">
-                    <label for="r-notice">Notice Period / Earliest Availability *</label>
-                    <select id="r-notice" name="notice" required>
-                      <option value="Immediate / Less than 15 Days">Immediate / Less than 15 Days</option>
-                      <option value="30 Days" selected>30 Days</option>
-                      <option value="60 Days">60 Days</option>
-                      <option value="90 Days">90 Days</option>
+                    <label for="r-notice">${careers.noticeLabel || 'Notice Period / Earliest Availability *'}</label>
+                    <select id="r-notice" name="notice" ${careers.noticeRequired !== false ? 'required' : ''}>
+                      ${(careers.noticeOptions || []).map((notc, i) => `<option value="${notc}" ${i === 1 ? 'selected' : ''}>${notc}</option>`).join('')}
                     </select>
                   </div>
                 </div>
 
                 <!-- Row 5: Key Technical Skills & EDA Tools -->
                 <div class="relay-field">
-                  <label for="r-skills">Key Technical Skills &amp; RF EDA Tools *</label>
-                  <input type="text" id="r-skills" name="skills" placeholder="e.g. Keysight ADS, Ansys HFSS, CST Microwave Studio, VNA S-Parameters, GaN Matching, Rogers RT/duroid" required />
+                  <label for="r-skills">${careers.skillsLabel || 'Key Technical Skills &amp; RF EDA Tools *'}</label>
+                  <input type="text" id="r-skills" name="skills" placeholder="${careers.skillsPlaceholder || 'e.g. Keysight ADS, Ansys HFSS, CST Microwave Studio, VNA S-Parameters, GaN Matching, Rogers RT/duroid'}" ${careers.skillsRequired !== false ? 'required' : ''} />
                 </div>
 
                 <!-- Row 6: LinkedIn Profile & Resume Upload Dropzone -->
                 <div class="relay-form-row">
-                  <div class="relay-field">
-                    <label for="r-linkedin">LinkedIn Profile or Online Portfolio</label>
-                    <input type="url" id="r-linkedin" name="linkedin" placeholder="https://linkedin.com/in/username" />
-                  </div>
-                  <div class="relay-field">
-                    <label for="r-resume-file">Resume / Curriculum Vitae (PDF / DOCX) *</label>
+                  ${careers.showLinkedin !== false ? `
+                    <div class="relay-field">
+                      <label for="r-linkedin">${careers.linkedinLabel || 'LinkedIn Profile or Online Portfolio'}</label>
+                      <input type="url" id="r-linkedin" name="linkedin" placeholder="${careers.linkedinPlaceholder || 'https://linkedin.com/in/username'}" ${careers.linkedinRequired ? 'required' : ''} />
+                    </div>
+                  ` : ''}
+                  <div class="relay-field" style="${careers.showLinkedin === false ? 'grid-column: span 2;' : ''}">
+                    <label for="r-resume-file">${careers.resumeLabel || 'Resume / Curriculum Vitae (PDF / DOCX) *'}</label>
                     <div class="resume-upload-box" id="resume-upload-dropzone">
-                      <input type="file" id="r-resume-file" name="resume" accept=".pdf,.doc,.docx" class="resume-file-input" required />
+                      <input type="file" id="r-resume-file" name="resume" accept="${careers.resumeAcceptedExtensions || '.pdf,.doc,.docx'}" class="resume-file-input" ${careers.resumeRequired !== false ? 'required' : ''} />
                       <div class="resume-upload-content" id="resume-upload-content">
                         <i class="fa-solid fa-cloud-arrow-up resume-upload-icon"></i>
-                        <span class="resume-upload-text" id="resume-upload-text">Click or drop resume file (PDF/DOCX, max 10MB)</span>
+                        <span class="resume-upload-text" id="resume-upload-text">${careers.resumeHelpText || 'Click or drop resume file (PDF/DOCX, max 10MB)'}</span>
                       </div>
                     </div>
                   </div>
@@ -441,12 +428,12 @@ export function renderContactPage() {
 
                 <!-- Row 7: Candidate Cover Statement -->
                 <div class="relay-field">
-                  <label for="r-statement">Candidate Statement / Why ICON Electromatic? *</label>
-                  <textarea id="r-statement" name="statement" placeholder="Briefly highlight your relevant RF, Microwave, or electronics experience, core projects, and why you are keen to join ICON Electromatic..." required></textarea>
+                  <label for="r-statement">${careers.statementLabel || 'Candidate Statement / Why ICON Electromatic? *'}</label>
+                  <textarea id="r-statement" name="statement" placeholder="${careers.statementPlaceholder || 'Briefly highlight your relevant RF, Microwave, or electronics experience, core projects, and why you are keen to join ICON Electromatic...'}" ${careers.statementRequired !== false ? 'required' : ''}></textarea>
                 </div>
 
                 <button type="submit" class="btn-relay-blue" style="width:100%;margin-top:var(--space-2);background:linear-gradient(135deg, var(--logo-blue), #1E40AF);">
-                  <i class="fa-solid fa-briefcase"></i> Submit Engineering Application
+                  <i class="${careers.submitButtonIcon || 'fa-solid fa-briefcase'}"></i> ${careers.submitButtonText || 'Submit Engineering Application'}
                 </button>
               </form>
             </div>
@@ -483,6 +470,8 @@ export function initContactPage() {
   // Switch between Inquiry and Recruiting Tabs
   function switchTab(tab) {
     const isRecruiting = tab === 'recruiting';
+    const c = ContentService.getData('contact') || {};
+    const careers = c.careers || {};
 
     if (inquiryTabBtn && recruitingTabBtn) {
       inquiryTabBtn.classList.toggle('active', !isRecruiting);
@@ -502,23 +491,23 @@ export function initContactPage() {
     }
 
     if (breadcrumbActive) {
-      breadcrumbActive.textContent = isRecruiting ? 'Careers & Recruiting' : 'Contact & RFQ';
+      breadcrumbActive.textContent = isRecruiting ? (careers.breadcrumbCareers || 'Careers & Recruiting') : 'Contact & RFQ';
     }
 
     if (eyebrowText) {
-      eyebrowText.textContent = isRecruiting ? 'ICON TALENT ACQUISITION' : 'CONNECT WITH ENGINEERING';
+      eyebrowText.textContent = isRecruiting ? (careers.eyebrowCareers || 'ICON TALENT ACQUISITION') : 'CONNECT WITH ENGINEERING';
     }
 
     if (pageTitle) {
       pageTitle.innerHTML = isRecruiting 
-        ? 'Join India’s Foremost RF &amp; Microwave Engineering Hub' 
-        : 'Send Us a Message &amp; Request Fast Quotes';
+        ? (careers.careersTitle || c.careersTitle || 'Join India’s Foremost RF &amp; Microwave Engineering Hub') 
+        : (c.heroTitle || 'Send Us a Message &amp; Request Fast Quotes');
     }
 
     if (pageLead) {
       pageLead.textContent = isRecruiting 
-        ? 'Accelerate your career in millimeter-wave technology, defense electronics, and satellite communications. Explore engineering opportunities at ICON Electromatic.' 
-        : 'Whether you require component data sheets, custom waveguide machining, or volume pricing, our application engineering team in Bengaluru is ready to assist.';
+        ? (careers.careersLead || c.careersLead || 'Accelerate your career in millimeter-wave technology, defense electronics, and satellite communications. Explore engineering opportunities at ICON Electromatic.') 
+        : (c.heroLead || 'Whether you require component data sheets, custom waveguide machining, or volume pricing, our application engineering team in Bengaluru is ready to assist.');
     }
   }
 
@@ -530,15 +519,38 @@ export function initContactPage() {
     recruitingTabBtn.addEventListener('click', () => switchTab('recruiting'));
   }
 
-  // Resume File Upload feedback
+  // Resume File Upload feedback & validation
   if (resumeInput && resumeUploadText) {
     resumeInput.addEventListener('change', (e) => {
+      const c = ContentService.getData('contact') || {};
+      const careers = c.careers || {};
       const file = e.target.files && e.target.files[0];
+      const maxMb = Number(careers.resumeMaxSizeMb) || 10;
+      const rawExts = careers.resumeAcceptedExtensions || '.pdf,.doc,.docx';
+      const acceptedExts = rawExts.toLowerCase().split(',').map(s => s.trim().replace(/^\./, ''));
+
       if (file) {
-        const sizeMb = (file.size / (1024 * 1024)).toFixed(1);
-        resumeUploadText.innerHTML = `<strong style="color:var(--success);"><i class="fa-solid fa-file-check"></i> ${file.name}</strong> (${sizeMb} MB attached)`;
+        const fileExt = file.name.split('.').pop().toLowerCase();
+        if (acceptedExts.length > 0 && !acceptedExts.includes(fileExt)) {
+          const tpl = careers.resumeFormatErrorMessage || 'Invalid file format. Please upload an accepted file type: {types}';
+          alert(tpl.replace('{types}', rawExts));
+          resumeInput.value = '';
+          resumeUploadText.textContent = careers.resumeHelpText || 'Click or drop resume file (PDF/DOCX, max 10MB)';
+          return;
+        }
+
+        const sizeMb = file.size / (1024 * 1024);
+        if (sizeMb > maxMb) {
+          const tpl = careers.resumeSizeErrorMessage || 'File size ({size} MB) exceeds the maximum allowed limit of {max} MB.';
+          alert(tpl.replace('{size}', sizeMb.toFixed(1)).replace('{max}', maxMb));
+          resumeInput.value = '';
+          resumeUploadText.textContent = careers.resumeHelpText || 'Click or drop resume file (PDF/DOCX, max 10MB)';
+          return;
+        }
+
+        resumeUploadText.innerHTML = `<strong style="color:var(--success);"><i class="fa-solid fa-file-check"></i> ${file.name}</strong> (${sizeMb.toFixed(1)} MB attached)`;
       } else {
-        resumeUploadText.textContent = 'Click or drop resume file (PDF/DOCX, max 10MB)';
+        resumeUploadText.textContent = careers.resumeHelpText || 'Click or drop resume file (PDF/DOCX, max 10MB)';
       }
     });
   }
@@ -619,9 +631,30 @@ export function initContactPage() {
   if (recruitingForm) {
     recruitingForm.addEventListener('submit', (e) => {
       e.preventDefault();
+      const c = ContentService.getData('contact') || {};
+      const careers = c.careers || {};
+
+      if (careers.resumeRequired !== false && (!resumeInput || !resumeInput.files || resumeInput.files.length === 0)) {
+        alert(careers.validationErrorMessage || 'Please complete all required fields and attach your resume before submitting.');
+        if (resumeInput) resumeInput.focus();
+        return;
+      }
+
       const candName = document.getElementById('r-fullname').value || 'Candidate';
       const position = document.getElementById('r-position').value || 'Engineering Role';
-      const candRefId = 'ICON-CAREER-' + Math.floor(100000 + Math.random() * 900000);
+      const prefix = careers.candidateIdPrefix || 'ICON-CAREER-';
+      const candRefId = prefix + Math.floor(100000 + Math.random() * 900000);
+
+      const subtitleTemplate = careers.successSubtitle || 'Thank you, {name}.';
+      const formattedSubtitle = subtitleTemplate.replace('{name}', candName);
+
+      const messageTemplate = careers.successMessage || 'Your application for {position} has been logged with our Technical Evaluation Committee and Talent Acquisition team in Bengaluru.';
+      const formattedMessage = messageTemplate.replace('{name}', candName).replace('{position}', position);
+
+      const nextStepsTitle = careers.nextStepsTitle || 'Next Steps:';
+      const nextStepsText = careers.nextStepsText || 'Qualified candidates will be contacted within 3 to 5 business days for an introductory technical discussion. For updates, quote your Candidate Application ID to careers@iconelectromatic.com.';
+      const careersEmail = careers.careersEmail || 'careers@iconelectromatic.com';
+      const resetButtonText = careers.resetButtonText || 'Submit Another Application';
 
       if (recruitingPanel) {
         recruitingPanel.innerHTML = `
@@ -629,12 +662,12 @@ export function initContactPage() {
             <div style="width:72px;height:72px;border-radius:50%;background:rgba(16,185,129,0.15);color:#34D399;display:flex;align-items:center;justify-content:center;font-size:2.2rem;margin:0 auto var(--space-4);border:1px solid rgba(16,185,129,0.3);">
               <i class="fa-solid fa-briefcase"></i>
             </div>
-            <h3 style="font-size:1.6rem;font-weight:800;color:var(--text-white);margin-bottom:8px;">Application Received!</h3>
+            <h3 style="font-size:1.6rem;font-weight:800;color:var(--text-white);margin-bottom:8px;">${careers.successTitle || 'Application Received!'}</h3>
             <p style="color:var(--text-white);font-weight:600;font-size:1.05rem;margin-bottom:6px;">
-              Thank you, ${candName}.
+              ${formattedSubtitle}
             </p>
             <p style="color:var(--text-gray-300);font-size:0.95rem;max-width:500px;margin:0 auto var(--space-4);line-height:1.6;">
-              Your application for <strong style="color:var(--logo-blue-light);">${position}</strong> has been logged with our Technical Evaluation Committee and Talent Acquisition team in Bengaluru.
+              ${formattedMessage}
             </p>
             
             <div style="display:inline-block;padding:12px 24px;background:rgba(255,255,255,0.05);border:1px solid var(--border-card);border-radius:var(--radius-md);font-family:var(--font-display);font-size:0.95rem;color:var(--text-white);margin-bottom:var(--space-6);">
@@ -643,12 +676,13 @@ export function initContactPage() {
 
             <div style="max-width:440px;margin:0 auto var(--space-6);padding:14px;background:rgba(37,99,235,0.08);border:1px solid rgba(37,99,235,0.25);border-radius:var(--radius-md);font-size:0.85rem;color:var(--text-gray-300);line-height:1.5;text-align:left;">
               <i class="fa-solid fa-circle-info" style="color:var(--logo-blue-light);margin-right:6px;"></i>
-              <strong>Next Steps:</strong> Qualified candidates will be contacted within <strong>3 to 5 business days</strong> for an introductory technical discussion. For updates, quote your Candidate Application ID to <a href="mailto:careers@iconelectromatic.com" style="color:var(--logo-blue-light);">careers@iconelectromatic.com</a>.
+              <strong>${nextStepsTitle}</strong> ${nextStepsText}
+              <div style="margin-top:6px;font-size:0.8rem;color:var(--text-gray-400);">Contact Talent Team: <a href="mailto:${careersEmail}" style="color:var(--logo-blue-light);">${careersEmail}</a></div>
             </div>
 
             <div>
               <button class="btn-relay-secondary" id="reset-recruiting-btn" style="padding:9px 20px;font-size:0.85rem;">
-                <i class="fa-solid fa-rotate-left"></i> Submit Another Application
+                <i class="fa-solid fa-rotate-left"></i> ${resetButtonText}
               </button>
             </div>
           </div>
@@ -664,3 +698,4 @@ export function initContactPage() {
     });
   }
 }
+

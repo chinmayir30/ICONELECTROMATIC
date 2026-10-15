@@ -506,6 +506,149 @@ const INITIAL_CONTENT = {
       'Enquiring about PCB Fabrication.',
       'Enquiring about Perimeter Intrusion Detection System (PIDS).',
     ],
+    careers: {
+      // Tab & Breadcrumbs
+      tabLabelSales: 'Sales & RFQ Inquiry',
+      tabLabelCareers: 'Careers & Recruiting',
+      showHiringBadge: true,
+      hiringBadgeText: "We're Hiring",
+      breadcrumbCareers: 'Careers & Recruiting',
+      eyebrowCareers: 'ICON TALENT ACQUISITION',
+
+      // Hero
+      careersTitle: 'Join India’s Foremost RF & Microwave Engineering Hub',
+      careersLead: 'Accelerate your career in millimeter-wave technology, defense electronics, and satellite communications. Explore engineering opportunities at ICON Electromatic.',
+      careersHeroImage: '',
+
+      // Intro & Benefits
+      introIcon: 'fa-solid fa-users',
+      introTitle: 'Why Build Your Career at ICON?',
+      introSubtitle: 'RF & MICROWAVE EXCELLENCE',
+      introDescription: 'ICON ELECTROMATIC represents the world’s foremost RF, microwave, and high-frequency component manufacturers in India. Our engineers work at the bleeding edge of radar, space satellites, defense EW systems, and 5G/6G research.',
+      benefits: [
+        {
+          id: 'ben-1',
+          icon: 'fa-solid fa-microchip',
+          iconColor: '#60A5FA',
+          title: 'Global OEM Partnerships',
+          description: 'Direct technical engagement with leaders like Rogers Corporation, Qorvo, Spellman, Fortify, and YTTEK.'
+        },
+        {
+          id: 'ben-2',
+          icon: 'fa-solid fa-satellite-dish',
+          iconColor: '#F87171',
+          title: 'Strategic Defense & Space Missions',
+          description: 'Contribute to critical airborne radars, missile guidance receivers, SATCOM transponders, and ISRO payloads.'
+        },
+        {
+          id: 'ben-3',
+          icon: 'fa-solid fa-flask-vial',
+          iconColor: '#A855F7',
+          title: 'Advanced Microwave Measurement Lab',
+          description: 'Hands-on exposure to Vector Network Analyzers (VNA up to 67 GHz), noise figure meters, and RF anechoic test chambers.'
+        }
+      ],
+
+      // Form Header & Badge
+      showFormBadge: true,
+      formBadgeIcon: 'fa-solid fa-briefcase',
+      formBadgeText: 'Talent Acquisition · Bengaluru & Pan-India',
+      formTitle: 'Apply for an Engineering Career',
+      formSubtitle: "Join ICON Electromatic's elite RF & Microwave applications team. Fill out the application form below and our technical panel will review your profile.",
+
+      // Form Fields Labels, Placeholders & Required toggles
+      nameLabel: 'Full Name *',
+      namePlaceholder: 'e.g. Vikram Sharma',
+      nameRequired: true,
+
+      emailLabel: 'Email Address *',
+      emailPlaceholder: 'vikram.sharma@example.com',
+      emailRequired: true,
+
+      positionLabel: 'Position *',
+      positionPlaceholder: 'Select Position...',
+      positionRequired: true,
+
+      phoneLabel: 'Phone / Mobile Number *',
+      phonePlaceholder: '+91 98765 43210',
+      phoneRequired: true,
+
+      cityLabel: 'Current Location / City *',
+      cityPlaceholder: 'e.g. Bengaluru, Hyderabad, Pune, Chennai',
+      cityRequired: true,
+
+      experienceLabel: 'Total Experience *',
+      experiencePlaceholder: 'Select experience level...',
+      experienceRequired: true,
+
+      organizationLabel: 'Current Company or University *',
+      organizationPlaceholder: 'e.g. BEL, DRDO, Astra Microwave, IISc, IIT',
+      organizationRequired: true,
+
+      noticeLabel: 'Notice Period / Earliest Availability *',
+      noticeRequired: true,
+
+      skillsLabel: 'Key Technical Skills & RF EDA Tools *',
+      skillsPlaceholder: 'e.g. Keysight ADS, Ansys HFSS, CST Microwave Studio, VNA S-Parameters, GaN Matching, Rogers RT/duroid',
+      skillsRequired: true,
+
+      showLinkedin: true,
+      linkedinLabel: 'LinkedIn Profile or Online Portfolio',
+      linkedinPlaceholder: 'https://linkedin.com/in/username',
+      linkedinRequired: false,
+
+      statementLabel: 'Candidate Statement / Why ICON Electromatic? *',
+      statementPlaceholder: 'Briefly highlight your relevant RF, Microwave, or electronics experience, core projects, and why you are keen to join ICON Electromatic...',
+      statementRequired: true,
+
+      // Resume upload settings
+      resumeLabel: 'Resume / Curriculum Vitae (PDF / DOCX) *',
+      resumeHelpText: 'Click or drop resume file (PDF/DOCX, max 10MB)',
+      resumeAcceptedExtensions: '.pdf,.doc,.docx',
+      resumeMaxSizeMb: 10,
+      resumeRequired: true,
+
+      // Dropdown option arrays (full CRUD + reorder)
+      positions: [
+        'RF & Microwave Design Engineer (DC–110 GHz)',
+        'Field Applications Engineer (FAE) - RF Components',
+        'Technical Sales & OEM Account Manager',
+        'Radar, EW & SATCOM Systems Application Specialist',
+        'RF Lab Test & Measurement Specialist (VNA/Spectrum)',
+        'High-Frequency PCB & PTFE Substrates Specialist',
+        'Graduate RF Engineering Trainee / Intern',
+        'Other Technical / Engineering Specialist'
+      ],
+      experienceLevels: [
+        'Fresh Graduate / Final Year (< 1 Year)',
+        '1 – 3 Years Experience',
+        '3 – 5 Years (Mid-Level Engineer)',
+        '5 – 8 Years (Senior RF Specialist)',
+        '8+ Years (Principal / Lead Engineer)'
+      ],
+      noticeOptions: [
+        'Immediate / Less than 15 Days',
+        '30 Days',
+        '60 Days',
+        '90 Days'
+      ],
+
+      // Submit Button & Messages
+      submitButtonIcon: 'fa-solid fa-briefcase',
+      submitButtonText: 'Submit Engineering Application',
+      successTitle: 'Application Received!',
+      successSubtitle: 'Thank you, {name}.',
+      successMessage: 'Your application for {position} has been logged with our Technical Evaluation Committee and Talent Acquisition team in Bengaluru.',
+      candidateIdPrefix: 'ICON-CAREER-',
+      nextStepsTitle: 'Next Steps:',
+      nextStepsText: 'Qualified candidates will be contacted within 3 to 5 business days for an introductory technical discussion. For updates, quote your Candidate Application ID to careers@iconelectromatic.com.',
+      careersEmail: 'careers@iconelectromatic.com',
+      resetButtonText: 'Submit Another Application',
+      validationErrorMessage: 'Please complete all required fields and attach your resume before submitting.',
+      errorMessage: 'An error occurred while submitting your application. Please check your connection and try again.',
+      resumeFormatErrorMessage: 'Invalid file format. Please upload an accepted file type: {types}',
+      resumeSizeErrorMessage: 'File size ({size} MB) exceeds the maximum allowed limit of {max} MB.'
+    }
   },
   seo: {
     siteTitle: 'Icon Electromatic – RF, Microwave & Electronic Components',
@@ -537,6 +680,22 @@ export const ContentService = {
           if (Array.isArray(parsed) && parsed.length > 0 && Array.isArray(parsed[0].categories)) {
             return parsed;
           }
+        } else if (pageKey === 'contact') {
+          const defaults = INITIAL_CONTENT.contact;
+          const mergedCareers = {
+            ...defaults.careers,
+            ...(parsed.careers || {})
+          };
+          if (!Array.isArray(mergedCareers.benefits)) mergedCareers.benefits = defaults.careers.benefits;
+          if (!Array.isArray(mergedCareers.positions)) mergedCareers.positions = defaults.careers.positions;
+          if (!Array.isArray(mergedCareers.experienceLevels)) mergedCareers.experienceLevels = defaults.careers.experienceLevels;
+          if (!Array.isArray(mergedCareers.noticeOptions)) mergedCareers.noticeOptions = defaults.careers.noticeOptions;
+
+          return {
+            ...defaults,
+            ...parsed,
+            careers: mergedCareers
+          };
         } else {
           return parsed;
         }

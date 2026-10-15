@@ -821,3 +821,66 @@
   line-height: 1.35;
 }
 
+/* ── Careers CMS Specific Styles ── */
+.a-checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: #f8fafc;
+  border: 1px solid var(--a-border);
+  border-radius: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+.a-checkbox-row input[type="checkbox"] {
+  width: 17px;
+  height: 17px;
+  accent-color: var(--a-blue);
+  cursor: pointer;
+}
+.a-checkbox-row span {
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--a-text);
+}
+.a-field-pair {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.a-icon-preview-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: rgba(15, 23, 42, 0.06);
+  font-size: 0.95rem;
+}
+.a-subcard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 16px;
+  margin-top: 14px;
+}
+.a-field-group-box {
+  background: #f8fafc;
+  border: 1px solid var(--a-border);
+  border-radius: 8px;
+  padding: 14px;
+}
+.a-field-group-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--a-blue);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+

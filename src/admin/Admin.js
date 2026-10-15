@@ -1549,11 +1549,17 @@ function bindTestimonialsTabEvents() {
 function renderContactPageEditor() {
   const c = ContentService.getData('contact') || {};
   const presets = c.presets || [];
+  const careers = c.careers || {};
+  const benefits = careers.benefits || [];
+  const positions = careers.positions || [];
+  const experienceLevels = careers.experienceLevels || [];
+  const noticeOptions = careers.noticeOptions || [];
 
   return `
     <div class="a-subtabs-nav">
       <button type="button" class="a-subtab-btn ${currentSubTab === 'fields' ? 'active' : ''}" data-subtab="fields"><i class="fa-solid fa-building"></i> Offices &amp; Contact Info</button>
       <button type="button" class="a-subtab-btn ${currentSubTab === 'presets' ? 'active' : ''}" data-subtab="presets"><i class="fa-solid fa-bolt"></i> Requirement Presets (${presets.length})</button>
+      <button type="button" class="a-subtab-btn ${currentSubTab === 'careers' ? 'active' : ''}" data-subtab="careers"><i class="fa-solid fa-briefcase"></i> Careers &amp; Recruiting Management</button>
     </div>
 
     ${currentSubTab === 'fields' ? `
@@ -1633,6 +1639,546 @@ function renderContactPageEditor() {
         </div>
       </div>
     ` : ''}
+
+    ${currentSubTab === 'careers' ? `
+      <!-- Card 1: Tab Navigation, Hero & Badges -->
+      <form id="a-careers-hero-form">
+        <div class="a-card">
+          <div class="a-card-header">
+            <div>
+              <h3>Hero, Header Tabs &amp; Hiring Badges</h3>
+              <p>Customize tab buttons, navigation badges, and hero titles on Contact &amp; Careers page</p>
+            </div>
+            <button type="submit" class="a-btn a-btn-primary a-btn-sm"><i class="fa-solid fa-floppy-disk"></i> Save Header &amp; Hero</button>
+          </div>
+          <div class="a-form-grid">
+            <div class="a-field">
+              <label class="a-label">Careers Tab Button Label</label>
+              <input class="a-input" name="tabLabelCareers" value="${careers.tabLabelCareers || 'Careers &amp; Recruiting'}" required>
+            </div>
+            <div class="a-field">
+              <label class="a-label">Sales Tab Button Label</label>
+              <input class="a-input" name="tabLabelSales" value="${careers.tabLabelSales || 'Sales &amp; RFQ Inquiry'}" required>
+            </div>
+            <div class="a-field">
+              <label class="a-label">Breadcrumb Text</label>
+              <input class="a-input" name="breadcrumbCareers" value="${careers.breadcrumbCareers || 'Careers &amp; Recruiting'}" required>
+            </div>
+            <div class="a-field">
+              <label class="a-label">Hero Eyebrow Text</label>
+              <input class="a-input" name="eyebrowCareers" value="${careers.eyebrowCareers || 'ICON TALENT ACQUISITION'}">
+            </div>
+            <div class="a-field span2">
+              <label class="a-label">Hero Main Title</label>
+              <input class="a-input" name="careersTitle" value="${careers.careersTitle || ''}" required>
+            </div>
+            <div class="a-field span2">
+              <label class="a-label">Hero Lead Paragraph / Subtitle</label>
+              <textarea class="a-textarea" name="careersLead" rows="2" required>${careers.careersLead || ''}</textarea>
+            </div>
+            <div class="a-field">
+              <label class="a-checkbox-row" style="margin-top:6px;">
+                <input type="checkbox" name="showHiringBadge" ${careers.showHiringBadge !== false ? 'checked' : ''}>
+                <span>Display "We're Hiring" Badge on Tab</span>
+              </label>
+            </div>
+            <div class="a-field">
+              <label class="a-label">Hiring Badge Text</label>
+              <input class="a-input" name="hiringBadgeText" value="${careers.hiringBadgeText || "We're Hiring"}">
+            </div>
+            ${renderImageUploadField('careersHeroImage', 'Careers Hero / Team Photo (Optional)', careers.careersHeroImage || '', 'Upload photo of engineering team, lab, or office')}
+          </div>
+        </div>
+      </form>
+
+      <!-- Card 2: Company Intro & Benefits -->
+      <form id="a-careers-intro-form" style="margin-top:20px;">
+        <div class="a-card">
+          <div class="a-card-header">
+            <div>
+              <h3>"Why Build Your Career at ICON?" Introduction</h3>
+              <p>Introductory copy displayed in the left column on the Careers tab</p>
+            </div>
+            <button type="submit" class="a-btn a-btn-primary a-btn-sm"><i class="fa-solid fa-floppy-disk"></i> Save Intro Copy</button>
+          </div>
+          <div class="a-form-grid">
+            <div class="a-field">
+              <label class="a-label">Intro Heading</label>
+              <input class="a-input" name="introTitle" value="${careers.introTitle || 'Why Build Your Career at ICON?'}" required>
+            </div>
+            <div class="a-field">
+              <label class="a-label">Intro Subtitle / Tagline</label>
+              <input class="a-input" name="introSubtitle" value="${careers.introSubtitle || 'RF &amp; MICROWAVE EXCELLENCE'}">
+            </div>
+            <div class="a-field">
+              <label class="a-label">Header Icon (FontAwesome class)</label>
+              <input class="a-input" name="introIcon" value="${careers.introIcon || 'fa-solid fa-users'}">
+            </div>
+            <div class="a-field span2">
+              <label class="a-label">Intro Description Paragraph</label>
+              <textarea class="a-textarea" name="introDescription" rows="3" required>${careers.introDescription || ''}</textarea>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <!-- Benefits Table -->
+      <div class="a-cards-box" style="margin-top:20px;">
+        <div class="a-cards-box-header">
+          <div>
+            <h3>Why Join Us Benefits &amp; Perks (${benefits.length})</h3>
+            <p>Reorderable highlight cards showcasing engineering culture, labs, and OEM access</p>
+          </div>
+          <button type="button" class="a-btn a-btn-primary a-btn-sm" id="a-add-benefit-btn"><i class="fa-solid fa-plus"></i> Add Benefit</button>
+        </div>
+        <div class="a-table-wrap">
+          <table class="a-table">
+            <thead><tr><th>Reorder</th><th>Icon</th><th>Title</th><th>Description</th><th>Actions</th></tr></thead>
+            <tbody>
+              ${benefits.map((b, idx) => `
+                <tr>
+                  <td style="width:90px;">
+                    <div class="a-reorder-group">
+                      <button class="a-btn-reorder btn-move-benefit" data-dir="up" data-idx="${idx}" ${idx === 0 ? 'disabled' : ''}><i class="fa-solid fa-arrow-up"></i></button>
+                      <button class="a-btn-reorder btn-move-benefit" data-dir="down" data-idx="${idx}" ${idx === benefits.length - 1 ? 'disabled' : ''}><i class="fa-solid fa-arrow-down"></i></button>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="a-icon-preview-badge" style="color:${b.iconColor || '#3b82f6'};">
+                      <i class="${b.icon || 'fa-solid fa-star'}"></i>
+                    </div>
+                  </td>
+                  <td><strong>${b.title}</strong></td>
+                  <td style="font-size:0.8rem;color:var(--a-muted);max-width:320px;">${b.description || ''}</td>
+                  <td>
+                    <button class="a-btn a-btn-outline a-btn-sm btn-edit-benefit" data-idx="${idx}"><i class="fa-solid fa-pen"></i> Edit</button>
+                    <button class="a-btn a-btn-danger a-btn-sm btn-del-benefit" data-idx="${idx}" style="margin-left:6px;"><i class="fa-solid fa-trash"></i></button>
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Card 3: Application Form Fields, Validation & Upload Rules -->
+      <form id="a-careers-form-config" style="margin-top:20px;">
+        <div class="a-card">
+          <div class="a-card-header">
+            <div>
+              <h3>Application Form Header &amp; Fields Configuration</h3>
+              <p>Customize form title, badges, labels, placeholders, and required validation rules</p>
+            </div>
+            <button type="submit" class="a-btn a-btn-primary a-btn-sm"><i class="fa-solid fa-floppy-disk"></i> Save Form Settings</button>
+          </div>
+          
+          <div class="a-form-grid">
+            <div class="a-section-divider span2">Top Form Banner &amp; Heading</div>
+            <div class="a-field">
+              <label class="a-checkbox-row" style="margin-top:6px;">
+                <input type="checkbox" name="showFormBadge" ${careers.showFormBadge !== false ? 'checked' : ''}>
+                <span>Display Talent Acquisition Badge</span>
+              </label>
+            </div>
+            <div class="a-field">
+              <label class="a-label">Form Badge Text</label>
+              <input class="a-input" name="formBadgeText" value="${careers.formBadgeText || 'Talent Acquisition · Bengaluru &amp; Pan-India'}">
+            </div>
+            <div class="a-field">
+              <label class="a-label">Form Badge Icon (FontAwesome class)</label>
+              <input class="a-input" name="formBadgeIcon" value="${careers.formBadgeIcon || 'fa-solid fa-briefcase'}">
+            </div>
+            <div class="a-field">
+              <label class="a-label">Form Main Heading</label>
+              <input class="a-input" name="formTitle" value="${careers.formTitle || 'Apply for an Engineering Career'}" required>
+            </div>
+            <div class="a-field span2">
+              <label class="a-label">Form Subtitle / Instructions</label>
+              <textarea class="a-textarea" name="formSubtitle" rows="2" required>${careers.formSubtitle || ''}</textarea>
+            </div>
+
+            <div class="a-section-divider span2">Field Labels, Placeholders &amp; Required Toggles</div>
+            
+            <!-- Full Name -->
+            <div class="a-field">
+              <label class="a-label">Full Name Field Label</label>
+              <input class="a-input" name="nameLabel" value="${careers.nameLabel || 'Full Name *'}" required>
+            </div>
+            <div class="a-field">
+              <label class="a-label">Full Name Placeholder</label>
+              <input class="a-input" name="namePlaceholder" value="${careers.namePlaceholder || 'e.g. Vikram Sharma'}">
+            </div>
+            <div class="a-field span2">
+              <label class="a-checkbox-row">
+                <input type="checkbox" name="nameRequired" ${careers.nameRequired !== false ? 'checked' : ''}>
+                <span>Full Name is Required</span>
+              </label>
+            </div>
+
+            <!-- Email Address -->
+            <div class="a-field">
+              <label class="a-label">Email Field Label</label>
+              <input class="a-input" name="emailLabel" value="${careers.emailLabel || 'Email Address *'}" required>
+            </div>
+            <div class="a-field">
+              <label class="a-label">Email Placeholder</label>
+              <input class="a-input" name="emailPlaceholder" value="${careers.emailPlaceholder || 'vikram.sharma@example.com'}">
+            </div>
+            <div class="a-field span2">
+              <label class="a-checkbox-row">
+                <input type="checkbox" name="emailRequired" ${careers.emailRequired !== false ? 'checked' : ''}>
+                <span>Email Address is Required</span>
+              </label>
+            </div>
+
+            <!-- Position -->
+            <div class="a-field">
+              <label class="a-label">Position Dropdown Label</label>
+              <input class="a-input" name="positionLabel" value="${careers.positionLabel || 'Position *'}" required>
+            </div>
+            <div class="a-field">
+              <label class="a-label">Position Default Option Text</label>
+              <input class="a-input" name="positionPlaceholder" value="${careers.positionPlaceholder || 'Select Position...'}">
+            </div>
+            <div class="a-field span2">
+              <label class="a-checkbox-row">
+                <input type="checkbox" name="positionRequired" ${careers.positionRequired !== false ? 'checked' : ''}>
+                <span>Position Selection is Required</span>
+              </label>
+            </div>
+
+            <!-- Phone -->
+            <div class="a-field">
+              <label class="a-label">Phone Field Label</label>
+              <input class="a-input" name="phoneLabel" value="${careers.phoneLabel || 'Phone / Mobile Number *'}" required>
+            </div>
+            <div class="a-field">
+              <label class="a-label">Phone Placeholder</label>
+              <input class="a-input" name="phonePlaceholder" value="${careers.phonePlaceholder || '+91 98765 43210'}">
+            </div>
+            <div class="a-field span2">
+              <label class="a-checkbox-row">
+                <input type="checkbox" name="phoneRequired" ${careers.phoneRequired !== false ? 'checked' : ''}>
+                <span>Phone / Mobile Number is Required</span>
+              </label>
+            </div>
+
+            <!-- Location / City -->
+            <div class="a-field">
+              <label class="a-label">Location Field Label</label>
+              <input class="a-input" name="cityLabel" value="${careers.cityLabel || 'Current Location / City *'}" required>
+            </div>
+            <div class="a-field">
+              <label class="a-label">Location Placeholder</label>
+              <input class="a-input" name="cityPlaceholder" value="${careers.cityPlaceholder || 'e.g. Bengaluru, Hyderabad, Pune, Chennai'}">
+            </div>
+            <div class="a-field span2">
+              <label class="a-checkbox-row">
+                <input type="checkbox" name="cityRequired" ${careers.cityRequired !== false ? 'checked' : ''}>
+                <span>Location / City is Required</span>
+              </label>
+            </div>
+
+            <!-- Experience Level -->
+            <div class="a-field">
+              <label class="a-label">Experience Dropdown Label</label>
+              <input class="a-input" name="experienceLabel" value="${careers.experienceLabel || 'Total Experience *'}" required>
+            </div>
+            <div class="a-field">
+              <label class="a-label">Experience Default Option Text</label>
+              <input class="a-input" name="experiencePlaceholder" value="${careers.experiencePlaceholder || 'Select experience level...'}">
+            </div>
+            <div class="a-field span2">
+              <label class="a-checkbox-row">
+                <input type="checkbox" name="experienceRequired" ${careers.experienceRequired !== false ? 'checked' : ''}>
+                <span>Experience Level is Required</span>
+              </label>
+            </div>
+
+            <!-- Current Company -->
+            <div class="a-field">
+              <label class="a-label">Company / University Label</label>
+              <input class="a-input" name="organizationLabel" value="${careers.organizationLabel || 'Current Company or University *'}" required>
+            </div>
+            <div class="a-field">
+              <label class="a-label">Company / University Placeholder</label>
+              <input class="a-input" name="organizationPlaceholder" value="${careers.organizationPlaceholder || 'e.g. BEL, DRDO, Astra Microwave, IISc, IIT'}">
+            </div>
+            <div class="a-field span2">
+              <label class="a-checkbox-row">
+                <input type="checkbox" name="organizationRequired" ${careers.organizationRequired !== false ? 'checked' : ''}>
+                <span>Current Company or University is Required</span>
+              </label>
+            </div>
+
+            <!-- Notice Period -->
+            <div class="a-field">
+              <label class="a-label">Notice Period Field Label</label>
+              <input class="a-input" name="noticeLabel" value="${careers.noticeLabel || 'Notice Period / Earliest Availability *'}" required>
+            </div>
+            <div class="a-field">
+              <label class="a-checkbox-row" style="margin-top:24px;">
+                <input type="checkbox" name="noticeRequired" ${careers.noticeRequired !== false ? 'checked' : ''}>
+                <span>Notice Period is Required</span>
+              </label>
+            </div>
+
+            <!-- Technical Skills -->
+            <div class="a-field">
+              <label class="a-label">Skills Field Label</label>
+              <input class="a-input" name="skillsLabel" value="${careers.skillsLabel || 'Key Technical Skills &amp; RF EDA Tools *'}" required>
+            </div>
+            <div class="a-field">
+              <label class="a-label">Skills Field Placeholder</label>
+              <input class="a-input" name="skillsPlaceholder" value="${careers.skillsPlaceholder || 'e.g. Keysight ADS, Ansys HFSS, CST Microwave Studio...'}">
+            </div>
+            <div class="a-field span2">
+              <label class="a-checkbox-row">
+                <input type="checkbox" name="skillsRequired" ${careers.skillsRequired !== false ? 'checked' : ''}>
+                <span>Technical Skills Field is Required</span>
+              </label>
+            </div>
+
+            <!-- LinkedIn -->
+            <div class="a-field">
+              <label class="a-label">LinkedIn Field Label</label>
+              <input class="a-input" name="linkedinLabel" value="${careers.linkedinLabel || 'LinkedIn Profile or Online Portfolio'}">
+            </div>
+            <div class="a-field">
+              <label class="a-label">LinkedIn Placeholder</label>
+              <input class="a-input" name="linkedinPlaceholder" value="${careers.linkedinPlaceholder || 'https://linkedin.com/in/username'}">
+            </div>
+            <div class="a-field">
+              <label class="a-checkbox-row">
+                <input type="checkbox" name="showLinkedin" ${careers.showLinkedin !== false ? 'checked' : ''}>
+                <span>Display LinkedIn / Portfolio Field</span>
+              </label>
+            </div>
+            <div class="a-field">
+              <label class="a-checkbox-row">
+                <input type="checkbox" name="linkedinRequired" ${careers.linkedinRequired ? 'checked' : ''}>
+                <span>LinkedIn URL is Required</span>
+              </label>
+            </div>
+
+            <!-- Statement -->
+            <div class="a-field span2">
+              <label class="a-label">Candidate Statement Field Label</label>
+              <input class="a-input" name="statementLabel" value="${careers.statementLabel || 'Candidate Statement / Why ICON Electromatic? *'}" required>
+            </div>
+            <div class="a-field span2">
+              <label class="a-label">Statement Placeholder</label>
+              <textarea class="a-textarea" name="statementPlaceholder" rows="2">${careers.statementPlaceholder || ''}</textarea>
+            </div>
+            <div class="a-field span2">
+              <label class="a-checkbox-row">
+                <input type="checkbox" name="statementRequired" ${careers.statementRequired !== false ? 'checked' : ''}>
+                <span>Candidate Statement is Required</span>
+              </label>
+            </div>
+
+            <div class="a-section-divider span2">Resume Upload Controls &amp; Settings</div>
+            <div class="a-field">
+              <label class="a-label">Resume Upload Label</label>
+              <input class="a-input" name="resumeLabel" value="${careers.resumeLabel || 'Resume / Curriculum Vitae (PDF / DOCX) *'}" required>
+            </div>
+            <div class="a-field">
+              <label class="a-label">Dropzone Help / Instruction Text</label>
+              <input class="a-input" name="resumeHelpText" value="${careers.resumeHelpText || 'Click or drop resume file (PDF/DOCX, max 10MB)'}">
+            </div>
+            <div class="a-field">
+              <label class="a-label">Accepted File Types (Comma separated)</label>
+              <input class="a-input" name="resumeAcceptedExtensions" value="${careers.resumeAcceptedExtensions || '.pdf,.doc,.docx'}" required>
+            </div>
+            <div class="a-field">
+              <label class="a-label">Max Allowed File Size (Megabytes)</label>
+              <input class="a-input" type="number" min="1" max="100" name="resumeMaxSizeMb" value="${careers.resumeMaxSizeMb || 10}" required>
+            </div>
+            <div class="a-field">
+              <label class="a-label">Resume Format Error Message (Use {types})</label>
+              <input class="a-input" name="resumeFormatErrorMessage" value="${careers.resumeFormatErrorMessage || 'Invalid file format. Please upload an accepted file type: {types}'}">
+            </div>
+            <div class="a-field">
+              <label class="a-label">Resume Size Limit Error Message (Use {size} and {max})</label>
+              <input class="a-input" name="resumeSizeErrorMessage" value="${careers.resumeSizeErrorMessage || 'File size ({size} MB) exceeds the maximum allowed limit of {max} MB.'}">
+            </div>
+            <div class="a-field span2">
+              <label class="a-checkbox-row">
+                <input type="checkbox" name="resumeRequired" ${careers.resumeRequired !== false ? 'checked' : ''}>
+                <span>Resume File Attachment is Required</span>
+              </label>
+            </div>
+
+            <div class="a-section-divider span2">Submit Button Configuration</div>
+            <div class="a-field">
+              <label class="a-label">Submit Button Text</label>
+              <input class="a-input" name="submitButtonText" value="${careers.submitButtonText || 'Submit Engineering Application'}" required>
+            </div>
+            <div class="a-field">
+              <label class="a-label">Submit Button Icon (FontAwesome class)</label>
+              <input class="a-input" name="submitButtonIcon" value="${careers.submitButtonIcon || 'fa-solid fa-briefcase'}">
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <!-- Card 4: Open Job Positions -->
+      <div class="a-cards-box" style="margin-top:20px;">
+        <div class="a-cards-box-header">
+          <div>
+            <h3>Open Engineering Positions (${positions.length})</h3>
+            <p>Manage job titles in the Position dropdown on the public application form</p>
+          </div>
+          <button type="button" class="a-btn a-btn-primary a-btn-sm" id="a-add-position-btn"><i class="fa-solid fa-plus"></i> Add Position</button>
+        </div>
+        <div class="a-table-wrap">
+          <table class="a-table">
+            <thead><tr><th>Reorder</th><th>Position Title</th><th>Actions</th></tr></thead>
+            <tbody>
+              ${positions.map((pos, idx) => `
+                <tr>
+                  <td style="width:90px;">
+                    <div class="a-reorder-group">
+                      <button class="a-btn-reorder btn-move-pos" data-dir="up" data-idx="${idx}" ${idx === 0 ? 'disabled' : ''}><i class="fa-solid fa-arrow-up"></i></button>
+                      <button class="a-btn-reorder btn-move-pos" data-dir="down" data-idx="${idx}" ${idx === positions.length - 1 ? 'disabled' : ''}><i class="fa-solid fa-arrow-down"></i></button>
+                    </div>
+                  </td>
+                  <td><strong>${pos}</strong></td>
+                  <td>
+                    <button class="a-btn a-btn-outline a-btn-sm btn-edit-pos" data-idx="${idx}"><i class="fa-solid fa-pen"></i> Edit</button>
+                    <button class="a-btn a-btn-danger a-btn-sm btn-del-pos" data-idx="${idx}" style="margin-left:6px;"><i class="fa-solid fa-trash"></i></button>
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Card 5: Experience Levels & Notice Periods -->
+      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 20px; margin-top:20px;">
+        <!-- Experience Levels -->
+        <div class="a-cards-box">
+          <div class="a-cards-box-header">
+            <div>
+              <h3>Experience Levels (${experienceLevels.length})</h3>
+              <p>Seniority options in application dropdown</p>
+            </div>
+            <button type="button" class="a-btn a-btn-primary a-btn-sm" id="a-add-exp-btn"><i class="fa-solid fa-plus"></i> Add Level</button>
+          </div>
+          <div class="a-table-wrap">
+            <table class="a-table">
+              <thead><tr><th>Reorder</th><th>Experience Bracket</th><th>Actions</th></tr></thead>
+              <tbody>
+                ${experienceLevels.map((exp, idx) => `
+                  <tr>
+                    <td style="width:90px;">
+                      <div class="a-reorder-group">
+                        <button class="a-btn-reorder btn-move-exp" data-dir="up" data-idx="${idx}" ${idx === 0 ? 'disabled' : ''}><i class="fa-solid fa-arrow-up"></i></button>
+                        <button class="a-btn-reorder btn-move-exp" data-dir="down" data-idx="${idx}" ${idx === experienceLevels.length - 1 ? 'disabled' : ''}><i class="fa-solid fa-arrow-down"></i></button>
+                      </div>
+                    </td>
+                    <td><strong>${exp}</strong></td>
+                    <td>
+                      <button class="a-btn a-btn-outline a-btn-sm btn-edit-exp" data-idx="${idx}"><i class="fa-solid fa-pen"></i></button>
+                      <button class="a-btn a-btn-danger a-btn-sm btn-del-exp" data-idx="${idx}" style="margin-left:4px;"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Notice Periods -->
+        <div class="a-cards-box">
+          <div class="a-cards-box-header">
+            <div>
+              <h3>Notice Period Options (${noticeOptions.length})</h3>
+              <p>Candidate availability window options</p>
+            </div>
+            <button type="button" class="a-btn a-btn-primary a-btn-sm" id="a-add-notice-btn"><i class="fa-solid fa-plus"></i> Add Option</button>
+          </div>
+          <div class="a-table-wrap">
+            <table class="a-table">
+              <thead><tr><th>Reorder</th><th>Availability Window</th><th>Actions</th></tr></thead>
+              <tbody>
+                ${noticeOptions.map((notc, idx) => `
+                  <tr>
+                    <td style="width:90px;">
+                      <div class="a-reorder-group">
+                        <button class="a-btn-reorder btn-move-notice" data-dir="up" data-idx="${idx}" ${idx === 0 ? 'disabled' : ''}><i class="fa-solid fa-arrow-up"></i></button>
+                        <button class="a-btn-reorder btn-move-notice" data-dir="down" data-idx="${idx}" ${idx === noticeOptions.length - 1 ? 'disabled' : ''}><i class="fa-solid fa-arrow-down"></i></button>
+                      </div>
+                    </td>
+                    <td><strong>${notc}</strong></td>
+                    <td>
+                      <button class="a-btn a-btn-outline a-btn-sm btn-edit-notice" data-idx="${idx}"><i class="fa-solid fa-pen"></i></button>
+                      <button class="a-btn a-btn-danger a-btn-sm btn-del-notice" data-idx="${idx}" style="margin-left:4px;"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 6: Application Confirmation & Success Message -->
+      <form id="a-careers-success-form" style="margin-top:20px;">
+        <div class="a-card">
+          <div class="a-card-header">
+            <div>
+              <h3>Submission Success Screen &amp; Candidate Messages</h3>
+              <p>Customize confirmation modal, candidate reference prefix, and next steps contact instructions</p>
+            </div>
+            <button type="submit" class="a-btn a-btn-primary a-btn-sm"><i class="fa-solid fa-floppy-disk"></i> Save Confirmation Settings</button>
+          </div>
+          <div class="a-form-grid">
+            <div class="a-field">
+              <label class="a-label">Success Screen Main Title</label>
+              <input class="a-input" name="successTitle" value="${careers.successTitle || 'Application Received!'}" required>
+            </div>
+            <div class="a-field">
+              <label class="a-label">Greeting Template (Use {name})</label>
+              <input class="a-input" name="successSubtitle" value="${careers.successSubtitle || 'Thank you, {name}.'}" required>
+            </div>
+            <div class="a-field span2">
+              <label class="a-label">Confirmation Body Message (Use {name} and {position})</label>
+              <textarea class="a-textarea" name="successMessage" rows="2" required>${careers.successMessage || ''}</textarea>
+            </div>
+            <div class="a-field">
+              <label class="a-label">Candidate Application ID Prefix</label>
+              <input class="a-input" name="candidateIdPrefix" value="${careers.candidateIdPrefix || 'ICON-CAREER-'}" required>
+            </div>
+            <div class="a-field">
+              <label class="a-label">Talent Acquisition Email</label>
+              <input class="a-input" name="careersEmail" value="${careers.careersEmail || 'careers@iconelectromatic.com'}" required>
+            </div>
+            <div class="a-field">
+              <label class="a-label">Next Steps Section Title</label>
+              <input class="a-input" name="nextStepsTitle" value="${careers.nextStepsTitle || 'Next Steps:'}" required>
+            </div>
+            <div class="a-field">
+              <label class="a-label">Submit Another Button Text</label>
+              <input class="a-input" name="resetButtonText" value="${careers.resetButtonText || 'Submit Another Application'}" required>
+            </div>
+            <div class="a-field span2">
+              <label class="a-label">Next Steps Guidance Text</label>
+              <textarea class="a-textarea" name="nextStepsText" rows="3" required>${careers.nextStepsText || ''}</textarea>
+            </div>
+            <div class="a-field span2">
+              <label class="a-label">Form Validation Error Message (Shown if required fields are missing)</label>
+              <input class="a-input" name="validationErrorMessage" value="${careers.validationErrorMessage || 'Please complete all required fields and attach your resume before submitting.'}">
+            </div>
+            <div class="a-field span2">
+              <label class="a-label">General Submission Error Message</label>
+              <input class="a-input" name="errorMessage" value="${careers.errorMessage || 'An error occurred while submitting your application. Please check your connection and try again.'}">
+            </div>
+          </div>
+        </div>
+      </form>
+    ` : ''}
   `;
 }
 
@@ -1645,7 +2191,9 @@ function bindContactTabEvents() {
   });
 
   const c = ContentService.getData('contact') || {};
+  const careers = c.careers || {};
 
+  // Presets Handlers
   document.getElementById('a-add-preset-btn')?.addEventListener('click', () => {
     openModal('Add Quick Requirement Preset', `
       <div class="a-field"><label class="a-label">Preset Message Text</label><input class="a-input" name="text" placeholder="e.g. Inquiring about High Power GaN Device and Beamforming IC." required /></div>
@@ -1691,6 +2239,308 @@ function bindContactTabEvents() {
       ContentService.saveData('contact', c);
       rerender();
       showToast('Presets reordered!', 'success');
+    });
+  });
+
+  // ─── Careers Forms & Action Handlers ───
+  function handleCareersFormSave(formId, processFormData) {
+    const form = document.getElementById(formId);
+    if (!form) return;
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const currentContact = ContentService.getData('contact') || {};
+      const currentCareers = currentContact.careers || {};
+      const fd = new FormData(form);
+      const updated = { ...currentCareers };
+      fd.forEach((v, k) => { updated[k] = v; });
+      if (processFormData) processFormData(form, updated);
+      currentContact.careers = updated;
+      if (updated.careersTitle) currentContact.careersTitle = updated.careersTitle;
+      if (updated.careersLead) currentContact.careersLead = updated.careersLead;
+      ContentService.saveData('contact', currentContact);
+      rerender();
+      showToast('Careers settings saved successfully!', 'success');
+    });
+  }
+
+  handleCareersFormSave('a-careers-hero-form', (form, updated) => {
+    updated.showHiringBadge = form.querySelector('[name="showHiringBadge"]')?.checked || false;
+  });
+
+  handleCareersFormSave('a-careers-intro-form');
+
+  handleCareersFormSave('a-careers-form-config', (form, updated) => {
+    updated.showFormBadge = form.querySelector('[name="showFormBadge"]')?.checked || false;
+    updated.nameRequired = form.querySelector('[name="nameRequired"]')?.checked || false;
+    updated.emailRequired = form.querySelector('[name="emailRequired"]')?.checked || false;
+    updated.positionRequired = form.querySelector('[name="positionRequired"]')?.checked || false;
+    updated.phoneRequired = form.querySelector('[name="phoneRequired"]')?.checked || false;
+    updated.cityRequired = form.querySelector('[name="cityRequired"]')?.checked || false;
+    updated.experienceRequired = form.querySelector('[name="experienceRequired"]')?.checked || false;
+    updated.organizationRequired = form.querySelector('[name="organizationRequired"]')?.checked || false;
+    updated.noticeRequired = form.querySelector('[name="noticeRequired"]')?.checked || false;
+    updated.skillsRequired = form.querySelector('[name="skillsRequired"]')?.checked || false;
+    updated.showLinkedin = form.querySelector('[name="showLinkedin"]')?.checked || false;
+    updated.linkedinRequired = form.querySelector('[name="linkedinRequired"]')?.checked || false;
+    updated.statementRequired = form.querySelector('[name="statementRequired"]')?.checked || false;
+    updated.resumeRequired = form.querySelector('[name="resumeRequired"]')?.checked || false;
+    updated.resumeMaxSizeMb = Number(updated.resumeMaxSizeMb) || 10;
+  });
+
+  handleCareersFormSave('a-careers-success-form');
+
+  // Benefits CRUD
+  document.getElementById('a-add-benefit-btn')?.addEventListener('click', () => {
+    openModal('Add Why Join Benefit Card', `
+      <div class="a-field"><label class="a-label">Benefit Title</label><input class="a-input" name="title" placeholder="e.g. Cutting-Edge mmWave Lab" required /></div>
+      <div class="a-field" style="margin-top:12px;"><label class="a-label">Icon Class (FontAwesome)</label><input class="a-input" name="icon" value="fa-solid fa-microchip" required /></div>
+      <div class="a-field" style="margin-top:12px;"><label class="a-label">Icon Color (Hex / CSS)</label><input class="a-input" name="iconColor" value="#3b82f6" /></div>
+      <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Benefit Description</label><textarea class="a-textarea" name="description" rows="3" required></textarea></div>
+    `, (data) => {
+      const currentContact = ContentService.getData('contact') || {};
+      const currentCareers = currentContact.careers || {};
+      const list = currentCareers.benefits || [];
+      list.push({ id: 'ben-' + Date.now(), ...data });
+      currentCareers.benefits = list;
+      currentContact.careers = currentCareers;
+      ContentService.saveData('contact', currentContact);
+    });
+  });
+
+  document.querySelectorAll('.btn-edit-benefit').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const currentContact = ContentService.getData('contact') || {};
+      const currentCareers = currentContact.careers || {};
+      const b = (currentCareers.benefits || [])[idx];
+      if (!b) return;
+
+      openModal('Edit Why Join Benefit Card', `
+        <div class="a-field"><label class="a-label">Benefit Title</label><input class="a-input" name="title" value="${b.title || ''}" required /></div>
+        <div class="a-field" style="margin-top:12px;"><label class="a-label">Icon Class (FontAwesome)</label><input class="a-input" name="icon" value="${b.icon || 'fa-solid fa-microchip'}" required /></div>
+        <div class="a-field" style="margin-top:12px;"><label class="a-label">Icon Color (Hex / CSS)</label><input class="a-input" name="iconColor" value="${b.iconColor || '#3b82f6'}" /></div>
+        <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Benefit Description</label><textarea class="a-textarea" name="description" rows="3" required>${b.description || ''}</textarea></div>
+      `, (data) => {
+        currentCareers.benefits[idx] = { ...b, ...data };
+        currentContact.careers = currentCareers;
+        ContentService.saveData('contact', currentContact);
+      });
+    });
+  });
+
+  document.querySelectorAll('.btn-del-benefit').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const currentContact = ContentService.getData('contact') || {};
+      const currentCareers = currentContact.careers || {};
+      if (confirm('Delete this benefit card?')) {
+        (currentCareers.benefits || []).splice(idx, 1);
+        currentContact.careers = currentCareers;
+        ContentService.saveData('contact', currentContact);
+        rerender();
+        showToast('Benefit card deleted.', '');
+      }
+    });
+  });
+
+  document.querySelectorAll('.btn-move-benefit').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const dir = btn.getAttribute('data-dir');
+      const targetIdx = dir === 'up' ? idx - 1 : idx + 1;
+      const currentContact = ContentService.getData('contact') || {};
+      const currentCareers = currentContact.careers || {};
+      currentCareers.benefits = reorderArray(currentCareers.benefits || [], idx, targetIdx);
+      currentContact.careers = currentCareers;
+      ContentService.saveData('contact', currentContact);
+      rerender();
+      showToast('Benefits reordered!', 'success');
+    });
+  });
+
+  // Positions CRUD
+  document.getElementById('a-add-position-btn')?.addEventListener('click', () => {
+    openModal('Add Open Engineering Position', `
+      <div class="a-field"><label class="a-label">Position Title</label><input class="a-input" name="title" placeholder="e.g. Senior mmWave Antenna Engineer" required /></div>
+    `, (data) => {
+      const currentContact = ContentService.getData('contact') || {};
+      const currentCareers = currentContact.careers || {};
+      const list = currentCareers.positions || [];
+      list.push(data.title.trim());
+      currentCareers.positions = list;
+      currentContact.careers = currentCareers;
+      ContentService.saveData('contact', currentContact);
+    });
+  });
+
+  document.querySelectorAll('.btn-edit-pos').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const currentContact = ContentService.getData('contact') || {};
+      const currentCareers = currentContact.careers || {};
+      const currentPos = (currentCareers.positions || [])[idx];
+
+      openModal('Edit Engineering Position', `
+        <div class="a-field"><label class="a-label">Position Title</label><input class="a-input" name="title" value="${currentPos || ''}" required /></div>
+      `, (data) => {
+        currentCareers.positions[idx] = data.title.trim();
+        currentContact.careers = currentCareers;
+        ContentService.saveData('contact', currentContact);
+      });
+    });
+  });
+
+  document.querySelectorAll('.btn-del-pos').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const currentContact = ContentService.getData('contact') || {};
+      const currentCareers = currentContact.careers || {};
+      if (confirm('Delete this position?')) {
+        (currentCareers.positions || []).splice(idx, 1);
+        currentContact.careers = currentCareers;
+        ContentService.saveData('contact', currentContact);
+        rerender();
+        showToast('Position deleted.', '');
+      }
+    });
+  });
+
+  document.querySelectorAll('.btn-move-pos').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const dir = btn.getAttribute('data-dir');
+      const targetIdx = dir === 'up' ? idx - 1 : idx + 1;
+      const currentContact = ContentService.getData('contact') || {};
+      const currentCareers = currentContact.careers || {};
+      currentCareers.positions = reorderArray(currentCareers.positions || [], idx, targetIdx);
+      currentContact.careers = currentCareers;
+      ContentService.saveData('contact', currentContact);
+      rerender();
+      showToast('Positions reordered!', 'success');
+    });
+  });
+
+  // Experience Levels CRUD
+  document.getElementById('a-add-exp-btn')?.addEventListener('click', () => {
+    openModal('Add Experience Level Option', `
+      <div class="a-field"><label class="a-label">Experience Bracket Text</label><input class="a-input" name="level" placeholder="e.g. 10+ Years (Chief Technical Officer)" required /></div>
+    `, (data) => {
+      const currentContact = ContentService.getData('contact') || {};
+      const currentCareers = currentContact.careers || {};
+      const list = currentCareers.experienceLevels || [];
+      list.push(data.level.trim());
+      currentCareers.experienceLevels = list;
+      currentContact.careers = currentCareers;
+      ContentService.saveData('contact', currentContact);
+    });
+  });
+
+  document.querySelectorAll('.btn-edit-exp').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const currentContact = ContentService.getData('contact') || {};
+      const currentCareers = currentContact.careers || {};
+      const currentExp = (currentCareers.experienceLevels || [])[idx];
+
+      openModal('Edit Experience Level Option', `
+        <div class="a-field"><label class="a-label">Experience Bracket Text</label><input class="a-input" name="level" value="${currentExp || ''}" required /></div>
+      `, (data) => {
+        currentCareers.experienceLevels[idx] = data.level.trim();
+        currentContact.careers = currentCareers;
+        ContentService.saveData('contact', currentContact);
+      });
+    });
+  });
+
+  document.querySelectorAll('.btn-del-exp').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const currentContact = ContentService.getData('contact') || {};
+      const currentCareers = currentContact.careers || {};
+      if (confirm('Delete this experience level?')) {
+        (currentCareers.experienceLevels || []).splice(idx, 1);
+        currentContact.careers = currentCareers;
+        ContentService.saveData('contact', currentContact);
+        rerender();
+        showToast('Experience level deleted.', '');
+      }
+    });
+  });
+
+  document.querySelectorAll('.btn-move-exp').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const dir = btn.getAttribute('data-dir');
+      const targetIdx = dir === 'up' ? idx - 1 : idx + 1;
+      const currentContact = ContentService.getData('contact') || {};
+      const currentCareers = currentContact.careers || {};
+      currentCareers.experienceLevels = reorderArray(currentCareers.experienceLevels || [], idx, targetIdx);
+      currentContact.careers = currentCareers;
+      ContentService.saveData('contact', currentContact);
+      rerender();
+      showToast('Experience levels reordered!', 'success');
+    });
+  });
+
+  // Notice Period CRUD
+  document.getElementById('a-add-notice-btn')?.addEventListener('click', () => {
+    openModal('Add Notice Period Option', `
+      <div class="a-field"><label class="a-label">Notice Period Text</label><input class="a-input" name="notice" placeholder="e.g. 45 Days" required /></div>
+    `, (data) => {
+      const currentContact = ContentService.getData('contact') || {};
+      const currentCareers = currentContact.careers || {};
+      const list = currentCareers.noticeOptions || [];
+      list.push(data.notice.trim());
+      currentCareers.noticeOptions = list;
+      currentContact.careers = currentCareers;
+      ContentService.saveData('contact', currentContact);
+    });
+  });
+
+  document.querySelectorAll('.btn-edit-notice').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const currentContact = ContentService.getData('contact') || {};
+      const currentCareers = currentContact.careers || {};
+      const currentNotc = (currentCareers.noticeOptions || [])[idx];
+
+      openModal('Edit Notice Period Option', `
+        <div class="a-field"><label class="a-label">Notice Period Text</label><input class="a-input" name="notice" value="${currentNotc || ''}" required /></div>
+      `, (data) => {
+        currentCareers.noticeOptions[idx] = data.notice.trim();
+        currentContact.careers = currentCareers;
+        ContentService.saveData('contact', currentContact);
+      });
+    });
+  });
+
+  document.querySelectorAll('.btn-del-notice').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const currentContact = ContentService.getData('contact') || {};
+      const currentCareers = currentContact.careers || {};
+      if (confirm('Delete this notice period option?')) {
+        (currentCareers.noticeOptions || []).splice(idx, 1);
+        currentContact.careers = currentCareers;
+        ContentService.saveData('contact', currentContact);
+        rerender();
+        showToast('Notice option deleted.', '');
+      }
+    });
+  });
+
+  document.querySelectorAll('.btn-move-notice').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const dir = btn.getAttribute('data-dir');
+      const targetIdx = dir === 'up' ? idx - 1 : idx + 1;
+      const currentContact = ContentService.getData('contact') || {};
+      const currentCareers = currentContact.careers || {};
+      currentCareers.noticeOptions = reorderArray(currentCareers.noticeOptions || [], idx, targetIdx);
+      currentContact.careers = currentCareers;
+      ContentService.saveData('contact', currentContact);
+      rerender();
+      showToast('Notice options reordered!', 'success');
     });
   });
 }
