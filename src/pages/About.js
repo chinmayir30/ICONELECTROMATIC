@@ -233,26 +233,150 @@ export function renderAboutPage() {
               </div>
             </div>
 
-            <!-- Milestone Cards Grid -->
-            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; margin-bottom: 30px;">
+          <div class="relay-timeline-wrapper">
+            <!-- 4-Node Timeline Connecting Rail with Passing Neon Wave -->
+            <div class="relay-timeline-rail-4">
+              <!-- High-Tech Rail Track with Neon Wave Plasma -->
+              <div class="relay-timeline-rail-track">
+                <div class="relay-timeline-rail-plasma"></div>
+                <div class="relay-timeline-rail-ticks"></div>
+                <!-- Dynamic Neon Wave Passing across the Timeline -->
+                <div class="relay-neon-wave-beam"></div>
+                <div class="relay-neon-wave-droplet"></div>
+              </div>
+              
+              <!-- Node 1: 2009 (RF & Microwave Genesis) -->
+              <div class="relay-timeline-node node-step-1" data-milestone="${milestones[0]?.year || '2009'}">
+                <div class="node-radar-wave-ring"></div>
+                <div class="node-radar-wave-ring delay"></div>
+                <div class="node-tech-reticle"></div>
+                <div class="timeline-node-circle cyan-node">
+                  <svg class="node-tech-svg" viewBox="0 0 32 32" fill="none" stroke="currentColor">
+                    <path d="M16 8v15M13 23h6M12 17h8M14 12h4" stroke-width="1.8" stroke-linecap="round"/>
+                    <circle cx="16" cy="7" r="2.5" fill="currentColor"/>
+                    <path d="M11 4.5A7 7 0 0 0 11 9.5" stroke-width="1.8" stroke-linecap="round" class="svg-wave-left-1"/>
+                    <path d="M7.5 2.5A12 12 0 0 0 7.5 11.5" stroke-width="1.6" stroke-linecap="round" class="svg-wave-left-2"/>
+                    <path d="M21 4.5A7 7 0 0 1 21 9.5" stroke-width="1.8" stroke-linecap="round" class="svg-wave-right-1"/>
+                    <path d="M24.5 2.5A12 12 0 0 1 24.5 11.5" stroke-width="1.6" stroke-linecap="round" class="svg-wave-right-2"/>
+                    <path d="M10 27l6-3 6 3" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="timeline-node-year-pill cyan-pill">
+                  <span class="node-year-text">${milestones[0]?.year || '2009'}</span>
+                  <span class="node-live-dot"></span>
+                </div>
+                <div class="timeline-stem-connector cyan-stem">
+                  <div class="stem-photon-drop"></div>
+                </div>
+              </div>
+
+              <!-- Node 2: 2018 (Singapore APAC Gateway) -->
+              <div class="relay-timeline-node node-step-2" data-milestone="${milestones[1]?.year || '2018'}">
+                <div class="node-radar-wave-ring red-ring"></div>
+                <div class="node-radar-wave-ring red-ring delay"></div>
+                <div class="node-tech-reticle"></div>
+                <div class="timeline-node-circle red-node">
+                  <svg class="node-tech-svg" viewBox="0 0 32 32" fill="none" stroke="currentColor">
+                    <circle cx="16" cy="16" r="11" stroke-width="1.8"/>
+                    <ellipse cx="16" cy="16" rx="5" ry="11" stroke-width="1.4"/>
+                    <path d="M5.5 16h21M7.5 10.5h17M7.5 21.5h17" stroke-width="1.2" stroke-linecap="round"/>
+                    <ellipse cx="16" cy="16" rx="14" ry="4.5" stroke-width="1.6" stroke-dasharray="3 2" transform="rotate(-25 16 16)" class="svg-orbit-ring"/>
+                    <circle cx="26" cy="11" r="2" fill="currentColor"/>
+                    <circle cx="16" cy="16" r="2.5" fill="currentColor"/>
+                  </svg>
+                </div>
+                <div class="timeline-node-year-pill red-pill">
+                  <span class="node-year-text">${milestones[1]?.year || '2018'}</span>
+                  <span class="node-live-dot"></span>
+                </div>
+                <div class="timeline-stem-connector red-stem">
+                  <div class="stem-photon-drop"></div>
+                </div>
+              </div>
+
+              <!-- Node 3: May 2020 (USA Transatlantic Corridor) -->
+              <div class="relay-timeline-node node-step-3" data-milestone="${milestones[2]?.year || 'May 2020'}">
+                <div class="node-radar-wave-ring navy-ring"></div>
+                <div class="node-radar-wave-ring navy-ring delay"></div>
+                <div class="node-tech-reticle"></div>
+                <div class="timeline-node-circle navy-node">
+                  <svg class="node-tech-svg" viewBox="0 0 32 32" fill="none" stroke="currentColor">
+                    <circle cx="16" cy="16" r="11.5" stroke-width="1.2" stroke-dasharray="2 2" opacity="0.6"/>
+                    <path d="M25 7l-6 13-3-3-5 3 2-6-3-3 15-4z" stroke-width="1.8" stroke-linejoin="round" fill="rgba(59,130,246,0.25)"/>
+                    <path d="M10 23l-4 4M13 22l-5 5M12 25l-4 4" stroke-width="1.5" stroke-linecap="round" class="svg-thrust-trail"/>
+                    <path d="M16 2v3M16 27v3M2 16h3M27 16h3" stroke-width="1.5" stroke-linecap="round"/>
+                  </svg>
+                </div>
+                <div class="timeline-node-year-pill navy-pill">
+                  <span class="node-year-text">${milestones[2]?.year || 'May 2020'}</span>
+                  <span class="node-live-dot"></span>
+                </div>
+                <div class="timeline-stem-connector navy-stem">
+                  <div class="stem-photon-drop"></div>
+                </div>
+              </div>
+
+              <!-- Node 4: Nov 2020 (India Incorporation & Enterprise Crest) -->
+              <div class="relay-timeline-node node-step-4" data-milestone="${milestones[3]?.year || 'Nov 2020'}">
+                <div class="node-radar-wave-ring amber-ring"></div>
+                <div class="node-radar-wave-ring amber-ring delay"></div>
+                <div class="node-tech-reticle"></div>
+                <div class="timeline-node-circle amber-node">
+                  <svg class="node-tech-svg" viewBox="0 0 32 32" fill="none" stroke="currentColor">
+                    <path d="M16 3l10 4v8c0 7-5 12-10 14C11 27 6 22 6 15V7l10-4z" stroke-width="1.8" stroke-linejoin="round" fill="rgba(245,158,11,0.2)"/>
+                    <path d="M16 9l2 4.5 4.5 1-3.5 3 1 4.5-4-2.5-4 2.5 1-4.5-3.5-3 4.5-1L16 9z" fill="currentColor" stroke-width="1" stroke-linejoin="round"/>
+                    <path d="M10 29h12" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                </div>
+                <div class="timeline-node-year-pill amber-pill">
+                  <span class="node-year-text">${milestones[3]?.year || 'Nov 2020'}</span>
+                  <span class="node-live-dot"></span>
+                </div>
+                <div class="timeline-stem-connector amber-stem">
+                  <div class="stem-photon-drop"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 4 Chronological Milestone Cards -->
+            <div class="journey-grid-four">
               ${milestones.map((m, idx) => {
                 const img = ContentService.resolveImg(m.image);
+                const color = m.color || (idx === 0 ? 'cyan' : idx === 1 ? 'red' : idx === 2 ? 'navy' : 'amber');
+                const archClass = color === 'red' ? 'red' : color === 'navy' ? 'navy-flag' : color === 'amber' ? 'amber' : 'blue';
+                const cardAccentClass = color === 'red' ? 'card-accent-red red-glow' : color === 'navy' ? 'card-accent-navy blue-glow' : color === 'amber' ? 'card-accent-amber' : 'blue-glow';
+                const borderTopColor = color === 'red' ? 'var(--logo-red)' : color === 'navy' ? '#1e40af' : color === 'amber' ? '#d97706' : 'var(--logo-blue)';
+                const dotGlowClass = color === 'red' ? 'red' : color === 'navy' ? 'navy' : color === 'amber' ? 'amber' : '';
+
                 return `
-                  <div class="journey-milestone-card about-interactive-card about-animate-fadeup" style="border-top: 3.5px solid ${m.color === 'red' ? '#e11d48' : m.color === 'cyan' ? '#06b6d4' : m.color === 'amber' ? '#d97706' : '#2563eb'}; background:#080D1A; padding:22px; border-radius:14px;">
-                    <div style="display:inline-block; font-size:0.75rem; font-weight:700; color:#fff; background:rgba(255,255,255,0.08); padding:3px 10px; border-radius:12px; margin-bottom:10px;">
-                      ${m.year}
+                  <div class="journey-milestone-card ${cardAccentClass} about-interactive-card about-animate-fadeup" style="border-top:3.5px solid ${borderTopColor};">
+                    <div class="journey-arch-badge-wrapper">
+                      <div class="journey-arch-badge ${archClass}">
+                        <span class="badge-dot-glow ${dotGlowClass}"></span>${m.year}
+                      </div>
                     </div>
-                    <h3 style="font-size:1.15rem; font-weight:700; color:#fff; margin-bottom:12px;">${m.title}</h3>
+                    <h3 class="journey-milestone-headline">
+                      ${m.title}
+                    </h3>
                     ${img ? `
-                      <div class="journey-photo-frame" style="height:140px; overflow:hidden; border-radius:8px; margin-bottom:12px;">
-                        <img src="${img}" alt="${m.title}" style="width:100%; height:100%; object-fit:cover;" loading="lazy" />
+                      <div class="journey-photo-frame">
+                        <img src="${img}" alt="${m.title}" loading="lazy" />
+                        ${m.caption ? `
+                          <div class="journey-photo-caption">
+                            <i class="${idx === 0 ? 'fa-solid fa-satellite-dish' : idx === 1 ? 'fa-solid fa-earth-asia' : idx === 2 ? 'fa-solid fa-plane-up' : 'fa-solid fa-shield-halved'}" style="margin-right:6px; color:${color === 'red' ? '#FB7185' : color === 'navy' ? '#60A5FA' : color === 'amber' ? '#FBBF24' : '#00E5FF'};"></i>
+                            <span>${m.caption}</span>
+                          </div>
+                        ` : ''}
                       </div>
                     ` : ''}
-                    <p style="font-size:0.86rem; color:var(--text-gray-300); line-height:1.6; margin:0;">${m.desc}</p>
+                    <p class="journey-milestone-desc">
+                      ${m.desc}
+                    </p>
                   </div>
                 `;
               }).join('')}
             </div>
+          </div>
 
             <!-- Central Junction Connector to Strategic Sectors -->
             <div class="timeline-central-junction about-animate-fadeup">
