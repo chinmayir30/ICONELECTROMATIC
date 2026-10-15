@@ -60,15 +60,12 @@ export function renderHomePage() {
 
           <!-- Integrated Stats -->
           <div class="hero-inline-stats" style="margin-top: 60px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.2); display: flex; justify-content: space-between; align-items: center; max-width: 760px; gap: 20px;">
-            ${statsList.map(st => {
-              const isDarkBlue = (st.label || '').includes('PRODUCTS AVAILABLE') || (st.label || '').includes('COMPONENT LINES');
-              return `
-                <div class="hero-stat-item ${isDarkBlue ? 'stat-dark-blue' : ''}" style="flex-direction: column; align-items: flex-start; gap: 4px;">
-                  <span class="hero-stat-number" style="color: ${isDarkBlue ? '#2563eb' : 'var(--logo-red)'}; ${isDarkBlue ? 'text-shadow: 0 0 20px rgba(37,99,235,0.45);' : ''}">${st.value}</span>
-                  <span class="hero-stat-label" style="color: ${isDarkBlue ? '#60a5fa' : '#cbd5e1'}; font-weight: 700;">${st.label}</span>
-                </div>
-              `;
-            }).join('')}
+            ${statsList.map(st => `
+              <div class="hero-stat-item" style="flex-direction: column; align-items: flex-start; gap: 4px;">
+                <span class="hero-stat-number" style="color: var(--logo-red);">${st.value}</span>
+                <span class="hero-stat-label" style="color: #cbd5e1;">${st.label}</span>
+              </div>
+            `).join('')}
           </div>
         </div>
       </div>
