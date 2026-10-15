@@ -5,8 +5,83 @@
  * demonstration videos, application notes, and official technical website links.
  */
 import { CATALOG } from '../data/catalogData.js';
-import { OEM_BLOGS, getBlogDataForOem, getAllArticles, getAllVideos, getOemContentCount } from '../data/blogData.js';
+import { OEM_BLOGS } from '../data/blogData.js';
 import { ContentService } from '../data/ContentService.js';
+
+function getBlogCmsData() {
+  const cms = ContentService.getData('blogs');
+  if (cms && Array.isArray(cms.oemBlogs)) {
+    return cms;
+  }
+  return {
+    heroTitle: 'OEM Technical News, Video Demos & Insights',
+    heroSubtitle: 'Direct technical bulletins, video demonstrations, application whitepapers, and product release updates from ICON Electromatic\'s 15 global manufacturing partners.',
+    trustBadge1: 'Application Whitepapers & Notes',
+    trustBadge2: 'Video Demos & Technical Webinars',
+    trustBadge3: 'Direct Manufacturer Bulletins',
+    oemBlogs: (OEM_BLOGS || [])
+  };
+}
+
+function getActiveOemBlogs() {
+  const data = getBlogCmsData();
+  return (data.oemBlogs || []).filter(b => b.visible !== false);
+}
+
+function getActiveBlogDataForOem(oemId) {
+  const cms = getBlogCmsData();
+  const oemBlogs = cms.oemBlogs || [];
+  const oem = CATALOG.find(o => o.id === oemId);
+  if (!oem) return null;
+  const blog = oemBlogs.find(b => b.oemId === oemId) || {
+    oemId,
+    officialWebsite: oem.website || '#',
+    portalName: `${oem.name} Engineering Resource Hub`,
+    headline: oem.tagline || oem.specialty,
+    articles: [],
+    videos: [],
+    whitepapers: [],
+    officialLinks: []
+  };
+  return { oem, blog };
+}
+
+function getAllActiveArticles() {
+  const oemBlogs = getActiveOemBlogs();
+  const list = [];
+  oemBlogs.forEach(b => {
+    const oem = CATALOG.find(o => o.id === b.oemId);
+    if (!oem) return;
+    (b.articles || []).filter(a => a.visible !== false).forEach(art => {
+      list.push({ ...art, oemName: oem.name, oemShort: oem.shortName, oemId: oem.id, oemAccent: oem.accentColor, oemLogo: oem.logoSvg });
+    });
+  });
+  return list;
+}
+
+function getAllActiveVideos() {
+  const oemBlogs = getActiveOemBlogs();
+  const list = [];
+  oemBlogs.forEach(b => {
+    const oem = CATALOG.find(o => o.id === b.oemId);
+    if (!oem) return;
+    (b.videos || []).filter(v => v.visible !== false).forEach(vid => {
+      list.push({ ...vid, oemName: oem.name, oemShort: oem.shortName, oemId: oem.id, oemAccent: oem.accentColor, oemLogo: oem.logoSvg });
+    });
+  });
+  return list;
+}
+
+function getActiveOemContentCount(oemId) {
+  const cms = getBlogCmsData();
+  const blog = (cms.oemBlogs || []).find(b => b.oemId === oemId);
+  if (!blog) return { articles: 0, videos: 0, whitepapers: 0, links: 1, total: 1 };
+  const articles = (blog.articles || []).filter(a => a.visible !== false).length;
+  const videos = (blog.videos || []).filter(v => v.visible !== false).length;
+  const whitepapers = (blog.whitepapers || []).filter(w => w.visible !== false).length;
+  const links = (blog.officialLinks || []).length;
+  return { articles, videos, whitepapers, links, total: articles + videos + whitepapers + links };
+}
 
 export function renderBlogsPage() {
   const hash = window.location.hash || '';
@@ -16,7 +91,7 @@ export function renderBlogsPage() {
   const activeTab = searchParams.get('tab') || 'all';
 
   if (selectedOemId) {
-    const oemData = getBlogDataForOem(selectedOemId);
+    const oemData = getActiveBlogDataForOem(selectedOemId);
     if (oemData) {
       return renderSingleOemBlogView(oemData.oem, oemData.blog, activeTab);
     }
@@ -26,8 +101,9 @@ export function renderBlogsPage() {
 }
 
 function renderAllOemsBlogView() {
-  const allArticles = getAllArticles();
-  const allVideos = getAllVideos();
+  const cmsData = getBlogCmsData();
+  const allArticles = getAllActiveArticles();
+  const allVideos = getAllActiveVideos();
 
   return `
     <div class="blogs-page-wrap" style="min-height:100vh;">
@@ -44,11 +120,10 @@ function renderAllOemsBlogView() {
           <!-- Page Header -->
           <div class="page-header-unified blogs-hero" style="margin-bottom:0;">
             <h1 class="page-title-unified">
-              OEM Technical News, Video Demos &amp; Insights
+              ${cmsData.heroTitle || 'OEM Technical News, Video Demos &amp; Insights'}
             </h1>
             <p class="page-lead-unified">
-              Direct technical bulletins, video demonstrations, application whitepapers, and product release updates 
-              from ICON Electromatic's 15 global manufacturing partners.
+              ${cmsData.heroSubtitle || 'Direct technical bulletins, video demonstrations, application whitepapers, and product release updates from ICON Electromatic\'s 15 global manufacturing partners.'}
             </p>
           </div>
 
@@ -56,15 +131,15 @@ function renderAllOemsBlogView() {
           <div class="services-trust-strip blogs-trust-strip" style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:24px;margin-bottom:0;padding-bottom:0;border-bottom:none;">
             <div style="background:rgba(225,29,72,0.08);border:1px solid rgba(225,29,72,0.25);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#FDA4AF;display:flex;align-items:center;gap:8px;">
               <i class="fa-solid fa-file-waveform" style="color:var(--logo-red-light);"></i>
-              <span>Application Whitepapers &amp; Notes</span>
+              <span>${cmsData.trustBadge1 || 'Application Whitepapers &amp; Notes'}</span>
             </div>
             <div style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#FCD34D;display:flex;align-items:center;gap:8px;">
               <i class="fa-solid fa-circle-play" style="color:#F59E0B;"></i>
-              <span>Video Demos &amp; Technical Webinars</span>
+              <span>${cmsData.trustBadge2 || 'Video Demos &amp; Technical Webinars'}</span>
             </div>
             <div style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.25);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#6EE7B7;display:flex;align-items:center;gap:8px;">
               <i class="fa-solid fa-newspaper" style="color:#10B981;"></i>
-              <span>Direct Manufacturer Bulletins</span>
+              <span>${cmsData.trustBadge3 || 'Direct Manufacturer Bulletins'}</span>
             </div>
           </div>
         </div>
@@ -101,7 +176,7 @@ function renderAllOemsBlogView() {
         <!-- 15 OEMs Grid -->
         <div class="blogs-oem-grid">
           ${CATALOG.map(oem => {
-            const counts = getOemContentCount(oem.id);
+            const counts = getActiveOemContentCount(oem.id);
             return `
               <div class="blogs-oem-card" data-oem-id="${oem.id}" style="--oem-accent:${oem.accentColor};--oem-glow:${oem.glowColor};">
                 <div class="blogs-oem-card-top-row">
@@ -270,9 +345,9 @@ function renderAllOemsBlogView() {
 }
 
 function renderSingleOemBlogView(oem, blog, activeTab) {
-  const articles = blog.articles || [];
-  const videos = blog.videos || [];
-  const whitepapers = blog.whitepapers || [];
+  const articles = (blog.articles || []).filter(a => a.visible !== false);
+  const videos = (blog.videos || []).filter(v => v.visible !== false);
+  const whitepapers = (blog.whitepapers || []).filter(w => w.visible !== false);
   const totalContent = articles.length + videos.length + whitepapers.length;
 
   return `
@@ -611,7 +686,7 @@ export function initBlogsPage() {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
       const artId = btn.getAttribute('data-art-id');
-      const allArts = getAllArticles();
+      const allArts = getAllActiveArticles();
       const target = allArts.find(a => a.id === artId);
       if (target) {
         openArticleModal(target);
@@ -663,7 +738,7 @@ export function initBlogsPage() {
             Key Engineering Takeaways:
           </strong>
           <div style="display:flex;flex-wrap:wrap;gap:8px;">
-            ${video.topics.map(tp => `<span class="blog-topic-pill" style="font-size:0.78rem;padding:4px 10px;"><i class="fa-solid fa-check" style="margin-right:4px;"></i>${tp}</span>`).join('')}
+            ${(video.topics || []).map(tp => `<span class="blog-topic-pill" style="font-size:0.78rem;padding:4px 10px;"><i class="fa-solid fa-check" style="margin-right:4px;"></i>${tp}</span>`).join('')}
           </div>
         </div>
       `;
@@ -675,7 +750,7 @@ export function initBlogsPage() {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
       const vidId = btn.getAttribute('data-vid-id');
-      const allVids = getAllVideos();
+      const allVids = getAllActiveVideos();
       const target = allVids.find(v => v.id === vidId);
       if (target) {
         openVideoModal(target);

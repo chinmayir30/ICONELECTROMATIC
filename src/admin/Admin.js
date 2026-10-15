@@ -1,6 +1,7 @@
 import './admin.css';
 import { ContentService } from '../data/ContentService.js';
 import { ImageStorage } from '../data/ImageStorage.js';
+import { CATALOG } from '../data/catalogData.js';
 
 // ─── State ─────────────────────────────────────────────────────────────────
 let isAuthenticated = localStorage.getItem('admin_auth') === 'true';
@@ -3577,117 +3578,1083 @@ function bindPartnersTabEvents() {
   });
 }
 
-// ─── BLOGS TAB ───────────────────────────────────────────────────────────────
-function renderBlogsTab() {
-  const blogs = ContentService.getData('blogs') || [];
+// ─── BLOGS & OEM TECH HUBS TAB ──────────────────────────────────────────────
+const expandedBlogOemIds = new Set();
+let blogSearchQuery = '';
 
-  const rows = blogs.map((b, idx) => {
-    const img = ImageStorage.resolveImageUrl(b.coverImg);
-    return `
-      <tr>
-        <td style="width:90px;">
-          <div class="a-reorder-group">
-            <button class="a-btn-reorder btn-move-blog" data-dir="up" data-idx="${idx}" ${idx === 0 ? 'disabled' : ''}><i class="fa-solid fa-arrow-up"></i></button>
-            <button class="a-btn-reorder btn-move-blog" data-dir="down" data-idx="${idx}" ${idx === blogs.length - 1 ? 'disabled' : ''}><i class="fa-solid fa-arrow-down"></i></button>
+function getCmsBlogsPayload() {
+  const data = ContentService.getData('blogs');
+  if (data && Array.isArray(data.oemBlogs)) {
+    return data;
+  }
+  return {
+    heroTitle: 'OEM Technical News, Video Demos & Insights',
+    heroSubtitle: 'Direct technical bulletins, video demonstrations, application whitepapers, and product release updates from ICON Electromatic\'s 15 global manufacturing partners.',
+    trustBadge1: 'Application Whitepapers & Notes',
+    trustBadge2: 'Video Demos & Technical Webinars',
+    trustBadge3: 'Direct Manufacturer Bulletins',
+    oemBlogs: []
+  };
+}
+
+function renderBlogsTab() {
+  const cmsBlogs = getCmsBlogsPayload();
+  const oemBlogs = cmsBlogs.oemBlogs || [];
+
+  // Ensure all 15 OEMs from CATALOG exist in oemBlogs
+  CATALOG.forEach(oem => {
+    let b = oemBlogs.find(x => x.oemId === oem.id);
+    if (!b) {
+      b = {
+        oemId: oem.id,
+        officialWebsite: oem.website || '',
+        portalName: `${oem.name} Technology Hub`,
+        headline: oem.tagline || oem.description || '',
+        visible: true,
+        articles: [],
+        videos: [],
+        whitepapers: [],
+        officialLinks: []
+      };
+      oemBlogs.push(b);
+    }
+  });
+
+  const totalOems = CATALOG.length;
+  let totalArticles = 0;
+  let totalVideos = 0;
+  let totalWhitepapers = 0;
+
+  oemBlogs.forEach(b => {
+    totalArticles += (b.articles || []).length;
+    totalVideos += (b.videos || []).length;
+    totalWhitepapers += (b.whitepapers || []).length;
+  });
+
+  const q = (blogSearchQuery || '').trim().toLowerCase();
+
+  const oemCardsHtml = CATALOG.map(oem => {
+    const b = oemBlogs.find(x => x.oemId === oem.id) || {
+      oemId: oem.id,
+      officialWebsite: oem.website || '',
+      portalName: `${oem.name} Technology Hub`,
+      headline: '',
+      visible: true,
+      articles: [],
+      videos: [],
+      whitepapers: [],
+      officialLinks: []
+    };
+
+    const articles = b.articles || [];
+    const videos = b.videos || [];
+    const whitepapers = b.whitepapers || [];
+    const links = b.officialLinks || [];
+    const totalUpdates = articles.length + videos.length + whitepapers.length + links.length;
+
+    // Search filter
+    if (q) {
+      const matchOem = (oem.name || '').toLowerCase().includes(q) ||
+                       (oem.shortName || '').toLowerCase().includes(q) ||
+                       (b.portalName || '').toLowerCase().includes(q) ||
+                       (b.headline || '').toLowerCase().includes(q);
+      const matchArt = articles.some(a => (a.title || '').toLowerCase().includes(q) || (a.summary || '').toLowerCase().includes(q) || (a.category || '').toLowerCase().includes(q));
+      const matchVid = videos.some(v => (v.title || '').toLowerCase().includes(q) || (v.speaker || '').toLowerCase().includes(q) || (v.summary || '').toLowerCase().includes(q));
+      const matchWp = whitepapers.some(w => (w.title || '').toLowerCase().includes(q) || (w.author || '').toLowerCase().includes(q) || (w.summary || '').toLowerCase().includes(q));
+      if (!matchOem && !matchArt && !matchVid && !matchWp) {
+        return '';
+      }
+    }
+
+    const isExpanded = expandedBlogOemIds.has(oem.id) || (q.length > 0);
+    const isHidden = b.visible === false;
+    const resolvedLogo = ImageStorage.resolveImageUrl(oem.logoImg);
+
+    let oemHubPanelHtml = '';
+    if (isExpanded) {
+      // 1. Articles Rows
+      const articleRows = articles.map((art, aIdx) => {
+        const artImg = ImageStorage.resolveImageUrl(art.image);
+        const isArtHidden = art.visible === false;
+        return `
+          <tr class="${isArtHidden ? 'a-row-hidden' : ''}">
+            <td style="width: 70px;">
+              <div class="a-reorder-group">
+                <button type="button" class="a-btn-reorder btn-move-oem-art" data-oem-id="${oem.id}" data-idx="${aIdx}" data-dir="up" ${aIdx === 0 ? 'disabled' : ''} title="Move Up"><i class="fa-solid fa-arrow-up"></i></button>
+                <button type="button" class="a-btn-reorder btn-move-oem-art" data-oem-id="${oem.id}" data-idx="${aIdx}" data-dir="down" ${aIdx === articles.length - 1 ? 'disabled' : ''} title="Move Down"><i class="fa-solid fa-arrow-down"></i></button>
+              </div>
+            </td>
+            <td style="width: 60px;">
+              <div class="a-prod-thumb-box">
+                ${artImg ? `<img src="${artImg}" alt="${art.title}" />` : '<i class="fa-solid fa-newspaper" style="color:#64748b;"></i>'}
+              </div>
+            </td>
+            <td>
+              <div class="a-prod-name-box">
+                <strong>${art.title || 'Untitled Article'}</strong>
+                <span>${art.date || 'No date'} · ${art.readTime || '5 min'}</span>
+              </div>
+            </td>
+            <td><span class="a-badge a-badge-blue">${art.category || 'Technical News'}</span></td>
+            <td>
+              <div class="a-prod-text-snippet" title="${art.summary || ''}">
+                ${art.summary || '<span style="color:#94a3b8;font-style:italic;">No excerpt</span>'}
+              </div>
+              <div style="margin-top:4px;display:flex;gap:4px;flex-wrap:wrap;">
+                ${(art.tags || []).slice(0, 3).map(t => `<span style="font-size:0.68rem;background:#f1f5f9;color:#475569;padding:1px 6px;border-radius:4px;">#${t}</span>`).join('')}
+              </div>
+            </td>
+            <td>
+              <button type="button" class="a-btn a-btn-sm btn-toggle-art-vis" data-oem-id="${oem.id}" data-idx="${aIdx}" style="${isArtHidden ? 'opacity:0.6;background:#f1f5f9;color:#64748b;' : 'background:#ecfdf5;color:#059669;border-color:#a7f3d0;'}">
+                <i class="fa-solid ${isArtHidden ? 'fa-eye-slash' : 'fa-eye'}"></i> ${isArtHidden ? 'Hidden' : 'Visible'}
+              </button>
+            </td>
+            <td style="white-space:nowrap;">
+              <button type="button" class="a-btn a-btn-outline a-btn-sm btn-edit-oem-art" data-oem-id="${oem.id}" data-idx="${aIdx}"><i class="fa-solid fa-pen"></i> Edit</button>
+              <button type="button" class="a-btn a-btn-danger a-btn-sm btn-del-oem-art" data-oem-id="${oem.id}" data-idx="${aIdx}" style="margin-left:4px;"><i class="fa-solid fa-trash"></i></button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      // 2. Videos Rows
+      const videoRows = videos.map((vid, vIdx) => {
+        const vidThumb = ImageStorage.resolveImageUrl(vid.thumbnail);
+        const isVidHidden = vid.visible === false;
+        return `
+          <tr class="${isVidHidden ? 'a-row-hidden' : ''}">
+            <td style="width: 70px;">
+              <div class="a-reorder-group">
+                <button type="button" class="a-btn-reorder btn-move-oem-vid" data-oem-id="${oem.id}" data-idx="${vIdx}" data-dir="up" ${vIdx === 0 ? 'disabled' : ''} title="Move Up"><i class="fa-solid fa-arrow-up"></i></button>
+                <button type="button" class="a-btn-reorder btn-move-oem-vid" data-oem-id="${oem.id}" data-idx="${vIdx}" data-dir="down" ${vIdx === videos.length - 1 ? 'disabled' : ''} title="Move Down"><i class="fa-solid fa-arrow-down"></i></button>
+              </div>
+            </td>
+            <td style="width: 60px;">
+              <div class="a-prod-thumb-box" style="position:relative;">
+                ${vidThumb ? `<img src="${vidThumb}" alt="${vid.title}" />` : '<i class="fa-solid fa-video" style="color:#64748b;"></i>'}
+                <i class="fa-solid fa-play" style="position:absolute;font-size:0.6rem;color:#fff;background:rgba(225,29,72,0.85);padding:3px;border-radius:50%;"></i>
+              </div>
+            </td>
+            <td>
+              <div class="a-prod-name-box">
+                <strong>${vid.title || 'Untitled Video'}</strong>
+                <span><i class="fa-solid fa-user-tie"></i> ${vid.speaker || 'Presenter'} · ${vid.duration || '0:00'}</span>
+              </div>
+            </td>
+            <td>
+              <div class="a-prod-text-snippet" title="${vid.summary || ''}">
+                ${vid.summary || '<span style="color:#94a3b8;font-style:italic;">No description</span>'}
+              </div>
+              <div style="margin-top:4px;display:flex;gap:4px;flex-wrap:wrap;">
+                ${(vid.topics || []).slice(0, 3).map(tp => `<span style="font-size:0.68rem;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:4px;">${tp}</span>`).join('')}
+              </div>
+            </td>
+            <td>
+              <button type="button" class="a-btn a-btn-sm btn-toggle-vid-vis" data-oem-id="${oem.id}" data-idx="${vIdx}" style="${isVidHidden ? 'opacity:0.6;background:#f1f5f9;color:#64748b;' : 'background:#ecfdf5;color:#059669;border-color:#a7f3d0;'}">
+                <i class="fa-solid ${isVidHidden ? 'fa-eye-slash' : 'fa-eye'}"></i> ${isVidHidden ? 'Hidden' : 'Visible'}
+              </button>
+            </td>
+            <td style="white-space:nowrap;">
+              <button type="button" class="a-btn a-btn-outline a-btn-sm btn-edit-oem-vid" data-oem-id="${oem.id}" data-idx="${vIdx}"><i class="fa-solid fa-pen"></i> Edit</button>
+              <button type="button" class="a-btn a-btn-danger a-btn-sm btn-del-oem-vid" data-oem-id="${oem.id}" data-idx="${vIdx}" style="margin-left:4px;"><i class="fa-solid fa-trash"></i></button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      // 3. Whitepapers Rows
+      const whitepaperRows = whitepapers.map((wp, wIdx) => {
+        const isWpHidden = wp.visible === false;
+        return `
+          <tr class="${isWpHidden ? 'a-row-hidden' : ''}">
+            <td style="width: 70px;">
+              <div class="a-reorder-group">
+                <button type="button" class="a-btn-reorder btn-move-oem-wp" data-oem-id="${oem.id}" data-idx="${wIdx}" data-dir="up" ${wIdx === 0 ? 'disabled' : ''} title="Move Up"><i class="fa-solid fa-arrow-up"></i></button>
+                <button type="button" class="a-btn-reorder btn-move-oem-wp" data-oem-id="${oem.id}" data-idx="${wIdx}" data-dir="down" ${wIdx === whitepapers.length - 1 ? 'disabled' : ''} title="Move Down"><i class="fa-solid fa-arrow-down"></i></button>
+              </div>
+            </td>
+            <td>
+              <div class="a-prod-name-box">
+                <strong>${wp.title || 'Untitled Whitepaper'}</strong>
+                <span><i class="fa-solid fa-building"></i> ${wp.author || oem.name} · ${wp.date || ''}</span>
+              </div>
+            </td>
+            <td>
+              <span class="a-badge" style="background:#fee2e2;color:#991b1b;border:1px solid #fecaca;"><i class="fa-regular fa-file-pdf"></i> ${wp.pages || 'PDF'}</span>
+              <span class="a-badge a-badge-blue" style="margin-left:4px;">${wp.frequencyBand || 'Broadband'}</span>
+            </td>
+            <td>
+              <div class="a-prod-text-snippet" title="${wp.summary || ''}">
+                ${wp.summary || '<span style="color:#94a3b8;font-style:italic;">No summary</span>'}
+              </div>
+              <div style="font-size:0.72rem;color:var(--a-muted);margin-top:2px;">
+                ${(wp.keyFindings || []).length} key findings documented
+              </div>
+            </td>
+            <td>
+              <button type="button" class="a-btn a-btn-sm btn-toggle-wp-vis" data-oem-id="${oem.id}" data-idx="${wIdx}" style="${isWpHidden ? 'opacity:0.6;background:#f1f5f9;color:#64748b;' : 'background:#ecfdf5;color:#059669;border-color:#a7f3d0;'}">
+                <i class="fa-solid ${isWpHidden ? 'fa-eye-slash' : 'fa-eye'}"></i> ${isWpHidden ? 'Hidden' : 'Visible'}
+              </button>
+            </td>
+            <td style="white-space:nowrap;">
+              <button type="button" class="a-btn a-btn-outline a-btn-sm btn-edit-oem-wp" data-oem-id="${oem.id}" data-idx="${wIdx}"><i class="fa-solid fa-pen"></i> Edit</button>
+              <button type="button" class="a-btn a-btn-danger a-btn-sm btn-del-oem-wp" data-oem-id="${oem.id}" data-idx="${wIdx}" style="margin-left:4px;"><i class="fa-solid fa-trash"></i></button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      // 4. Official Links Rows
+      const linkRows = links.map((l, lIdx) => {
+        return `
+          <tr>
+            <td style="width: 70px;">
+              <div class="a-reorder-group">
+                <button type="button" class="a-btn-reorder btn-move-oem-link" data-oem-id="${oem.id}" data-idx="${lIdx}" data-dir="up" ${lIdx === 0 ? 'disabled' : ''} title="Move Up"><i class="fa-solid fa-arrow-up"></i></button>
+                <button type="button" class="a-btn-reorder btn-move-oem-link" data-oem-id="${oem.id}" data-idx="${lIdx}" data-dir="down" ${lIdx === links.length - 1 ? 'disabled' : ''} title="Move Down"><i class="fa-solid fa-arrow-down"></i></button>
+              </div>
+            </td>
+            <td style="width:40px;text-align:center;"><i class="fa-solid ${l.icon || 'fa-globe'}" style="color:var(--a-blue);font-size:1.1rem;"></i></td>
+            <td>
+              <strong>${l.title || 'Official Resource'}</strong>
+              <div style="font-size:0.75rem;"><a href="${l.url}" target="_blank" rel="noopener" style="color:var(--a-blue);text-decoration:none;">${l.url} <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.65rem;"></i></a></div>
+            </td>
+            <td style="font-size:0.76rem;color:#475569;">${l.description || '—'}</td>
+            <td style="white-space:nowrap;">
+              <button type="button" class="a-btn a-btn-outline a-btn-sm btn-edit-oem-link" data-oem-id="${oem.id}" data-idx="${lIdx}"><i class="fa-solid fa-pen"></i> Edit</button>
+              <button type="button" class="a-btn a-btn-danger a-btn-sm btn-del-oem-link" data-oem-id="${oem.id}" data-idx="${lIdx}" style="margin-left:4px;"><i class="fa-solid fa-trash"></i></button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      oemHubPanelHtml = `
+        <div class="a-oem-panel">
+          <!-- Hub Profile Strip -->
+          <div class="a-blog-hub-profile">
+            <div class="a-blog-hub-info">
+              <div><strong style="color:#0f172a;font-size:0.92rem;"><i class="fa-solid fa-building-columns" style="color:var(--a-blue);margin-right:6px;"></i> ${b.portalName || `${oem.name} Technology Hub`}</strong></div>
+              <div><span style="color:#64748b;">Headline:</span> ${b.headline || oem.description}</div>
+              <div><span style="color:#64748b;">Official Portal:</span> ${b.officialWebsite ? `<a href="${b.officialWebsite}" target="_blank" rel="noopener" style="color:var(--a-blue);">${b.officialWebsite}</a>` : '<span style="color:#94a3b8;">None configured</span>'}</div>
+            </div>
+            <button type="button" class="a-btn a-btn-outline a-btn-sm btn-edit-oem-hub" data-oem-id="${oem.id}">
+              <i class="fa-solid fa-pen"></i> Edit Hub Profile
+            </button>
           </div>
-        </td>
-        <td>${img ? `<img src="${img}" class="a-img-preview" alt="Thumb" />` : '<span style="color:#94a3b8; font-size:0.75rem;">No image</span>'}</td>
-        <td>
-          <strong>${b.headline || b.title || 'Untitled'}</strong>
-          <div style="font-size:0.75rem; color:var(--a-muted);">${b.oemId || ''} · ${b.date || ''}</div>
-        </td>
-        <td><span class="a-badge a-badge-blue">${b.tag || b.category || 'Article'}</span></td>
-        <td>
-          <button class="a-btn a-btn-outline a-btn-sm blog-edit-btn" data-idx="${idx}"><i class="fa-solid fa-pen"></i> Edit</button>
-          <button class="a-btn a-btn-danger a-btn-sm blog-del-btn" data-idx="${idx}" style="margin-left:6px;"><i class="fa-solid fa-trash"></i></button>
-        </td>
-      </tr>
+
+          <!-- 1. Articles Section -->
+          <div class="a-blog-section-box">
+            <div class="a-blog-section-header">
+              <div>
+                <div class="a-blog-section-title">
+                  <i class="fa-solid fa-newspaper" style="color:var(--a-blue);"></i> Technical Articles &amp; News Releases (${articles.length})
+                </div>
+                <div class="a-blog-section-subtitle">Manage article headlines, publication dates, categories, excerpts, and full technical dispatch</div>
+              </div>
+              <button type="button" class="a-btn a-btn-primary a-btn-sm btn-add-oem-art" data-oem-id="${oem.id}">
+                <i class="fa-solid fa-plus"></i> Add Article to ${oem.shortName}
+              </button>
+            </div>
+            <div class="a-table-wrap">
+              <table class="a-sub-table">
+                <thead>
+                  <tr>
+                    <th>Order</th>
+                    <th>Cover</th>
+                    <th>Headline &amp; Date</th>
+                    <th>Category</th>
+                    <th>Excerpt &amp; Tags</th>
+                    <th>Visibility</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${articleRows || `<tr><td colspan="7" style="text-align:center;padding:18px;color:var(--a-muted);">No technical articles added yet. Click "+ Add Article to ${oem.shortName}" above.</td></tr>`}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- 2. Videos Section -->
+          <div class="a-blog-section-box">
+            <div class="a-blog-section-header">
+              <div>
+                <div class="a-blog-section-title">
+                  <i class="fa-solid fa-circle-play" style="color:#f59e0b;"></i> Demonstration Videos &amp; Webinars (${videos.length})
+                </div>
+                <div class="a-blog-section-subtitle">Manage lab sessions, speaker details, duration, video streaming URLs, and topics</div>
+              </div>
+              <button type="button" class="a-btn a-btn-primary a-btn-sm btn-add-oem-vid" data-oem-id="${oem.id}">
+                <i class="fa-solid fa-plus"></i> Add Video to ${oem.shortName}
+              </button>
+            </div>
+            <div class="a-table-wrap">
+              <table class="a-sub-table">
+                <thead>
+                  <tr>
+                    <th>Order</th>
+                    <th>Thumb</th>
+                    <th>Video Title &amp; Speaker</th>
+                    <th>Description &amp; Topics</th>
+                    <th>Visibility</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${videoRows || `<tr><td colspan="6" style="text-align:center;padding:18px;color:var(--a-muted);">No demonstration videos added yet. Click "+ Add Video to ${oem.shortName}" above.</td></tr>`}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- 3. Whitepapers Section -->
+          <div class="a-blog-section-box">
+            <div class="a-blog-section-header">
+              <div>
+                <div class="a-blog-section-title">
+                  <i class="fa-solid fa-file-pdf" style="color:#ef4444;"></i> Engineering Whitepapers &amp; Notes (${whitepapers.length})
+                </div>
+                <div class="a-blog-section-subtitle">Manage research whitepapers, frequency bands, page count, PDF downloads, and key findings</div>
+              </div>
+              <button type="button" class="a-btn a-btn-primary a-btn-sm btn-add-oem-wp" data-oem-id="${oem.id}">
+                <i class="fa-solid fa-plus"></i> Add Whitepaper to ${oem.shortName}
+              </button>
+            </div>
+            <div class="a-table-wrap">
+              <table class="a-sub-table">
+                <thead>
+                  <tr>
+                    <th>Order</th>
+                    <th>Whitepaper Title &amp; Author</th>
+                    <th>Format &amp; Band</th>
+                    <th>Summary &amp; Key Findings</th>
+                    <th>Visibility</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${whitepaperRows || `<tr><td colspan="6" style="text-align:center;padding:18px;color:var(--a-muted);">No whitepapers added yet. Click "+ Add Whitepaper to ${oem.shortName}" above.</td></tr>`}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- 4. Official Resources & Links -->
+          <div class="a-blog-section-box" style="margin-bottom:0;">
+            <div class="a-blog-section-header">
+              <div>
+                <div class="a-blog-section-title">
+                  <i class="fa-solid fa-link" style="color:var(--a-blue);"></i> Official Manufacturer Tools &amp; Portal Links (${links.length})
+                </div>
+                <div class="a-blog-section-subtitle">Direct links to manufacturer calculators, software, and design centers</div>
+              </div>
+              <button type="button" class="a-btn a-btn-primary a-btn-sm btn-add-oem-link" data-oem-id="${oem.id}">
+                <i class="fa-solid fa-plus"></i> Add Official Link to ${oem.shortName}
+              </button>
+            </div>
+            <div class="a-table-wrap">
+              <table class="a-sub-table">
+                <thead>
+                  <tr>
+                    <th>Order</th>
+                    <th>Icon</th>
+                    <th>Resource Title &amp; URL</th>
+                    <th>Description</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${linkRows || `<tr><td colspan="5" style="text-align:center;padding:18px;color:var(--a-muted);">No official links added yet. Click "+ Add Official Link to ${oem.shortName}" above.</td></tr>`}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      `;
+    }
+
+    return `
+      <div class="a-oem-card ${isHidden ? 'oem-hidden' : ''}" id="blog-oem-card-${oem.id}">
+        <div class="a-oem-header">
+          <div class="a-oem-header-left">
+            <div class="a-oem-logo-thumb">
+              ${resolvedLogo ? `<img src="${resolvedLogo}" alt="${oem.name}" />` : (oem.logoSvg || '<i class="fa-solid fa-industry" style="color:#94a3b8;"></i>')}
+            </div>
+            <div class="a-oem-info">
+              <div class="a-oem-name-row">
+                <span class="a-oem-title">${oem.name}</span>
+                <span class="a-badge a-badge-blue">${oem.specialty || 'Manufacturing Principal'}</span>
+                ${isHidden ? '<span class="a-badge" style="background:#64748b;color:#fff;"><i class="fa-solid fa-eye-slash"></i> Hidden</span>' : '<span class="a-badge a-badge-green"><i class="fa-solid fa-eye"></i> Visible</span>'}
+              </div>
+              <div class="a-oem-meta-row">
+                <span><i class="fa-solid fa-newspaper"></i> <strong>${articles.length}</strong> Articles</span>
+                <span>&bull;</span>
+                <span><i class="fa-solid fa-video"></i> <strong>${videos.length}</strong> Videos</span>
+                <span>&bull;</span>
+                <span><i class="fa-solid fa-file-pdf"></i> <strong>${whitepapers.length}</strong> Whitepapers</span>
+                <span>&bull;</span>
+                <span><i class="fa-solid fa-link"></i> <strong>${links.length}</strong> Links</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="a-oem-header-actions">
+            <button type="button" class="a-btn a-btn-outline a-btn-sm btn-toggle-blog-oem-vis" data-oem-id="${oem.id}" title="${isHidden ? 'Show on public site' : 'Hide from public site'}">
+              <i class="fa-solid ${isHidden ? 'fa-eye' : 'fa-eye-slash'}"></i> ${isHidden ? 'Show' : 'Hide'}
+            </button>
+            <button type="button" class="a-btn a-btn-primary a-btn-sm btn-toggle-blog-oem-expand" data-oem-id="${oem.id}">
+              <i class="fa-solid ${isExpanded ? 'fa-chevron-up' : 'fa-chevron-down'}"></i>
+              <span>${isExpanded ? 'Collapse' : 'Manage'} Tech Hub (${totalUpdates} Updates)</span>
+            </button>
+            <button type="button" class="a-btn a-btn-outline a-btn-sm btn-edit-oem-hub" data-oem-id="${oem.id}">
+              <i class="fa-solid fa-pen"></i> Edit Hub Profile
+            </button>
+          </div>
+        </div>
+
+        ${oemHubPanelHtml}
+      </div>
     `;
-  }).join('');
+  }).filter(Boolean).join('');
 
   return `
     <div class="a-cards-box">
-      <div class="a-cards-box-header">
+      <div class="a-cards-box-header" style="align-items:flex-start;">
         <div>
-          <h3>Blog &amp; Technical Bulletins (${blogs.length})</h3>
-          <p>Add, edit, delete, and reorder articles with cover image upload</p>
+          <h3>OEM Technical Blogs, Video Demos &amp; Whitepapers Catalog</h3>
+          <p>Full pin-to-pin CMS management for all 15 global manufacturing partners. Edit technical articles, full dispatch text, video webinars, whitepapers, and official links.</p>
         </div>
-        <button type="button" class="a-btn a-btn-primary a-btn-sm" id="blog-add-btn"><i class="fa-solid fa-plus"></i> Add New Blog</button>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button type="button" class="a-btn a-btn-outline a-btn-sm" id="btn-edit-blog-hero"><i class="fa-solid fa-heading"></i> Edit Page Hero &amp; Badges</button>
+          <button type="button" class="a-btn a-btn-outline a-btn-sm" id="btn-expand-all-blog-oems"><i class="fa-solid fa-angles-down"></i> Expand All</button>
+          <button type="button" class="a-btn a-btn-outline a-btn-sm" id="btn-collapse-all-blog-oems"><i class="fa-solid fa-angles-up"></i> Collapse All</button>
+        </div>
       </div>
-      <div class="a-table-wrap">
-        <table class="a-table">
-          <thead><tr><th>Reorder</th><th>Cover</th><th>Headline &amp; Source</th><th>Category</th><th>Actions</th></tr></thead>
-          <tbody>${rows}</tbody>
-        </table>
+
+      <div class="a-catalog-toolbar">
+        <div class="a-catalog-stats-strip">
+          <div class="a-catalog-stat-badge">
+            <span>Global OEM Hubs:</span>
+            <strong>${totalOems}</strong>
+          </div>
+          <div class="a-catalog-stat-badge">
+            <span>Technical Articles:</span>
+            <strong>${totalArticles}</strong>
+          </div>
+          <div class="a-catalog-stat-badge">
+            <span>Engineering Videos:</span>
+            <strong>${totalVideos}</strong>
+          </div>
+          <div class="a-catalog-stat-badge">
+            <span>Whitepapers &amp; Notes:</span>
+            <strong>${totalWhitepapers}</strong>
+          </div>
+        </div>
+
+        <div style="flex:1;max-width:420px;position:relative;">
+          <input type="text" id="admin-blog-search-input" class="a-input" placeholder="Search OEMs, articles, videos, whitepapers, or tags..." value="${blogSearchQuery || ''}" style="padding-left:36px;" />
+          <i class="fa-solid fa-magnifying-glass" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--a-muted);font-size:0.85rem;"></i>
+          ${blogSearchQuery ? '<button type="button" id="admin-blog-search-clear" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--a-muted);cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>' : ''}
+        </div>
+      </div>
+
+      <div class="a-oem-accordions-list">
+        ${oemCardsHtml || '<div class="a-empty-state" style="padding:40px;text-align:center;background:#fff;border-radius:12px;border:1px dashed var(--a-border);">No OEM tech hubs match your search query.</div>'}
       </div>
     </div>
   `;
 }
 
 function bindBlogsTabEvents() {
-  const blogs = ContentService.getData('blogs') || [];
+  const cmsBlogs = getCmsBlogsPayload();
+  const oemBlogs = cmsBlogs.oemBlogs || [];
 
-  document.getElementById('blog-add-btn')?.addEventListener('click', () => {
-    openModal('Add New Blog Article', `
-      <div class="a-field"><label class="a-label">Headline / Title</label><input class="a-input" name="headline" required /></div>
-      <div class="a-field" style="margin-top:12px;"><label class="a-label">OEM / Principal ID (e.g. rogers-corporation, qorvo)</label><input class="a-input" name="oemId" value="rogers-corporation" /></div>
-      <div class="a-field" style="margin-top:12px;"><label class="a-label">Author (e.g. Dr. Vikram Nair)</label><input class="a-input" name="author" value="Technical Applications Team" /></div>
-      <div class="a-field" style="margin-top:12px;"><label class="a-label">Category Tag (e.g. Technical Whitepaper)</label><input class="a-input" name="tag" value="Technical Note" /></div>
-      <div class="a-field" style="margin-top:12px;"><label class="a-label">Read Time</label><input class="a-input" name="readTime" value="5 min" /></div>
-      ${renderImageUploadField('coverImg', 'Article Cover Image', '', 'Hero banner for article')}
-      <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Excerpt / Summary</label><textarea class="a-textarea" name="excerpt" required></textarea></div>
-      <div class="a-field span2" style="margin-top:12px;"><label class="a-label">External Whitepaper / Portal Link</label><input class="a-input" name="officialWebsite" placeholder="https://..." /></div>
+  const saveAndRefresh = (toastMsg = 'Blog updates saved!') => {
+    cmsBlogs.oemBlogs = oemBlogs;
+    ContentService.saveData('blogs', cmsBlogs);
+    rerender();
+    showToast(toastMsg, 'success');
+  };
+
+  // Search input
+  const searchInput = document.getElementById('admin-blog-search-input');
+  searchInput?.addEventListener('input', (e) => {
+    blogSearchQuery = e.target.value;
+    rerender();
+    const newInp = document.getElementById('admin-blog-search-input');
+    if (newInp) {
+      newInp.focus();
+      newInp.selectionStart = newInp.selectionEnd = newInp.value.length;
+    }
+  });
+
+  document.getElementById('admin-blog-search-clear')?.addEventListener('click', () => {
+    blogSearchQuery = '';
+    rerender();
+  });
+
+  // Expand / Collapse All
+  document.getElementById('btn-expand-all-blog-oems')?.addEventListener('click', () => {
+    CATALOG.forEach(o => expandedBlogOemIds.add(o.id));
+    rerender();
+  });
+
+  document.getElementById('btn-collapse-all-blog-oems')?.addEventListener('click', () => {
+    expandedBlogOemIds.clear();
+    rerender();
+  });
+
+  // Edit Page Hero & Badges
+  document.getElementById('btn-edit-blog-hero')?.addEventListener('click', () => {
+    openModal('Edit Blogs Page Hero &amp; Badges', `
+      <div class="a-field span2"><label class="a-label">Main Page Title *</label><input class="a-input" name="heroTitle" value="${cmsBlogs.heroTitle || 'OEM Technical News, Video Demos & Insights'}" required /></div>
+      <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Lead Subtitle</label><textarea class="a-textarea" name="heroSubtitle" rows="3">${cmsBlogs.heroSubtitle || ''}</textarea></div>
+      <div class="a-field" style="margin-top:12px;"><label class="a-label">Trust Badge 1 (Whitepapers)</label><input class="a-input" name="trustBadge1" value="${cmsBlogs.trustBadge1 || 'Application Whitepapers & Notes'}" /></div>
+      <div class="a-field" style="margin-top:12px;"><label class="a-label">Trust Badge 2 (Videos)</label><input class="a-input" name="trustBadge2" value="${cmsBlogs.trustBadge2 || 'Video Demos & Technical Webinars'}" /></div>
+      <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Trust Badge 3 (Bulletins)</label><input class="a-input" name="trustBadge3" value="${cmsBlogs.trustBadge3 || 'Direct Manufacturer Bulletins'}" /></div>
     `, (data) => {
-      blogs.unshift({
-        id: 'blog-' + Date.now(),
-        date: new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' }),
-        ...data,
-      });
-      ContentService.saveData('blogs', blogs);
+      cmsBlogs.heroTitle = data.heroTitle;
+      cmsBlogs.heroSubtitle = data.heroSubtitle;
+      cmsBlogs.trustBadge1 = data.trustBadge1;
+      cmsBlogs.trustBadge2 = data.trustBadge2;
+      cmsBlogs.trustBadge3 = data.trustBadge3;
+      saveAndRefresh('Page hero and badges updated successfully!');
     });
   });
 
-  document.querySelectorAll('.blog-edit-btn').forEach(btn => {
+  // Toggle OEM expand
+  document.querySelectorAll('.btn-toggle-blog-oem-expand').forEach(btn => {
     btn.addEventListener('click', () => {
-      const idx = parseInt(btn.getAttribute('data-idx'), 10);
-      const b = blogs[idx];
-      openModal('Edit Blog Article', `
-        <div class="a-field"><label class="a-label">Headline / Title</label><input class="a-input" name="headline" value="${b.headline || b.title || ''}" required /></div>
-        <div class="a-field" style="margin-top:12px;"><label class="a-label">OEM / Principal ID</label><input class="a-input" name="oemId" value="${b.oemId || ''}" /></div>
-        <div class="a-field" style="margin-top:12px;"><label class="a-label">Author</label><input class="a-input" name="author" value="${b.author || ''}" /></div>
-        <div class="a-field" style="margin-top:12px;"><label class="a-label">Category Tag</label><input class="a-input" name="tag" value="${b.tag || b.category || ''}" /></div>
-        <div class="a-field" style="margin-top:12px;"><label class="a-label">Read Time</label><input class="a-input" name="readTime" value="${b.readTime || ''}" /></div>
-        ${renderImageUploadField('coverImg', 'Article Cover Image', b.coverImg || '', 'Hero banner for article')}
-        <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Excerpt / Summary</label><textarea class="a-textarea" name="excerpt" required>${b.excerpt || b.desc || ''}</textarea></div>
-        <div class="a-field span2" style="margin-top:12px;"><label class="a-label">External Whitepaper / Portal Link</label><input class="a-input" name="officialWebsite" value="${b.officialWebsite || ''}" /></div>
-      `, (data) => {
-        blogs[idx] = { ...b, ...data };
-        ContentService.saveData('blogs', blogs);
-      });
+      const oemId = btn.getAttribute('data-oem-id');
+      if (expandedBlogOemIds.has(oemId)) {
+        expandedBlogOemIds.delete(oemId);
+      } else {
+        expandedBlogOemIds.add(oemId);
+      }
+      rerender();
     });
   });
 
-  document.querySelectorAll('.blog-del-btn').forEach(btn => {
+  // Toggle OEM visibility
+  document.querySelectorAll('.btn-toggle-blog-oem-vis').forEach(btn => {
     btn.addEventListener('click', () => {
-      const idx = parseInt(btn.getAttribute('data-idx'), 10);
-      if (confirm('Delete this blog entry?')) {
-        blogs.splice(idx, 1);
-        ContentService.saveData('blogs', blogs);
-        rerender();
-        showToast('Blog deleted.', '');
+      const oemId = btn.getAttribute('data-oem-id');
+      const b = oemBlogs.find(x => x.oemId === oemId);
+      if (b) {
+        b.visible = b.visible === false ? true : false;
+        saveAndRefresh(`Tech Hub for ${oemId} is now ${b.visible ? 'visible' : 'hidden'}.`);
       }
     });
   });
 
-  document.querySelectorAll('.btn-move-blog').forEach(btn => {
+  // Edit OEM Hub Profile
+  document.querySelectorAll('.btn-edit-oem-hub').forEach(btn => {
     btn.addEventListener('click', () => {
+      const oemId = btn.getAttribute('data-oem-id');
+      const oem = CATALOG.find(o => o.id === oemId);
+      const b = oemBlogs.find(x => x.oemId === oemId);
+      if (!oem || !b) return;
+
+      openModal(`Edit Tech Hub Profile: ${oem.name}`, `
+        <div class="a-field span2"><label class="a-label">Dedicated Tech Hub Name *</label><input class="a-input" name="portalName" value="${b.portalName || `${oem.name} Technology Hub`}" required /></div>
+        <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Hub Headline / Mission</label><textarea class="a-textarea" name="headline" rows="3">${b.headline || oem.description}</textarea></div>
+        <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Official Engineering Website URL</label><input class="a-input" name="officialWebsite" value="${b.officialWebsite || ''}" placeholder="https://..." /></div>
+        <div class="a-field" style="margin-top:12px;">
+          <label class="a-label">Visibility Status</label>
+          <select class="a-input" name="visible">
+            <option value="true" ${b.visible !== false ? 'selected' : ''}>Visible in Public Hub</option>
+            <option value="false" ${b.visible === false ? 'selected' : ''}>Hidden (Draft)</option>
+          </select>
+        </div>
+      `, (data) => {
+        b.portalName = data.portalName;
+        b.headline = data.headline;
+        b.officialWebsite = data.officialWebsite;
+        b.visible = data.visible === 'true';
+        saveAndRefresh(`Updated ${oem.name} Hub Profile!`);
+      });
+    });
+  });
+
+  // ─── ARTICLE ACTIONS ───
+  // Add Article
+  document.querySelectorAll('.btn-add-oem-art').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const oemId = btn.getAttribute('data-oem-id');
+      const oem = CATALOG.find(o => o.id === oemId);
+      const b = oemBlogs.find(x => x.oemId === oemId);
+      if (!oem || !b) return;
+
+      openModal(`Add Technical Article to ${oem.name}`, `
+        <div class="a-field span2"><label class="a-label">Article Headline / Title *</label><input class="a-input" name="title" required placeholder="e.g. Next-Gen Millimeter-Wave Substrate Formulations" /></div>
+        <div class="a-field" style="margin-top:12px;"><label class="a-label">Article Category *</label><input class="a-input" name="category" value="Materials Innovation" required /></div>
+        <div class="a-field" style="margin-top:12px;"><label class="a-label">Publication Date</label><input class="a-input" name="date" value="${new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}" /></div>
+        <div class="a-field" style="margin-top:12px;"><label class="a-label">Read Time</label><input class="a-input" name="readTime" value="5 min read" /></div>
+        <div class="a-field" style="margin-top:12px;">
+          <label class="a-label">Visibility Status</label>
+          <select class="a-input" name="visible">
+            <option value="true" selected>Visible in Public Hub</option>
+            <option value="false">Hidden (Draft)</option>
+          </select>
+        </div>
+        ${renderImageUploadField('image', 'Article Cover Image', '', 'Upload hero image for article')}
+        <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Excerpt / Summary (Card Preview) *</label><textarea class="a-textarea" name="summary" rows="3" required placeholder="Short 2-3 sentence overview for the card preview..."></textarea></div>
+        <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Full Technical Article Body (Rich HTML or Paragraphs)</label><textarea class="a-textarea" name="content" rows="6" placeholder="<p>Full article text, specifications, and engineering details...</p>"></textarea></div>
+        <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Topic Tags (Comma-separated)</label><input class="a-input" name="tags" placeholder="e.g. 77 GHz Radar, RT/duroid, Substrate, Automotive" /></div>
+      `, (data) => {
+        if (!b.articles) b.articles = [];
+        const tagsArr = (data.tags || '').split(',').map(t => t.trim()).filter(Boolean);
+        const newArt = {
+          id: `${oemId}-art-${Date.now()}`,
+          title: data.title.trim(),
+          category: data.category.trim(),
+          date: data.date.trim(),
+          readTime: data.readTime.trim(),
+          image: data.image || '',
+          summary: data.summary.trim(),
+          content: data.content || `<p>${data.summary}</p>`,
+          tags: tagsArr,
+          visible: data.visible === 'true'
+        };
+        b.articles.unshift(newArt);
+        expandedBlogOemIds.add(oemId);
+        saveAndRefresh(`Added article "${newArt.title}"!`);
+      });
+    });
+  });
+
+  // Edit Article
+  document.querySelectorAll('.btn-edit-oem-art').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const oemId = btn.getAttribute('data-oem-id');
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const b = oemBlogs.find(x => x.oemId === oemId);
+      const art = b?.articles?.[idx];
+      if (!b || !art) return;
+
+      openModal(`Edit Article: ${art.title}`, `
+        <div class="a-field span2"><label class="a-label">Article Headline / Title *</label><input class="a-input" name="title" value="${art.title || ''}" required /></div>
+        <div class="a-field" style="margin-top:12px;"><label class="a-label">Article Category *</label><input class="a-input" name="category" value="${art.category || ''}" required /></div>
+        <div class="a-field" style="margin-top:12px;"><label class="a-label">Publication Date</label><input class="a-input" name="date" value="${art.date || ''}" /></div>
+        <div class="a-field" style="margin-top:12px;"><label class="a-label">Read Time</label><input class="a-input" name="readTime" value="${art.readTime || ''}" /></div>
+        <div class="a-field" style="margin-top:12px;">
+          <label class="a-label">Visibility Status</label>
+          <select class="a-input" name="visible">
+            <option value="true" ${art.visible !== false ? 'selected' : ''}>Visible in Public Hub</option>
+            <option value="false" ${art.visible === false ? 'selected' : ''}>Hidden (Draft)</option>
+          </select>
+        </div>
+        ${renderImageUploadField('image', 'Article Cover Image', art.image || '', 'Upload hero image for article')}
+        <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Excerpt / Summary (Card Preview) *</label><textarea class="a-textarea" name="summary" rows="3" required>${art.summary || ''}</textarea></div>
+        <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Full Technical Article Body (Rich HTML or Paragraphs)</label><textarea class="a-textarea" name="content" rows="8">${art.content || ''}</textarea></div>
+        <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Topic Tags (Comma-separated)</label><input class="a-input" name="tags" value="${(art.tags || []).join(', ')}" /></div>
+      `, (data) => {
+        art.title = data.title.trim();
+        art.category = data.category.trim();
+        art.date = data.date.trim();
+        art.readTime = data.readTime.trim();
+        art.image = data.image;
+        art.summary = data.summary.trim();
+        art.content = data.content;
+        art.tags = (data.tags || '').split(',').map(t => t.trim()).filter(Boolean);
+        art.visible = data.visible === 'true';
+        expandedBlogOemIds.add(oemId);
+        saveAndRefresh(`Updated article "${art.title}"!`);
+      });
+    });
+  });
+
+  // Delete Article
+  document.querySelectorAll('.btn-del-oem-art').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const oemId = btn.getAttribute('data-oem-id');
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const b = oemBlogs.find(x => x.oemId === oemId);
+      const art = b?.articles?.[idx];
+      if (!b || !art) return;
+
+      if (confirm(`Delete article "${art.title}"?`)) {
+        b.articles.splice(idx, 1);
+        saveAndRefresh(`Deleted article "${art.title}".`);
+      }
+    });
+  });
+
+  // Move Article
+  document.querySelectorAll('.btn-move-oem-art').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const oemId = btn.getAttribute('data-oem-id');
       const idx = parseInt(btn.getAttribute('data-idx'), 10);
       const dir = btn.getAttribute('data-dir');
+      const b = oemBlogs.find(x => x.oemId === oemId);
+      if (!b || !b.articles) return;
+
       const targetIdx = dir === 'up' ? idx - 1 : idx + 1;
-      const reordered = reorderArray(blogs, idx, targetIdx);
-      ContentService.saveData('blogs', reordered);
-      rerender();
-      showToast('Blogs reordered!', 'success');
+      b.articles = reorderArray(b.articles, idx, targetIdx);
+      saveAndRefresh('Articles reordered!');
+    });
+  });
+
+  // Toggle Article Visibility
+  document.querySelectorAll('.btn-toggle-art-vis').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const oemId = btn.getAttribute('data-oem-id');
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const b = oemBlogs.find(x => x.oemId === oemId);
+      const art = b?.articles?.[idx];
+      if (!art) return;
+      art.visible = art.visible === false ? true : false;
+      saveAndRefresh(`Article "${art.title}" is now ${art.visible ? 'visible' : 'hidden'}.`);
+    });
+  });
+
+  // ─── VIDEO ACTIONS ───
+  // Add Video
+  document.querySelectorAll('.btn-add-oem-vid').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const oemId = btn.getAttribute('data-oem-id');
+      const oem = CATALOG.find(o => o.id === oemId);
+      const b = oemBlogs.find(x => x.oemId === oemId);
+      if (!oem || !b) return;
+
+      openModal(`Add Video Demonstration to ${oem.name}`, `
+        <div class="a-field span2"><label class="a-label">Video Title *</label><input class="a-input" name="title" required placeholder="e.g. Dielectric Material Characterization at W-Band" /></div>
+        <div class="a-field" style="margin-top:12px;"><label class="a-label">Presenter / Speaker Name &amp; Title</label><input class="a-input" name="speaker" placeholder="e.g. John Coonrod, Technical Marketing Director" /></div>
+        <div class="a-field" style="margin-top:12px;"><label class="a-label">Duration (MM:SS)</label><input class="a-input" name="duration" value="15:00" /></div>
+        <div class="a-field" style="margin-top:12px;"><label class="a-label">Date</label><input class="a-input" name="date" value="${new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}" /></div>
+        <div class="a-field" style="margin-top:12px;">
+          <label class="a-label">Visibility Status</label>
+          <select class="a-input" name="visible">
+            <option value="true" selected>Visible in Public Hub</option>
+            <option value="false">Hidden (Draft)</option>
+          </select>
+        </div>
+        ${renderImageUploadField('thumbnail', 'Video Thumbnail Image', '', 'Upload video cover preview')}
+        <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Video Streaming / Embed URL (YouTube, Vimeo, MP4)</label><input class="a-input" name="videoUrl" placeholder="https://..." /></div>
+        <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Session Summary</label><textarea class="a-textarea" name="summary" rows="3" placeholder="Overview of the technical topics demonstrated in the video..."></textarea></div>
+        <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Takeaway Topics (Comma-separated)</label><input class="a-input" name="topics" placeholder="e.g. Sub-THz Metrology, Skin Depth Effects, Microstrip Resonators" /></div>
+      `, (data) => {
+        if (!b.videos) b.videos = [];
+        const topicsArr = (data.topics || '').split(',').map(t => t.trim()).filter(Boolean);
+        const newVid = {
+          id: `${oemId}-vid-${Date.now()}`,
+          title: data.title.trim(),
+          speaker: data.speaker.trim(),
+          duration: data.duration.trim(),
+          date: data.date.trim(),
+          thumbnail: data.thumbnail || '',
+          videoUrl: data.videoUrl || '',
+          summary: data.summary.trim(),
+          topics: topicsArr,
+          visible: data.visible === 'true'
+        };
+        b.videos.unshift(newVid);
+        expandedBlogOemIds.add(oemId);
+        saveAndRefresh(`Added video "${newVid.title}"!`);
+      });
+    });
+  });
+
+  // Edit Video
+  document.querySelectorAll('.btn-edit-oem-vid').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const oemId = btn.getAttribute('data-oem-id');
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const b = oemBlogs.find(x => x.oemId === oemId);
+      const vid = b?.videos?.[idx];
+      if (!b || !vid) return;
+
+      openModal(`Edit Video: ${vid.title}`, `
+        <div class="a-field span2"><label class="a-label">Video Title *</label><input class="a-input" name="title" value="${vid.title || ''}" required /></div>
+        <div class="a-field" style="margin-top:12px;"><label class="a-label">Presenter / Speaker Name &amp; Title</label><input class="a-input" name="speaker" value="${vid.speaker || ''}" /></div>
+        <div class="a-field" style="margin-top:12px;"><label class="a-label">Duration</label><input class="a-input" name="duration" value="${vid.duration || ''}" /></div>
+        <div class="a-field" style="margin-top:12px;"><label class="a-label">Date</label><input class="a-input" name="date" value="${vid.date || ''}" /></div>
+        <div class="a-field" style="margin-top:12px;">
+          <label class="a-label">Visibility Status</label>
+          <select class="a-input" name="visible">
+            <option value="true" ${vid.visible !== false ? 'selected' : ''}>Visible in Public Hub</option>
+            <option value="false" ${vid.visible === false ? 'selected' : ''}>Hidden (Draft)</option>
+          </select>
+        </div>
+        ${renderImageUploadField('thumbnail', 'Video Thumbnail Image', vid.thumbnail || '', 'Upload video cover preview')}
+        <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Video Streaming / Embed URL</label><input class="a-input" name="videoUrl" value="${vid.videoUrl || ''}" /></div>
+        <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Session Summary</label><textarea class="a-textarea" name="summary" rows="3">${vid.summary || ''}</textarea></div>
+        <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Takeaway Topics (Comma-separated)</label><input class="a-input" name="topics" value="${(vid.topics || []).join(', ')}" /></div>
+      `, (data) => {
+        vid.title = data.title.trim();
+        vid.speaker = data.speaker.trim();
+        vid.duration = data.duration.trim();
+        vid.date = data.date.trim();
+        vid.thumbnail = data.thumbnail;
+        vid.videoUrl = data.videoUrl;
+        vid.summary = data.summary.trim();
+        vid.topics = (data.topics || '').split(',').map(t => t.trim()).filter(Boolean);
+        vid.visible = data.visible === 'true';
+        expandedBlogOemIds.add(oemId);
+        saveAndRefresh(`Updated video "${vid.title}"!`);
+      });
+    });
+  });
+
+  // Delete Video
+  document.querySelectorAll('.btn-del-oem-vid').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const oemId = btn.getAttribute('data-oem-id');
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const b = oemBlogs.find(x => x.oemId === oemId);
+      const vid = b?.videos?.[idx];
+      if (!b || !vid) return;
+
+      if (confirm(`Delete video "${vid.title}"?`)) {
+        b.videos.splice(idx, 1);
+        saveAndRefresh(`Deleted video "${vid.title}".`);
+      }
+    });
+  });
+
+  // Move Video
+  document.querySelectorAll('.btn-move-oem-vid').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const oemId = btn.getAttribute('data-oem-id');
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const dir = btn.getAttribute('data-dir');
+      const b = oemBlogs.find(x => x.oemId === oemId);
+      if (!b || !b.videos) return;
+
+      const targetIdx = dir === 'up' ? idx - 1 : idx + 1;
+      b.videos = reorderArray(b.videos, idx, targetIdx);
+      saveAndRefresh('Videos reordered!');
+    });
+  });
+
+  // Toggle Video Visibility
+  document.querySelectorAll('.btn-toggle-vid-vis').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const oemId = btn.getAttribute('data-oem-id');
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const b = oemBlogs.find(x => x.oemId === oemId);
+      const vid = b?.videos?.[idx];
+      if (!vid) return;
+      vid.visible = vid.visible === false ? true : false;
+      saveAndRefresh(`Video "${vid.title}" is now ${vid.visible ? 'visible' : 'hidden'}.`);
+    });
+  });
+
+  // ─── WHITEPAPER ACTIONS ───
+  // Add Whitepaper
+  document.querySelectorAll('.btn-add-oem-wp').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const oemId = btn.getAttribute('data-oem-id');
+      const oem = CATALOG.find(o => o.id === oemId);
+      const b = oemBlogs.find(x => x.oemId === oemId);
+      if (!oem || !b) return;
+
+      openModal(`Add Whitepaper to ${oem.name}`, `
+        <div class="a-field span2"><label class="a-label">Whitepaper Title *</label><input class="a-input" name="title" required placeholder="e.g. Thermal Management Strategies for Multi-Layer High-Power RF Amplifiers" /></div>
+        <div class="a-field" style="margin-top:12px;"><label class="a-label">Author / Engineering Lab</label><input class="a-input" name="author" value="${oem.name} Advanced Electronics Lab" /></div>
+        <div class="a-field" style="margin-top:12px;"><label class="a-label">Publication Date</label><input class="a-input" name="date" value="${new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}" /></div>
+        <div class="a-field" style="margin-top:12px;"><label class="a-label">Page Count</label><input class="a-input" name="pages" value="12 Pages" /></div>
+        <div class="a-field" style="margin-top:12px;"><label class="a-label">Frequency Band</label><input class="a-input" name="frequencyBand" value="DC to 40 GHz" /></div>
+        <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Download / PDF Document URL</label><input class="a-input" name="downloadUrl" placeholder="https://..." /></div>
+        <div class="a-field" style="margin-top:12px;">
+          <label class="a-label">Visibility Status</label>
+          <select class="a-input" name="visible">
+            <option value="true" selected>Visible in Public Hub</option>
+            <option value="false">Hidden (Draft)</option>
+          </select>
+        </div>
+        <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Executive Summary</label><textarea class="a-textarea" name="summary" rows="3" placeholder="Technical summary of the study..."></textarea></div>
+        <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Key Engineering Findings (One finding per line)</label><textarea class="a-textarea" name="keyFindings" rows="4" placeholder="Direct copper bonded substrates eliminate interface resistances.&#10;Thermal rating up to 170°C for airborne pods."></textarea></div>
+      `, (data) => {
+        if (!b.whitepapers) b.whitepapers = [];
+        const findingsArr = (data.keyFindings || '').split('\n').map(f => f.trim()).filter(Boolean);
+        const newWp = {
+          id: `${oemId}-wp-${Date.now()}`,
+          title: data.title.trim(),
+          author: data.author.trim(),
+          date: data.date.trim(),
+          pages: data.pages.trim(),
+          frequencyBand: data.frequencyBand.trim(),
+          downloadUrl: data.downloadUrl || '',
+          summary: data.summary.trim(),
+          keyFindings: findingsArr,
+          visible: data.visible === 'true'
+        };
+        b.whitepapers.unshift(newWp);
+        expandedBlogOemIds.add(oemId);
+        saveAndRefresh(`Added whitepaper "${newWp.title}"!`);
+      });
+    });
+  });
+
+  // Edit Whitepaper
+  document.querySelectorAll('.btn-edit-oem-wp').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const oemId = btn.getAttribute('data-oem-id');
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const b = oemBlogs.find(x => x.oemId === oemId);
+      const wp = b?.whitepapers?.[idx];
+      if (!b || !wp) return;
+
+      openModal(`Edit Whitepaper: ${wp.title}`, `
+        <div class="a-field span2"><label class="a-label">Whitepaper Title *</label><input class="a-input" name="title" value="${wp.title || ''}" required /></div>
+        <div class="a-field" style="margin-top:12px;"><label class="a-label">Author / Engineering Lab</label><input class="a-input" name="author" value="${wp.author || ''}" /></div>
+        <div class="a-field" style="margin-top:12px;"><label class="a-label">Publication Date</label><input class="a-input" name="date" value="${wp.date || ''}" /></div>
+        <div class="a-field" style="margin-top:12px;"><label class="a-label">Page Count</label><input class="a-input" name="pages" value="${wp.pages || ''}" /></div>
+        <div class="a-field" style="margin-top:12px;"><label class="a-label">Frequency Band</label><input class="a-input" name="frequencyBand" value="${wp.frequencyBand || ''}" /></div>
+        <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Download / PDF Document URL</label><input class="a-input" name="downloadUrl" value="${wp.downloadUrl || ''}" /></div>
+        <div class="a-field" style="margin-top:12px;">
+          <label class="a-label">Visibility Status</label>
+          <select class="a-input" name="visible">
+            <option value="true" ${wp.visible !== false ? 'selected' : ''}>Visible in Public Hub</option>
+            <option value="false" ${wp.visible === false ? 'selected' : ''}>Hidden (Draft)</option>
+          </select>
+        </div>
+        <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Executive Summary</label><textarea class="a-textarea" name="summary" rows="3">${wp.summary || ''}</textarea></div>
+        <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Key Engineering Findings (One finding per line)</label><textarea class="a-textarea" name="keyFindings" rows="4">${(wp.keyFindings || []).join('\n')}</textarea></div>
+      `, (data) => {
+        wp.title = data.title.trim();
+        wp.author = data.author.trim();
+        wp.date = data.date.trim();
+        wp.pages = data.pages.trim();
+        wp.frequencyBand = data.frequencyBand.trim();
+        wp.downloadUrl = data.downloadUrl;
+        wp.summary = data.summary.trim();
+        wp.keyFindings = (data.keyFindings || '').split('\n').map(f => f.trim()).filter(Boolean);
+        wp.visible = data.visible === 'true';
+        expandedBlogOemIds.add(oemId);
+        saveAndRefresh(`Updated whitepaper "${wp.title}"!`);
+      });
+    });
+  });
+
+  // Delete Whitepaper
+  document.querySelectorAll('.btn-del-oem-wp').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const oemId = btn.getAttribute('data-oem-id');
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const b = oemBlogs.find(x => x.oemId === oemId);
+      const wp = b?.whitepapers?.[idx];
+      if (!b || !wp) return;
+
+      if (confirm(`Delete whitepaper "${wp.title}"?`)) {
+        b.whitepapers.splice(idx, 1);
+        saveAndRefresh(`Deleted whitepaper "${wp.title}".`);
+      }
+    });
+  });
+
+  // Move Whitepaper
+  document.querySelectorAll('.btn-move-oem-wp').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const oemId = btn.getAttribute('data-oem-id');
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const dir = btn.getAttribute('data-dir');
+      const b = oemBlogs.find(x => x.oemId === oemId);
+      if (!b || !b.whitepapers) return;
+
+      const targetIdx = dir === 'up' ? idx - 1 : idx + 1;
+      b.whitepapers = reorderArray(b.whitepapers, idx, targetIdx);
+      saveAndRefresh('Whitepapers reordered!');
+    });
+  });
+
+  // Toggle Whitepaper Visibility
+  document.querySelectorAll('.btn-toggle-wp-vis').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const oemId = btn.getAttribute('data-oem-id');
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const b = oemBlogs.find(x => x.oemId === oemId);
+      const wp = b?.whitepapers?.[idx];
+      if (!wp) return;
+      wp.visible = wp.visible === false ? true : false;
+      saveAndRefresh(`Whitepaper "${wp.title}" is now ${wp.visible ? 'visible' : 'hidden'}.`);
+    });
+  });
+
+  // ─── OFFICIAL LINKS ACTIONS ───
+  // Add Link
+  document.querySelectorAll('.btn-add-oem-link').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const oemId = btn.getAttribute('data-oem-id');
+      const oem = CATALOG.find(o => o.id === oemId);
+      const b = oemBlogs.find(x => x.oemId === oemId);
+      if (!oem || !b) return;
+
+      openModal(`Add Official Tool / Link to ${oem.name}`, `
+        <div class="a-field span2"><label class="a-label">Resource Title *</label><input class="a-input" name="title" required placeholder="e.g. ${oem.name} Design Hub & Calculator" /></div>
+        <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Official URL *</label><input class="a-input" name="url" required placeholder="https://..." /></div>
+        <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Description</label><textarea class="a-textarea" name="description" rows="2" placeholder="Interactive RF calculator and design suite..."></textarea></div>
+        <div class="a-field" style="margin-top:12px;"><label class="a-label">FontAwesome Icon Class</label><input class="a-input" name="icon" value="fa-globe" placeholder="fa-globe, fa-calculator, fa-book-open" /></div>
+      `, (data) => {
+        if (!b.officialLinks) b.officialLinks = [];
+        const newLink = {
+          title: data.title.trim(),
+          url: data.url.trim(),
+          description: (data.description || '').trim(),
+          icon: (data.icon || 'fa-globe').trim()
+        };
+        b.officialLinks.push(newLink);
+        expandedBlogOemIds.add(oemId);
+        saveAndRefresh(`Added link "${newLink.title}"!`);
+      });
+    });
+  });
+
+  // Edit Link
+  document.querySelectorAll('.btn-edit-oem-link').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const oemId = btn.getAttribute('data-oem-id');
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const b = oemBlogs.find(x => x.oemId === oemId);
+      const link = b?.officialLinks?.[idx];
+      if (!b || !link) return;
+
+      openModal(`Edit Official Link: ${link.title}`, `
+        <div class="a-field span2"><label class="a-label">Resource Title *</label><input class="a-input" name="title" value="${link.title || ''}" required /></div>
+        <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Official URL *</label><input class="a-input" name="url" value="${link.url || ''}" required /></div>
+        <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Description</label><textarea class="a-textarea" name="description" rows="2">${link.description || ''}</textarea></div>
+        <div class="a-field" style="margin-top:12px;"><label class="a-label">FontAwesome Icon Class</label><input class="a-input" name="icon" value="${link.icon || 'fa-globe'}" /></div>
+      `, (data) => {
+        link.title = data.title.trim();
+        link.url = data.url.trim();
+        link.description = (data.description || '').trim();
+        link.icon = (data.icon || 'fa-globe').trim();
+        expandedBlogOemIds.add(oemId);
+        saveAndRefresh(`Updated link "${link.title}"!`);
+      });
+    });
+  });
+
+  // Delete Link
+  document.querySelectorAll('.btn-del-oem-link').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const oemId = btn.getAttribute('data-oem-id');
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const b = oemBlogs.find(x => x.oemId === oemId);
+      const link = b?.officialLinks?.[idx];
+      if (!b || !link) return;
+
+      if (confirm(`Delete official link "${link.title}"?`)) {
+        b.officialLinks.splice(idx, 1);
+        saveAndRefresh(`Deleted link "${link.title}".`);
+      }
+    });
+  });
+
+  // Move Link
+  document.querySelectorAll('.btn-move-oem-link').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const oemId = btn.getAttribute('data-oem-id');
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const dir = btn.getAttribute('data-dir');
+      const b = oemBlogs.find(x => x.oemId === oemId);
+      if (!b || !b.officialLinks) return;
+
+      const targetIdx = dir === 'up' ? idx - 1 : idx + 1;
+      b.officialLinks = reorderArray(b.officialLinks, idx, targetIdx);
+      saveAndRefresh('Official links reordered!');
     });
   });
 }

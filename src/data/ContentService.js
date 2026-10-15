@@ -680,6 +680,22 @@ export const ContentService = {
           if (Array.isArray(parsed) && parsed.length > 0 && Array.isArray(parsed[0].categories)) {
             return parsed;
           }
+        } else if (pageKey === 'blogs') {
+          // If cached blogs has structured oemBlogs, return it
+          if (parsed && Array.isArray(parsed.oemBlogs)) {
+            return parsed;
+          }
+          // If parsed is array of oemBlogs (older schema), wrap into current schema
+          if (Array.isArray(parsed) && parsed.length > 0 && parsed[0].oemId) {
+            return {
+              heroTitle: 'OEM Technical News, Video Demos & Insights',
+              heroSubtitle: 'Direct technical bulletins, video demonstrations, application whitepapers, and product release updates from ICON Electromatic\'s 15 global manufacturing partners.',
+              trustBadge1: 'Application Whitepapers & Notes',
+              trustBadge2: 'Video Demos & Technical Webinars',
+              trustBadge3: 'Direct Manufacturer Bulletins',
+              oemBlogs: parsed
+            };
+          }
         } else if (pageKey === 'contact') {
           const defaults = INITIAL_CONTENT.contact;
           const mergedCareers = {
@@ -764,7 +780,62 @@ export const ContentService = {
     }
 
     if (pageKey === 'blogs') {
-      const initial = OEM_BLOGS || [];
+      const initial = {
+        heroTitle: 'OEM Technical News, Video Demos & Insights',
+        heroSubtitle: 'Direct technical bulletins, video demonstrations, application whitepapers, and product release updates from ICON Electromatic\'s 15 global manufacturing partners.',
+        trustBadge1: 'Application Whitepapers & Notes',
+        trustBadge2: 'Video Demos & Technical Webinars',
+        trustBadge3: 'Direct Manufacturer Bulletins',
+        oemBlogs: (OEM_BLOGS || []).map(b => ({
+          oemId: b.oemId,
+          officialWebsite: b.officialWebsite || '',
+          portalName: b.portalName || '',
+          headline: b.headline || '',
+          visible: b.visible !== false,
+          articles: (b.articles || []).map(a => ({
+            id: a.id || `art-${Math.random().toString(36).substr(2, 6)}`,
+            title: a.title || '',
+            date: a.date || '',
+            category: a.category || 'Technical News',
+            readTime: a.readTime || '5 min read',
+            image: a.image || '',
+            summary: a.summary || '',
+            content: a.content || '',
+            tags: Array.isArray(a.tags) ? a.tags : [],
+            visible: a.visible !== false
+          })),
+          videos: (b.videos || []).map(v => ({
+            id: v.id || `vid-${Math.random().toString(36).substr(2, 6)}`,
+            title: v.title || '',
+            speaker: v.speaker || '',
+            duration: v.duration || '',
+            date: v.date || '',
+            thumbnail: v.thumbnail || '',
+            videoUrl: v.videoUrl || '',
+            summary: v.summary || '',
+            topics: Array.isArray(v.topics) ? v.topics : [],
+            visible: v.visible !== false
+          })),
+          whitepapers: (b.whitepapers || []).map(w => ({
+            id: w.id || `wp-${Math.random().toString(36).substr(2, 6)}`,
+            title: w.title || '',
+            author: w.author || '',
+            date: w.date || '',
+            pages: w.pages || '',
+            frequencyBand: w.frequencyBand || '',
+            summary: w.summary || '',
+            keyFindings: Array.isArray(w.keyFindings) ? w.keyFindings : [],
+            downloadUrl: w.downloadUrl || '',
+            visible: w.visible !== false
+          })),
+          officialLinks: (b.officialLinks || []).map(l => ({
+            title: l.title || '',
+            url: l.url || '',
+            description: l.description || '',
+            icon: l.icon || 'fa-globe'
+          }))
+        }))
+      };
       localStorage.setItem('cms_blogs', JSON.stringify(initial));
       return initial;
     }
