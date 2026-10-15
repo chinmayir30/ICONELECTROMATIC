@@ -193,17 +193,17 @@ body.sidebar-drawer-open {
 .drawer-logo {
   display: inline-flex;
   align-items: center;
-  padding: 4px 10px;
-  background: #ffffff;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.9);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  padding: 4px 0;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0;
+  box-shadow: none !important;
+  transition: transform 0.2s ease;
 }
 
 .drawer-logo:hover {
   transform: scale(1.02);
-  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+  box-shadow: none !important;
 }
 
 .drawer-logo img {
@@ -212,6 +212,13 @@ body.sidebar-drawer-open {
   width: auto;
   object-fit: contain;
   display: block;
+  filter: none !important;
+}
+
+[data-theme="light"] .drawer-logo {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 .drawer-close-btn {
@@ -528,8 +535,11 @@ body.sidebar-drawer-open {
     padding: 10px 14px;
   }
   .drawer-logo img {
-    height: 32px;
-    max-height: 32px;
+    height: 32px !important;
+    max-height: 32px !important;
+    width: auto !important;
+    object-fit: contain !important;
+    display: block !important;
   }
   .drawer-body {
     padding: 8px 12px 14px;

@@ -118,7 +118,9 @@ function renderSidebarDrawerHTML(currentRoute) {
     localStorage.getItem('icon-theme') === 'light' ||
     document.documentElement.getAttribute('data-theme') === 'light'
   );
-  const logoSrc = ContentService.resolveImg('/darker-version-logo.png');
+  const logoSrc = ContentService.resolveImg(
+    isLight ? '/lighter-version-logo.png' : '/darker-version-logo.png'
+  );
   const ctaText = data.ctaLabel || data.ctaText || 'Request Quote';
   const ctaLink = data.ctaLink || '/contact';
 
