@@ -20,10 +20,10 @@ export default defineConfig({
       // Ensure Vite knows the HTML entry point.
       input: 'index.html',
       output: {
-        // Use clean, relative filenames for all assets.
-        entryFileNames: '[name].js',
-        chunkFileNames: '[name].[hash].js',
-        assetFileNames: '[name].[ext]',
+        // Use hashed filenames for cache busting across deployments
+        entryFileNames: 'assets/[name]-[hash].js',
+        chunkFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash].[ext]',
       },
     },
   },

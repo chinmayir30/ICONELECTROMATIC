@@ -138,8 +138,8 @@ function renderSidebarDrawerHTML(currentRoute) {
     <div class="sidebar-drawer-overlay" id="sidebar-drawer-overlay" aria-hidden="true"></div>
     <aside class="sidebar-drawer" id="sidebar-drawer" aria-label="Quick Navigation Sidebar" aria-hidden="true">
       <div class="drawer-header">
-        <a href="#/" class="drawer-logo" data-route="/" title="ICON ELECTROMATIC Home">
-          <img src="${logoSrc}" alt="ICON ELECTROMATIC" />
+        <a href="#/" class="drawer-logo" data-route="/" title="ICON ELECTROMATIC Home" style="background: transparent !important; border: none !important; box-shadow: none !important; padding: 4px 0 !important; display: inline-flex !important; align-items: center !important;">
+          <img src="${logoSrc}" alt="ICON ELECTROMATIC" style="height: 34px; max-height: 34px; width: auto; object-fit: contain; display: block;" />
         </a>
         <button class="drawer-close-btn" id="drawer-close-btn" aria-label="Close navigation sidebar" title="Close">
           <i class="fa-solid fa-xmark"></i>
@@ -186,6 +186,14 @@ export function openSidebarDrawer() {
   const toggleBtn = document.getElementById('header-sidebar-toggle');
 
   if (drawer && overlay) {
+    // Sync logo with active theme
+    const isLight = document.documentElement.getAttribute('data-theme') === 'light' ||
+      localStorage.getItem('icon-theme') === 'light';
+    const drawerLogoImg = drawer.querySelector('.drawer-logo img');
+    if (drawerLogoImg) {
+      drawerLogoImg.src = isLight ? '/lighter-version-logo.png' : '/darker-version-logo.png';
+    }
+
     drawer.classList.add('open');
     drawer.setAttribute('aria-hidden', 'false');
     overlay.classList.add('open');
