@@ -2547,6 +2547,7 @@ function bindContactTabEvents() {
 
 // ─── PRODUCTS / OEMS TAB ─────────────────────────────────────────────────────
 const expandedOemIds = new Set();
+const expandedCategoryKeys = new Set();
 let catalogSearchQuery = '';
 
 function renderProductsTab() {
@@ -2554,9 +2555,11 @@ function renderProductsTab() {
 
   const totalOems = oems.length;
   const visibleOemsCount = oems.filter(o => o.visible !== false).length;
+  let totalCategoriesCount = 0;
   let totalProductsCount = 0;
   oems.forEach(o => {
     (o.categories || []).forEach(cat => {
+      totalCategoriesCount++;
       totalProductsCount += (cat.products || []).length;
     });
   });
@@ -2569,8 +2572,11 @@ function renderProductsTab() {
     if ((o.description || '').toLowerCase().includes(q)) return true;
     return (o.categories || []).some(cat => {
       if ((cat.name || '').toLowerCase().includes(q)) return true;
+      if ((cat.description || '').toLowerCase().includes(q)) return true;
+      if ((cat.label || '').toLowerCase().includes(q)) return true;
       return (cat.products || []).some(p => {
         return (p.name || '').toLowerCase().includes(q) ||
+               (p.id || '').toLowerCase().includes(q) ||
                (p.description || '').toLowerCase().includes(q) ||
                (p.applications || '').toLowerCase().includes(q);
       });
@@ -2581,104 +2587,190 @@ function renderProductsTab() {
     const origIdx = oems.indexOf(oem);
     const resolvedLogo = ImageStorage.resolveImageUrl(oem.logoImg);
 
-    const oemProds = [];
-    (oem.categories || []).forEach((cat, catIdx) => {
-      (cat.products || []).forEach((prod, prodIdx) => {
-        oemProds.push({
-          ...prod,
-          catId: cat.id,
-          catName: cat.name,
-          catIdx,
-          prodIdx,
-        });
-      });
+    let oemProdTotal = 0;
+    (oem.categories || []).forEach(c => {
+      oemProdTotal += (c.products || []).length;
     });
 
-    const prodCount = oemProds.length;
     const catCount = (oem.categories || []).length;
     const isExpanded = expandedOemIds.has(oem.id) || (q.length > 0);
     const isHidden = oem.visible === false;
 
-    let productsPanelHtml = '';
+    let oemPanelHtml = '';
     if (isExpanded) {
-      const productRows = oemProds.map((p, pIdx) => {
-        const prodImg = ImageStorage.resolveImageUrl(p.image || oem.defaultImage);
-        const isProdHidden = p.visible === false;
-        const catProds = oem.categories[p.catIdx]?.products || [];
+      const categories = oem.categories || [];
+
+      const categoriesCardsHtml = categories.map((cat, catIdx) => {
+        const catKey = `${oem.id}__${cat.id || catIdx}`;
+        const catProds = cat.products || [];
+        const isCatExpanded = expandedCategoryKeys.has(catKey) || (q.length > 0 && (
+          (cat.name || '').toLowerCase().includes(q) ||
+          (cat.description || '').toLowerCase().includes(q) ||
+          (cat.label || '').toLowerCase().includes(q) ||
+          catProds.some(p =>
+            (p.name || '').toLowerCase().includes(q) ||
+            (p.id || '').toLowerCase().includes(q) ||
+            (p.description || '').toLowerCase().includes(q) ||
+            (p.applications || '').toLowerCase().includes(q)
+          )
+        ));
+        const isCatHidden = cat.visible === false;
+
+        let catalogPanelHtml = '';
+        if (isCatExpanded) {
+          const productRows = catProds.map((p, prodIdx) => {
+            const prodImg = ImageStorage.resolveImageUrl(p.image || oem.defaultImage);
+            const isProdHidden = p.visible === false;
+
+            return `
+              <tr class="${isProdHidden ? 'a-row-hidden' : ''}">
+                <td style="width: 80px;">
+                  <div class="a-reorder-group">
+                    <button type="button" class="a-btn-reorder btn-move-prod" data-oem-idx="${origIdx}" data-cat-idx="${catIdx}" data-prod-idx="${prodIdx}" data-dir="up" ${prodIdx === 0 ? 'disabled' : ''} title="Move Product Up"><i class="fa-solid fa-arrow-up"></i></button>
+                    <button type="button" class="a-btn-reorder btn-move-prod" data-oem-idx="${origIdx}" data-cat-idx="${catIdx}" data-prod-idx="${prodIdx}" data-dir="down" ${prodIdx === catProds.length - 1 ? 'disabled' : ''} title="Move Product Down"><i class="fa-solid fa-arrow-down"></i></button>
+                  </div>
+                </td>
+                <td style="width: 60px;">
+                  <div class="a-prod-thumb-box">
+                    ${prodImg ? `<img src="${prodImg}" alt="${p.name}" />` : '<i class="fa-solid fa-microchip" style="color:#64748b;"></i>'}
+                  </div>
+                </td>
+                <td>
+                  <div class="a-prod-name-box">
+                    <strong>${p.name || 'Unnamed Product'}</strong>
+                    <span>ID: ${p.id || '—'}</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="a-prod-text-snippet" title="${p.description || ''}">
+                    ${p.description || '<span style="color:#94a3b8;font-style:italic;">No description</span>'}
+                  </div>
+                  ${p.applications ? `<div class="a-prod-text-snippet" style="color:#2563eb;font-size:0.7rem;margin-top:2px;" title="${p.applications}"><i class="fa-solid fa-bullseye"></i> ${p.applications}</div>` : ''}
+                </td>
+                <td>
+                  ${p.link ? `<a href="${p.link}" target="_blank" rel="noopener" class="a-btn a-btn-outline a-btn-sm" style="padding:3px 8px;font-size:0.72rem;"><i class="fa-solid fa-arrow-up-right-from-square"></i> Datasheet</a>` : '<span style="color:#94a3b8;font-size:0.72rem;">None</span>'}
+                </td>
+                <td>
+                  <button type="button" class="a-btn a-btn-sm btn-toggle-prod-vis" data-oem-idx="${origIdx}" data-cat-idx="${catIdx}" data-prod-idx="${prodIdx}" title="Click to toggle visibility" style="${isProdHidden ? 'opacity:0.6;background:#f1f5f9;color:#64748b;' : 'background:#ecfdf5;color:#059669;border-color:#a7f3d0;'}">
+                    <i class="fa-solid ${isProdHidden ? 'fa-eye-slash' : 'fa-eye'}"></i> ${isProdHidden ? 'Hidden' : 'Visible'}
+                  </button>
+                </td>
+                <td style="white-space: nowrap;">
+                  <button type="button" class="a-btn a-btn-outline a-btn-sm btn-edit-product" data-oem-idx="${origIdx}" data-cat-idx="${catIdx}" data-prod-idx="${prodIdx}"><i class="fa-solid fa-pen"></i> Edit</button>
+                  <button type="button" class="a-btn a-btn-danger a-btn-sm btn-del-product" data-oem-idx="${origIdx}" data-cat-idx="${catIdx}" data-prod-idx="${prodIdx}" style="margin-left:4px;"><i class="fa-solid fa-trash"></i></button>
+                </td>
+              </tr>
+            `;
+          }).join('');
+
+          catalogPanelHtml = `
+            <div class="a-cat-products-panel">
+              <div class="a-cat-products-top">
+                <div>
+                  <strong style="color:#0f172a; font-size:0.86rem;">
+                    <i class="fa-solid fa-microchip" style="color:var(--a-blue);margin-right:5px;"></i>
+                    Product Portfolio &amp; Component Catalog — ${cat.name} (${catProds.length})
+                  </strong>
+                  <div style="font-size:0.74rem; color:var(--a-muted); margin-top:2px;">
+                    Edit hardware models, upload component photos, update technical specifications, applications, and datasheets for ${cat.name}
+                  </div>
+                </div>
+                <button type="button" class="a-btn a-btn-primary a-btn-sm btn-add-prod-to-cat" data-oem-idx="${origIdx}" data-cat-idx="${catIdx}">
+                  <i class="fa-solid fa-plus"></i> Add Product to ${cat.name}
+                </button>
+              </div>
+              <div class="a-table-wrap">
+                <table class="a-sub-table">
+                  <thead>
+                    <tr>
+                      <th>Order</th>
+                      <th>Image</th>
+                      <th>Model / Part No.</th>
+                      <th>Description &amp; Applications</th>
+                      <th>Datasheet</th>
+                      <th>Visibility</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${productRows || `<tr><td colspan="7" style="text-align:center;padding:22px;color:var(--a-muted);">No products registered under <strong>${cat.name}</strong> yet. Click "+ Add Product to ${cat.name}" above to add one.</td></tr>`}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          `;
+        }
 
         return `
-          <tr class="${isProdHidden ? 'a-row-hidden' : ''}">
-            <td style="width: 80px;">
-              <div class="a-reorder-group">
-                <button type="button" class="a-btn-reorder btn-move-prod" data-oem-idx="${origIdx}" data-cat-idx="${p.catIdx}" data-prod-idx="${p.prodIdx}" data-dir="up" ${p.prodIdx === 0 ? 'disabled' : ''} title="Move Up"><i class="fa-solid fa-arrow-up"></i></button>
-                <button type="button" class="a-btn-reorder btn-move-prod" data-oem-idx="${origIdx}" data-cat-idx="${p.catIdx}" data-prod-idx="${p.prodIdx}" data-dir="down" ${p.prodIdx === catProds.length - 1 ? 'disabled' : ''} title="Move Down"><i class="fa-solid fa-arrow-down"></i></button>
+          <div class="a-cat-card ${isCatHidden ? 'cat-hidden' : ''}" id="cat-card-${catKey.replace(/[^a-zA-Z0-9_-]/g, '_')}">
+            <div class="a-cat-header">
+              <div class="a-cat-header-left">
+                <div class="a-reorder-group">
+                  <button type="button" class="a-btn-reorder btn-move-cat" data-oem-idx="${origIdx}" data-cat-idx="${catIdx}" data-dir="up" ${catIdx === 0 ? 'disabled' : ''} title="Move Category Up"><i class="fa-solid fa-arrow-up"></i></button>
+                  <button type="button" class="a-btn-reorder btn-move-cat" data-oem-idx="${origIdx}" data-cat-idx="${catIdx}" data-dir="down" ${catIdx === categories.length - 1 ? 'disabled' : ''} title="Move Category Down"><i class="fa-solid fa-arrow-down"></i></button>
+                </div>
+                <div class="a-cat-icon-badge">
+                  <i class="fa-solid fa-layer-group"></i>
+                </div>
+                <div class="a-cat-info">
+                  <div class="a-cat-title-row">
+                    <span class="a-cat-title">${cat.name || 'Unnamed Category'}</span>
+                    <span class="a-badge a-badge-blue"><i class="fa-solid fa-microchip"></i> ${catProds.length} ${catProds.length === 1 ? 'Product' : 'Products'}</span>
+                    ${cat.label ? `<span class="a-badge" style="background:#fef3c7;color:#92400e;border:1px solid #fde68a;">${cat.label}</span>` : ''}
+                    ${isCatHidden ? '<span class="a-badge" style="background:#64748b;color:#fff;"><i class="fa-solid fa-eye-slash"></i> Hidden</span>' : '<span class="a-badge a-badge-green"><i class="fa-solid fa-eye"></i> Visible</span>'}
+                  </div>
+                  <div class="a-cat-desc" title="${cat.description || ''}">
+                    ${cat.description || '<span style="font-style:italic;color:#94a3b8;">No category description provided</span>'}
+                  </div>
+                </div>
               </div>
-            </td>
-            <td style="width: 60px;">
-              <div class="a-prod-thumb-box">
-                ${prodImg ? `<img src="${prodImg}" alt="${p.name}" />` : '<i class="fa-solid fa-microchip" style="color:#64748b;"></i>'}
+
+              <div class="a-cat-header-actions">
+                <button type="button" class="a-btn a-btn-outline a-btn-sm btn-toggle-cat-vis" data-oem-idx="${origIdx}" data-cat-idx="${catIdx}" title="${isCatHidden ? 'Show category on public site' : 'Hide category from public site'}">
+                  <i class="fa-solid ${isCatHidden ? 'fa-eye' : 'fa-eye-slash'}"></i> ${isCatHidden ? 'Show' : 'Hide'}
+                </button>
+                <button type="button" class="a-btn a-btn-primary a-btn-sm btn-toggle-cat-expand" data-cat-key="${catKey}">
+                  <i class="fa-solid ${isCatExpanded ? 'fa-chevron-up' : 'fa-chevron-down'}"></i>
+                  <span>${isCatExpanded ? 'Collapse' : 'Expand'} Portfolio &amp; Catalog (${catProds.length})</span>
+                </button>
+                <button type="button" class="a-btn a-btn-outline a-btn-sm btn-edit-category" data-oem-idx="${origIdx}" data-cat-idx="${catIdx}">
+                  <i class="fa-solid fa-pen"></i> Edit Category
+                </button>
+                <button type="button" class="a-btn a-btn-danger a-btn-sm btn-del-category" data-oem-idx="${origIdx}" data-cat-idx="${catIdx}" title="Delete Category and its products">
+                  <i class="fa-solid fa-trash"></i>
+                </button>
               </div>
-            </td>
-            <td>
-              <div class="a-prod-name-box">
-                <strong>${p.name || 'Unnamed Product'}</strong>
-                <span>ID: ${p.id || '—'}</span>
-              </div>
-            </td>
-            <td>
-              <span class="a-badge a-badge-blue">${p.catName || p.category || 'General'}</span>
-            </td>
-            <td>
-              <div class="a-prod-text-snippet" title="${p.description || ''}">
-                ${p.description || '<span style="color:#94a3b8;font-style:italic;">No description</span>'}
-              </div>
-              ${p.applications ? `<div class="a-prod-text-snippet" style="color:#2563eb;font-size:0.7rem;margin-top:2px;" title="${p.applications}"><i class="fa-solid fa-bullseye"></i> ${p.applications}</div>` : ''}
-            </td>
-            <td>
-              ${p.link ? `<a href="${p.link}" target="_blank" rel="noopener" class="a-btn a-btn-outline a-btn-sm" style="padding:3px 8px;font-size:0.72rem;"><i class="fa-solid fa-arrow-up-right-from-square"></i> Link</a>` : '<span style="color:#94a3b8;font-size:0.72rem;">None</span>'}
-            </td>
-            <td>
-              <button type="button" class="a-btn a-btn-sm btn-toggle-prod-vis" data-oem-idx="${origIdx}" data-cat-idx="${p.catIdx}" data-prod-idx="${p.prodIdx}" title="Click to toggle visibility" style="${isProdHidden ? 'opacity:0.6;background:#f1f5f9;color:#64748b;' : 'background:#ecfdf5;color:#059669;border-color:#a7f3d0;'}">
-                <i class="fa-solid ${isProdHidden ? 'fa-eye-slash' : 'fa-eye'}"></i> ${isProdHidden ? 'Hidden' : 'Visible'}
-              </button>
-            </td>
-            <td style="white-space: nowrap;">
-              <button type="button" class="a-btn a-btn-outline a-btn-sm btn-edit-product" data-oem-idx="${origIdx}" data-cat-idx="${p.catIdx}" data-prod-idx="${p.prodIdx}"><i class="fa-solid fa-pen"></i> Edit</button>
-              <button type="button" class="a-btn a-btn-danger a-btn-sm btn-del-product" data-oem-idx="${origIdx}" data-cat-idx="${p.catIdx}" data-prod-idx="${p.prodIdx}" style="margin-left:4px;"><i class="fa-solid fa-trash"></i></button>
-            </td>
-          </tr>
+            </div>
+
+            ${catalogPanelHtml}
+          </div>
         `;
       }).join('');
 
-      productsPanelHtml = `
+      oemPanelHtml = `
         <div class="a-oem-panel">
           <div class="a-oem-panel-top">
             <div>
-              <strong style="color:#0f172a; font-size:0.88rem;">Products &amp; Lines under ${oem.name} (${prodCount})</strong>
-              <div style="font-size:0.75rem; color:var(--a-muted); margin-top:2px;">Edit specifications, replace photos, reorder, or add variants</div>
+              <strong style="color:#0f172a; font-size:0.9rem;">
+                <i class="fa-solid fa-folder-tree" style="color:var(--a-blue);margin-right:6px;"></i>
+                Product Categories under ${oem.name} (${catCount})
+              </strong>
+              <div style="font-size:0.75rem; color:var(--a-muted); margin-top:2px;">
+                Edit all category content, titles, and labels. Click "Expand Portfolio &amp; Catalog" to edit hardware models.
+              </div>
             </div>
-            <button type="button" class="a-btn a-btn-primary a-btn-sm btn-add-prod-to-oem" data-oem-idx="${origIdx}">
-              <i class="fa-solid fa-plus"></i> Add Product to ${oem.shortName || oem.name}
-            </button>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <button type="button" class="a-btn a-btn-outline a-btn-sm btn-expand-oem-cats" data-oem-id="${oem.id}">
+                <i class="fa-solid fa-angles-down"></i> Expand All Categories
+              </button>
+              <button type="button" class="a-btn a-btn-primary a-btn-sm btn-add-cat-to-oem" data-oem-idx="${origIdx}">
+                <i class="fa-solid fa-plus"></i> Add Category to ${oem.shortName || oem.name}
+              </button>
+            </div>
           </div>
-          <div class="a-table-wrap">
-            <table class="a-sub-table">
-              <thead>
-                <tr>
-                  <th>Order</th>
-                  <th>Image</th>
-                  <th>Product Model</th>
-                  <th>Category</th>
-                  <th>Description &amp; Applications</th>
-                  <th>Datasheet</th>
-                  <th>Visibility</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${productRows || '<tr><td colspan="8" style="text-align:center;padding:24px;color:var(--a-muted);">No products registered under this OEM yet. Click "+ Add Product to ' + (oem.shortName || oem.name) + '" above.</td></tr>'}
-              </tbody>
-            </table>
+
+          <div class="a-cat-list">
+            ${categoriesCardsHtml || `<div class="a-empty-state" style="padding:24px;text-align:center;background:#fff;border-radius:8px;border:1px dashed var(--a-border);">No product categories registered yet. Click "+ Add Category to ${oem.shortName || oem.name}" above.</div>`}
           </div>
         </div>
       `;
@@ -2702,9 +2794,9 @@ function renderProductsTab() {
                 ${isHidden ? '<span class="a-badge" style="background:#64748b;color:#fff;"><i class="fa-solid fa-eye-slash"></i> Hidden</span>' : '<span class="a-badge a-badge-green"><i class="fa-solid fa-eye"></i> Visible</span>'}
               </div>
               <div class="a-oem-meta-row">
-                <span><i class="fa-solid fa-folder-tree"></i> ${catCount} ${catCount === 1 ? 'Category' : 'Categories'}</span>
+                <span><i class="fa-solid fa-folder-tree"></i> <strong>${catCount}</strong> ${catCount === 1 ? 'Category' : 'Categories'}</span>
                 <span>&bull;</span>
-                <span><i class="fa-solid fa-microchip"></i> <strong>${prodCount}</strong> ${prodCount === 1 ? 'Product' : 'Products & Lines'}</span>
+                <span><i class="fa-solid fa-microchip"></i> <strong>${oemProdTotal}</strong> ${oemProdTotal === 1 ? 'Product' : 'Products & Lines'}</span>
                 ${oem.website ? `<span>&bull;</span> <a href="${oem.website}" target="_blank" rel="noopener" style="color:var(--a-blue);text-decoration:none;"><i class="fa-solid fa-globe"></i> Website</a>` : ''}
               </div>
             </div>
@@ -2716,18 +2808,18 @@ function renderProductsTab() {
             </button>
             <button type="button" class="a-btn a-btn-primary a-btn-sm btn-toggle-oem-expand" data-oem-id="${oem.id}">
               <i class="fa-solid ${isExpanded ? 'fa-chevron-up' : 'fa-chevron-down'}"></i>
-              <span>${isExpanded ? 'Collapse' : 'Expand'} Products (${prodCount})</span>
+              <span>${isExpanded ? 'Collapse' : 'Manage'} Categories (${catCount})</span>
             </button>
             <button type="button" class="a-btn a-btn-outline a-btn-sm btn-edit-oem" data-idx="${origIdx}">
               <i class="fa-solid fa-pen"></i> Edit OEM
             </button>
-            <button type="button" class="a-btn a-btn-danger a-btn-sm btn-del-oem" data-idx="${origIdx}" title="Delete OEM and its products">
+            <button type="button" class="a-btn a-btn-danger a-btn-sm btn-del-oem" data-idx="${origIdx}" title="Delete OEM and its categories">
               <i class="fa-solid fa-trash"></i>
             </button>
           </div>
         </div>
 
-        ${productsPanelHtml}
+        ${oemPanelHtml}
       </div>
     `;
   }).join('');
@@ -2736,8 +2828,8 @@ function renderProductsTab() {
     <div class="a-cards-box">
       <div class="a-cards-box-header" style="align-items:flex-start;">
         <div>
-          <h3>OEM Principals &amp; Product Portfolio Catalog</h3>
-          <p>Manage all 15 authorized global manufacturing partners and every associated product line. Expand any OEM to edit models, upload hardware photos, and adjust specifications.</p>
+          <h3>OEM Principals, Product Categories &amp; Component Catalogs</h3>
+          <p>Full two-tier management: select any of the 15 authorized OEM principals to edit its product categories and labels, then expand any category to edit its Product Portfolio &amp; Component Catalog.</p>
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
           <button type="button" class="a-btn a-btn-outline a-btn-sm" id="btn-expand-all"><i class="fa-solid fa-angles-down"></i> Expand All</button>
@@ -2754,13 +2846,17 @@ function renderProductsTab() {
             <span style="color:var(--a-muted);">/ ${totalOems}</span>
           </div>
           <div class="a-catalog-stat-badge">
+            <span>Product Categories:</span>
+            <strong>${totalCategoriesCount}</strong>
+          </div>
+          <div class="a-catalog-stat-badge">
             <span>Total Catalog Products:</span>
             <strong>${totalProductsCount}</strong>
           </div>
         </div>
 
         <div style="flex:1;max-width:420px;position:relative;">
-          <input type="text" id="admin-catalog-search-input" class="a-input" placeholder="Search OEMs, products, categories, or keywords..." value="${catalogSearchQuery || ''}" style="padding-left:36px;" />
+          <input type="text" id="admin-catalog-search-input" class="a-input" placeholder="Search OEMs, categories, products, or keywords..." value="${catalogSearchQuery || ''}" style="padding-left:36px;" />
           <i class="fa-solid fa-magnifying-glass" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--a-muted);font-size:0.85rem;"></i>
           ${catalogSearchQuery ? '<button type="button" id="admin-catalog-search-clear" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--a-muted);cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>' : ''}
         </div>
@@ -2781,7 +2877,6 @@ function bindProductsTabEvents() {
   searchInput?.addEventListener('input', (e) => {
     catalogSearchQuery = e.target.value;
     rerender();
-    // Re-focus search input and restore cursor position
     const newInp = document.getElementById('admin-catalog-search-input');
     if (newInp) {
       newInp.focus();
@@ -2796,12 +2891,18 @@ function bindProductsTabEvents() {
 
   // Expand / Collapse All
   document.getElementById('btn-expand-all')?.addEventListener('click', () => {
-    oems.forEach(o => expandedOemIds.add(o.id));
+    oems.forEach(o => {
+      expandedOemIds.add(o.id);
+      (o.categories || []).forEach((c, cIdx) => {
+        expandedCategoryKeys.add(`${o.id}__${c.id || cIdx}`);
+      });
+    });
     rerender();
   });
 
   document.getElementById('btn-collapse-all')?.addEventListener('click', () => {
     expandedOemIds.clear();
+    expandedCategoryKeys.clear();
     rerender();
   });
 
@@ -2813,6 +2914,33 @@ function bindProductsTabEvents() {
         expandedOemIds.delete(oemId);
       } else {
         expandedOemIds.add(oemId);
+      }
+      rerender();
+    });
+  });
+
+  // Expand all categories under a specific OEM
+  document.querySelectorAll('.btn-expand-oem-cats').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const oemId = btn.getAttribute('data-oem-id');
+      const oem = oems.find(o => o.id === oemId);
+      if (oem) {
+        (oem.categories || []).forEach((c, cIdx) => {
+          expandedCategoryKeys.add(`${oem.id}__${c.id || cIdx}`);
+        });
+        rerender();
+      }
+    });
+  });
+
+  // Toggle Category Expand / Collapse
+  document.querySelectorAll('.btn-toggle-cat-expand').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const catKey = btn.getAttribute('data-cat-key');
+      if (expandedCategoryKeys.has(catKey)) {
+        expandedCategoryKeys.delete(catKey);
+      } else {
+        expandedCategoryKeys.add(catKey);
       }
       rerender();
     });
@@ -2880,7 +3008,8 @@ function bindProductsTabEvents() {
           {
             id: 'general',
             name: 'General Products',
-            description: '',
+            label: '',
+            description: 'Core product line and components',
             visible: true,
             products: []
           }
@@ -2956,27 +3085,190 @@ function bindProductsTabEvents() {
     });
   });
 
-  // Add Product to OEM
-  document.querySelectorAll('.btn-add-prod-to-oem').forEach(btn => {
+  // ─── CATEGORY MANAGEMENT EVENTS ───
+
+  // Toggle Category Visibility
+  document.querySelectorAll('.btn-toggle-cat-vis').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const oemIdx = parseInt(btn.getAttribute('data-oem-idx'), 10);
+      const catIdx = parseInt(btn.getAttribute('data-cat-idx'), 10);
+      const cat = oems[oemIdx]?.categories?.[catIdx];
+      if (!cat) return;
+
+      cat.visible = cat.visible === false ? true : false;
+      ContentService.saveData('products', oems);
+      rerender();
+      showToast(`Category "${cat.name}" is now ${cat.visible ? 'visible' : 'hidden'}.`, 'success');
+    });
+  });
+
+  // Move Category Up / Down
+  document.querySelectorAll('.btn-move-cat').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const oemIdx = parseInt(btn.getAttribute('data-oem-idx'), 10);
+      const catIdx = parseInt(btn.getAttribute('data-cat-idx'), 10);
+      const dir = btn.getAttribute('data-dir');
+      const oem = oems[oemIdx];
+      if (!oem || !oem.categories) return;
+
+      const targetIdx = dir === 'up' ? catIdx - 1 : catIdx + 1;
+      oem.categories = reorderArray(oem.categories, catIdx, targetIdx);
+      ContentService.saveData('products', oems);
+      rerender();
+      showToast('Categories reordered!', 'success');
+    });
+  });
+
+  // Add Category to OEM
+  document.querySelectorAll('.btn-add-cat-to-oem').forEach(btn => {
     btn.addEventListener('click', () => {
       const oemIdx = parseInt(btn.getAttribute('data-oem-idx'), 10);
       const oem = oems[oemIdx];
-      const existingCats = (oem.categories || []).map(c => c.name);
+      if (!oem) return;
 
-      const catOptions = existingCats.map(c => `<option value="${c}">${c}</option>`).join('');
-
-      openModal(`Add Product to ${oem.name}`, `
+      openModal(`Add Product Category to ${oem.name}`, `
         <div class="a-field">
-          <label class="a-label">Product Model / Name *</label>
+          <label class="a-label">Category Title / Name *</label>
+          <input class="a-input" name="name" required placeholder="e.g. RT/Duroid or RO4000 Series" />
+        </div>
+        <div class="a-field" style="margin-top:12px;">
+          <label class="a-label">Category ID / Slug (Optional)</label>
+          <input class="a-input" name="id" placeholder="e.g. rt-duroid (auto-generated if left blank)" />
+        </div>
+        <div class="a-field" style="margin-top:12px;">
+          <label class="a-label">Category Tag / Label (Optional)</label>
+          <input class="a-input" name="label" placeholder="e.g. Flagship Line, Low Loss, Mil-Spec" />
+        </div>
+        <div class="a-field" style="margin-top:12px;">
+          <label class="a-label">Visibility Status</label>
+          <select class="a-input" name="visible">
+            <option value="true" selected>Visible in Public Catalog</option>
+            <option value="false">Hidden (Draft / Archive)</option>
+          </select>
+        </div>
+        <div class="a-field span2" style="margin-top:12px;">
+          <label class="a-label">Category Description &amp; Overview</label>
+          <textarea class="a-textarea" name="description" rows="3" placeholder="Overview of what this category covers, typical materials, frequency domains..."></textarea>
+        </div>
+      `, (data) => {
+        if (!oem.categories) oem.categories = [];
+        const slug = (data.id || data.name).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+        const newCat = {
+          id: slug || ('cat-' + Date.now()),
+          name: data.name.trim(),
+          label: (data.label || '').trim(),
+          description: (data.description || '').trim(),
+          visible: data.visible === 'true',
+          products: []
+        };
+
+        oem.categories.push(newCat);
+        expandedOemIds.add(oem.id);
+        expandedCategoryKeys.add(`${oem.id}__${newCat.id}`);
+        ContentService.saveData('products', oems);
+        rerender();
+        showToast(`Category "${newCat.name}" added to ${oem.shortName || oem.name}!`, 'success');
+      });
+    });
+  });
+
+  // Edit Category
+  document.querySelectorAll('.btn-edit-category').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const oemIdx = parseInt(btn.getAttribute('data-oem-idx'), 10);
+      const catIdx = parseInt(btn.getAttribute('data-cat-idx'), 10);
+      const oem = oems[oemIdx];
+      const cat = oem?.categories?.[catIdx];
+      if (!oem || !cat) return;
+
+      openModal(`Edit Category: ${cat.name}`, `
+        <div class="a-field">
+          <label class="a-label">Category Title / Name *</label>
+          <input class="a-input" name="name" value="${cat.name || ''}" required />
+        </div>
+        <div class="a-field" style="margin-top:12px;">
+          <label class="a-label">Category ID / Slug</label>
+          <input class="a-input" name="id" value="${cat.id || ''}" required />
+        </div>
+        <div class="a-field" style="margin-top:12px;">
+          <label class="a-label">Category Tag / Label (Optional)</label>
+          <input class="a-input" name="label" value="${cat.label || ''}" placeholder="e.g. Flagship Line, Low Loss, Mil-Spec" />
+        </div>
+        <div class="a-field" style="margin-top:12px;">
+          <label class="a-label">Visibility Status</label>
+          <select class="a-input" name="visible">
+            <option value="true" ${cat.visible !== false ? 'selected' : ''}>Visible in Public Catalog</option>
+            <option value="false" ${cat.visible === false ? 'selected' : ''}>Hidden (Draft / Archive)</option>
+          </select>
+        </div>
+        <div class="a-field span2" style="margin-top:12px;">
+          <label class="a-label">Category Description &amp; Overview</label>
+          <textarea class="a-textarea" name="description" rows="3">${cat.description || ''}</textarea>
+        </div>
+      `, (data) => {
+        const oldCatName = cat.name;
+        const newCatName = data.name.trim();
+
+        cat.name = newCatName;
+        cat.id = (data.id || cat.id).trim();
+        cat.label = (data.label || '').trim();
+        cat.description = (data.description || '').trim();
+        cat.visible = data.visible === 'true';
+
+        // Cascade category name to all contained products
+        if (oldCatName !== newCatName && Array.isArray(cat.products)) {
+          cat.products.forEach(p => {
+            p.category = newCatName;
+          });
+        }
+
+        expandedOemIds.add(oem.id);
+        ContentService.saveData('products', oems);
+        rerender();
+        showToast(`Category "${newCatName}" updated successfully!`, 'success');
+      });
+    });
+  });
+
+  // Delete Category
+  document.querySelectorAll('.btn-del-category').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const oemIdx = parseInt(btn.getAttribute('data-oem-idx'), 10);
+      const catIdx = parseInt(btn.getAttribute('data-cat-idx'), 10);
+      const oem = oems[oemIdx];
+      const cat = oem?.categories?.[catIdx];
+      if (!oem || !cat) return;
+
+      const prodCount = (cat.products || []).length;
+      if (confirm(`Are you sure you want to delete category "${cat.name}" and all ${prodCount} products inside it?\n\nThis action cannot be undone.`)) {
+        expandedCategoryKeys.delete(`${oem.id}__${cat.id || catIdx}`);
+        oem.categories.splice(catIdx, 1);
+        ContentService.saveData('products', oems);
+        rerender();
+        showToast(`Deleted category "${cat.name}".`, '');
+      }
+    });
+  });
+
+  // ─── PRODUCT PORTFOLIO & CATALOG MANAGEMENT EVENTS ───
+
+  // Add Product to Category
+  document.querySelectorAll('.btn-add-prod-to-cat').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const oemIdx = parseInt(btn.getAttribute('data-oem-idx'), 10);
+      const catIdx = parseInt(btn.getAttribute('data-cat-idx'), 10);
+      const oem = oems[oemIdx];
+      const cat = oem?.categories?.[catIdx];
+      if (!oem || !cat) return;
+
+      openModal(`Add Product to ${cat.name} (${oem.name})`, `
+        <div class="a-field">
+          <label class="a-label">Product Model / Part No. *</label>
           <input class="a-input" name="name" required placeholder="e.g. RT/duroid 5880 or QPA2211" />
         </div>
         <div class="a-field" style="margin-top:12px;">
-          <label class="a-label">Category Name *</label>
-          <input class="a-input" name="category" list="cat-suggestions" required placeholder="Select existing or type new category..." value="${existingCats[0] || 'General'}" />
-          <datalist id="cat-suggestions">
-            ${catOptions}
-          </datalist>
-          <small style="color:var(--a-muted);font-size:0.75rem;">Pick from existing categories above or type a new category name.</small>
+          <label class="a-label">Product ID / Part Identifier (Optional)</label>
+          <input class="a-input" name="id" placeholder="e.g. 5880-laminate (auto-generated if left blank)" />
         </div>
         <div class="a-field" style="margin-top:12px;">
           <label class="a-label">Visibility Status</label>
@@ -2992,33 +3284,20 @@ function bindProductsTabEvents() {
         </div>
         <div class="a-field span2" style="margin-top:12px;">
           <label class="a-label">Specifications &amp; Target Applications</label>
-          <textarea class="a-textarea" name="applications" rows="3" placeholder="e.g. Military Radar, Satellite Communications, 5G mmWave..."></textarea>
+          <textarea class="a-textarea" name="applications" rows="3" placeholder="e.g. Military Radar, Satellite Communications, 5G/6G mmWave..."></textarea>
         </div>
         <div class="a-field span2" style="margin-top:12px;">
           <label class="a-label">Datasheet / Official Product URL</label>
           <input class="a-input" name="link" placeholder="https://..." />
         </div>
       `, (data) => {
-        if (!oem.categories) oem.categories = [];
-        const catName = (data.category || 'General').trim();
-        let targetCat = oem.categories.find(c => c.name.toLowerCase() === catName.toLowerCase());
+        if (!cat.products) cat.products = [];
 
-        if (!targetCat) {
-          const catSlug = catName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-          targetCat = {
-            id: catSlug || ('cat-' + Date.now()),
-            name: catName,
-            description: '',
-            visible: true,
-            products: []
-          };
-          oem.categories.push(targetCat);
-        }
-
+        const prodSlug = (data.name.toLowerCase().replace(/[^a-z0-9]+/g, '-') || 'prod') + '-' + Date.now().toString().slice(-4);
         const newProd = {
-          id: (data.name.toLowerCase().replace(/[^a-z0-9]+/g, '-') || 'prod') + '-' + Date.now().toString().slice(-4),
-          name: data.name,
-          category: catName,
+          id: (data.id ? data.id.trim() : prodSlug),
+          name: data.name.trim(),
+          category: cat.name,
           image: data.image || oem.defaultImage || '',
           description: data.description || '',
           applications: data.applications || '',
@@ -3026,11 +3305,12 @@ function bindProductsTabEvents() {
           visible: data.visible === 'true',
         };
 
-        targetCat.products.push(newProd);
+        cat.products.push(newProd);
         expandedOemIds.add(oem.id);
+        expandedCategoryKeys.add(`${oem.id}__${cat.id || catIdx}`);
         ContentService.saveData('products', oems);
         rerender();
-        showToast(`Added product "${newProd.name}" to ${oem.shortName || oem.name}!`, 'success');
+        showToast(`Added product "${newProd.name}" to ${cat.name}!`, 'success');
       });
     });
   });
@@ -3052,8 +3332,12 @@ function bindProductsTabEvents() {
 
       openModal(`Edit Product: ${prod.name}`, `
         <div class="a-field">
-          <label class="a-label">Product Model / Name *</label>
+          <label class="a-label">Product Model / Part No. *</label>
           <input class="a-input" name="name" value="${prod.name || ''}" required />
+        </div>
+        <div class="a-field" style="margin-top:12px;">
+          <label class="a-label">Product ID</label>
+          <input class="a-input" name="id" value="${prod.id || ''}" />
         </div>
         <div class="a-field" style="margin-top:12px;">
           <label class="a-label">Category Name *</label>
@@ -3061,7 +3345,7 @@ function bindProductsTabEvents() {
           <datalist id="cat-suggestions">
             ${catOptions}
           </datalist>
-          <small style="color:var(--a-muted);font-size:0.75rem;">Modify to move this product into a different category.</small>
+          <small style="color:var(--a-muted);font-size:0.75rem;">Modify to move this product into another category.</small>
         </div>
         <div class="a-field" style="margin-top:12px;">
           <label class="a-label">Visibility Status</label>
@@ -3087,7 +3371,8 @@ function bindProductsTabEvents() {
         const newCatName = (data.category || cat.name).trim();
         const updatedProd = {
           ...prod,
-          name: data.name,
+          name: data.name.trim(),
+          id: (data.id || prod.id).trim(),
           category: newCatName,
           image: data.image,
           description: data.description || '',
@@ -3097,18 +3382,16 @@ function bindProductsTabEvents() {
         };
 
         if (newCatName.toLowerCase() === cat.name.toLowerCase()) {
-          // Update in-place
           cat.products[prodIdx] = updatedProd;
         } else {
-          // Moved category: remove from old category
           cat.products.splice(prodIdx, 1);
-          // Find or create target category
           let targetCat = oem.categories.find(c => c.name.toLowerCase() === newCatName.toLowerCase());
           if (!targetCat) {
             const catSlug = newCatName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
             targetCat = {
               id: catSlug || ('cat-' + Date.now()),
               name: newCatName,
+              label: '',
               description: '',
               visible: true,
               products: []
@@ -3138,7 +3421,7 @@ function bindProductsTabEvents() {
       const prod = cat?.products?.[prodIdx];
       if (!oem || !cat || !prod) return;
 
-      if (confirm(`Delete product "${prod.name}" from ${oem.name}?`)) {
+      if (confirm(`Delete product "${prod.name}" from ${cat.name}?`)) {
         cat.products.splice(prodIdx, 1);
         ContentService.saveData('products', oems);
         rerender();
