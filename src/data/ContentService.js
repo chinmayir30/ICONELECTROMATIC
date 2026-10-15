@@ -216,7 +216,7 @@ const INITIAL_CONTENT = {
       },
       {
         id: 'dom-3',
-        title: '5G & SATCOM',
+        title: '6G & SATCOM',
         desc: 'Ultra-wideband mmWave components, parabolic antenna feed networks, beamformers, and ground station transceivers.',
         image: '/images/timeline/domain-5g-satcom.jpg',
         tag: 'Next-Gen Telecom',
@@ -307,7 +307,7 @@ const INITIAL_CONTENT = {
         desc: 'We represent major RF and Microwave components, mmWave, Semiconductors, Components, Subsystems and Power supplies manufacturers around the world, providing unparalleled support to electronic designers, manufacturers, engineers and researchers.',
         ctaText: 'Explore Represented Products',
         ctaLink: '/products',
-        tags: ['Direct OEM Warranty', 'Mil-Spec Screened', 'Bengaluru Stock Hub', 'Traceable CoCs'],
+        tags: ['Direct OEM Warranty', 'Mil-Spec Screened', 'Traceable CoCs'],
         slides: [
           { image: '/images/hero-amplifier.jpg', caption: 'RF Component Representation — Microwave Amplifier' },
           { image: '/images/gan-power-chip.jpg', caption: 'Active Antenna GaN MMIC Semiconductor' },

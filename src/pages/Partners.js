@@ -96,19 +96,11 @@ export function renderPartnersPage() {
           <div class="services-trust-strip partners-trust-strip" style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:24px;margin-bottom:0;padding-bottom:0;border-bottom:none;">
             <div style="background:rgba(37,99,235,0.08);border:1px solid rgba(37,99,235,0.25);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#93C5FD;display:flex;align-items:center;gap:8px;">
               <i class="fa-solid fa-handshake-angle" style="color:var(--logo-blue-light);"></i>
-              <span><strong>${partners.length}+</strong> Global Technology Partners</span>
-            </div>
-            <div style="background:rgba(225,29,72,0.08);border:1px solid rgba(225,29,72,0.25);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#FDA4AF;display:flex;align-items:center;gap:8px;">
-              <i class="fa-solid fa-shield-halved" style="color:var(--logo-red-light);"></i>
-              <span>Direct Factory Warranties &amp; CoCs</span>
+              <span><strong>10+</strong> Global Technology Partners</span>
             </div>
             <div style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#FCD34D;display:flex;align-items:center;gap:8px;">
               <i class="fa-solid fa-certificate" style="color:#F59E0B;"></i>
               <span>Space &amp; Mil-Spec Screening Support</span>
-            </div>
-            <div style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.25);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#6EE7B7;display:flex;align-items:center;gap:8px;">
-              <i class="fa-solid fa-location-dot" style="color:#10B981;"></i>
-              <span>India Distribution Hub (Bengaluru)</span>
             </div>
           </div>
 

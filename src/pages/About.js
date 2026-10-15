@@ -36,7 +36,7 @@ export function renderAboutPage() {
   const domains = d.domains || [
     { title: 'Aerospace & Defence', desc: 'High-power GaN amplifiers, RF filters, waveguides, and radar subsystems for tactical airborne, naval, and ground-based defense platforms.', image: '/images/timeline/domain-aerospace-defence.jpg', tag: 'Radar & EW Systems' },
     { title: 'Hi-Rel Space', desc: 'Spaceflight-qualified, radiation-tolerant microwave components and low-loss substrates engineered for orbital payloads and satellites.', image: '/images/timeline/domain-hirel-space.jpg', tag: 'Space-Grade Qualified' },
-    { title: '5G & SATCOM', desc: 'Ultra-wideband mmWave components, parabolic antenna feed networks, beamformers, and ground station transceivers.', image: '/images/timeline/domain-5g-satcom.jpg', tag: 'Next-Gen Telecom' },
+    { title: '6G & SATCOM', desc: 'Ultra-wideband mmWave components, parabolic antenna feed networks, beamformers, and ground station transceivers.', image: '/images/timeline/domain-5g-satcom.jpg', tag: 'Next-Gen Telecom' },
     { title: 'Homeland Security & Smart City', desc: 'Perimeter intrusion detection systems (PIDS), tactical perimeter radar sensors, and smart city surveillance electronics.', image: '/images/timeline/domain-homeland-security.jpg', tag: 'Intrusion & Radar' },
   ];
 

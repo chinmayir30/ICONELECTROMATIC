@@ -86,7 +86,7 @@ export function renderServicesPage() {
 
                   ${(srv.tags && srv.tags.length) ? `
                     <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));gap:12px;margin-bottom:24px;">
-                      ${srv.tags.map(t => `
+                      ${srv.tags.filter(t => t !== 'Bengaluru Stock Hub').map(t => `
                         <div style="background:#080D1A;border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:12px;display:flex;align-items:center;gap:10px;">
                           <i class="fa-solid fa-check" style="color:var(--logo-${badgeColor}-light);font-size:0.85rem;"></i>
                           <span style="font-size:0.85rem;color:#E2E8F0;font-weight:500;">${t}</span>

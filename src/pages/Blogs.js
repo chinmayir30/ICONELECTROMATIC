@@ -54,10 +54,6 @@ function renderAllOemsBlogView() {
 
           <!-- Trust & Insights Highlights Strip (Matching Partners & Services 1:1) -->
           <div class="services-trust-strip blogs-trust-strip" style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:24px;margin-bottom:0;padding-bottom:0;border-bottom:none;">
-            <div style="background:rgba(37,99,235,0.08);border:1px solid rgba(37,99,235,0.25);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#93C5FD;display:flex;align-items:center;gap:8px;">
-              <i class="fa-solid fa-building-columns" style="color:var(--logo-blue-light);"></i>
-              <span><strong>15</strong> Authorized Principals</span>
-            </div>
             <div style="background:rgba(225,29,72,0.08);border:1px solid rgba(225,29,72,0.25);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#FDA4AF;display:flex;align-items:center;gap:8px;">
               <i class="fa-solid fa-file-waveform" style="color:var(--logo-red-light);"></i>
               <span>Application Whitepapers &amp; Notes</span>
@@ -100,9 +96,6 @@ function renderAllOemsBlogView() {
               Click any manufacturer card to view their technical articles, lab videos, and application whitepapers:
             </p>
           </div>
-          <span style="font-size:0.8rem;color:var(--text-gray-400);background:rgba(255,255,255,0.05);padding:6px 14px;border-radius:var(--radius-full);border:1px solid var(--border-card);">
-            <i class="fa-solid fa-building-columns" style="color:var(--logo-blue-light);margin-right:6px;"></i> 15 Authorized Principals
-          </span>
         </div>
 
         <!-- 15 OEMs Grid -->
