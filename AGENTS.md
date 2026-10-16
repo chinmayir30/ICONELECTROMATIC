@@ -55,3 +55,8 @@ no hard-coded claims, docs/PROJECT-STATE.md updated.
 3. How I tested it
 4. What I am unsure about
 5. Suggested next step
+
+## 9. Git automation
+- Start every task with /new_feature and finish with /finish_feature.
+- Never merge, never push to main, never force push, never delete branches.
+- Ask before any command that deletes files outside the approved plan.

@@ -14,7 +14,7 @@ Stage 1 - Review and clean-up (in progress)
 
 ## Stage checklist
 - [x] Frontend built (reviewed at commit e371aac, 15 Oct 2026)
-- [ ] Stage 0 - Preparation: scope freeze, tag frontend-v1, these three files, client inputs
+- [x] Stage 0 - Preparation: scope freeze, tag frontend-v1, rule files, automation workflows and CI
 - [ ] Stage 1 - Clean-up: private repo, branch protection, remove dead files, hide demo admin, remove false claims
 - [ ] Stage 2 - Data: final Excel, data model, validation
 - [ ] Stage 3 - Backend and CMS
@@ -32,6 +32,7 @@ Stage 1 - Review and clean-up (in progress)
 | 2026-10 | Whole project is built with Antigravity | Owner's workflow |
 | 2026-10 | The CMS exposes all intended website content as editable | Owner's requirement |
 | 2026-10 | Work one step at a time with detailed explanations | Owner is a beginner and wants senior-developer practices |
+| 2026-10 | Automate via /new_feature, /finish_feature and GitHub Actions CI | Standardize branching, enforce safety rules, and ensure every PR builds clean |
 
 ## Proposed, not yet confirmed
 - Static site generation (Astro recommended) so every product is a real HTML page
