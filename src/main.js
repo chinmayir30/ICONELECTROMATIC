@@ -6,7 +6,6 @@ import { renderHeader, renderHeaderInner, initHeader, closeSidebarDrawer, update
 import { renderFooter } from './components/Footer.js';
 import { renderHomePage, initHomePage } from './pages/Home.js';
 import { renderProductsPage, initProductsPage } from './pages/Products.js';
-import { renderProductDetailPage, initProductDetailPage } from './pages/ProductDetail.js';
 import { renderAboutPage, initAboutPage } from './pages/About.js';
 import { renderServicesPage, initServicesPage } from './pages/Services.js';
 import { renderPartnersPage, initPartnersPage } from './pages/Partners.js';
@@ -65,7 +64,6 @@ function initBackToTop() {
 
 registerRoute('/', () => renderPage(renderHomePage(), initHomePage));
 registerRoute('/products', () => renderPage(renderProductsPage(), initProductsPage));
-registerRoute('/product/:id', (params) => renderPage(renderProductDetailPage(params), initProductDetailPage));
 registerRoute('/about', () => renderPage(renderAboutPage(), initAboutPage));
 registerRoute('/services', () => renderPage(renderServicesPage(), initServicesPage));
 registerRoute('/partners', () => renderPage(renderPartnersPage(), initPartnersPage));

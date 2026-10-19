@@ -87,7 +87,7 @@ Status: Implemented (tagged)
 - **Undo:** Revert PR #7.
 
 ### Entry 4: SEO, backend and CMS implementation record
-- **Status:** In progress (PR #8)
+- **Status:** Implemented. PR #8, merge commit aa04e42, 19 Oct 2026.
 - **What was built:**
   - `docs/seo_backend_implementation.md`: Added the master implementation log, technology roles, data audit summary, and phased plan.
   - `AGENTS.md`: Added item 6 to section 8 ("Technology used and how it works"), added rule on entry status progression (In progress -> Implemented upon merge), updated secrets rule (.env.example has empty/placeholder values only; real values in .env.local), and added section 9 safety rules against destructive commands with raw git diff approval.
@@ -97,8 +97,19 @@ Status: Implemented (tagged)
 - **Files and folders added or changed:** `docs/seo_backend_implementation.md`, `AGENTS.md`, `docs/PROJECT-STATE.md`.
 - **Data and security notes:** No secrets added; rules explicitly forbid committing real secrets.
 - **Checked (and how):** Built cleanly with `npm run build`; verified links and markdown formatting.
-- **Not checked:** GitHub PR creation and CI run (will be checked upon push).
+- **Not checked:** N/A (documentation only).
 - **Undo:** Revert PR #8.
+
+### Entry 5: Phase 0 — Dead-code removal and obsolete asset cleanup
+- **Status:** In progress (PR #9)
+- **What was built:** Removed unused dummy files (`src/data/products.js`, `src/pages/ProductDetail.js`), obsolete prototype pages and styles (`com.html`, `image.png`, `vercel.css` legacy rules, `vercel.html` unneeded mounts), obsolete media asset (`public/jbhd-tjzps.mp4`, 6.8 MB), and obsolete Excel v2 (`Icon Website Product Info - Mrora.v2 (1).xlsx`).
+- **Technology and role:** Git cleanup, asset optimization, dead-code removal.
+- **How it works:** Strips dead prototype files, reducing repository bloat by ~7 MB and JavaScript bundle size from 416.70 kB to 397.66 kB.
+- **Files and folders added or changed:** 9 files removed/edited.
+- **Data and security notes:** No live data or active catalog records affected; verified that all active products are loaded via `catalogData.js`.
+- **Checked (and how):** Built cleanly with `npm run build` (397.66 kB JS); verified 0 build or console errors.
+- **Not checked:** N/A.
+- **Undo:** Revert PR #9.
 
 ## 5. Data audit (read-only, 19 Oct 2026)
 Status: Implemented (analysis only, no files changed). Re-run independently with the same result.
@@ -112,7 +123,7 @@ Status: Implemented (analysis only, no files changed). Re-run independently with
 ## 6. Planned phases (approved with changes, not built)
 | Phase | Deliverable | Technology | Status |
 |---|---|---|---|
-| 0 | Push and review the dead-code removal branch (local only on 19 Oct 2026) | Git, GitHub pull request, CI | In progress |
+| 0 | Push and review the dead-code removal branch (local only on 19 Oct 2026) | Git, GitHub pull request, CI | In progress (PR #9) |
 | 1 | Walking skeleton: 1 OEM (Rogers, 37 products available) and 5 products from database to a real product page with SEO | Supabase tables, SQL migrations, row-level security, Astro, JSON-LD | Planned |
 | 2 | Image extraction and full catalog load (sample test first, unique product key, extraction report) | Python, WebP conversion, Node upload, `seed.sql` | Planned |
 | 3 | Admin connected to Supabase: product editor, gallery, SEO card, pre-publish SEO audit, Publish button | Vite admin, Supabase JS client, Supabase Auth (invite-only, roles, two-factor), a `/publish` Edge Function holding the rebuild webhook | Planned |
