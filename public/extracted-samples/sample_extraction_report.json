@@ -1,0 +1,110 @@
+[
+  {
+    "row": 2,
+    "name": "RT/duroid 5880",
+    "slug": "rt-duroid-5880",
+    "category": "RT/Duroid",
+    "total_images_in_row": 1,
+    "images": [
+      {
+        "display_order": 1,
+        "role": "primary_hero",
+        "is_primary": true,
+        "excel_col": 5,
+        "col_offset": 585216,
+        "original_source": "xl/media/image1.jpeg",
+        "saved_file": "/extracted-samples/rogers_rt-duroid-5880_1.webp",
+        "width": 440,
+        "height": 238,
+        "size_kb": 22.3,
+        "alt_text": "Rogers RT/duroid 5880 RT/Duroid Material"
+      }
+    ]
+  },
+  {
+    "row": 9,
+    "name": "RO4350B",
+    "slug": "ro4350b",
+    "category": "RO400 Series",
+    "total_images_in_row": 1,
+    "images": [
+      {
+        "display_order": 1,
+        "role": "primary_hero",
+        "is_primary": true,
+        "excel_col": 7,
+        "col_offset": 15240,
+        "original_source": "xl/media/image5.jpeg",
+        "saved_file": "/extracted-samples/rogers_ro4350b_1.webp",
+        "width": 148,
+        "height": 81,
+        "size_kb": 1.7,
+        "alt_text": "Rogers RO4350B RO400 Series Material"
+      }
+    ]
+  },
+  {
+    "row": 10,
+    "name": "RO4003C",
+    "slug": "ro4003c",
+    "category": "RO400 Series",
+    "total_images_in_row": 0,
+    "images": []
+  },
+  {
+    "row": 21,
+    "name": "TMM 10i",
+    "slug": "tmm-10i",
+    "category": "TMM Series",
+    "total_images_in_row": 0,
+    "images": []
+  },
+  {
+    "row": 29,
+    "name": "TC350",
+    "slug": "tc350",
+    "category": "TC Series",
+    "total_images_in_row": 3,
+    "images": [
+      {
+        "display_order": 1,
+        "role": "primary_hero",
+        "is_primary": true,
+        "excel_col": 5,
+        "col_offset": 45720,
+        "original_source": "xl/media/image13.jpeg",
+        "saved_file": "/extracted-samples/rogers_tc350_1.webp",
+        "width": 230,
+        "height": 124,
+        "size_kb": 3.6,
+        "alt_text": "Rogers TC350 TC Series Material"
+      },
+      {
+        "display_order": 2,
+        "role": "gallery_2",
+        "is_primary": false,
+        "excel_col": 6,
+        "col_offset": 487680,
+        "original_source": "xl/media/image14.jpeg",
+        "saved_file": "/extracted-samples/rogers_tc350_2.webp",
+        "width": 229,
+        "height": 124,
+        "size_kb": 2.4,
+        "alt_text": "Rogers TC350 TC Series Material"
+      },
+      {
+        "display_order": 3,
+        "role": "gallery_3",
+        "is_primary": false,
+        "excel_col": 8,
+        "col_offset": 297180,
+        "original_source": "xl/media/image15.png",
+        "saved_file": "/extracted-samples/rogers_tc350_3.webp",
+        "width": 516,
+        "height": 280,
+        "size_kb": 22.2,
+        "alt_text": "Rogers TC350 TC Series Material"
+      }
+    ]
+  }
+]

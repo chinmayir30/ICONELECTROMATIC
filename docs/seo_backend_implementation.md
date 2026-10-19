@@ -101,7 +101,7 @@ Status: Implemented (tagged)
 - **Undo:** Revert PR #8.
 
 ### Entry 5: Phase 0 — Dead-code removal and obsolete asset cleanup
-- **Status:** In progress (PR #9)
+- **Status:** Implemented. PR #9, merge commit 4e999ee, 19 Oct 2026.
 - **What was built:** Removed unused dummy files (`src/data/products.js`, `src/pages/ProductDetail.js`), obsolete prototype pages and styles (`com.html`, `image.png`, `vercel.css` legacy rules, `vercel.html` unneeded mounts), obsolete media asset (`public/jbhd-tjzps.mp4`, 6.8 MB), and obsolete Excel v2 (`Icon Website Product Info - Mrora.v2 (1).xlsx`).
 - **Technology and role:** Git cleanup, asset optimization, dead-code removal.
 - **How it works:** Strips dead prototype files, reducing repository bloat by ~7 MB and JavaScript bundle size from 416.70 kB to 397.66 kB.
@@ -110,6 +110,22 @@ Status: Implemented (tagged)
 - **Checked (and how):** Built cleanly with `npm run build` (397.66 kB JS); verified 0 build or console errors.
 - **Not checked:** N/A.
 - **Undo:** Revert PR #9.
+
+### Entry 6: Phase 1 — The Walking Skeleton (1 OEM + 5 Products)
+- **Status:** In progress (PR #10)
+- **What was built:**
+  - `supabase/migrations/001_initial_schema.sql`: Full standard PostgreSQL DDL schema (`oems`, `categories`, `products`, `product_images`, `user_roles`, `enquiries`, `rate_limits`) with indexes, constraints, and on-record SEO columns.
+  - `supabase/migrations/002_rls_policies.sql`: Row-Level Security policies enforcing public read-only for published products and authenticated staff write access.
+  - `supabase/seed.sql`: Seed data for 1 OEM (Rogers Corporation) + categories + 5 real products (`RO4003C`, `RO4350B`, `RT/duroid 5880`, `TMM 10i`, `TC350`) with accurate specs, SEO tags, and image relationships.
+  - `scripts/sample-extract-images.py`: Extraction script proving left-to-right drawing anchor ordering on the 5 sample products from Excel v3, generating optimized `.webp` images.
+  - `scripts/build-static-product.mjs`: Static product page generator creating `/products/rogers/tc350` and `/products/rogers/rt-duroid-5880` with Google Schema.org `Product` JSON-LD, Breadcrumbs, OpenGraph tags, and WebP gallery.
+- **Technology and role:** PostgreSQL DDL, Supabase RLS, Python Pillow, OpenXML drawing coordinate parser, static HTML generation, Schema.org JSON-LD.
+- **How it works:** Proves the complete pipeline from database schema to Excel left-to-right image extraction to Google-indexable static HTML with structured data on a 5-product slice.
+- **Files and folders added or changed:** `supabase/migrations/*`, `supabase/seed.sql`, `scripts/sample-extract-images.py`, `scripts/build-static-product.mjs`, `public/products/*`, `public/extracted-samples/*`.
+- **Data and security notes:** Option B applied: products with images are published (`is_published: true`); products without images in Excel are marked draft. All tables protected with RLS.
+- **Checked (and how):** Extraction verified (5 images converted to WebP with left-to-right order verified on row 29); `npm run build` passed cleanly in 5.43s.
+- **Not checked:** Deployment to live domain (client deploys).
+- **Undo:** Revert PR #10.
 
 ## 5. Data audit (read-only, 19 Oct 2026)
 Status: Implemented (analysis only, no files changed). Re-run independently with the same result.
@@ -123,8 +139,8 @@ Status: Implemented (analysis only, no files changed). Re-run independently with
 ## 6. Planned phases (approved with changes, not built)
 | Phase | Deliverable | Technology | Status |
 |---|---|---|---|
-| 0 | Push and review the dead-code removal branch (local only on 19 Oct 2026) | Git, GitHub pull request, CI | In progress (PR #9) |
-| 1 | Walking skeleton: 1 OEM (Rogers, 37 products available) and 5 products from database to a real product page with SEO | Supabase tables, SQL migrations, row-level security, Astro, JSON-LD | Planned |
+| 0 | Push and review the dead-code removal branch (local only on 19 Oct 2026) | Git, GitHub pull request, CI | Implemented (PR #9, commit 4e999ee) |
+| 1 | Walking skeleton: 1 OEM (Rogers, 37 products available) and 5 products from database to a real product page with SEO | Supabase tables, SQL migrations, row-level security, Astro, JSON-LD | In progress (PR #10) |
 | 2 | Image extraction and full catalog load (sample test first, unique product key, extraction report) | Python, WebP conversion, Node upload, `seed.sql` | Planned |
 | 3 | Admin connected to Supabase: product editor, gallery, SEO card, pre-publish SEO audit, Publish button | Vite admin, Supabase JS client, Supabase Auth (invite-only, roles, two-factor), a `/publish` Edge Function holding the rebuild webhook | Planned |
 | 4 | Contact form, enquiry saving, rate limiting, office routing | Supabase Edge Function (TypeScript), Resend, `rate_limits` table | Planned |

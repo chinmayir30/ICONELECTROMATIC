@@ -16,8 +16,9 @@ Stage 1 - Review and clean-up (in progress)
 ## Stage checklist
 - [x] Frontend built (reviewed at commit e371aac, 15 Oct 2026)
 - [x] Stage 0 - Preparation: scope freeze, tag frontend-v1, rule files, automation workflows and CI
-- [ ] Stage 1 - Clean-up: private repo, branch protection, remove dead files, hide demo admin, remove false claims
-- [ ] Stage 2 - Data: final Excel, data model, validation
+- [x] Stage 1 - Clean-up: remove dead files (PR #9), hide demo admin (PR #7)
+- [ ] Phase 1 - Walking Skeleton: 1 OEM + 5 products from DB to static SEO page (in progress, PR #10)
+- [ ] Stage 2 - Data: final Excel, full catalog migration, validation
 - [ ] Stage 3 - Backend and CMS
 - [ ] Stage 4 - Enquiry forms that really send email
 - [ ] Stage 5 - Connect everything, real URLs, static pages
