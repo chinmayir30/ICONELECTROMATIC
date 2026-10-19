@@ -1,0 +1,2916 @@
+{
+  "total_product_rows": 164,
+  "total_images_extracted": 95,
+  "products": [
+    {
+      "row": 2,
+      "oem": "Rogers Corporation",
+      "oem_slug": "rogers-corporation",
+      "category": "RT/Duroid",
+      "product": "RT/duroid 5880",
+      "prod_slug": "rtduroid-5880",
+      "total_images": 1,
+      "images": [
+        {
+          "display_order": 1,
+          "is_primary": true,
+          "role": "hero_primary",
+          "filename": "rogers-corporation__rtduroid-5880_1.webp",
+          "url": "/catalog-images/rogers-corporation__rtduroid-5880_1.webp",
+          "width": 440,
+          "height": 238,
+          "size_kb": 22.3,
+          "excel_col": 5,
+          "col_offset": 585216,
+          "alt_text": "Rogers Corporation RT/duroid 5880 RT/Duroid - Image 1"
+        }
+      ]
+    },
+    {
+      "row": 3,
+      "oem": "Rogers Corporation",
+      "oem_slug": "rogers-corporation",
+      "category": "RT/Duroid",
+      "product": "RT/duroid 5870",
+      "prod_slug": "rtduroid-5870",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 4,
+      "oem": "Rogers Corporation",
+      "oem_slug": "rogers-corporation",
+      "category": "RT/Duroid",
+      "product": "RT/duroid 5880LZ",
+      "prod_slug": "rtduroid-5880lz",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 5,
+      "oem": "Rogers Corporation",
+      "oem_slug": "rogers-corporation",
+      "category": "RT/Duroid",
+      "product": "RT/duroid 6002",
+      "prod_slug": "rtduroid-6002",
+      "total_images": 1,
+      "images": [
+        {
+          "display_order": 1,
+          "is_primary": true,
+          "role": "hero_primary",
+          "filename": "rogers-corporation__rtduroid-6002_1.webp",
+          "url": "/catalog-images/rogers-corporation__rtduroid-6002_1.webp",
+          "width": 294,
+          "height": 159,
+          "size_kb": 4.7,
+          "excel_col": 6,
+          "col_offset": 335280,
+          "alt_text": "Rogers Corporation RT/duroid 6002 RT/Duroid - Image 1"
+        }
+      ]
+    },
+    {
+      "row": 6,
+      "oem": "Rogers Corporation",
+      "oem_slug": "rogers-corporation",
+      "category": "RT/Duroid",
+      "product": "RT/duroid 6006",
+      "prod_slug": "rtduroid-6006",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 7,
+      "oem": "Rogers Corporation",
+      "oem_slug": "rogers-corporation",
+      "category": "RT/Duroid",
+      "product": "RT/duroid 6010.2LM",
+      "prod_slug": "rtduroid-60102lm",
+      "total_images": 1,
+      "images": [
+        {
+          "display_order": 1,
+          "is_primary": true,
+          "role": "hero_primary",
+          "filename": "rogers-corporation__rtduroid-60102lm_1.webp",
+          "url": "/catalog-images/rogers-corporation__rtduroid-60102lm_1.webp",
+          "width": 516,
+          "height": 280,
+          "size_kb": 16.0,
+          "excel_col": 6,
+          "col_offset": 541019,
+          "alt_text": "Rogers Corporation RT/duroid 6010.2LM RT/Duroid - Image 1"
+        }
+      ]
+    },
+    {
+      "row": 8,
+      "oem": "Rogers Corporation",
+      "oem_slug": "rogers-corporation",
+      "category": "RT/Duroid",
+      "product": "RT/duroid 6035HTC",
+      "prod_slug": "rtduroid-6035htc",
+      "total_images": 1,
+      "images": [
+        {
+          "display_order": 1,
+          "is_primary": true,
+          "role": "hero_primary",
+          "filename": "rogers-corporation__rtduroid-6035htc_1.webp",
+          "url": "/catalog-images/rogers-corporation__rtduroid-6035htc_1.webp",
+          "width": 185,
+          "height": 100,
+          "size_kb": 3.5,
+          "excel_col": 6,
+          "col_offset": 548640,
+          "alt_text": "Rogers Corporation RT/duroid 6035HTC RT/Duroid - Image 1"
+        }
+      ]
+    },
+    {
+      "row": 9,
+      "oem": "Rogers Corporation",
+      "oem_slug": "rogers-corporation",
+      "category": "RO400 Series",
+      "product": "RO4350B",
+      "prod_slug": "ro4350b",
+      "total_images": 1,
+      "images": [
+        {
+          "display_order": 1,
+          "is_primary": true,
+          "role": "hero_primary",
+          "filename": "rogers-corporation__ro4350b_1.webp",
+          "url": "/catalog-images/rogers-corporation__ro4350b_1.webp",
+          "width": 148,
+          "height": 81,
+          "size_kb": 1.7,
+          "excel_col": 7,
+          "col_offset": 15240,
+          "alt_text": "Rogers Corporation RO4350B RO400 Series - Image 1"
+        }
+      ]
+    },
+    {
+      "row": 10,
+      "oem": "Rogers Corporation",
+      "oem_slug": "rogers-corporation",
+      "category": "RO400 Series",
+      "product": "RO4003C",
+      "prod_slug": "ro4003c",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 11,
+      "oem": "Rogers Corporation",
+      "oem_slug": "rogers-corporation",
+      "category": "RO300 Series",
+      "product": "RO3003",
+      "prod_slug": "ro3003",
+      "total_images": 1,
+      "images": [
+        {
+          "display_order": 1,
+          "is_primary": true,
+          "role": "hero_primary",
+          "filename": "rogers-corporation__ro3003_1.webp",
+          "url": "/catalog-images/rogers-corporation__ro3003_1.webp",
+          "width": 223,
+          "height": 121,
+          "size_kb": 1.9,
+          "excel_col": 6,
+          "col_offset": 472440,
+          "alt_text": "Rogers Corporation RO3003 RO300 Series - Image 1"
+        }
+      ]
+    },
+    {
+      "row": 12,
+      "oem": "Rogers Corporation",
+      "oem_slug": "rogers-corporation",
+      "category": "RO300 Series",
+      "product": "RO3003G2",
+      "prod_slug": "ro3003g2",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 13,
+      "oem": "Rogers Corporation",
+      "oem_slug": "rogers-corporation",
+      "category": "RO300 Series",
+      "product": "RO3006",
+      "prod_slug": "ro3006",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 14,
+      "oem": "Rogers Corporation",
+      "oem_slug": "rogers-corporation",
+      "category": "RO300 Series",
+      "product": "RO3010",
+      "prod_slug": "ro3010",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 15,
+      "oem": "Rogers Corporation",
+      "oem_slug": "rogers-corporation",
+      "category": "RO400 Series",
+      "product": "RO4360G2",
+      "prod_slug": "ro4360g2",
+      "total_images": 1,
+      "images": [
+        {
+          "display_order": 1,
+          "is_primary": true,
+          "role": "hero_primary",
+          "filename": "rogers-corporation__ro4360g2_1.webp",
+          "url": "/catalog-images/rogers-corporation__ro4360g2_1.webp",
+          "width": 148,
+          "height": 81,
+          "size_kb": 1.7,
+          "excel_col": 7,
+          "col_offset": 22860,
+          "alt_text": "Rogers Corporation RO4360G2 RO400 Series - Image 1"
+        }
+      ]
+    },
+    {
+      "row": 16,
+      "oem": "Rogers Corporation",
+      "oem_slug": "rogers-corporation",
+      "category": "RO400 Series",
+      "product": "RO4835",
+      "prod_slug": "ro4835",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 17,
+      "oem": "Rogers Corporation",
+      "oem_slug": "rogers-corporation",
+      "category": "TMM Series",
+      "product": "TMM 3",
+      "prod_slug": "tmm-3",
+      "total_images": 1,
+      "images": [
+        {
+          "display_order": 1,
+          "is_primary": true,
+          "role": "hero_primary",
+          "filename": "rogers-corporation__tmm-3_1.webp",
+          "url": "/catalog-images/rogers-corporation__tmm-3_1.webp",
+          "width": 428,
+          "height": 232,
+          "size_kb": 4.1,
+          "excel_col": 6,
+          "col_offset": 76200,
+          "alt_text": "Rogers Corporation TMM 3 TMM Series - Image 1"
+        }
+      ]
+    },
+    {
+      "row": 18,
+      "oem": "Rogers Corporation",
+      "oem_slug": "rogers-corporation",
+      "category": "TMM Series",
+      "product": "TMM 4",
+      "prod_slug": "tmm-4",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 19,
+      "oem": "Rogers Corporation",
+      "oem_slug": "rogers-corporation",
+      "category": "TMM Series",
+      "product": "TMM 6",
+      "prod_slug": "tmm-6",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 20,
+      "oem": "Rogers Corporation",
+      "oem_slug": "rogers-corporation",
+      "category": "TMM Series",
+      "product": "TMM 10",
+      "prod_slug": "tmm-10",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 21,
+      "oem": "Rogers Corporation",
+      "oem_slug": "rogers-corporation",
+      "category": "TMM Series",
+      "product": "TMM 10i",
+      "prod_slug": "tmm-10i",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 22,
+      "oem": "Rogers Corporation",
+      "oem_slug": "rogers-corporation",
+      "category": "TMM Series",
+      "product": "TMM 13i",
+      "prod_slug": "tmm-13i",
+      "total_images": 1,
+      "images": [
+        {
+          "display_order": 1,
+          "is_primary": true,
+          "role": "hero_primary",
+          "filename": "rogers-corporation__tmm-13i_1.webp",
+          "url": "/catalog-images/rogers-corporation__tmm-13i_1.webp",
+          "width": 159,
+          "height": 87,
+          "size_kb": 2.4,
+          "excel_col": 5,
+          "col_offset": 586740,
+          "alt_text": "Rogers Corporation TMM 13i TMM Series - Image 1"
+        }
+      ]
+    },
+    {
+      "row": 23,
+      "oem": "Rogers Corporation",
+      "oem_slug": "rogers-corporation",
+      "category": "CLTE Series",
+      "product": "CLTE-XT",
+      "prod_slug": "clte-xt",
+      "total_images": 1,
+      "images": [
+        {
+          "display_order": 1,
+          "is_primary": true,
+          "role": "hero_primary",
+          "filename": "rogers-corporation__clte-xt_1.webp",
+          "url": "/catalog-images/rogers-corporation__clte-xt_1.webp",
+          "width": 158,
+          "height": 86,
+          "size_kb": 1.8,
+          "excel_col": 8,
+          "col_offset": 235022,
+          "alt_text": "Rogers Corporation CLTE-XT CLTE Series - Image 1"
+        }
+      ]
+    },
+    {
+      "row": 24,
+      "oem": "Rogers Corporation",
+      "oem_slug": "rogers-corporation",
+      "category": "CLTE Series",
+      "product": "CLTE-MW",
+      "prod_slug": "clte-mw",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 25,
+      "oem": "Rogers Corporation",
+      "oem_slug": "rogers-corporation",
+      "category": "DICLAD Series",
+      "product": "DiClad 880",
+      "prod_slug": "diclad-880",
+      "total_images": 3,
+      "images": [
+        {
+          "display_order": 1,
+          "is_primary": true,
+          "role": "hero_primary",
+          "filename": "rogers-corporation__diclad-880_1.webp",
+          "url": "/catalog-images/rogers-corporation__diclad-880_1.webp",
+          "width": 516,
+          "height": 280,
+          "size_kb": 20.4,
+          "excel_col": 5,
+          "col_offset": 501614,
+          "alt_text": "Rogers Corporation DiClad 880 DICLAD Series - Image 1"
+        },
+        {
+          "display_order": 2,
+          "is_primary": false,
+          "role": "gallery_2",
+          "filename": "rogers-corporation__diclad-880_2.webp",
+          "url": "/catalog-images/rogers-corporation__diclad-880_2.webp",
+          "width": 213,
+          "height": 115,
+          "size_kb": 3.4,
+          "excel_col": 8,
+          "col_offset": 135854,
+          "alt_text": "Rogers Corporation DiClad 880 DICLAD Series - Image 2"
+        },
+        {
+          "display_order": 3,
+          "is_primary": false,
+          "role": "gallery_3",
+          "filename": "rogers-corporation__diclad-880_3.webp",
+          "url": "/catalog-images/rogers-corporation__diclad-880_3.webp",
+          "width": 287,
+          "height": 156,
+          "size_kb": 1.4,
+          "excel_col": 11,
+          "col_offset": 25254,
+          "alt_text": "Rogers Corporation DiClad 880 DICLAD Series - Image 3"
+        }
+      ]
+    },
+    {
+      "row": 26,
+      "oem": "Rogers Corporation",
+      "oem_slug": "rogers-corporation",
+      "category": "DICLAD Series",
+      "product": "DiClad 870",
+      "prod_slug": "diclad-870",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 27,
+      "oem": "Rogers Corporation",
+      "oem_slug": "rogers-corporation",
+      "category": "DICLAD Series",
+      "product": "DiClad 527",
+      "prod_slug": "diclad-527",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 28,
+      "oem": "Rogers Corporation",
+      "oem_slug": "rogers-corporation",
+      "category": "DICLAD Series",
+      "product": "MAGTREX 555",
+      "prod_slug": "magtrex-555",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 29,
+      "oem": "Rogers Corporation",
+      "oem_slug": "rogers-corporation",
+      "category": "TC Series",
+      "product": "TC350",
+      "prod_slug": "tc350",
+      "total_images": 3,
+      "images": [
+        {
+          "display_order": 1,
+          "is_primary": true,
+          "role": "hero_primary",
+          "filename": "rogers-corporation__tc350_1.webp",
+          "url": "/catalog-images/rogers-corporation__tc350_1.webp",
+          "width": 230,
+          "height": 124,
+          "size_kb": 3.6,
+          "excel_col": 5,
+          "col_offset": 45720,
+          "alt_text": "Rogers Corporation TC350 TC Series - Image 1"
+        },
+        {
+          "display_order": 2,
+          "is_primary": false,
+          "role": "gallery_2",
+          "filename": "rogers-corporation__tc350_2.webp",
+          "url": "/catalog-images/rogers-corporation__tc350_2.webp",
+          "width": 229,
+          "height": 124,
+          "size_kb": 2.4,
+          "excel_col": 6,
+          "col_offset": 487680,
+          "alt_text": "Rogers Corporation TC350 TC Series - Image 2"
+        },
+        {
+          "display_order": 3,
+          "is_primary": false,
+          "role": "gallery_3",
+          "filename": "rogers-corporation__tc350_3.webp",
+          "url": "/catalog-images/rogers-corporation__tc350_3.webp",
+          "width": 516,
+          "height": 280,
+          "size_kb": 22.2,
+          "excel_col": 8,
+          "col_offset": 297180,
+          "alt_text": "Rogers Corporation TC350 TC Series - Image 3"
+        }
+      ]
+    },
+    {
+      "row": 30,
+      "oem": "Rogers Corporation",
+      "oem_slug": "rogers-corporation",
+      "category": "TC Series",
+      "product": "TC350 Plus",
+      "prod_slug": "tc350-plus",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 31,
+      "oem": "Rogers Corporation",
+      "oem_slug": "rogers-corporation",
+      "category": "TC Series",
+      "product": "TC600",
+      "prod_slug": "tc600",
+      "total_images": 1,
+      "images": [
+        {
+          "display_order": 1,
+          "is_primary": true,
+          "role": "hero_primary",
+          "filename": "rogers-corporation__tc600_1.webp",
+          "url": "/catalog-images/rogers-corporation__tc600_1.webp",
+          "width": 304,
+          "height": 165,
+          "size_kb": 1.5,
+          "excel_col": 11,
+          "col_offset": 7620,
+          "alt_text": "Rogers Corporation TC600 TC Series - Image 1"
+        }
+      ]
+    },
+    {
+      "row": 32,
+      "oem": "Rogers Corporation",
+      "oem_slug": "rogers-corporation",
+      "category": "TC Series",
+      "product": "RO4400 Bondply",
+      "prod_slug": "ro4400-bondply",
+      "total_images": 1,
+      "images": [
+        {
+          "display_order": 1,
+          "is_primary": true,
+          "role": "hero_primary",
+          "filename": "rogers-corporation__ro4400-bondply_1.webp",
+          "url": "/catalog-images/rogers-corporation__ro4400-bondply_1.webp",
+          "width": 128,
+          "height": 70,
+          "size_kb": 1.8,
+          "excel_col": 7,
+          "col_offset": 35705,
+          "alt_text": "Rogers Corporation RO4400 Bondply TC Series - Image 1"
+        }
+      ]
+    },
+    {
+      "row": 33,
+      "oem": "Rogers Corporation",
+      "oem_slug": "rogers-corporation",
+      "category": "TC Series",
+      "product": "RO4400T Bondply",
+      "prod_slug": "ro4400t-bondply",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 34,
+      "oem": "Rogers Corporation",
+      "oem_slug": "rogers-corporation",
+      "category": "TC Series",
+      "product": "2929 Bondply",
+      "prod_slug": "2929-bondply",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 35,
+      "oem": "Rogers Corporation",
+      "oem_slug": "rogers-corporation",
+      "category": "TC Series",
+      "product": "CuClad 6250 Bonding Film",
+      "prod_slug": "cuclad-6250-bonding-film",
+      "total_images": 3,
+      "images": [
+        {
+          "display_order": 1,
+          "is_primary": true,
+          "role": "hero_primary",
+          "filename": "rogers-corporation__cuclad-6250-bonding-film_1.webp",
+          "url": "/catalog-images/rogers-corporation__cuclad-6250-bonding-film_1.webp",
+          "width": 156,
+          "height": 84,
+          "size_kb": 2.4,
+          "excel_col": 6,
+          "col_offset": 0,
+          "alt_text": "Rogers Corporation CuClad 6250 Bonding Film TC Series - Image 1"
+        },
+        {
+          "display_order": 2,
+          "is_primary": false,
+          "role": "gallery_2",
+          "filename": "rogers-corporation__cuclad-6250-bonding-film_2.webp",
+          "url": "/catalog-images/rogers-corporation__cuclad-6250-bonding-film_2.webp",
+          "width": 138,
+          "height": 75,
+          "size_kb": 2.8,
+          "excel_col": 8,
+          "col_offset": 14043,
+          "alt_text": "Rogers Corporation CuClad 6250 Bonding Film TC Series - Image 2"
+        },
+        {
+          "display_order": 3,
+          "is_primary": false,
+          "role": "gallery_3",
+          "filename": "rogers-corporation__cuclad-6250-bonding-film_3.webp",
+          "url": "/catalog-images/rogers-corporation__cuclad-6250-bonding-film_3.webp",
+          "width": 267,
+          "height": 145,
+          "size_kb": 9.4,
+          "excel_col": 15,
+          "col_offset": 99060,
+          "alt_text": "Rogers Corporation CuClad 6250 Bonding Film TC Series - Image 3"
+        }
+      ]
+    },
+    {
+      "row": 36,
+      "oem": "Rogers Corporation",
+      "oem_slug": "rogers-corporation",
+      "category": "TC Series",
+      "product": "CuClad 6700 Bonding Film",
+      "prod_slug": "cuclad-6700-bonding-film",
+      "total_images": 1,
+      "images": [
+        {
+          "display_order": 1,
+          "is_primary": true,
+          "role": "hero_primary",
+          "filename": "rogers-corporation__cuclad-6700-bonding-film_1.webp",
+          "url": "/catalog-images/rogers-corporation__cuclad-6700-bonding-film_1.webp",
+          "width": 247,
+          "height": 134,
+          "size_kb": 4.0,
+          "excel_col": 11,
+          "col_offset": 198120,
+          "alt_text": "Rogers Corporation CuClad 6700 Bonding Film TC Series - Image 1"
+        }
+      ]
+    },
+    {
+      "row": 37,
+      "oem": "Rogers Corporation",
+      "oem_slug": "rogers-corporation",
+      "category": "TC Series",
+      "product": "SpeedWave 300P Prepreg",
+      "prod_slug": "speedwave-300p-prepreg",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 38,
+      "oem": "Rogers Corporation",
+      "oem_slug": "rogers-corporation",
+      "category": "TC Series",
+      "product": "XtremeSpeed RO1200",
+      "prod_slug": "xtremespeed-ro1200",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 39,
+      "oem": "Ohmega Ticer",
+      "oem_slug": "ohmega-ticer",
+      "category": "RCM Series",
+      "product": "OhmegaPly\u00ae RCM \u2013 0.5A10PT",
+      "prod_slug": "ohmegaply-rcm-05a10pt",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 40,
+      "oem": "Ohmega Ticer",
+      "oem_slug": "ohmega-ticer",
+      "category": "RCM Series",
+      "product": "OhmegaPly\u00ae RCM \u2013 0.5A25PT",
+      "prod_slug": "ohmegaply-rcm-05a25pt",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 41,
+      "oem": "Ohmega Ticer",
+      "oem_slug": "ohmega-ticer",
+      "category": "RCM Series",
+      "product": "OhmegaPly\u00ae RCM \u2013 0.5A40PT",
+      "prod_slug": "ohmegaply-rcm-05a40pt",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 42,
+      "oem": "Ohmega Ticer",
+      "oem_slug": "ohmega-ticer",
+      "category": "RCM Series",
+      "product": "OhmegaPly\u00ae RCM \u2013 0.5A50PT",
+      "prod_slug": "ohmegaply-rcm-05a50pt",
+      "total_images": 1,
+      "images": [
+        {
+          "display_order": 1,
+          "is_primary": true,
+          "role": "hero_primary",
+          "filename": "ohmega-ticer__ohmegaply-rcm-05a50pt_1.webp",
+          "url": "/catalog-images/ohmega-ticer__ohmegaply-rcm-05a50pt_1.webp",
+          "width": 1024,
+          "height": 670,
+          "size_kb": 15.8,
+          "excel_col": 5,
+          "col_offset": 73689,
+          "alt_text": "Ohmega Ticer OhmegaPly\u00ae RCM \u2013 0.5A50PT RCM Series - Image 1"
+        }
+      ]
+    },
+    {
+      "row": 43,
+      "oem": "Ohmega Ticer",
+      "oem_slug": "ohmega-ticer",
+      "category": "RCM Series",
+      "product": "OhmegaPly\u00ae RCM \u2013 0.5A100PT",
+      "prod_slug": "ohmegaply-rcm-05a100pt",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 44,
+      "oem": "Ohmega Ticer",
+      "oem_slug": "ohmega-ticer",
+      "category": "RCM Series",
+      "product": "OhmegaPly\u00ae RCM \u2013 0.5A250PT",
+      "prod_slug": "ohmegaply-rcm-05a250pt",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 45,
+      "oem": "Ohmega Ticer",
+      "oem_slug": "ohmega-ticer",
+      "category": "RCM Series",
+      "product": "OhmegaPly\u00ae RCM \u2013 0.5A377PT",
+      "prod_slug": "ohmegaply-rcm-05a377pt",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 46,
+      "oem": "Ohmega Ticer",
+      "oem_slug": "ohmega-ticer",
+      "category": "RCM Series",
+      "product": "OhmegaPly\u00ae RCM \u2013 1A10PT",
+      "prod_slug": "ohmegaply-rcm-1a10pt",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 47,
+      "oem": "Ohmega Ticer",
+      "oem_slug": "ohmega-ticer",
+      "category": "RCM Series",
+      "product": "OhmegaPly\u00ae RCM \u2013 1A25PT",
+      "prod_slug": "ohmegaply-rcm-1a25pt",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 48,
+      "oem": "Ohmega Ticer",
+      "oem_slug": "ohmega-ticer",
+      "category": "RCM Series",
+      "product": "OhmegaPly\u00ae RCM \u2013 1A50PT",
+      "prod_slug": "ohmegaply-rcm-1a50pt",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 49,
+      "oem": "Ohmega Ticer",
+      "oem_slug": "ohmega-ticer",
+      "category": "RCM Series",
+      "product": "OhmegaPly\u00ae RCM \u2013 1A100PT",
+      "prod_slug": "ohmegaply-rcm-1a100pt",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 50,
+      "oem": "Ohmega Ticer",
+      "oem_slug": "ohmega-ticer",
+      "category": "TCR Series",
+      "product": "TCR\u00ae 25N18P9X",
+      "prod_slug": "tcr-25n18p9x",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 51,
+      "oem": "Ohmega Ticer",
+      "oem_slug": "ohmega-ticer",
+      "category": "TCR Series",
+      "product": "TCR\u00ae 50N18P9X",
+      "prod_slug": "tcr-50n18p9x",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 52,
+      "oem": "Ohmega Ticer",
+      "oem_slug": "ohmega-ticer",
+      "category": "TCR Series",
+      "product": "TCR\u00ae 100N18P9X",
+      "prod_slug": "tcr-100n18p9x",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 53,
+      "oem": "Ohmega Ticer",
+      "oem_slug": "ohmega-ticer",
+      "category": "TCR Series",
+      "product": "TCR\u00ae 250A18P9X",
+      "prod_slug": "tcr-250a18p9x",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 54,
+      "oem": "Ohmega Ticer",
+      "oem_slug": "ohmega-ticer",
+      "category": "TCR Series",
+      "product": "TCR\u00ae 1KO18P9X",
+      "prod_slug": "tcr-1ko18p9x",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 55,
+      "oem": "Ohmega Ticer",
+      "oem_slug": "ohmega-ticer",
+      "category": "TCR EHF Series",
+      "product": "TCR EHF\u00ae 25N18P8X",
+      "prod_slug": "tcr-ehf-25n18p8x",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 56,
+      "oem": "Ohmega Ticer",
+      "oem_slug": "ohmega-ticer",
+      "category": "TCR EHF Series",
+      "product": "TCR EHF\u00ae 50N18P8X",
+      "prod_slug": "tcr-ehf-50n18p8x",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 57,
+      "oem": "Ohmega Ticer",
+      "oem_slug": "ohmega-ticer",
+      "category": "TCR EHF Series",
+      "product": "TCR EHF\u00ae 100N18P8X",
+      "prod_slug": "tcr-ehf-100n18p8x",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 58,
+      "oem": "Fortify",
+      "oem_slug": "fortify",
+      "category": "TCR EHF Series",
+      "product": "Radix\u2122 2.8 Dielectric Lens Material",
+      "prod_slug": "radix-28-dielectric-lens-material",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 59,
+      "oem": "Fortify",
+      "oem_slug": "fortify",
+      "category": "TCR EHF Series",
+      "product": "Radix\u2122 4.6 Dielectric Lens Material",
+      "prod_slug": "radix-46-dielectric-lens-material",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 60,
+      "oem": "Fortify",
+      "oem_slug": "fortify",
+      "category": "TCR EHF Series",
+      "product": "GRIN Dielectric Lens (Radix\u2122 Platform)",
+      "prod_slug": "grin-dielectric-lens-radix-platform",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 61,
+      "oem": "Fortify",
+      "oem_slug": "fortify",
+      "category": "TCR EHF Series",
+      "product": "3D Printed Horn Lens",
+      "prod_slug": "3d-printed-horn-lens",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 62,
+      "oem": "Fortify",
+      "oem_slug": "fortify",
+      "category": "TCR EHF Series",
+      "product": "Switched Beam Antenna Lens",
+      "prod_slug": "switched-beam-antenna-lens",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 63,
+      "oem": "Fortify",
+      "oem_slug": "fortify",
+      "category": "TCR EHF Series",
+      "product": "Field-of-View (FOV) Enhancing Lens",
+      "prod_slug": "field-of-view-fov-enhancing-lens",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 64,
+      "oem": "Fortify",
+      "oem_slug": "fortify",
+      "category": "TCR EHF Series",
+      "product": "Tactical FOV Enhancing Lens",
+      "prod_slug": "tactical-fov-enhancing-lens",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 65,
+      "oem": "Fortify",
+      "oem_slug": "fortify",
+      "category": "TCR EHF Series",
+      "product": "Low-Dk Printed Foam Spacer (Lens Adjacent)",
+      "prod_slug": "low-dk-printed-foam-spacer-lens-adjacent",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 66,
+      "oem": "Qorvo",
+      "oem_slug": "qorvo",
+      "category": "Power Amplifiers",
+      "product": "Power Amplifiers",
+      "prod_slug": "power-amplifiers",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 67,
+      "oem": "Qorvo",
+      "oem_slug": "qorvo",
+      "category": "Driver Amplifiers",
+      "product": "Driver Amplifiers",
+      "prod_slug": "driver-amplifiers",
+      "total_images": 6,
+      "images": [
+        {
+          "display_order": 1,
+          "is_primary": true,
+          "role": "hero_primary",
+          "filename": "qorvo__driver-amplifiers_1.webp",
+          "url": "/catalog-images/qorvo__driver-amplifiers_1.webp",
+          "width": 236,
+          "height": 220,
+          "size_kb": 2.4,
+          "excel_col": 6,
+          "col_offset": 601981,
+          "alt_text": "Qorvo Driver Amplifiers Driver Amplifiers - Image 1"
+        },
+        {
+          "display_order": 2,
+          "is_primary": false,
+          "role": "gallery_2",
+          "filename": "qorvo__driver-amplifiers_2.webp",
+          "url": "/catalog-images/qorvo__driver-amplifiers_2.webp",
+          "width": 236,
+          "height": 220,
+          "size_kb": 2.9,
+          "excel_col": 10,
+          "col_offset": 495300,
+          "alt_text": "Qorvo Driver Amplifiers Driver Amplifiers - Image 2"
+        },
+        {
+          "display_order": 3,
+          "is_primary": false,
+          "role": "gallery_3",
+          "filename": "qorvo__driver-amplifiers_3.webp",
+          "url": "/catalog-images/qorvo__driver-amplifiers_3.webp",
+          "width": 498,
+          "height": 260,
+          "size_kb": 10.1,
+          "excel_col": 13,
+          "col_offset": 152400,
+          "alt_text": "Qorvo Driver Amplifiers Driver Amplifiers - Image 3"
+        },
+        {
+          "display_order": 4,
+          "is_primary": false,
+          "role": "gallery_4",
+          "filename": "qorvo__driver-amplifiers_4.webp",
+          "url": "/catalog-images/qorvo__driver-amplifiers_4.webp",
+          "width": 236,
+          "height": 220,
+          "size_kb": 3.0,
+          "excel_col": 22,
+          "col_offset": 588402,
+          "alt_text": "Qorvo Driver Amplifiers Driver Amplifiers - Image 4"
+        },
+        {
+          "display_order": 5,
+          "is_primary": false,
+          "role": "gallery_5",
+          "filename": "qorvo__driver-amplifiers_5.webp",
+          "url": "/catalog-images/qorvo__driver-amplifiers_5.webp",
+          "width": 236,
+          "height": 220,
+          "size_kb": 2.4,
+          "excel_col": 24,
+          "col_offset": 550856,
+          "alt_text": "Qorvo Driver Amplifiers Driver Amplifiers - Image 5"
+        },
+        {
+          "display_order": 6,
+          "is_primary": false,
+          "role": "gallery_6",
+          "filename": "qorvo__driver-amplifiers_6.webp",
+          "url": "/catalog-images/qorvo__driver-amplifiers_6.webp",
+          "width": 236,
+          "height": 220,
+          "size_kb": 2.0,
+          "excel_col": 26,
+          "col_offset": 530942,
+          "alt_text": "Qorvo Driver Amplifiers Driver Amplifiers - Image 6"
+        }
+      ]
+    },
+    {
+      "row": 68,
+      "oem": "Qorvo",
+      "oem_slug": "qorvo",
+      "category": "Low Noise Amplifiers",
+      "product": "Low Noise Amplifiers",
+      "prod_slug": "low-noise-amplifiers",
+      "total_images": 4,
+      "images": [
+        {
+          "display_order": 1,
+          "is_primary": true,
+          "role": "hero_primary",
+          "filename": "qorvo__low-noise-amplifiers_1.webp",
+          "url": "/catalog-images/qorvo__low-noise-amplifiers_1.webp",
+          "width": 236,
+          "height": 220,
+          "size_kb": 3.0,
+          "excel_col": 5,
+          "col_offset": 120119,
+          "alt_text": "Qorvo Low Noise Amplifiers Low Noise Amplifiers - Image 1"
+        },
+        {
+          "display_order": 2,
+          "is_primary": false,
+          "role": "gallery_2",
+          "filename": "qorvo__low-noise-amplifiers_2.webp",
+          "url": "/catalog-images/qorvo__low-noise-amplifiers_2.webp",
+          "width": 236,
+          "height": 220,
+          "size_kb": 2.5,
+          "excel_col": 8,
+          "col_offset": 556260,
+          "alt_text": "Qorvo Low Noise Amplifiers Low Noise Amplifiers - Image 2"
+        },
+        {
+          "display_order": 3,
+          "is_primary": false,
+          "role": "gallery_3",
+          "filename": "qorvo__low-noise-amplifiers_3.webp",
+          "url": "/catalog-images/qorvo__low-noise-amplifiers_3.webp",
+          "width": 236,
+          "height": 220,
+          "size_kb": 3.0,
+          "excel_col": 17,
+          "col_offset": 15240,
+          "alt_text": "Qorvo Low Noise Amplifiers Low Noise Amplifiers - Image 3"
+        },
+        {
+          "display_order": 4,
+          "is_primary": false,
+          "role": "gallery_4",
+          "filename": "qorvo__low-noise-amplifiers_4.webp",
+          "url": "/catalog-images/qorvo__low-noise-amplifiers_4.webp",
+          "width": 498,
+          "height": 260,
+          "size_kb": 9.2,
+          "excel_col": 19,
+          "col_offset": 78310,
+          "alt_text": "Qorvo Low Noise Amplifiers Low Noise Amplifiers - Image 4"
+        }
+      ]
+    },
+    {
+      "row": 69,
+      "oem": "Qorvo",
+      "oem_slug": "qorvo",
+      "category": "Variable Gain Amplifiers",
+      "product": "Variable Gain Amplifiers",
+      "prod_slug": "variable-gain-amplifiers",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 70,
+      "oem": "Qorvo",
+      "oem_slug": "qorvo",
+      "category": "Beamforming Integrated Circuits",
+      "product": "Beamforming Integrated Circuits",
+      "prod_slug": "beamforming-integrated-circuits",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 71,
+      "oem": "Qorvo",
+      "oem_slug": "qorvo",
+      "category": "Front End Modules",
+      "product": "Front End Modules",
+      "prod_slug": "front-end-modules",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 72,
+      "oem": "Qorvo",
+      "oem_slug": "qorvo",
+      "category": "Vpin Limiters",
+      "product": "Vpin Limiters",
+      "prod_slug": "vpin-limiters",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 73,
+      "oem": "Qorvo",
+      "oem_slug": "qorvo",
+      "category": "Mixers",
+      "product": "Mixers",
+      "prod_slug": "mixers",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 74,
+      "oem": "Qorvo",
+      "oem_slug": "qorvo",
+      "category": "GaN HEMTs",
+      "product": "GaN HEMTs",
+      "prod_slug": "gan-hemts",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 75,
+      "oem": "Qorvo",
+      "oem_slug": "qorvo",
+      "category": "GaAs pHEMTs",
+      "product": "GaAs pHEMTs",
+      "prod_slug": "gaas-phemts",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 76,
+      "oem": "RFuW Engineering",
+      "oem_slug": "rfuw-engineering",
+      "category": "RF Limiters",
+      "product": "RF Limiters",
+      "prod_slug": "rf-limiters",
+      "total_images": 2,
+      "images": [
+        {
+          "display_order": 1,
+          "is_primary": true,
+          "role": "hero_primary",
+          "filename": "rfuw-engineering__rf-limiters_1.webp",
+          "url": "/catalog-images/rfuw-engineering__rf-limiters_1.webp",
+          "width": 103,
+          "height": 66,
+          "size_kb": 2.9,
+          "excel_col": 5,
+          "col_offset": 342900,
+          "alt_text": "RFuW Engineering RF Limiters RF Limiters - Image 1"
+        },
+        {
+          "display_order": 2,
+          "is_primary": false,
+          "role": "gallery_2",
+          "filename": "rfuw-engineering__rf-limiters_2.webp",
+          "url": "/catalog-images/rfuw-engineering__rf-limiters_2.webp",
+          "width": 114,
+          "height": 114,
+          "size_kb": 3.4,
+          "excel_col": 6,
+          "col_offset": 586741,
+          "alt_text": "RFuW Engineering RF Limiters RF Limiters - Image 2"
+        }
+      ]
+    },
+    {
+      "row": 77,
+      "oem": "RFuW Engineering",
+      "oem_slug": "rfuw-engineering",
+      "category": "RF Switches",
+      "product": "RF Switches",
+      "prod_slug": "rf-switches",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 78,
+      "oem": "Minicircuits",
+      "oem_slug": "minicircuits",
+      "category": "RF Adapters",
+      "product": "RF Adapters",
+      "prod_slug": "rf-adapters",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 79,
+      "oem": "Minicircuits",
+      "oem_slug": "minicircuits",
+      "category": "RF/MW Amplifiers",
+      "product": "RF/MW Amplifiers",
+      "prod_slug": "rfmw-amplifiers",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 80,
+      "oem": "Minicircuits",
+      "oem_slug": "minicircuits",
+      "category": "RF Attenuators",
+      "product": "RF Attenuators",
+      "prod_slug": "rf-attenuators",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 81,
+      "oem": "Minicircuits",
+      "oem_slug": "minicircuits",
+      "category": "Bias Tees",
+      "product": "Bias Tees",
+      "prod_slug": "bias-tees",
+      "total_images": 1,
+      "images": [
+        {
+          "display_order": 1,
+          "is_primary": true,
+          "role": "hero_primary",
+          "filename": "minicircuits__bias-tees_1.webp",
+          "url": "/catalog-images/minicircuits__bias-tees_1.webp",
+          "width": 600,
+          "height": 400,
+          "size_kb": 17.1,
+          "excel_col": 8,
+          "col_offset": 182880,
+          "alt_text": "Minicircuits Bias Tees Bias Tees - Image 1"
+        }
+      ]
+    },
+    {
+      "row": 82,
+      "oem": "Minicircuits",
+      "oem_slug": "minicircuits",
+      "category": "RF/MW/MMW Cable asseblies",
+      "product": "RF/MW/MMW Cable asseblies",
+      "prod_slug": "rfmwmmw-cable-asseblies",
+      "total_images": 10,
+      "images": [
+        {
+          "display_order": 1,
+          "is_primary": true,
+          "role": "hero_primary",
+          "filename": "minicircuits__rfmwmmw-cable-asseblies_1.webp",
+          "url": "/catalog-images/minicircuits__rfmwmmw-cable-asseblies_1.webp",
+          "width": 423,
+          "height": 282,
+          "size_kb": 18.2,
+          "excel_col": 5,
+          "col_offset": 114300,
+          "alt_text": "Minicircuits RF/MW/MMW Cable asseblies RF/MW/MMW Cable asseblies - Image 1"
+        },
+        {
+          "display_order": 2,
+          "is_primary": false,
+          "role": "gallery_2",
+          "filename": "minicircuits__rfmwmmw-cable-asseblies_2.webp",
+          "url": "/catalog-images/minicircuits__rfmwmmw-cable-asseblies_2.webp",
+          "width": 708,
+          "height": 472,
+          "size_kb": 16.0,
+          "excel_col": 11,
+          "col_offset": 483870,
+          "alt_text": "Minicircuits RF/MW/MMW Cable asseblies RF/MW/MMW Cable asseblies - Image 2"
+        },
+        {
+          "display_order": 3,
+          "is_primary": false,
+          "role": "gallery_3",
+          "filename": "minicircuits__rfmwmmw-cable-asseblies_3.webp",
+          "url": "/catalog-images/minicircuits__rfmwmmw-cable-asseblies_3.webp",
+          "width": 708,
+          "height": 472,
+          "size_kb": 10.5,
+          "excel_col": 15,
+          "col_offset": 167640,
+          "alt_text": "Minicircuits RF/MW/MMW Cable asseblies RF/MW/MMW Cable asseblies - Image 3"
+        },
+        {
+          "display_order": 4,
+          "is_primary": false,
+          "role": "gallery_4",
+          "filename": "minicircuits__rfmwmmw-cable-asseblies_4.webp",
+          "url": "/catalog-images/minicircuits__rfmwmmw-cable-asseblies_4.webp",
+          "width": 708,
+          "height": 472,
+          "size_kb": 18.8,
+          "excel_col": 18,
+          "col_offset": 533400,
+          "alt_text": "Minicircuits RF/MW/MMW Cable asseblies RF/MW/MMW Cable asseblies - Image 4"
+        },
+        {
+          "display_order": 5,
+          "is_primary": false,
+          "role": "gallery_5",
+          "filename": "minicircuits__rfmwmmw-cable-asseblies_5.webp",
+          "url": "/catalog-images/minicircuits__rfmwmmw-cable-asseblies_5.webp",
+          "width": 708,
+          "height": 472,
+          "size_kb": 13.0,
+          "excel_col": 22,
+          "col_offset": 323850,
+          "alt_text": "Minicircuits RF/MW/MMW Cable asseblies RF/MW/MMW Cable asseblies - Image 5"
+        },
+        {
+          "display_order": 6,
+          "is_primary": false,
+          "role": "gallery_6",
+          "filename": "minicircuits__rfmwmmw-cable-asseblies_6.webp",
+          "url": "/catalog-images/minicircuits__rfmwmmw-cable-asseblies_6.webp",
+          "width": 710,
+          "height": 473,
+          "size_kb": 7.1,
+          "excel_col": 26,
+          "col_offset": 259080,
+          "alt_text": "Minicircuits RF/MW/MMW Cable asseblies RF/MW/MMW Cable asseblies - Image 6"
+        },
+        {
+          "display_order": 7,
+          "is_primary": false,
+          "role": "gallery_7",
+          "filename": "minicircuits__rfmwmmw-cable-asseblies_7.webp",
+          "url": "/catalog-images/minicircuits__rfmwmmw-cable-asseblies_7.webp",
+          "width": 508,
+          "height": 360,
+          "size_kb": 24.1,
+          "excel_col": 29,
+          "col_offset": 498009,
+          "alt_text": "Minicircuits RF/MW/MMW Cable asseblies RF/MW/MMW Cable asseblies - Image 7"
+        },
+        {
+          "display_order": 8,
+          "is_primary": false,
+          "role": "gallery_8",
+          "filename": "minicircuits__rfmwmmw-cable-asseblies_8.webp",
+          "url": "/catalog-images/minicircuits__rfmwmmw-cable-asseblies_8.webp",
+          "width": 660,
+          "height": 472,
+          "size_kb": 48.6,
+          "excel_col": 33,
+          "col_offset": 155048,
+          "alt_text": "Minicircuits RF/MW/MMW Cable asseblies RF/MW/MMW Cable asseblies - Image 8"
+        },
+        {
+          "display_order": 9,
+          "is_primary": false,
+          "role": "gallery_9",
+          "filename": "minicircuits__rfmwmmw-cable-asseblies_9.webp",
+          "url": "/catalog-images/minicircuits__rfmwmmw-cable-asseblies_9.webp",
+          "width": 528,
+          "height": 472,
+          "size_kb": 12.1,
+          "excel_col": 37,
+          "col_offset": 168674,
+          "alt_text": "Minicircuits RF/MW/MMW Cable asseblies RF/MW/MMW Cable asseblies - Image 9"
+        },
+        {
+          "display_order": 10,
+          "is_primary": false,
+          "role": "gallery_10",
+          "filename": "minicircuits__rfmwmmw-cable-asseblies_10.webp",
+          "url": "/catalog-images/minicircuits__rfmwmmw-cable-asseblies_10.webp",
+          "width": 528,
+          "height": 472,
+          "size_kb": 10.3,
+          "excel_col": 40,
+          "col_offset": 466370,
+          "alt_text": "Minicircuits RF/MW/MMW Cable asseblies RF/MW/MMW Cable asseblies - Image 10"
+        }
+      ]
+    },
+    {
+      "row": 83,
+      "oem": "Minicircuits",
+      "oem_slug": "minicircuits",
+      "category": "RF Couplers",
+      "product": "RF Couplers",
+      "prod_slug": "rf-couplers",
+      "total_images": 4,
+      "images": [
+        {
+          "display_order": 1,
+          "is_primary": true,
+          "role": "hero_primary",
+          "filename": "minicircuits__rf-couplers_1.webp",
+          "url": "/catalog-images/minicircuits__rf-couplers_1.webp",
+          "width": 708,
+          "height": 472,
+          "size_kb": 7.5,
+          "excel_col": 44,
+          "col_offset": 22860,
+          "alt_text": "Minicircuits RF Couplers RF Couplers - Image 1"
+        },
+        {
+          "display_order": 2,
+          "is_primary": false,
+          "role": "gallery_2",
+          "filename": "minicircuits__rf-couplers_2.webp",
+          "url": "/catalog-images/minicircuits__rf-couplers_2.webp",
+          "width": 708,
+          "height": 472,
+          "size_kb": 7.9,
+          "excel_col": 47,
+          "col_offset": 297180,
+          "alt_text": "Minicircuits RF Couplers RF Couplers - Image 2"
+        },
+        {
+          "display_order": 3,
+          "is_primary": false,
+          "role": "gallery_3",
+          "filename": "minicircuits__rf-couplers_3.webp",
+          "url": "/catalog-images/minicircuits__rf-couplers_3.webp",
+          "width": 708,
+          "height": 472,
+          "size_kb": 6.4,
+          "excel_col": 50,
+          "col_offset": 388620,
+          "alt_text": "Minicircuits RF Couplers RF Couplers - Image 3"
+        },
+        {
+          "display_order": 4,
+          "is_primary": false,
+          "role": "gallery_4",
+          "filename": "minicircuits__rf-couplers_4.webp",
+          "url": "/catalog-images/minicircuits__rf-couplers_4.webp",
+          "width": 321,
+          "height": 201,
+          "size_kb": 7.4,
+          "excel_col": 95,
+          "col_offset": 556260,
+          "alt_text": "Minicircuits RF Couplers RF Couplers - Image 4"
+        }
+      ]
+    },
+    {
+      "row": 84,
+      "oem": "Minicircuits",
+      "oem_slug": "minicircuits",
+      "category": "RF /MW Custom Assemblies",
+      "product": "RF /MW Custom Assemblies",
+      "prod_slug": "rf-mw-custom-assemblies",
+      "total_images": 12,
+      "images": [
+        {
+          "display_order": 1,
+          "is_primary": true,
+          "role": "hero_primary",
+          "filename": "minicircuits__rf-mw-custom-assemblies_1.webp",
+          "url": "/catalog-images/minicircuits__rf-mw-custom-assemblies_1.webp",
+          "width": 708,
+          "height": 472,
+          "size_kb": 11.0,
+          "excel_col": 53,
+          "col_offset": 544830,
+          "alt_text": "Minicircuits RF /MW Custom Assemblies RF /MW Custom Assemblies - Image 1"
+        },
+        {
+          "display_order": 2,
+          "is_primary": false,
+          "role": "gallery_2",
+          "filename": "minicircuits__rf-mw-custom-assemblies_2.webp",
+          "url": "/catalog-images/minicircuits__rf-mw-custom-assemblies_2.webp",
+          "width": 708,
+          "height": 472,
+          "size_kb": 10.9,
+          "excel_col": 57,
+          "col_offset": 60961,
+          "alt_text": "Minicircuits RF /MW Custom Assemblies RF /MW Custom Assemblies - Image 2"
+        },
+        {
+          "display_order": 3,
+          "is_primary": false,
+          "role": "gallery_3",
+          "filename": "minicircuits__rf-mw-custom-assemblies_3.webp",
+          "url": "/catalog-images/minicircuits__rf-mw-custom-assemblies_3.webp",
+          "width": 708,
+          "height": 472,
+          "size_kb": 11.7,
+          "excel_col": 60,
+          "col_offset": 60960,
+          "alt_text": "Minicircuits RF /MW Custom Assemblies RF /MW Custom Assemblies - Image 3"
+        },
+        {
+          "display_order": 4,
+          "is_primary": false,
+          "role": "gallery_4",
+          "filename": "minicircuits__rf-mw-custom-assemblies_4.webp",
+          "url": "/catalog-images/minicircuits__rf-mw-custom-assemblies_4.webp",
+          "width": 708,
+          "height": 472,
+          "size_kb": 28.4,
+          "excel_col": 63,
+          "col_offset": 106680,
+          "alt_text": "Minicircuits RF /MW Custom Assemblies RF /MW Custom Assemblies - Image 4"
+        },
+        {
+          "display_order": 5,
+          "is_primary": false,
+          "role": "gallery_5",
+          "filename": "minicircuits__rf-mw-custom-assemblies_5.webp",
+          "url": "/catalog-images/minicircuits__rf-mw-custom-assemblies_5.webp",
+          "width": 473,
+          "height": 338,
+          "size_kb": 13.6,
+          "excel_col": 66,
+          "col_offset": 182879,
+          "alt_text": "Minicircuits RF /MW Custom Assemblies RF /MW Custom Assemblies - Image 5"
+        },
+        {
+          "display_order": 6,
+          "is_primary": false,
+          "role": "gallery_6",
+          "filename": "minicircuits__rf-mw-custom-assemblies_6.webp",
+          "url": "/catalog-images/minicircuits__rf-mw-custom-assemblies_6.webp",
+          "width": 708,
+          "height": 472,
+          "size_kb": 8.3,
+          "excel_col": 69,
+          "col_offset": 45720,
+          "alt_text": "Minicircuits RF /MW Custom Assemblies RF /MW Custom Assemblies - Image 6"
+        },
+        {
+          "display_order": 7,
+          "is_primary": false,
+          "role": "gallery_7",
+          "filename": "minicircuits__rf-mw-custom-assemblies_7.webp",
+          "url": "/catalog-images/minicircuits__rf-mw-custom-assemblies_7.webp",
+          "width": 708,
+          "height": 472,
+          "size_kb": 7.7,
+          "excel_col": 72,
+          "col_offset": 83820,
+          "alt_text": "Minicircuits RF /MW Custom Assemblies RF /MW Custom Assemblies - Image 7"
+        },
+        {
+          "display_order": 8,
+          "is_primary": false,
+          "role": "gallery_8",
+          "filename": "minicircuits__rf-mw-custom-assemblies_8.webp",
+          "url": "/catalog-images/minicircuits__rf-mw-custom-assemblies_8.webp",
+          "width": 708,
+          "height": 472,
+          "size_kb": 11.4,
+          "excel_col": 76,
+          "col_offset": 129540,
+          "alt_text": "Minicircuits RF /MW Custom Assemblies RF /MW Custom Assemblies - Image 8"
+        },
+        {
+          "display_order": 9,
+          "is_primary": false,
+          "role": "gallery_9",
+          "filename": "minicircuits__rf-mw-custom-assemblies_9.webp",
+          "url": "/catalog-images/minicircuits__rf-mw-custom-assemblies_9.webp",
+          "width": 708,
+          "height": 472,
+          "size_kb": 26.6,
+          "excel_col": 80,
+          "col_offset": 83820,
+          "alt_text": "Minicircuits RF /MW Custom Assemblies RF /MW Custom Assemblies - Image 9"
+        },
+        {
+          "display_order": 10,
+          "is_primary": false,
+          "role": "gallery_10",
+          "filename": "minicircuits__rf-mw-custom-assemblies_10.webp",
+          "url": "/catalog-images/minicircuits__rf-mw-custom-assemblies_10.webp",
+          "width": 708,
+          "height": 472,
+          "size_kb": 7.0,
+          "excel_col": 84,
+          "col_offset": 129540,
+          "alt_text": "Minicircuits RF /MW Custom Assemblies RF /MW Custom Assemblies - Image 10"
+        },
+        {
+          "display_order": 11,
+          "is_primary": false,
+          "role": "gallery_11",
+          "filename": "minicircuits__rf-mw-custom-assemblies_11.webp",
+          "url": "/catalog-images/minicircuits__rf-mw-custom-assemblies_11.webp",
+          "width": 708,
+          "height": 472,
+          "size_kb": 8.9,
+          "excel_col": 88,
+          "col_offset": 99060,
+          "alt_text": "Minicircuits RF /MW Custom Assemblies RF /MW Custom Assemblies - Image 11"
+        },
+        {
+          "display_order": 12,
+          "is_primary": false,
+          "role": "gallery_12",
+          "filename": "minicircuits__rf-mw-custom-assemblies_12.webp",
+          "url": "/catalog-images/minicircuits__rf-mw-custom-assemblies_12.webp",
+          "width": 708,
+          "height": 472,
+          "size_kb": 11.3,
+          "excel_col": 92,
+          "col_offset": 129540,
+          "alt_text": "Minicircuits RF /MW Custom Assemblies RF /MW Custom Assemblies - Image 12"
+        }
+      ]
+    },
+    {
+      "row": 85,
+      "oem": "Minicircuits",
+      "oem_slug": "minicircuits",
+      "category": "DC Blocks",
+      "product": "DC Blocks",
+      "prod_slug": "dc-blocks",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 86,
+      "oem": "Minicircuits",
+      "oem_slug": "minicircuits",
+      "category": "MMIC Die Parts",
+      "product": "MMIC Die Parts",
+      "prod_slug": "mmic-die-parts",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 87,
+      "oem": "Minicircuits",
+      "oem_slug": "minicircuits",
+      "category": "Equalizers",
+      "product": "Equalizers",
+      "prod_slug": "equalizers",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 88,
+      "oem": "Minicircuits",
+      "oem_slug": "minicircuits",
+      "category": "Filters",
+      "product": "Filters",
+      "prod_slug": "filters",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 89,
+      "oem": "Minicircuits",
+      "oem_slug": "minicircuits",
+      "category": "Frequency Mixers",
+      "product": "Frequency Mixers",
+      "prod_slug": "frequency-mixers",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 90,
+      "oem": "Minicircuits",
+      "oem_slug": "minicircuits",
+      "category": "Frequency Multipliers",
+      "product": "Frequency Multipliers",
+      "prod_slug": "frequency-multipliers",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 91,
+      "oem": "Minicircuits",
+      "oem_slug": "minicircuits",
+      "category": "Impedance Matching Pads",
+      "product": "Impedance Matching Pads",
+      "prod_slug": "impedance-matching-pads",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 92,
+      "oem": "Minicircuits",
+      "oem_slug": "minicircuits",
+      "category": "Limiters",
+      "product": "Limiters",
+      "prod_slug": "limiters",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 93,
+      "oem": "Minicircuits",
+      "oem_slug": "minicircuits",
+      "category": "Modulators / Demodulators",
+      "product": "Modulators / Demodulators",
+      "prod_slug": "modulators-demodulators",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 94,
+      "oem": "Minicircuits",
+      "oem_slug": "minicircuits",
+      "category": "Oscillators",
+      "product": "Oscillators",
+      "prod_slug": "oscillators",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 95,
+      "oem": "Minicircuits",
+      "oem_slug": "minicircuits",
+      "category": "Phase Detectors",
+      "product": "Phase Detectors",
+      "prod_slug": "phase-detectors",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 96,
+      "oem": "Minicircuits",
+      "oem_slug": "minicircuits",
+      "category": "Phase Shifters",
+      "product": "Phase Shifters",
+      "prod_slug": "phase-shifters",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 97,
+      "oem": "Minicircuits",
+      "oem_slug": "minicircuits",
+      "category": "Power Detectors",
+      "product": "Power Detectors",
+      "prod_slug": "power-detectors",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 98,
+      "oem": "Minicircuits",
+      "oem_slug": "minicircuits",
+      "category": "Power Sensors",
+      "product": "Power Sensors",
+      "prod_slug": "power-sensors",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 99,
+      "oem": "Minicircuits",
+      "oem_slug": "minicircuits",
+      "category": "Power Splitters / Combiners",
+      "product": "Power Splitters / Combiners",
+      "prod_slug": "power-splitters-combiners",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 100,
+      "oem": "Minicircuits",
+      "oem_slug": "minicircuits",
+      "category": "90\u00b0/180\u00b0 Hybrids",
+      "product": "90\u00b0/180\u00b0 Hybrids",
+      "prod_slug": "90180-hybrids",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 101,
+      "oem": "Minicircuits",
+      "oem_slug": "minicircuits",
+      "category": "Reference Designs",
+      "product": "Reference Designs",
+      "prod_slug": "reference-designs",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 102,
+      "oem": "Minicircuits",
+      "oem_slug": "minicircuits",
+      "category": "RF Chokes",
+      "product": "RF Chokes",
+      "prod_slug": "rf-chokes",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 103,
+      "oem": "Minicircuits",
+      "oem_slug": "minicircuits",
+      "category": "Research & Educational Kits",
+      "product": "Research & Educational Kits",
+      "prod_slug": "research-educational-kits",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 104,
+      "oem": "Minicircuits",
+      "oem_slug": "minicircuits",
+      "category": "RF & Microwave Energy",
+      "product": "RF & Microwave Energy",
+      "prod_slug": "rf-microwave-energy",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 105,
+      "oem": "Minicircuits",
+      "oem_slug": "minicircuits",
+      "category": "Space Upscreening",
+      "product": "Space Upscreening",
+      "prod_slug": "space-upscreening",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 106,
+      "oem": "Minicircuits",
+      "oem_slug": "minicircuits",
+      "category": "Switches",
+      "product": "Switches",
+      "prod_slug": "switches",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 107,
+      "oem": "Minicircuits",
+      "oem_slug": "minicircuits",
+      "category": "Synthesizers",
+      "product": "Synthesizers",
+      "prod_slug": "synthesizers",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 108,
+      "oem": "Minicircuits",
+      "oem_slug": "minicircuits",
+      "category": "Terminations",
+      "product": "Terminations",
+      "prod_slug": "terminations",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 109,
+      "oem": "Minicircuits",
+      "oem_slug": "minicircuits",
+      "category": "Test Solutions",
+      "product": "Test Solutions",
+      "prod_slug": "test-solutions",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 110,
+      "oem": "Minicircuits",
+      "oem_slug": "minicircuits",
+      "category": "Instrumentation Amplifiers",
+      "product": "Instrumentation Amplifiers",
+      "prod_slug": "instrumentation-amplifiers",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 111,
+      "oem": "Minicircuits",
+      "oem_slug": "minicircuits",
+      "category": "Power Sensors",
+      "product": "Power Sensors",
+      "prod_slug": "power-sensors",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 112,
+      "oem": "Minicircuits",
+      "oem_slug": "minicircuits",
+      "category": "Precision Connector Gauges",
+      "product": "Precision Connector Gauges",
+      "prod_slug": "precision-connector-gauges",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 113,
+      "oem": "Minicircuits",
+      "oem_slug": "minicircuits",
+      "category": "Signal Distribution Systems",
+      "product": "Signal Distribution Systems",
+      "prod_slug": "signal-distribution-systems",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 114,
+      "oem": "Minicircuits",
+      "oem_slug": "minicircuits",
+      "category": "Signal Generation and Measurement",
+      "product": "Signal Generation and Measurement",
+      "prod_slug": "signal-generation-and-measurement",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 115,
+      "oem": "Minicircuits",
+      "oem_slug": "minicircuits",
+      "category": "Solid State Switch Systems",
+      "product": "Solid State Switch Systems",
+      "prod_slug": "solid-state-switch-systems",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 116,
+      "oem": "Minicircuits",
+      "oem_slug": "minicircuits",
+      "category": "Wrenches",
+      "product": "Wrenches",
+      "prod_slug": "wrenches",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 117,
+      "oem": "Minicircuits",
+      "oem_slug": "minicircuits",
+      "category": "Custom Test Systems",
+      "product": "Custom Test Systems",
+      "prod_slug": "custom-test-systems",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 118,
+      "oem": "Minicircuits",
+      "oem_slug": "minicircuits",
+      "category": "Transformers Baluns",
+      "product": "Transformers Baluns",
+      "prod_slug": "transformers-baluns",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 119,
+      "oem": "Minicircuits",
+      "oem_slug": "minicircuits",
+      "category": "Voltage Variable Equalizers",
+      "product": "Voltage Variable Equalizers",
+      "prod_slug": "voltage-variable-equalizers",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 120,
+      "oem": "Minicircuits",
+      "oem_slug": "minicircuits",
+      "category": "Waveguides",
+      "product": "Waveguides",
+      "prod_slug": "waveguides",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 121,
+      "oem": "TriTeq",
+      "oem_slug": "triteq",
+      "category": "Harmonic Switched Filters",
+      "product": "Harmonic Switched Filters",
+      "prod_slug": "harmonic-switched-filters",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 122,
+      "oem": "YTTEK",
+      "oem_slug": "yttek",
+      "category": "Software-Defined Radio (SDR)",
+      "product": "Software-Defined Radio (SDR)",
+      "prod_slug": "software-defined-radio-sdr",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 123,
+      "oem": "YTTEK",
+      "oem_slug": "yttek",
+      "category": "HyperSDR",
+      "product": "HyperSDR",
+      "prod_slug": "hypersdr",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 124,
+      "oem": "YTTEK",
+      "oem_slug": "yttek",
+      "category": "SDRspace",
+      "product": "SDRspace",
+      "prod_slug": "sdrspace",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 125,
+      "oem": "YTTEK",
+      "oem_slug": "yttek",
+      "category": "PluSDR",
+      "product": "PluSDR",
+      "prod_slug": "plusdr",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 126,
+      "oem": "YTTEK",
+      "oem_slug": "yttek",
+      "category": "SDRone",
+      "product": "SDRone",
+      "prod_slug": "sdrone",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 127,
+      "oem": "YTTEK",
+      "oem_slug": "yttek",
+      "category": "5G FR2\n& 6G",
+      "product": "5G FR2\n& 6G",
+      "prod_slug": "5g-fr2-6g",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 128,
+      "oem": "Thermosen",
+      "oem_slug": "thermosen",
+      "category": "temperature sensors",
+      "product": "temperature sensors",
+      "prod_slug": "temperature-sensors",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 129,
+      "oem": "TecDia",
+      "oem_slug": "tecdia",
+      "category": "Single Layer Capacitors",
+      "product": "Single Layer Capacitors",
+      "prod_slug": "single-layer-capacitors",
+      "total_images": 2,
+      "images": [
+        {
+          "display_order": 1,
+          "is_primary": true,
+          "role": "hero_primary",
+          "filename": "tecdia__single-layer-capacitors_1.webp",
+          "url": "/catalog-images/tecdia__single-layer-capacitors_1.webp",
+          "width": 260,
+          "height": 200,
+          "size_kb": 4.3,
+          "excel_col": 5,
+          "col_offset": 243840,
+          "alt_text": "TecDia Single Layer Capacitors Single Layer Capacitors - Image 1"
+        },
+        {
+          "display_order": 2,
+          "is_primary": false,
+          "role": "gallery_2",
+          "filename": "tecdia__single-layer-capacitors_2.webp",
+          "url": "/catalog-images/tecdia__single-layer-capacitors_2.webp",
+          "width": 412,
+          "height": 271,
+          "size_kb": 4.4,
+          "excel_col": 13,
+          "col_offset": 301075,
+          "alt_text": "TecDia Single Layer Capacitors Single Layer Capacitors - Image 2"
+        }
+      ]
+    },
+    {
+      "row": 130,
+      "oem": "TecDia",
+      "oem_slug": "tecdia",
+      "category": "Tunable Dielectric Capacitors",
+      "product": "Tunable Dielectric Capacitors",
+      "prod_slug": "tunable-dielectric-capacitors",
+      "total_images": 1,
+      "images": [
+        {
+          "display_order": 1,
+          "is_primary": true,
+          "role": "hero_primary",
+          "filename": "tecdia__tunable-dielectric-capacitors_1.webp",
+          "url": "/catalog-images/tecdia__tunable-dielectric-capacitors_1.webp",
+          "width": 653,
+          "height": 149,
+          "size_kb": 10.1,
+          "excel_col": 8,
+          "col_offset": 175259,
+          "alt_text": "TecDia Tunable Dielectric Capacitors Tunable Dielectric Capacitors - Image 1"
+        }
+      ]
+    },
+    {
+      "row": 131,
+      "oem": "TecDia",
+      "oem_slug": "tecdia",
+      "category": "Thin Film Substrates",
+      "product": "Thin Film Substrates",
+      "prod_slug": "thin-film-substrates",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 132,
+      "oem": "TecDia",
+      "oem_slug": "tecdia",
+      "category": "Dispensing Nozzles",
+      "product": "Dispensing Nozzles",
+      "prod_slug": "dispensing-nozzles",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 133,
+      "oem": "TecDia",
+      "oem_slug": "tecdia",
+      "category": "Diamond Products",
+      "product": "Diamond Products",
+      "prod_slug": "diamond-products",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 134,
+      "oem": "TecDia",
+      "oem_slug": "tecdia",
+      "category": "Handy Wafer Scriber Kit",
+      "product": "Handy Wafer Scriber Kit",
+      "prod_slug": "handy-wafer-scriber-kit",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 135,
+      "oem": "TecDia",
+      "oem_slug": "tecdia",
+      "category": "Diamond Pick Up Tools",
+      "product": "Diamond Pick Up Tools",
+      "prod_slug": "diamond-pick-up-tools",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 136,
+      "oem": "Evans",
+      "oem_slug": "evans",
+      "category": "Eulex",
+      "product": "XG1 Series- Binary",
+      "prod_slug": "xg1-series--binary",
+      "total_images": 1,
+      "images": [
+        {
+          "display_order": 1,
+          "is_primary": true,
+          "role": "hero_primary",
+          "filename": "evans__xg1-series--binary_1.webp",
+          "url": "/catalog-images/evans__xg1-series--binary_1.webp",
+          "width": 321,
+          "height": 180,
+          "size_kb": 3.0,
+          "excel_col": 10,
+          "col_offset": 281940,
+          "alt_text": "Evans XG1 Series- Binary Eulex - Image 1"
+        }
+      ]
+    },
+    {
+      "row": 137,
+      "oem": "Evans",
+      "oem_slug": "evans",
+      "category": "Eulex",
+      "product": "XG2 Series - 2 Terminal",
+      "prod_slug": "xg2-series---2-terminal",
+      "total_images": 5,
+      "images": [
+        {
+          "display_order": 1,
+          "is_primary": true,
+          "role": "hero_primary",
+          "filename": "evans__xg2-series---2-terminal_1.webp",
+          "url": "/catalog-images/evans__xg2-series---2-terminal_1.webp",
+          "width": 244,
+          "height": 138,
+          "size_kb": 1.6,
+          "excel_col": 5,
+          "col_offset": 114301,
+          "alt_text": "Evans XG2 Series - 2 Terminal Eulex - Image 1"
+        },
+        {
+          "display_order": 2,
+          "is_primary": false,
+          "role": "gallery_2",
+          "filename": "evans__xg2-series---2-terminal_2.webp",
+          "url": "/catalog-images/evans__xg2-series---2-terminal_2.webp",
+          "width": 251,
+          "height": 141,
+          "size_kb": 1.7,
+          "excel_col": 6,
+          "col_offset": 594360,
+          "alt_text": "Evans XG2 Series - 2 Terminal Eulex - Image 2"
+        },
+        {
+          "display_order": 3,
+          "is_primary": false,
+          "role": "gallery_3",
+          "filename": "evans__xg2-series---2-terminal_3.webp",
+          "url": "/catalog-images/evans__xg2-series---2-terminal_3.webp",
+          "width": 229,
+          "height": 129,
+          "size_kb": 1.8,
+          "excel_col": 8,
+          "col_offset": 563880,
+          "alt_text": "Evans XG2 Series - 2 Terminal Eulex - Image 3"
+        },
+        {
+          "display_order": 4,
+          "is_primary": false,
+          "role": "gallery_4",
+          "filename": "evans__xg2-series---2-terminal_4.webp",
+          "url": "/catalog-images/evans__xg2-series---2-terminal_4.webp",
+          "width": 258,
+          "height": 145,
+          "size_kb": 2.3,
+          "excel_col": 12,
+          "col_offset": 460480,
+          "alt_text": "Evans XG2 Series - 2 Terminal Eulex - Image 4"
+        },
+        {
+          "display_order": 5,
+          "is_primary": false,
+          "role": "gallery_5",
+          "filename": "evans__xg2-series---2-terminal_5.webp",
+          "url": "/catalog-images/evans__xg2-series---2-terminal_5.webp",
+          "width": 326,
+          "height": 183,
+          "size_kb": 5.9,
+          "excel_col": 14,
+          "col_offset": 290048,
+          "alt_text": "Evans XG2 Series - 2 Terminal Eulex - Image 5"
+        }
+      ]
+    },
+    {
+      "row": 138,
+      "oem": "Evans",
+      "oem_slug": "evans",
+      "category": "Eulex",
+      "product": "XG3 Series - 3 Terminal",
+      "prod_slug": "xg3-series---3-terminal",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 139,
+      "oem": "Evans",
+      "oem_slug": "evans",
+      "category": "Eulex",
+      "product": "XQ Series - Ultra-High Q",
+      "prod_slug": "xq-series---ultra-high-q",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 140,
+      "oem": "Evans",
+      "oem_slug": "evans",
+      "category": "Eulex",
+      "product": "XV Series - Vertical Layer",
+      "prod_slug": "xv-series---vertical-layer",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 141,
+      "oem": "Evans",
+      "oem_slug": "evans",
+      "category": "Eulex",
+      "product": "Substrates",
+      "prod_slug": "substrates",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 142,
+      "oem": "Evans",
+      "oem_slug": "evans",
+      "category": "Evans",
+      "product": "TDD Series",
+      "prod_slug": "tdd-series",
+      "total_images": 2,
+      "images": [
+        {
+          "display_order": 1,
+          "is_primary": true,
+          "role": "hero_primary",
+          "filename": "evans__tdd-series_1.webp",
+          "url": "/catalog-images/evans__tdd-series_1.webp",
+          "width": 400,
+          "height": 267,
+          "size_kb": 4.9,
+          "excel_col": 8,
+          "col_offset": 342900,
+          "alt_text": "Evans TDD Series Evans - Image 1"
+        },
+        {
+          "display_order": 2,
+          "is_primary": false,
+          "role": "gallery_2",
+          "filename": "evans__tdd-series_2.webp",
+          "url": "/catalog-images/evans__tdd-series_2.webp",
+          "width": 386,
+          "height": 217,
+          "size_kb": 3.5,
+          "excel_col": 10,
+          "col_offset": 68580,
+          "alt_text": "Evans TDD Series Evans - Image 2"
+        }
+      ]
+    },
+    {
+      "row": 143,
+      "oem": "Evans",
+      "oem_slug": "evans",
+      "category": "Evans",
+      "product": "TDE Series",
+      "prod_slug": "tde-series",
+      "total_images": 4,
+      "images": [
+        {
+          "display_order": 1,
+          "is_primary": true,
+          "role": "hero_primary",
+          "filename": "evans__tde-series_1.webp",
+          "url": "/catalog-images/evans__tde-series_1.webp",
+          "width": 341,
+          "height": 192,
+          "size_kb": 5.0,
+          "excel_col": 12,
+          "col_offset": 190500,
+          "alt_text": "Evans TDE Series Evans - Image 1"
+        },
+        {
+          "display_order": 2,
+          "is_primary": false,
+          "role": "gallery_2",
+          "filename": "evans__tde-series_2.webp",
+          "url": "/catalog-images/evans__tde-series_2.webp",
+          "width": 317,
+          "height": 178,
+          "size_kb": 4.1,
+          "excel_col": 14,
+          "col_offset": 429784,
+          "alt_text": "Evans TDE Series Evans - Image 2"
+        },
+        {
+          "display_order": 3,
+          "is_primary": false,
+          "role": "gallery_3",
+          "filename": "evans__tde-series_3.webp",
+          "url": "/catalog-images/evans__tde-series_3.webp",
+          "width": 333,
+          "height": 187,
+          "size_kb": 3.4,
+          "excel_col": 16,
+          "col_offset": 472440,
+          "alt_text": "Evans TDE Series Evans - Image 3"
+        },
+        {
+          "display_order": 4,
+          "is_primary": false,
+          "role": "gallery_4",
+          "filename": "evans__tde-series_4.webp",
+          "url": "/catalog-images/evans__tde-series_4.webp",
+          "width": 400,
+          "height": 225,
+          "size_kb": 10.3,
+          "excel_col": 18,
+          "col_offset": 550266,
+          "alt_text": "Evans TDE Series Evans - Image 4"
+        }
+      ]
+    },
+    {
+      "row": 144,
+      "oem": "Evans",
+      "oem_slug": "evans",
+      "category": "Evans",
+      "product": "THS3 Series",
+      "prod_slug": "ths3-series",
+      "total_images": 2,
+      "images": [
+        {
+          "display_order": 1,
+          "is_primary": true,
+          "role": "hero_primary",
+          "filename": "evans__ths3-series_1.webp",
+          "url": "/catalog-images/evans__ths3-series_1.webp",
+          "width": 280,
+          "height": 158,
+          "size_kb": 5.5,
+          "excel_col": 5,
+          "col_offset": 45421,
+          "alt_text": "Evans THS3 Series Evans - Image 1"
+        },
+        {
+          "display_order": 2,
+          "is_primary": false,
+          "role": "gallery_2",
+          "filename": "evans__ths3-series_2.webp",
+          "url": "/catalog-images/evans__ths3-series_2.webp",
+          "width": 251,
+          "height": 141,
+          "size_kb": 4.2,
+          "excel_col": 6,
+          "col_offset": 601980,
+          "alt_text": "Evans THS3 Series Evans - Image 2"
+        }
+      ]
+    },
+    {
+      "row": 145,
+      "oem": "Evans",
+      "oem_slug": "evans",
+      "category": "Evans",
+      "product": "THQ",
+      "prod_slug": "thq",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 146,
+      "oem": "Evans",
+      "oem_slug": "evans",
+      "category": "Evans",
+      "product": "THQA2/M2/T2 Series",
+      "prod_slug": "thqa2m2t2-series",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 147,
+      "oem": "Evans",
+      "oem_slug": "evans",
+      "category": "Evans",
+      "product": "HyCap Series",
+      "prod_slug": "hycap-series",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 148,
+      "oem": "Evans",
+      "oem_slug": "evans",
+      "category": "Evans",
+      "product": "Capattery Series",
+      "prod_slug": "capattery-series",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 149,
+      "oem": "Evans",
+      "oem_slug": "evans",
+      "category": "Evans",
+      "product": "Capacitor Banks",
+      "prod_slug": "capacitor-banks",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 150,
+      "oem": "Evans",
+      "oem_slug": "evans",
+      "category": "Paktron",
+      "product": "Angstor",
+      "prod_slug": "angstor",
+      "total_images": 5,
+      "images": [
+        {
+          "display_order": 1,
+          "is_primary": true,
+          "role": "hero_primary",
+          "filename": "evans__angstor_1.webp",
+          "url": "/catalog-images/evans__angstor_1.webp",
+          "width": 301,
+          "height": 301,
+          "size_kb": 5.2,
+          "excel_col": 5,
+          "col_offset": 15240,
+          "alt_text": "Evans Angstor Paktron - Image 1"
+        },
+        {
+          "display_order": 2,
+          "is_primary": false,
+          "role": "gallery_2",
+          "filename": "evans__angstor_2.webp",
+          "url": "/catalog-images/evans__angstor_2.webp",
+          "width": 242,
+          "height": 242,
+          "size_kb": 4.3,
+          "excel_col": 7,
+          "col_offset": 190500,
+          "alt_text": "Evans Angstor Paktron - Image 2"
+        },
+        {
+          "display_order": 3,
+          "is_primary": false,
+          "role": "gallery_3",
+          "filename": "evans__angstor_3.webp",
+          "url": "/catalog-images/evans__angstor_3.webp",
+          "width": 121,
+          "height": 171,
+          "size_kb": 1.3,
+          "excel_col": 9,
+          "col_offset": 68580,
+          "alt_text": "Evans Angstor Paktron - Image 3"
+        },
+        {
+          "display_order": 4,
+          "is_primary": false,
+          "role": "gallery_4",
+          "filename": "evans__angstor_4.webp",
+          "url": "/catalog-images/evans__angstor_4.webp",
+          "width": 179,
+          "height": 180,
+          "size_kb": 2.2,
+          "excel_col": 10,
+          "col_offset": 281940,
+          "alt_text": "Evans Angstor Paktron - Image 4"
+        },
+        {
+          "display_order": 5,
+          "is_primary": false,
+          "role": "gallery_5",
+          "filename": "evans__angstor_5.webp",
+          "url": "/catalog-images/evans__angstor_5.webp",
+          "width": 187,
+          "height": 187,
+          "size_kb": 3.7,
+          "excel_col": 12,
+          "col_offset": 182880,
+          "alt_text": "Evans Angstor Paktron - Image 5"
+        }
+      ]
+    },
+    {
+      "row": 151,
+      "oem": "Evans",
+      "oem_slug": "evans",
+      "category": "Paktron",
+      "product": "Capstick",
+      "prod_slug": "capstick",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 152,
+      "oem": "Evans",
+      "oem_slug": "evans",
+      "category": "Paktron",
+      "product": "Quencharc RC Snubber",
+      "prod_slug": "quencharc-rc-snubber",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 153,
+      "oem": "Evans",
+      "oem_slug": "evans",
+      "category": "Paktron",
+      "product": "New High Voltage MLP",
+      "prod_slug": "new-high-voltage-mlp",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 154,
+      "oem": "Evans",
+      "oem_slug": "evans",
+      "category": "Paktron",
+      "product": "Surfilm",
+      "prod_slug": "surfilm",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 155,
+      "oem": "Evans",
+      "oem_slug": "evans",
+      "category": "UTC",
+      "product": "MLCC (Low and Mid Voltage)",
+      "prod_slug": "mlcc-low-and-mid-voltage",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 156,
+      "oem": "Evans",
+      "oem_slug": "evans",
+      "category": "UTC",
+      "product": "SMPS",
+      "prod_slug": "smps",
+      "total_images": 1,
+      "images": [
+        {
+          "display_order": 1,
+          "is_primary": true,
+          "role": "hero_primary",
+          "filename": "evans__smps_1.webp",
+          "url": "/catalog-images/evans__smps_1.webp",
+          "width": 279,
+          "height": 222,
+          "size_kb": 1.0,
+          "excel_col": 19,
+          "col_offset": 472034,
+          "alt_text": "Evans SMPS UTC - Image 1"
+        }
+      ]
+    },
+    {
+      "row": 157,
+      "oem": "Evans",
+      "oem_slug": "evans",
+      "category": "UTC",
+      "product": "Military (MIL-PRF 49470)",
+      "prod_slug": "military-mil-prf-49470",
+      "total_images": 8,
+      "images": [
+        {
+          "display_order": 1,
+          "is_primary": true,
+          "role": "hero_primary",
+          "filename": "evans__military-mil-prf-49470_1.webp",
+          "url": "/catalog-images/evans__military-mil-prf-49470_1.webp",
+          "width": 374,
+          "height": 210,
+          "size_kb": 2.4,
+          "excel_col": 4,
+          "col_offset": 2042160,
+          "alt_text": "Evans Military (MIL-PRF 49470) UTC - Image 1"
+        },
+        {
+          "display_order": 2,
+          "is_primary": false,
+          "role": "gallery_2",
+          "filename": "evans__military-mil-prf-49470_2.webp",
+          "url": "/catalog-images/evans__military-mil-prf-49470_2.webp",
+          "width": 376,
+          "height": 212,
+          "size_kb": 6.5,
+          "excel_col": 6,
+          "col_offset": 342602,
+          "alt_text": "Evans Military (MIL-PRF 49470) UTC - Image 2"
+        },
+        {
+          "display_order": 3,
+          "is_primary": false,
+          "role": "gallery_3",
+          "filename": "evans__military-mil-prf-49470_3.webp",
+          "url": "/catalog-images/evans__military-mil-prf-49470_3.webp",
+          "width": 359,
+          "height": 202,
+          "size_kb": 7.9,
+          "excel_col": 8,
+          "col_offset": 327660,
+          "alt_text": "Evans Military (MIL-PRF 49470) UTC - Image 3"
+        },
+        {
+          "display_order": 4,
+          "is_primary": false,
+          "role": "gallery_4",
+          "filename": "evans__military-mil-prf-49470_4.webp",
+          "url": "/catalog-images/evans__military-mil-prf-49470_4.webp",
+          "width": 333,
+          "height": 187,
+          "size_kb": 2.7,
+          "excel_col": 10,
+          "col_offset": 361992,
+          "alt_text": "Evans Military (MIL-PRF 49470) UTC - Image 4"
+        },
+        {
+          "display_order": 5,
+          "is_primary": false,
+          "role": "gallery_5",
+          "filename": "evans__military-mil-prf-49470_5.webp",
+          "url": "/catalog-images/evans__military-mil-prf-49470_5.webp",
+          "width": 400,
+          "height": 225,
+          "size_kb": 2.7,
+          "excel_col": 12,
+          "col_offset": 128132,
+          "alt_text": "Evans Military (MIL-PRF 49470) UTC - Image 5"
+        },
+        {
+          "display_order": 6,
+          "is_primary": false,
+          "role": "gallery_6",
+          "filename": "evans__military-mil-prf-49470_6.webp",
+          "url": "/catalog-images/evans__military-mil-prf-49470_6.webp",
+          "width": 310,
+          "height": 174,
+          "size_kb": 5.6,
+          "excel_col": 13,
+          "col_offset": 563880,
+          "alt_text": "Evans Military (MIL-PRF 49470) UTC - Image 6"
+        },
+        {
+          "display_order": 7,
+          "is_primary": false,
+          "role": "gallery_7",
+          "filename": "evans__military-mil-prf-49470_7.webp",
+          "url": "/catalog-images/evans__military-mil-prf-49470_7.webp",
+          "width": 345,
+          "height": 193,
+          "size_kb": 5.2,
+          "excel_col": 15,
+          "col_offset": 281940,
+          "alt_text": "Evans Military (MIL-PRF 49470) UTC - Image 7"
+        },
+        {
+          "display_order": 8,
+          "is_primary": false,
+          "role": "gallery_8",
+          "filename": "evans__military-mil-prf-49470_8.webp",
+          "url": "/catalog-images/evans__military-mil-prf-49470_8.webp",
+          "width": 374,
+          "height": 210,
+          "size_kb": 10.5,
+          "excel_col": 17,
+          "col_offset": 160020,
+          "alt_text": "Evans Military (MIL-PRF 49470) UTC - Image 8"
+        }
+      ]
+    },
+    {
+      "row": 158,
+      "oem": "Evans",
+      "oem_slug": "evans",
+      "category": "UTC",
+      "product": "MegaCap Type (BC Series)",
+      "prod_slug": "megacap-type-bc-series",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 159,
+      "oem": "Evans",
+      "oem_slug": "evans",
+      "category": "UTC",
+      "product": "Pulse Energy",
+      "prod_slug": "pulse-energy",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 160,
+      "oem": "Evans",
+      "oem_slug": "evans",
+      "category": "UTC",
+      "product": "Radial Leaded",
+      "prod_slug": "radial-leaded",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 161,
+      "oem": "Evans",
+      "oem_slug": "evans",
+      "category": "UTC",
+      "product": "Discoidal",
+      "prod_slug": "discoidal",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 162,
+      "oem": "Evans",
+      "oem_slug": "evans",
+      "category": "UTC",
+      "product": "Planar Arrays",
+      "prod_slug": "planar-arrays",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 163,
+      "oem": "Evans",
+      "oem_slug": "evans",
+      "category": "UTC",
+      "product": "Safety Caps",
+      "prod_slug": "safety-caps",
+      "total_images": 0,
+      "images": []
+    },
+    {
+      "row": 164,
+      "oem": "NEE",
+      "oem_slug": "nee",
+      "category": "RF/Microwave PCB",
+      "product": "RF/Microwave PCB",
+      "prod_slug": "rfmicrowave-pcb",
+      "total_images": 2,
+      "images": [
+        {
+          "display_order": 1,
+          "is_primary": true,
+          "role": "hero_primary",
+          "filename": "nee__rfmicrowave-pcb_1.webp",
+          "url": "/catalog-images/nee__rfmicrowave-pcb_1.webp",
+          "width": 500,
+          "height": 333,
+          "size_kb": 33.8,
+          "excel_col": 6,
+          "col_offset": 361275,
+          "alt_text": "NEE RF/Microwave PCB RF/Microwave PCB - Image 1"
+        },
+        {
+          "display_order": 2,
+          "is_primary": false,
+          "role": "gallery_2",
+          "filename": "nee__rfmicrowave-pcb_2.webp",
+          "url": "/catalog-images/nee__rfmicrowave-pcb_2.webp",
+          "width": 612,
+          "height": 408,
+          "size_kb": 90.3,
+          "excel_col": 10,
+          "col_offset": 167640,
+          "alt_text": "NEE RF/Microwave PCB RF/Microwave PCB - Image 2"
+        }
+      ]
+    },
+    {
+      "row": 165,
+      "oem": "Transline Technology",
+      "oem_slug": "transline-technology",
+      "category": "RF/Microwave PCB",
+      "product": "RF/Microwave PCB",
+      "prod_slug": "rfmicrowave-pcb",
+      "total_images": 0,
+      "images": []
+    }
+  ]
+}
