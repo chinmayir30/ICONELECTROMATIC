@@ -61,13 +61,10 @@ function renderLogin() {
           </div>
           <div class="a-field">
             <label>Password</label>
-            <input class="a-input" type="password" id="a-password" value="admin123" required>
+            <input class="a-input" type="password" id="a-password" placeholder="Enter password" required>
           </div>
           <button type="submit" class="a-btn a-btn-primary">Sign In <i class="fa-solid fa-arrow-right"></i></button>
         </form>
-        <div class="a-login-demo-note">
-          <i class="fa-solid fa-flask"></i>&nbsp; Demo mode – credentials are prefilled above
-        </div>
         <div style="margin-top: 16px; text-align: center;">
           <a href="#/" class="a-btn a-btn-outline a-btn-sm" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none;">
             <i class="fa-solid fa-arrow-left"></i> Return to Website
