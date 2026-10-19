@@ -16,7 +16,9 @@ Do not introduce a new framework, database or service unless the plan says so.
 1. Never invent data (products, specs, prices, numbers, URLs, email addresses).
    If it is missing, stop and ask.
 2. Never put passwords, API keys or tokens in code, comments or docs.
-   Use environment variables and list their names in .env.example.
+   .env.example lists variable names with empty or placeholder values only.
+   Real values go in .env.local (git-ignored) or the host/Supabase secret settings.
+   Never commit real values.
 3. Validate all user input (forms, CMS content) on the server, not only in the browser.
 4. Every public page has a unique <title>, meta description, canonical URL
    and exactly one <h1>.
@@ -55,8 +57,17 @@ no hard-coded claims, docs/PROJECT-STATE.md updated.
 3. How I tested it
 4. What I am unsure about
 5. Suggested next step
+6. Technology used and how it works
+
+Every task ends by adding or updating an entry in docs/seo_backend_implementation.md,
+using the entry template. Entries written in a pull request start as "In progress (PR #N)".
+The next task starts by changing them to "Implemented" with the merge commit, after
+confirming the merge on main. Only mark an item Implemented when it is merged, and
+include the PR number and merge commit.
 
 ## 9. Git automation
 - Start every task with /new_feature and finish with /finish_feature.
 - Never merge, never push to main, never force push, never delete branches.
+- Never run destructive commands (Remove-Item -Recurse -Force, git reset --hard, git clean, force-push) without my explicit approval.
+- For tasks touching security, login, database, deletions or dependencies, show me the full raw git diff and wait for approval before committing.
 - Ask before any command that deletes files outside the approved plan.

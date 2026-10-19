@@ -1,7 +1,8 @@
 # PROJECT-STATE.md - Icon Electromatic website
 
-Last updated: 2026-10-16
+Last updated: 2026-10-19
 Rule: update this file at the end of every task. Never write passwords, keys or tokens here.
+Read docs/seo_backend_implementation.md for the implementation log, technology stack and phase status.
 
 ## Goal
 Deliver a live, secure, SEO-ready B2B catalog site that the client's staff can edit
