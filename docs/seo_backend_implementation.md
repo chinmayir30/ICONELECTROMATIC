@@ -128,7 +128,7 @@ Status: Implemented (tagged)
 - **Undo:** Revert PR #10.
 
 ### Entry 7: Phase 2 — Full Catalog Migration & Batch Image Pipeline
-- **Status:** In progress (PR #11)
+- **Status:** Implemented. PR #11, merge commit 24b1418, 19 Oct 2026.
 - **What was built:**
   - `scripts/extract-all-images.py`: Batch image extraction script unpacking all 95 embedded product pictures from `Icon Website Product Info - Mrora.v3 (1).xlsx`, applying strict left-to-right horizontal ordering (`col`, `col_offset`) for multi-picture rows, resizing to max 1200px width, and compressing to modern `.webp`.
   - `public/catalog-images/`: 95 WebP product images and `full_extraction_report.json` logging every extraction mapping, file size, and dimension.
@@ -138,9 +138,29 @@ Status: Implemented (tagged)
 - **How it works:** Fully populates the database seed for the entire catalog while linking images deterministically and enforcing the quality gate (published only if image + description exist).
 - **Files and folders added or changed:** `scripts/extract-all-images.py`, `scripts/generate-full-seed.mjs`, `public/catalog-images/*`, `supabase/seed.sql`.
 - **Data and security notes:** No invented data; all 169 products derived from verified catalog and Excel v3. Option B applied (155 draft products pending image upload via Admin).
-- **Checked (and how):** Extraction verified (95 WebP images generated); `supabase/seed.sql` generated with 4,655 lines; `npm run build` passed with 0 errors.
+- **Checked (and how):** Extraction verified (95 WebP images generated); `supabase/seed.sql` generated with 4,815 lines; `npm run build` passed with 0 errors; PR #11 merged cleanly to `main`.
 - **Not checked:** Database execution against a remote live Supabase instance (client-side deployment).
 - **Undo:** Revert PR #11.
+
+### Entry 8: Phase 3 — Custom Admin CMS Connected to Supabase
+- **Status:** In progress (PR #12)
+- **What was built:**
+  - Supabase client service (`src/services/supabaseClient.js`) connecting to live Supabase with fallback to local mock mode if credentials are unconfigured.
+  - Staff authentication service (`src/services/authService.js`) with login, logout, session restoration, and role check.
+  - Interactive Admin CMS Product Manager:
+    - Catalog table with search, OEM filter, category filter, and publication status toggles.
+    - Full product editor covering specs, features, applications, and on-record SEO tags.
+    - Image gallery manager with drag/reorder, primary hero toggle, and metadata editor.
+    - Live SEO preview card simulating Google desktop/mobile search snippet with real-time character counters and pixel width gauges.
+    - Pre-publish SEO audit validator blocking unready products from being published without image + description (Option B enforcement).
+    - Publish trigger action invoking configurable `REBUILD_WEBHOOK_URL`.
+- **Technology and role:** Vanilla JS, CSS3, Supabase JS client (`@supabase/supabase-js`), Supabase Auth, Webhook trigger.
+- **How it works:** Provides the client's internal staff with a turnkey editing dashboard to manage products, images, and SEO metadata directly in Supabase and trigger static site rebuilds on publish.
+- **Files and folders added or changed:** `src/admin/*`, `src/services/*`, `docs/PROJECT-STATE.md`, `docs/seo_backend_implementation.md`.
+- **Data and security notes:** No secrets committed. Anon key is safe for client-side queries protected by Supabase RLS. Admin write operations require authenticated staff session.
+- **Checked (and how):** Verified with local mock data and unit checks; `npm run build` passing with 0 errors.
+- **Not checked:** Production webhook trigger against client's private build pipeline.
+- **Undo:** Revert PR #12.
 
 ## 5. Data audit (read-only, 19 Oct 2026)
 Status: Implemented (analysis only, no files changed). Re-run independently with the same result.
@@ -156,9 +176,8 @@ Status: Implemented (analysis only, no files changed). Re-run independently with
 |---|---|---|---|
 | 0 | Push and review the dead-code removal branch (local only on 19 Oct 2026) | Git, GitHub pull request, CI | Implemented (PR #9, commit 4e999ee) |
 | 1 | Walking skeleton: 1 OEM (Rogers, 37 products available) and 5 products from database to a real product page with SEO | Supabase tables, SQL migrations, row-level security, Astro, JSON-LD | Implemented (PR #10, commit cd030a2) |
-| 2 | Image extraction and full catalog load (sample test first, unique product key, extraction report) | Python, WebP conversion, Node upload, `seed.sql` | In progress (PR #11) |
-| 3 | Admin connected to Supabase: product editor, gallery, SEO card, pre-publish SEO audit, Publish button | Vite admin, Supabase JS client, Supabase Auth (invite-only, roles, two-factor), a `/publish` Edge Function holding the rebuild webhook | Planned |
-| 3 | Admin connected to Supabase: product editor, gallery, SEO card, pre-publish SEO audit, Publish button | Vite admin, Supabase JS client, Supabase Auth (invite-only, roles, two-factor), a `/publish` Edge Function holding the rebuild webhook | Planned |
+| 2 | Image extraction and full catalog load (sample test first, unique product key, extraction report) | Python, WebP conversion, Node upload, `seed.sql` | Implemented (PR #11, commit 24b1418) |
+| 3 | Admin connected to Supabase: product editor, gallery, SEO card, pre-publish SEO audit, Publish button | Vite admin, Supabase JS client, Supabase Auth (invite-only, roles, two-factor), a `/publish` Edge Function holding the rebuild webhook | In progress (PR #12) |
 | 4 | Contact form, enquiry saving, rate limiting, office routing | Supabase Edge Function (TypeScript), Resend, `rate_limits` table | Planned |
 | Site port | All remaining pages move to Astro with real addresses, 404 page and sitemap | Astro, sitemap tool, `robots.txt` | Planned |
 | Handover | Setup and editor guides, `.env.example`, migrations that recreate the backend | Markdown, SQL files | Planned |
