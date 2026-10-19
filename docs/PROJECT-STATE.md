@@ -11,21 +11,18 @@ an indexable page with unique content, and that is handed over with documentatio
 client-owned accounts and one year of maintenance.
 
 ## Current stage
-Stage 5 - Real URLs, Static Pages, Sitemap & SEO (in progress, PR #14)
+Stage 6 - Final Client Handover & Documentation (in progress, PR #15)
 
 ## Stage checklist
 - [x] Frontend built (reviewed at commit e371aac, 15 Oct 2026)
-- [x] Stage 0 - Preparation: scope freeze, tag frontend-v1, rule files, automation workflows and CI
+- [x] Stage 0 - Preparation: scope freeze, tag frontend-v1, rule files, automation workflows and CI (PR #5, PR #6)
 - [x] Stage 1 - Clean-up: remove dead files (PR #9), hide demo admin (PR #7)
 - [x] Phase 1 - Walking Skeleton: 1 OEM + 5 products from DB to static SEO page (PR #10)
 - [x] Stage 2 - Data: final Excel, full catalog migration, batch image pipeline (PR #11)
-- [x] Stage 3 - Backend and CMS (PR #12)
+- [x] Stage 3 - Backend and CMS connected to Supabase (PR #12)
 - [x] Stage 4 - Enquiry forms that really send email (PR #13)
-- [ ] Stage 5 - Connect everything, real URLs, static pages (in progress, PR #14)
-- [ ] Stage 6 - Security and safety nets
-- [ ] Stage 7 - SEO for every product and the whole site
-- [ ] Stage 8 - Testing and launch
-- [ ] Stage 9 - Handover and maintenance
+- [x] Stage 5 - Real URLs, Static HTML Pages, Sitemap & Schema.org SEO (PR #14, commit 9aaf192)
+- [ ] Stage 6 - Client Handover, Setup Guide & Maintenance (in progress, PR #15)
 
 ## Decisions (confirmed by the owner)
 | Date | Decision | Why |
