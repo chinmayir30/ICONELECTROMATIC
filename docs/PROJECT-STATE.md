@@ -11,7 +11,7 @@ an indexable page with unique content, and that is handed over with documentatio
 client-owned accounts and one year of maintenance.
 
 ## Current stage
-Stage 3 - Backend and CMS (in progress, PR #12)
+Stage 4 - Enquiry forms that really send email (in progress, PR #13)
 
 ## Stage checklist
 - [x] Frontend built (reviewed at commit e371aac, 15 Oct 2026)
@@ -19,8 +19,8 @@ Stage 3 - Backend and CMS (in progress, PR #12)
 - [x] Stage 1 - Clean-up: remove dead files (PR #9), hide demo admin (PR #7)
 - [x] Phase 1 - Walking Skeleton: 1 OEM + 5 products from DB to static SEO page (PR #10)
 - [x] Stage 2 - Data: final Excel, full catalog migration, batch image pipeline (PR #11)
-- [ ] Stage 3 - Backend and CMS (in progress, PR #12)
-- [ ] Stage 4 - Enquiry forms that really send email
+- [x] Stage 3 - Backend and CMS (PR #12)
+- [ ] Stage 4 - Enquiry forms that really send email (in progress, PR #13)
 - [ ] Stage 5 - Connect everything, real URLs, static pages
 - [ ] Stage 6 - Security and safety nets
 - [ ] Stage 7 - SEO for every product and the whole site
