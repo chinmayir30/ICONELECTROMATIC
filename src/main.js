@@ -14,7 +14,6 @@ import { renderBlogsPage, initBlogsPage } from './pages/Blogs.js';
 import { renderContactPage, initContactPage } from './pages/Contact.js';
 import { renderChatbot, initChatbot } from './components/Chatbot.js';
 import { initCustomCursor } from './components/CustomCursor.js';
-import { renderAdminPage, initAdminPage } from './admin/Admin.js';
 import { ImageStorage } from './data/ImageStorage.js';
 
 const app = document.getElementById('app');
@@ -73,14 +72,19 @@ registerRoute('/partners', () => renderPage(renderPartnersPage(), initPartnersPa
 registerRoute('/blogs', (params) => renderPage(renderBlogsPage(params), () => initBlogsPage(params)));
 registerRoute('/blog', (params) => renderPage(renderBlogsPage(params), () => initBlogsPage(params)));
 registerRoute('/contact', () => renderPage(renderContactPage(), initContactPage));
-registerRoute('/admin', () => {
-  closeSidebarDrawer();
-  const header = document.getElementById('site-header');
-  if (header) header.style.display = 'none';
-  const app = document.getElementById('app');
-  app.innerHTML = renderAdminPage();
-  initAdminPage();
-});
+const isDemoAdminEnabled = import.meta.env.VITE_ENABLE_DEMO_ADMIN === 'true';
+
+if (isDemoAdminEnabled) {
+  registerRoute('/admin', async () => {
+    closeSidebarDrawer();
+    const header = document.getElementById('site-header');
+    if (header) header.style.display = 'none';
+    const app = document.getElementById('app');
+    const { renderAdminPage, initAdminPage } = await import('./admin/Admin.js');
+    app.innerHTML = renderAdminPage();
+    initAdminPage();
+  });
+}
 
 // Initialize router and components immediately
 ImageStorage.init().finally(() => {

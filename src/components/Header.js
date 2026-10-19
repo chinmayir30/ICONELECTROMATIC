@@ -124,6 +124,8 @@ function renderSidebarDrawerHTML(currentRoute) {
   const ctaText = data.ctaLabel || data.ctaText || 'Request Quote';
   const ctaLink = data.ctaLink || '/contact';
 
+  const isDemoAdminEnabled = import.meta.env.VITE_ENABLE_DEMO_ADMIN === 'true';
+
   const drawerLinks = [
     { path: '/', label: data.navHome || 'Home', icon: 'fa-solid fa-house' },
     { path: '/about', label: data.navAbout || 'About Us', icon: 'fa-solid fa-building' },
@@ -157,15 +159,16 @@ function renderSidebarDrawerHTML(currentRoute) {
           </a>
         `).join('')}
 
-        <div class="drawer-divider"></div>
-
-        <a href="#/admin" class="drawer-nav-item drawer-employee-item ${route === '/admin' ? 'active' : ''}" data-route="/admin" id="drawer-employee-zone-link" title="Open Employee Zone Admin Panel">
-          <div class="drawer-nav-item-content">
-            <span class="drawer-icon employee-icon"><i class="fa-solid fa-id-badge"></i></span>
-            <span class="drawer-item-title" style="font-weight: 600;">Employee Zone</span>
-          </div>
-          <span class="drawer-employee-badge"><i class="fa-solid fa-shield-halved"></i> Admin</span>
-        </a>
+        ${isDemoAdminEnabled ? `
+          <div class="drawer-divider"></div>
+          <a href="#/admin" class="drawer-nav-item drawer-employee-item ${route === '/admin' ? 'active' : ''}" data-route="/admin" id="drawer-employee-zone-link" title="Open Employee Zone Admin Panel">
+            <div class="drawer-nav-item-content">
+              <span class="drawer-icon employee-icon"><i class="fa-solid fa-id-badge"></i></span>
+              <span class="drawer-item-title" style="font-weight: 600;">Employee Zone</span>
+            </div>
+            <span class="drawer-employee-badge"><i class="fa-solid fa-shield-halved"></i> Admin</span>
+          </a>
+        ` : ''}
       </div>
 
       <div class="drawer-footer">
