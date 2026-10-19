@@ -18,21 +18,25 @@ export function navigate(path) {
   if (!clean.startsWith('/')) clean = '/' + clean;
   if (clean.length > 1 && clean.endsWith('/')) clean = clean.slice(0, -1);
 
-  const targetHash = '#' + clean;
-  if (window.location.hash !== targetHash) {
-    window.location.hash = targetHash;
-  } else {
-    handleRoute();
+  // HTML5 History pushState for real URLs (no hash)
+  if (window.location.pathname !== clean) {
+    try {
+      window.history.pushState({}, '', clean);
+    } catch {
+      // Fallback for restricted sandboxes
+      window.location.hash = '#' + clean;
+    }
   }
+  handleRoute();
 }
 
 export function handleRoute() {
-  // Extract route from hash first (#/about), then pathname fallback (/about)
+  // Extract route: real pathname first (/about), hash fallback (#/about)
   let raw = '';
-  if (window.location.hash) {
-    raw = window.location.hash.replace(/^#\/?/, '/');
-  } else if (window.location.pathname && window.location.pathname !== '/' && window.location.pathname !== '/index.html') {
+  if (window.location.pathname && window.location.pathname !== '/' && window.location.pathname !== '/index.html') {
     raw = window.location.pathname;
+  } else if (window.location.hash) {
+    raw = window.location.hash.replace(/^#\/?/, '/');
   } else {
     raw = '/';
   }
@@ -131,11 +135,15 @@ export function initRouter() {
 
   // Global click navigation delegation
   const handleNavClick = (e) => {
-    const link = e.target.closest('[data-route], a[href^="#/"]');
+    // Intercept data-route, #/ links, and internal relative / links
+    const link = e.target.closest('[data-route], a[href^="#/"], a[href^="/"]:not([href^="//"]):not([download]):not([target="_blank"])');
     if (link) {
       let targetRoute = link.getAttribute('data-route');
-      if (!targetRoute && link.getAttribute('href')?.startsWith('#/')) {
-        targetRoute = link.getAttribute('href').slice(1);
+      const href = link.getAttribute('href');
+      if (!targetRoute && href?.startsWith('#/')) {
+        targetRoute = href.slice(1);
+      } else if (!targetRoute && href?.startsWith('/') && !href.startsWith('/catalog-images/') && !href.startsWith('/images/')) {
+        targetRoute = href;
       }
       if (targetRoute) {
         e.preventDefault();
@@ -146,12 +154,13 @@ export function initRouter() {
 
   document.addEventListener('click', handleNavClick, { passive: false });
 
-  // Initial route normalization
-  if (!window.location.hash || window.location.hash === '#' || window.location.hash === '#/') {
-    if (window.location.pathname && window.location.pathname !== '/' && window.location.pathname !== '/index.html') {
-      window.location.hash = '#' + window.location.pathname;
-    } else {
-      window.location.hash = '#/';
+  // Initial route normalization: convert legacy hash to real URL if history API is supported
+  if (window.location.hash && window.location.hash.startsWith('#/')) {
+    const cleanFromHash = window.location.hash.slice(1);
+    try {
+      window.history.replaceState({}, '', cleanFromHash);
+    } catch {
+      // keep hash in sandboxes
     }
   }
 

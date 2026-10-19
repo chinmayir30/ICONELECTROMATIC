@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 - Page Not Found | Icon Electromatic</title>
+  <meta name="description" content="The page or component you requested could not be located. Browse the Icon Electromatic RF and microwave catalog or contact our engineering desk.">
+  <link rel="canonical" href="https://iconelectromatic.com/404">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #090d16;
+      --bg-card: #0f172a;
+      --border-color: #1e293b;
+      --text-white: #ffffff;
+      --text-muted: #94a3b8;
+      --blue-accent: #2563eb;
+      --blue-light: #60a5fa;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg-dark);
+      color: var(--text-white);
+      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      text-align: center;
+    }
+    .error-container {
+      max-width: 580px;
+      width: 100%;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 48px 32px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+    .error-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(37, 99, 235, 0.12);
+      border: 1px solid rgba(37, 99, 235, 0.3);
+      color: var(--blue-light);
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      margin-bottom: 20px;
+    }
+    .error-code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 5rem;
+      font-weight: 800;
+      line-height: 1;
+      color: var(--text-white);
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #ffffff 40%, var(--blue-light) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--text-white);
+    }
+    p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+    .actions-row {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .btn-primary {
+      background: var(--blue-accent);
+      color: #ffffff;
+      border: 1px solid var(--blue-accent);
+    }
+    .btn-primary:hover {
+      background: #1d4ed8;
+    }
+    .btn-secondary {
+      background: transparent;
+      color: var(--text-white);
+      border: 1px solid var(--border-color);
+    }
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: #334155;
+    }
+    .brand-foot {
+      margin-top: 32px;
+      font-size: 0.8rem;
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+  <div class="error-container">
+    <div class="error-badge">
+      <i class="fa-solid fa-satellite-dish"></i>
+      <span>TRANSMISSION SIGNAL NOT FOUND</span>
+    </div>
+    <div class="error-code">404</div>
+    <h1>Component or Page Not Found</h1>
+    <p>
+      The RF/microwave hardware component or web address you are searching for may have been relocated, updated in our catalog, or is currently unindexed.
+    </p>
+    <div class="actions-row">
+      <a href="/products" class="btn btn-primary">
+        <i class="fa-solid fa-microchip"></i> Explore Products
+      </a>
+      <a href="/" class="btn btn-secondary">
+        <i class="fa-solid fa-house"></i> Return Home
+      </a>
+      <a href="/contact" class="btn btn-secondary">
+        <i class="fa-solid fa-headset"></i> Contact Engineering
+      </a>
+    </div>
+    <div class="brand-foot">
+      &copy; 2026 ICON ELECTROMATIC &bull; Authorized RF &amp; Microwave Component Distributor
+    </div>
+  </div>
+</body>
+</html>

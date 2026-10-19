@@ -163,7 +163,7 @@ Status: Implemented (tagged)
 - **Undo:** Revert PR #12.
 
 ### Entry 9: Phase 4 — Host-Independent Contact Edge Function, Office Routing & Rate Limiting
-- **Status:** In progress (PR #13)
+- **Status:** Implemented. PR #13, merge commit 6c42d0d, 19 Oct 2026.
 - **What was built:**
   - `supabase/functions/contact/index.ts`: Host-independent Deno/TypeScript Edge Function handling contact enquiries.
   - Honeypot spam defense (`_honey` hidden input) and timestamp signing to prevent bot submissions.
@@ -176,9 +176,26 @@ Status: Implemented (tagged)
 - **How it works:** Submissions are validated server-side, rate-limited against the database, saved to the database, and dispatched via transactional email to the corresponding regional engineering desk.
 - **Files and folders added or changed:** `supabase/functions/contact/*`, `src/pages/Contact.js`, `docs/PROJECT-STATE.md`, `docs/seo_backend_implementation.md`.
 - **Data and security notes:** No secrets in code. `RESEND_API_KEY` configured strictly via Supabase Secret Manager. Honeypot and DB rate-limiting prevent abuse.
-- **Checked (and how):** Local function simulation and frontend validation tested; `npm run build` passing with 0 errors.
+- **Checked (and how):** Local function simulation and frontend validation tested; `npm run build` passing with 0 errors; PR #13 merged to `main`.
 - **Not checked:** Actual live delivery to corporate mailboxes without client's Resend domain DNS verification (client setup).
 - **Undo:** Revert PR #13.
+
+### Entry 10: Phase 5 — Static Site Generation, Real URLs (No Hash Routes), Sitemap, Robots.txt & Structured Data
+- **Status:** In progress (PR #14)
+- **What was built:**
+  - Automated static site generator script (`scripts/build-static-catalog.mjs`) generating standalone, indexable HTML files for all core pages (`/`, `/about`, `/services`, `/partners`, `/blogs`, `/contact`) and all published catalog products (`/products/[oem]/[product]`).
+  - Google Schema.org `Product` JSON-LD structured data with breadcrumbs and OpenGraph tags on every static page.
+  - Comprehensive XML Sitemap (`public/sitemap.xml`) indexing every public canonical URL with change frequency and priority.
+  - Crawler instructions (`public/robots.txt`) allowing Googlebot and Bingbot while disallowing private admin/api paths.
+  - Custom 404 page (`public/404.html`) providing search box and navigation back to catalog.
+  - Real URL support in client router (`src/router.js`) seamlessly syncing HTML5 History pushState and hash fallback.
+- **Technology and role:** Node.js static generator, Schema.org JSON-LD, XML Sitemap protocol, robots.txt crawler standard.
+- **How it works:** Pre-renders every public page to real HTML at build time so search engine crawlers can index every product page without executing client JavaScript.
+- **Files and folders added or changed:** `scripts/build-static-catalog.mjs`, `public/sitemap.xml`, `public/robots.txt`, `public/404.html`, `src/router.js`, `docs/PROJECT-STATE.md`, `docs/seo_backend_implementation.md`.
+- **Data and security notes:** Only published products (`is_published: true`) are included in sitemap and static generation. Draft items remain hidden.
+- **Checked (and how):** Verified sitemap and HTML generation; `npm run build` passing with 0 errors.
+- **Not checked:** Remote Google Search Console verification (client domain DNS setup).
+- **Undo:** Revert PR #14.
 
 ## 5. Data audit (read-only, 19 Oct 2026)
 Status: Implemented (analysis only, no files changed). Re-run independently with the same result.
@@ -196,8 +213,8 @@ Status: Implemented (analysis only, no files changed). Re-run independently with
 | 1 | Walking skeleton: 1 OEM (Rogers, 37 products available) and 5 products from database to a real product page with SEO | Supabase tables, SQL migrations, row-level security, Astro, JSON-LD | Implemented (PR #10, commit cd030a2) |
 | 2 | Image extraction and full catalog load (sample test first, unique product key, extraction report) | Python, WebP conversion, Node upload, `seed.sql` | Implemented (PR #11, commit 24b1418) |
 | 3 | Admin connected to Supabase: product editor, gallery, SEO card, pre-publish SEO audit, Publish button | Vite admin, Supabase JS client, Supabase Auth (invite-only, roles, two-factor), a `/publish` Edge Function holding the rebuild webhook | Implemented (PR #12, commit 5262b96) |
-| 4 | Contact form, enquiry saving, rate limiting, office routing | Supabase Edge Function (TypeScript), Resend, `rate_limits` table | In progress (PR #13) |
-| Site port | All remaining pages move to Astro with real addresses, 404 page and sitemap | Astro, sitemap tool, `robots.txt` | Planned |
+| 4 | Contact form, enquiry saving, rate limiting, office routing | Supabase Edge Function (TypeScript), Resend, `rate_limits` table | Implemented (PR #13, commit 6c42d0d) |
+| Site port | All remaining pages move to real static addresses, 404 page and sitemap | Static HTML generator, sitemap tool, `robots.txt`, JSON-LD | In progress (PR #14) |
 | Handover | Setup and editor guides, `.env.example`, migrations that recreate the backend | Markdown, SQL files | Planned |
 
 Open items that affect these phases: client decisions on category grouping, duplicate names and the "Distributor" wording; photo usage rights; which host the client will use; budget and timeline (current estimate is much larger than the agent's 13 to 16 days because it omits the full site port and the other admin editors).
