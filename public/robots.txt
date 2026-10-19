@@ -1,0 +1,8 @@
+# Robots.txt for Icon Electromatic (https://iconelectromatic.com)
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /api/
+Disallow: /?*tab=recruiting
+
+Sitemap: https://iconelectromatic.com/sitemap.xml
