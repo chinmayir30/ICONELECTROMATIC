@@ -2,9 +2,14 @@ import './admin.css';
 import { ContentService } from '../data/ContentService.js';
 import { ImageStorage } from '../data/ImageStorage.js';
 import { CATALOG } from '../data/catalogData.js';
+import { supabaseClient } from '../services/supabaseClient.js';
+import { authService } from '../services/authService.js';
+import { renderSeoPreviewCard, initSeoPreviewCard, updateSeoPreviewLive } from './components/SeoPreviewCard.js';
+import { renderImageGalleryManager, bindGalleryEvents } from './components/ImageGalleryManager.js';
+import { runProductQualityAudit, renderAuditModal, bindAuditModalEvents } from './components/SeoAuditModal.js';
 
 // ─── State ─────────────────────────────────────────────────────────────────
-let isAuthenticated = localStorage.getItem('admin_auth') === 'true';
+let isAuthenticated = authService.isAuthenticated();
 let currentTab = 'dashboard';
 let currentSubTab = 'fields'; // for pages with subtabs (fields vs cards)
 
@@ -46,6 +51,7 @@ export function initAdminPage() {
 
 // ─── Login ───────────────────────────────────────────────────────────────────
 function renderLogin() {
+  const isLive = authService.isConfigured;
   return `
     <div class="a-login-page">
       <div class="a-login-box">
@@ -54,16 +60,22 @@ function renderLogin() {
         </div>
         <h2>Admin CMS</h2>
         <p>Icon Electromatic Content Portal</p>
+        <div style="margin-bottom: 16px; text-align: center;">
+          ${isLive 
+            ? '<span class="mode-status-badge live"><span class="badge-dot"></span> Supabase GoTrue Auth</span>' 
+            : '<span class="mode-status-badge demo"><span class="badge-dot"></span> Local Preview / Demo Mode</span>'}
+        </div>
         <form class="a-login-form" id="a-login-form">
           <div class="a-field">
-            <label>Email</label>
+            <label>Staff Email</label>
             <input class="a-input" type="email" id="a-email" value="admin@iconelectromatic.com" required>
           </div>
           <div class="a-field">
             <label>Password</label>
             <input class="a-input" type="password" id="a-password" placeholder="Enter password" required>
           </div>
-          <button type="submit" class="a-btn a-btn-primary">Sign In <i class="fa-solid fa-arrow-right"></i></button>
+          <div id="a-login-error" style="color: #ef4444; font-size: 0.8rem; margin-bottom: 8px; display: none;"></div>
+          <button type="submit" class="a-btn a-btn-primary" id="btn-login-submit">Sign In <i class="fa-solid fa-arrow-right"></i></button>
         </form>
         <div style="margin-top: 16px; text-align: center;">
           <a href="#/" class="a-btn a-btn-outline a-btn-sm" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none;">
@@ -76,16 +88,35 @@ function renderLogin() {
 }
 
 function bindLoginForm() {
-  document.getElementById('a-login-form')?.addEventListener('submit', (e) => {
+  document.getElementById('a-login-form')?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const email = document.getElementById('a-email').value;
     const pass  = document.getElementById('a-password').value;
-    if (email === 'admin@iconelectromatic.com' && pass === 'admin123') {
-      localStorage.setItem('admin_auth', 'true');
+    const errorDiv = document.getElementById('a-login-error');
+    const submitBtn = document.getElementById('btn-login-submit');
+
+    if (errorDiv) errorDiv.style.display = 'none';
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Authenticating...';
+    }
+
+    try {
+      await authService.signIn(email, pass);
       isAuthenticated = true;
       rerender();
-    } else {
-      alert('Invalid credentials.');
+    } catch (err) {
+      if (errorDiv) {
+        errorDiv.textContent = err.message || 'Authentication failed.';
+        errorDiv.style.display = 'block';
+      } else {
+        alert(err.message || 'Authentication failed.');
+      }
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'Sign In <i class="fa-solid fa-arrow-right"></i>';
+      }
     }
   });
 }
@@ -122,6 +153,12 @@ function renderShell() {
             <p>Live CMS with IndexedDB Image Storage &amp; Card Management</p>
           </div>
           <div class="a-topbar-right">
+            ${supabaseClient.isConfigured 
+              ? '<span class="mode-status-badge live" title="Connected to live Supabase project"><span class="badge-dot"></span> Supabase Connected</span>' 
+              : '<span class="mode-status-badge demo" title="Running in mock mode. Add VITE_SUPABASE_URL in .env.local to link cloud"><span class="badge-dot"></span> Local Preview Mode</span>'}
+            <button type="button" class="a-btn a-btn-primary a-btn-sm" id="btn-publish-site" title="Trigger static site generation rebuild hook">
+              <i class="fa-solid fa-cloud-arrow-up"></i> Publish Site
+            </button>
             <a href="#/" class="a-btn a-btn-outline a-btn-sm" style="text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
               <i class="fa-solid fa-globe"></i> View Site
             </a>
@@ -160,10 +197,25 @@ function bindShell() {
   });
 
   // Logout
-  document.getElementById('a-logout-btn')?.addEventListener('click', () => {
-    localStorage.removeItem('admin_auth');
+  document.getElementById('a-logout-btn')?.addEventListener('click', async () => {
+    await authService.signOut();
     isAuthenticated = false;
     rerender();
+  });
+
+  // Publish Site Rebuild Hook
+  document.getElementById('btn-publish-site')?.addEventListener('click', async () => {
+    const btn = document.getElementById('btn-publish-site');
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Publishing...';
+    }
+    const res = await supabaseClient.triggerPublishWebhook();
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Publish Site';
+    }
+    showToast(res.message, res.success ? 'success' : '');
   });
 
   // Reset section
@@ -332,7 +384,7 @@ function bindImageWidgets(container = document) {
 }
 
 // ─── Modal Dialog Helper ─────────────────────────────────────────────────────
-function openModal(title, formHtml, onSave) {
+function openModal(title, formHtml, onSave, onInit) {
   const container = document.getElementById('a-modal-container');
   if (!container) return;
 
@@ -357,6 +409,7 @@ function openModal(title, formHtml, onSave) {
   `;
 
   bindImageWidgets(container);
+  if (onInit) onInit(container);
 
   const closeModal = () => { container.innerHTML = ''; };
 
@@ -3328,55 +3381,121 @@ function bindProductsTabEvents() {
       const existingCats = (oem.categories || []).map(c => c.name);
       const catOptions = existingCats.map(c => `<option value="${c}">${c}</option>`).join('');
 
-      openModal(`Edit Product: ${prod.name}`, `
-        <div class="a-field">
-          <label class="a-label">Product Model / Part No. *</label>
-          <input class="a-input" name="name" value="${prod.name || ''}" required />
+      const defaultTitle = prod.meta_title || `${prod.name} | ${oem.name} | Icon Electromatic`;
+      const defaultDesc = prod.meta_description || (prod.description ? prod.description.slice(0, 155) : '');
+      const defaultCanonical = prod.canonical_url || `https://iconelectromatic.com/products/${oem.id || 'oem'}/${prod.id || 'product'}`;
+
+      let currentImages = [];
+      if (prod.image) {
+        currentImages.push({
+          id: 1,
+          image_url: prod.image,
+          alt_text: `${prod.name} - ${oem.name}`,
+          display_order: 1,
+          is_primary: true
+        });
+      }
+
+      const modalHtml = `
+        <div class="a-tabs-pill-row" style="display:flex;gap:8px;margin-bottom:14px;">
+          <button type="button" class="a-btn a-btn-sm a-btn-primary tab-prod-switch active" data-target="tab-core-fields"><i class="fa-solid fa-pen-to-square"></i> Product Details</button>
+          <button type="button" class="a-btn a-btn-sm a-btn-outline tab-prod-switch" data-target="tab-seo-fields"><i class="fa-solid fa-magnifying-glass"></i> SEO & Google Snippet</button>
+          <button type="button" class="a-btn a-btn-sm a-btn-outline tab-prod-switch" data-target="tab-gallery-fields"><i class="fa-regular fa-images"></i> Image Gallery (${currentImages.length})</button>
         </div>
-        <div class="a-field" style="margin-top:12px;">
-          <label class="a-label">Product ID</label>
-          <input class="a-input" name="id" value="${prod.id || ''}" />
+
+        <div id="tab-core-fields" class="prod-modal-tab-pane">
+          <div class="a-field">
+            <label class="a-label">Product Model / Part No. *</label>
+            <input class="a-input" name="name" id="input-prod-name" value="${prod.name || ''}" required />
+          </div>
+          <div class="a-field" style="margin-top:12px;">
+            <label class="a-label">Product Slug / Part Identifier</label>
+            <input class="a-input" name="id" value="${prod.id || ''}" />
+          </div>
+          <div class="a-field" style="margin-top:12px;">
+            <label class="a-label">Category Name *</label>
+            <input class="a-input" name="category" list="cat-suggestions" value="${cat.name}" required />
+            <datalist id="cat-suggestions">${catOptions}</datalist>
+          </div>
+          <div class="a-field" style="margin-top:12px;">
+            <label class="a-label">Visibility Status</label>
+            <select class="a-input" name="visible" id="select-prod-visible">
+              <option value="true" ${prod.visible !== false ? 'selected' : ''}>Published (Visible in Catalog)</option>
+              <option value="false" ${prod.visible === false ? 'selected' : ''}>Draft / Unpublished</option>
+            </select>
+          </div>
+          ${renderImageUploadField('image', 'Primary Product Hardware Image', prod.image || '', 'Upload or select hero component image')}
+          <div class="a-field span2" style="margin-top:12px;">
+            <label class="a-label">Technical Description</label>
+            <textarea class="a-textarea" name="description" id="input-prod-desc" rows="3">${prod.description || ''}</textarea>
+          </div>
+          <div class="a-field span2" style="margin-top:12px;">
+            <label class="a-label">Specifications &amp; Target Applications</label>
+            <textarea class="a-textarea" name="applications" rows="3">${prod.applications || ''}</textarea>
+          </div>
+          <div class="a-field span2" style="margin-top:12px;">
+            <label class="a-label">Datasheet / Official Product URL</label>
+            <input class="a-input" name="link" value="${prod.link || ''}" />
+          </div>
         </div>
-        <div class="a-field" style="margin-top:12px;">
-          <label class="a-label">Category Name *</label>
-          <input class="a-input" name="category" list="cat-suggestions" value="${cat.name}" required />
-          <datalist id="cat-suggestions">
-            ${catOptions}
-          </datalist>
-          <small style="color:var(--a-muted);font-size:0.75rem;">Modify to move this product into another category.</small>
+
+        <div id="tab-seo-fields" class="prod-modal-tab-pane" style="display:none;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <div>
+              <strong style="color:#0f172a;font-size:0.92rem;"><i class="fa-solid fa-chart-line" style="color:#2563eb;"></i> On-Record SEO Configuration</strong>
+              <div style="font-size:0.75rem;color:#64748b;">Directly controls HTML &lt;title&gt;, meta description, and Google rich snippet indexation.</div>
+            </div>
+            <button type="button" class="a-btn a-btn-outline a-btn-sm" id="btn-run-audit-now">
+              <i class="fa-solid fa-clipboard-check"></i> Run Quality Gate Audit
+            </button>
+          </div>
+
+          ${renderSeoPreviewCard({ ...prod, meta_title: defaultTitle, meta_description: defaultDesc, canonical_url: defaultCanonical, oem_slug: oem.id, slug: prod.id })}
+
+          <div class="a-field" style="margin-top:12px;">
+            <label class="a-label">SEO Meta Title (Ideal: 50–60 characters)</label>
+            <input class="a-input" name="meta_title" id="input-meta-title" value="${defaultTitle}" placeholder="Product Name | OEM | Icon Electromatic" />
+          </div>
+          <div class="a-field span2" style="margin-top:12px;">
+            <label class="a-label">SEO Meta Description (Ideal: 140–160 characters)</label>
+            <textarea class="a-textarea" name="meta_description" id="input-meta-desc" rows="3" placeholder="Summary of RF performance, electrical parameters, and key applications for search engines...">${defaultDesc}</textarea>
+          </div>
+          <div class="a-field span2" style="margin-top:12px;">
+            <label class="a-label">Canonical Web Address</label>
+            <input class="a-input" name="canonical_url" value="${defaultCanonical}" readonly style="background:#f1f5f9;color:#64748b;" />
+          </div>
         </div>
-        <div class="a-field" style="margin-top:12px;">
-          <label class="a-label">Visibility Status</label>
-          <select class="a-input" name="visible">
-            <option value="true" ${prod.visible !== false ? 'selected' : ''}>Visible in Public Catalog</option>
-            <option value="false" ${prod.visible === false ? 'selected' : ''}>Hidden (Draft / Archive)</option>
-          </select>
+
+        <div id="tab-gallery-fields" class="prod-modal-tab-pane" style="display:none;">
+          ${renderImageGalleryManager(currentImages)}
         </div>
-        ${renderImageUploadField('image', 'Product Image / Hardware Photo', prod.image || '', 'Upload high-resolution component photo or diagram')}
-        <div class="a-field span2" style="margin-top:12px;">
-          <label class="a-label">Technical Description</label>
-          <textarea class="a-textarea" name="description" rows="3">${prod.description || ''}</textarea>
-        </div>
-        <div class="a-field span2" style="margin-top:12px;">
-          <label class="a-label">Specifications &amp; Target Applications</label>
-          <textarea class="a-textarea" name="applications" rows="3">${prod.applications || ''}</textarea>
-        </div>
-        <div class="a-field span2" style="margin-top:12px;">
-          <label class="a-label">Datasheet / Official Product URL</label>
-          <input class="a-input" name="link" value="${prod.link || ''}" />
-        </div>
-      `, (data) => {
+      `;
+
+      openModal(`Edit Product: ${prod.name}`, modalHtml, (data) => {
         const newCatName = (data.category || cat.name).trim();
+        const hasImg = Boolean(data.image || currentImages.length > 0);
+        const hasDesc = Boolean((data.description || '').trim().length >= 20);
+
+        // Option B Quality Gate Check
+        let finalVisibility = data.visible === 'true';
+        if (finalVisibility && (!hasImg || !hasDesc)) {
+          alert('Option B Quality Gate Enforced: A product cannot be published without both an image and description. Product saved as Draft instead.');
+          finalVisibility = false;
+        }
+
         const updatedProd = {
           ...prod,
           name: data.name.trim(),
           id: (data.id || prod.id).trim(),
           category: newCatName,
-          image: data.image,
+          image: data.image || (currentImages[0]?.image_url || ''),
           description: data.description || '',
           applications: data.applications || '',
           link: data.link || '',
-          visible: data.visible === 'true',
+          visible: finalVisibility,
+          meta_title: (data.meta_title || '').trim() || defaultTitle,
+          meta_description: (data.meta_description || '').trim() || defaultDesc,
+          canonical_url: defaultCanonical
         };
 
         if (newCatName.toLowerCase() === cat.name.toLowerCase()) {
@@ -3402,7 +3521,73 @@ function bindProductsTabEvents() {
         expandedOemIds.add(oem.id);
         ContentService.saveData('products', oems);
         rerender();
-        showToast(`Product "${updatedProd.name}" updated successfully!`, 'success');
+        showToast(`Product "${updatedProd.name}" saved successfully!`, 'success');
+      }, (modalContainer) => {
+        // Tab switching
+        modalContainer.querySelectorAll('.tab-prod-switch').forEach(tabBtn => {
+          tabBtn.addEventListener('click', () => {
+            modalContainer.querySelectorAll('.tab-prod-switch').forEach(b => {
+              b.classList.remove('a-btn-primary', 'active');
+              b.classList.add('a-btn-outline');
+            });
+            tabBtn.classList.remove('a-btn-outline');
+            tabBtn.classList.add('a-btn-primary', 'active');
+
+            const targetId = tabBtn.dataset.target;
+            modalContainer.querySelectorAll('.prod-modal-tab-pane').forEach(p => p.style.display = 'none');
+            const targetPane = modalContainer.querySelector('#' + targetId);
+            if (targetPane) targetPane.style.display = 'block';
+          });
+        });
+
+        // Initialize SEO card desktop/mobile toggle
+        initSeoPreviewCard();
+
+        // Live input bindings for SERP snippet
+        const titleInput = modalContainer.querySelector('#input-meta-title');
+        const descInput = modalContainer.querySelector('#input-meta-desc');
+        const nameInput = modalContainer.querySelector('#input-prod-name');
+        const bodyDescInput = modalContainer.querySelector('#input-prod-desc');
+
+        function syncLiveSeo() {
+          const t = titleInput?.value || (nameInput?.value ? `${nameInput.value} | ${oem.name} | Icon Electromatic` : defaultTitle);
+          const d = descInput?.value || bodyDescInput?.value || defaultDesc;
+          updateSeoPreviewLive(t, d);
+        }
+
+        titleInput?.addEventListener('input', syncLiveSeo);
+        descInput?.addEventListener('input', syncLiveSeo);
+        nameInput?.addEventListener('input', syncLiveSeo);
+        bodyDescInput?.addEventListener('input', syncLiveSeo);
+
+        // Bind image gallery manager
+        bindGalleryEvents(currentImages, (updatedImgs) => {
+          currentImages = updatedImgs;
+          const hero = currentImages.find(i => i.is_primary) || currentImages[0];
+          if (hero) {
+            const hiddenImg = modalContainer.querySelector('input[name="image"]');
+            if (hiddenImg) hiddenImg.value = hero.image_url;
+          }
+        });
+
+        // Run Audit Button
+        modalContainer.querySelector('#btn-run-audit-now')?.addEventListener('click', () => {
+          const auditResult = runProductQualityAudit({
+            ...prod,
+            name: nameInput?.value || prod.name,
+            description: bodyDescInput?.value || prod.description,
+            meta_title: titleInput?.value || defaultTitle,
+            meta_description: descInput?.value || defaultDesc
+          }, currentImages);
+
+          const modalHtml = renderAuditModal(auditResult);
+          document.body.insertAdjacentHTML('beforeend', modalHtml);
+          bindAuditModalEvents(() => {
+            const visSelect = modalContainer.querySelector('#select-prod-visible');
+            if (visSelect) visSelect.value = 'true';
+            showToast('Quality Gate passed! Product marked for publication.', 'success');
+          });
+        });
       });
     });
   });

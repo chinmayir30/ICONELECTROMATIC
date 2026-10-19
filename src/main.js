@@ -70,9 +70,9 @@ registerRoute('/partners', () => renderPage(renderPartnersPage(), initPartnersPa
 registerRoute('/blogs', (params) => renderPage(renderBlogsPage(params), () => initBlogsPage(params)));
 registerRoute('/blog', (params) => renderPage(renderBlogsPage(params), () => initBlogsPage(params)));
 registerRoute('/contact', () => renderPage(renderContactPage(), initContactPage));
-const isDemoAdminEnabled = import.meta.env.VITE_ENABLE_DEMO_ADMIN === 'true';
+const isAdminEnabled = import.meta.env.VITE_ENABLE_DEMO_ADMIN === 'true' || import.meta.env.DEV;
 
-if (isDemoAdminEnabled) {
+if (isAdminEnabled) {
   registerRoute('/admin', async () => {
     closeSidebarDrawer();
     const header = document.getElementById('site-header');
