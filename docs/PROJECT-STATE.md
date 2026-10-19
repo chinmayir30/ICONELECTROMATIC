@@ -40,11 +40,11 @@ Stage 1 - Review and clean-up (in progress)
 - A managed headless CMS (for example Sanity) as the backend; Supabase with custom admin is the alternative
 - A small serverless function for enquiries (validation, spam protection, regional email routing, saved copy)
 
-## Known issues (as of 2026-10-16)
+## Known issues (as of 2026-10-19)
 - Web addresses use #hash routing, so Google sees one page
 - Contact and careers forms show a thank-you message but send nothing
-- Demo admin: password is pre-filled in the page, edits and images are stored in the browser only, Employee Zone link is public, admin code ships in the production bundle
-- Old fake product files (products.js, ProductDetail.js) are still in the repo
+- Demo admin: kept out of production behind VITE_ENABLE_DEMO_ADMIN (PR #7)
+- Old fake product files (products.js, ProductDetail.js) removed in Phase 0 (PR #9)
 - "4,000+ products" and "24+ categories" appear in index.html, Home.js, ContentService.js and Admin.js
 - No per-page titles or descriptions, canonical tags, sitemap, robots.txt or structured data
 - Large files: 65 MB presentation, hero videos, main JS bundle about 645 KB
