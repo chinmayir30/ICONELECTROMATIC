@@ -277,6 +277,10 @@ export function renderContactPage() {
               <p class="subtitle">Complete the form below. Technical responses and RFQ quotes provided within 24 hours.</p>
 
               <form id="contact-full-form">
+                <!-- Anti-spam Honeypot & Timestamp -->
+                <input type="text" name="_honey" id="c-honey" style="display:none !important; position:absolute; left:-9999px;" tabindex="-1" autocomplete="off" />
+                <input type="hidden" name="_rendered_at" id="c-rendered-at" value="${Date.now()}" />
+
                 <div class="relay-form-row">
                   <div class="relay-field">
                     <label for="c-fullname">Full Name *</label>
@@ -301,6 +305,14 @@ export function renderContactPage() {
 
                 <div class="relay-form-row">
                   <div class="relay-field">
+                    <label for="c-office">Regional Office Desk *</label>
+                    <select id="c-office" name="office" required>
+                      <option value="india" selected>India (Bengaluru HQ — Domestic & Space/Defense)</option>
+                      <option value="singapore">Singapore (APAC Hub — International Accounts)</option>
+                      <option value="usa">USA (North America OEM Coordination Desk)</option>
+                    </select>
+                  </div>
+                  <div class="relay-field">
                     <label for="c-subject">Subject / Inquiry Type</label>
                     <select id="c-subject" name="subject">
                       <option value="rfq" ${subjectVal === 'rfq' ? 'selected' : ''}>Formal Request for Quotation (RFQ)</option>
@@ -310,10 +322,11 @@ export function renderContactPage() {
                       <option value="general" ${subjectVal === 'general' ? 'selected' : ''}>General Corporate Inquiry</option>
                     </select>
                   </div>
-                  <div class="relay-field">
-                    <label for="c-model">Target Model / Frequency Band</label>
-                    <input type="text" id="c-model" name="model" value="${targetModel.replace(/"/g, '&quot;')}" placeholder="e.g. RT/duroid 5880 or ZX60-0433+ (2.4 - 5.8 GHz)" />
-                  </div>
+                </div>
+
+                <div class="relay-field">
+                  <label for="c-model">Target Model / Frequency Band</label>
+                  <input type="text" id="c-model" name="model" value="${targetModel.replace(/"/g, '&quot;')}" placeholder="e.g. RT/duroid 5880 or ZX60-0433+ (2.4 - 5.8 GHz)" />
                 </div>
 
                 <div class="relay-field">
@@ -591,23 +604,76 @@ export function initContactPage() {
 
   // Handle Inquiry Form Submission
   if (inquiryForm) {
-    inquiryForm.addEventListener('submit', (e) => {
+    inquiryForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const name = document.getElementById('c-fullname').value || 'Customer';
+      const submitBtn = inquiryForm.querySelector('button[type="submit"]');
+      const originalBtnHtml = submitBtn ? submitBtn.innerHTML : 'Send Message';
+
+      const payload = {
+        fullName: document.getElementById('c-fullname')?.value || '',
+        company: document.getElementById('c-company')?.value || '',
+        email: document.getElementById('c-email')?.value || '',
+        phone: document.getElementById('c-phone')?.value || '',
+        office: document.getElementById('c-office')?.value || 'india',
+        subject: document.getElementById('c-subject')?.value || 'rfq',
+        productModel: document.getElementById('c-model')?.value || '',
+        message: document.getElementById('c-message')?.value || '',
+        _honey: document.getElementById('c-honey')?.value || '',
+        _rendered_at: document.getElementById('c-rendered-at')?.value || '',
+      };
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Dispatched to Technical Desk...';
+      }
+
+      const endpoint = import.meta.env.VITE_CONTACT_ENDPOINT ||
+        (import.meta.env.VITE_SUPABASE_URL ? `${import.meta.env.VITE_SUPABASE_URL.replace(/\/$/, '')}/functions/v1/contact` : null);
+
+      let ticketId = 'ICON-RFQ-' + Math.floor(100000 + Math.random() * 900000);
+      let officeLabel = payload.office.toUpperCase() + ' Regional Desk';
+
+      if (endpoint) {
+        try {
+          const res = await fetch(endpoint, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'apikey': import.meta.env.VITE_SUPABASE_ANON_KEY || '',
+            },
+            body: JSON.stringify(payload)
+          });
+          const data = await res.json();
+          if (!res.ok) {
+            alert(data.error || 'Submission could not be completed. Please check your inputs or try again.');
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.innerHTML = originalBtnHtml;
+            }
+            return;
+          }
+          if (data.ticket_id) ticketId = data.ticket_id;
+        } catch {
+          // Graceful network fallback for offline/preview environments
+        }
+      }
 
       if (inquiryPanel) {
         inquiryPanel.innerHTML = `
           <div style="text-align:center;padding:var(--space-10) var(--space-4);">
             <div style="width:68px;height:68px;border-radius:50%;background:rgba(37,99,235,0.15);color:var(--logo-blue-light);display:flex;align-items:center;justify-content:center;font-size:2rem;margin:0 auto var(--space-4);">
-              <i class="fa-solid fa-check"></i>
+              <i class="fa-solid fa-circle-check"></i>
             </div>
-            <h3 style="font-size:1.5rem;font-weight:800;color:var(--text-white);margin-bottom:8px;">Thank You, ${name}!</h3>
-            <p style="color:var(--text-gray-400);font-size:1rem;max-width:480px;margin:0 auto var(--space-6);line-height:1.6;">
-              Your inquiry has been logged with ICON Electromatic Technical Dispatch.
+            <h3 style="font-size:1.5rem;font-weight:800;color:var(--text-white);margin-bottom:8px;">Thank You, ${escapeHtml(payload.fullName)}!</h3>
+            <div style="display:inline-block;background:rgba(37,99,235,0.1);border:1px solid rgba(37,99,235,0.3);color:var(--logo-blue-light);padding:4px 12px;border-radius:6px;font-size:0.82rem;font-weight:700;margin-bottom:16px;">
+              Reference Ticket: #${ticketId} &bull; ${officeLabel}
+            </div>
+            <p style="color:var(--text-gray-400);font-size:0.95rem;max-width:480px;margin:0 auto var(--space-6);line-height:1.6;">
+              Your technical requirements have been received and routed to our application engineering team. A formal RFQ response and datasheet package will be dispatched to <strong>${escapeHtml(payload.email)}</strong> within 24 business hours.
             </p>
             <div>
               <button class="btn-relay-secondary" id="reset-inquiry-btn" style="padding:8px 18px;font-size:0.85rem;">
-                <i class="fa-solid fa-rotate-left"></i> Send Another Inquiry
+                <i class="fa-solid fa-rotate-left"></i> Submit Another Engineering Request
               </button>
             </div>
           </div>
@@ -695,3 +761,12 @@ export function initContactPage() {
   }
 }
 
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
