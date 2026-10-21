@@ -71,6 +71,9 @@ export function renderProductCard(product, index = 0) {
     ? `#/products?level=products&oem=${encodeURIComponent(product.oemId)}&category=${encodeURIComponent(product.catId)}`
     : `#/products`;
 
+  // Direct link to product static page or catalog fallback
+  const productUrl = product.oemId && product.id ? `/products/${product.oemId}/${product.id}` : catalogRoute;
+
   return `
     <div class="product-card-relay" style="--oem-accent: ${oemAccent};">
       <div class="product-card-relay-img">
@@ -82,7 +85,9 @@ export function renderProductCard(product, index = 0) {
       <div class="product-card-relay-body">
         <div class="relay-card-header">
           <span class="relay-cat-label">${categoryName}</span>
-          <h3 class="relay-product-title" title="${name}">${name}</h3>
+          <h3 class="relay-product-title" title="${name}">
+            <a href="${productUrl}" style="color: inherit; text-decoration: none;">${name}</a>
+          </h3>
         </div>
         
         <p class="relay-card-desc-snippet">${desc}</p>

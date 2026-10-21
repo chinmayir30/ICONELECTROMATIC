@@ -54,8 +54,8 @@ const INITIAL_CONTENT = {
     ctaQuoteText: 'Request a Quote',
     ctaQuoteLink: '/contact',
     stats: [
-      { id: 'stat-1', value: '4,000+', label: 'PRODUCTS AVAILABLE' },
-      { id: 'stat-2', value: '24+', label: 'COMPONENT LINES' },
+      { id: 'stat-1', value: '160+', label: 'VERIFIED COMPONENTS' },
+      { id: 'stat-2', value: '15', label: 'OEM PARTNERS' },
       { id: 'stat-3', value: '100%', label: 'ROHS & ISO 9001' },
     ],
     coreCapabilitiesTitle: 'Core Capabilities',

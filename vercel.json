@@ -1,6 +1,23 @@
 {
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
+  "redirects": [
+    {
+      "source": "/products/rogers/rt-duroid-5880",
+      "destination": "/products/rogers-corporation/rt-duroid-5880-2",
+      "permanent": true
+    },
+    {
+      "source": "/products/rogers/tc350",
+      "destination": "/products/rogers-corporation/tc350-29",
+      "permanent": true
+    },
+    {
+      "source": "/products/rogers",
+      "destination": "/products",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/(.*)",

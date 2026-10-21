@@ -220,6 +220,23 @@ Status: Implemented (tagged)
 - **Not checked:** None.
 - **Undo:** Revert PR #15.
 
+### Entry 12: Task 1 — Core Template, Static Build Pipeline and SEO Integrity Repair
+- **Status:** In progress (PR pending review, 21 Oct 2026)
+- **What was built:**
+  - Resolved ISS-04: Corrected Product Schema.org JSON-LD in `scripts/build-static-catalog.mjs` by switching from `AggregateOffer` with invalid string price (`"Request Quote"`) and fabricated expiration date (`"2027-12-31"`) to a valid, clean `@type: "Offer"` with official canonical URL and verified seller entity.
+  - Resolved ISS-05: Replaced hardcoded CSS bundle hash (`/assets/index-DmDkINf5.css`) with dynamic inspection of `dist/assets/index-*.css` at build time, preventing broken styles (HTTP 404) on all 169 static product pages.
+  - Resolved ISS-06: Added direct crawlable links (`/products/${oem.id}/${product.id}`) to product titles in both card and row views in `src/pages/Products.js` and `src/components/ProductCard.js`, without altering existing RFQ action buttons or layout styling.
+  - Resolved ISS-08 and ISS-09: Configured permanent 301 redirects in `vercel.json` for legacy Rogers prototype URLs (`/products/rogers/rt-duroid-5880` -> `/products/rogers-corporation/rt-duroid-5880-2` and `/products/rogers/tc350` -> `/products/rogers-corporation/tc350-29`), and deleted obsolete duplicate prototype folder `public/products/rogers/` from Git.
+  - Resolved ISS-10: Replaced unverified "4,000+ products across 24+ categories" claims in `index.html`, `src/pages/Home.js`, and `src/data/ContentService.js` with verified, grounded counts (`160+ VERIFIED COMPONENTS`, `15 OEM PARTNERS`).
+  - Resolved ISS-15: Added explicit responsive image dimensions (`width="480" height="320" loading="eager"` on main product hero image, `width="60" height="60" loading="lazy"` on thumbnails) in `scripts/build-static-catalog.mjs` to eliminate Cumulative Layout Shift (CLS).
+- **Technology and role:** Node.js SSG generator, Schema.org Product Offer specification, Vercel routing configuration, semantic HTML anchor navigation.
+- **How it works:** Inspects Vite bundler output dynamically, emits valid structured data without fabricated commercial claims, eliminates orphan URL duplication, and connects the dynamic catalog view to static SEO product pages.
+- **Files and folders added or changed:** `scripts/build-static-catalog.mjs`, `src/pages/Products.js`, `src/components/ProductCard.js`, `src/pages/Home.js`, `src/data/ContentService.js`, `index.html`, `vercel.json`, `public/products/rogers/` (removed), `docs/PROJECT-STATE.md`, `docs/seo_backend_implementation.md`.
+- **Data and security notes:** Zero secrets committed; zero unverified product counts or prices introduced.
+- **Checked (and how):** `npm run build` executed cleanly (code 0 in 3.13s); verified 169 static HTML pages generated with dynamic CSS asset link and compliant Schema.org JSON-LD; sitemap verified at 176 URLs with zero obsolete rogers paths; JSON syntax of `vercel.json` validated.
+- **Not checked:** Cloud edge redirection execution on live production CDN (pending deployment merge).
+- **Undo:** Revert PR for `fix/static-seo-pipeline-repair`.
+
 ## 5. Data audit (read-only, 19 Oct 2026)
 Status: Implemented (analysis only, no files changed). Re-run independently with the same result.
 - 15 OEMs, 88 categories, 169 products.

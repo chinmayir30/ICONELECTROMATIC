@@ -18,6 +18,20 @@ const PUBLIC_DIR = path.resolve(ROOT_DIR, 'public');
 const SITE_URL = 'https://iconelectromatic.com';
 const TODAY = new Date().toISOString().split('T')[0];
 
+// Detect dynamic CSS asset from Vite build output
+let cssAssetFile = 'index-DmDkINf5.css'; // fallback
+try {
+  const assetsDir = path.resolve(DIST_DIR, 'assets');
+  if (fs.existsSync(assetsDir)) {
+    const found = fs.readdirSync(assetsDir).find(file => file.startsWith('index-') && file.endsWith('.css'));
+    if (found) {
+      cssAssetFile = found;
+    }
+  }
+} catch (e) {
+  console.warn('Could not inspect dist/assets, falling back to default CSS asset:', e.message);
+}
+
 // Load extraction report to link images
 let extractionReport = {};
 try {
@@ -90,11 +104,8 @@ function generateProductHtml(product, oem, category, images) {
     },
     "category": category.name,
     "offers": {
-      "@type": "AggregateOffer",
-      "priceCurrency": "USD",
-      "price": "Request Quote",
-      "priceValidUntil": "2027-12-31",
-      "availability": "https://schema.org/InStock",
+      "@type": "Offer",
+      "url": pageUrl,
       "seller": {
         "@type": "Organization",
         "name": "Icon Electromatic",
@@ -166,7 +177,7 @@ ${JSON.stringify(breadcrumbsSchema, null, 2)}
   <!-- Typography & Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/index-DmDkINf5.css">
+  <link rel="stylesheet" href="/assets/${cssAssetFile}">
 
   <style>
     :root {
@@ -382,13 +393,13 @@ ${JSON.stringify(breadcrumbsSchema, null, 2)}
     <div class="product-grid">
       <div class="gallery-box">
         <div class="main-image-wrap">
-          <img src="${escapeHtml(heroImage.url)}" alt="${escapeHtml(heroImage.alt || product.name)}" id="main-product-img" />
+          <img src="${escapeHtml(heroImage.url)}" alt="${escapeHtml(heroImage.alt || product.name)}" id="main-product-img" width="480" height="320" loading="eager" />
         </div>
         ${images.length > 1 ? `
           <div class="thumbs-row">
             ${images.map(img => `
               <div class="thumb-btn" onclick="document.getElementById('main-product-img').src='${escapeHtml(img.url)}'">
-                <img src="${escapeHtml(img.url)}" alt="${escapeHtml(img.alt || product.name)}" />
+                <img src="${escapeHtml(img.url)}" alt="${escapeHtml(img.alt || product.name)}" width="60" height="60" loading="lazy" />
               </div>
             `).join('')}
           </div>
