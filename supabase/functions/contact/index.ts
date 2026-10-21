@@ -8,24 +8,43 @@
  * - Database-backed IP rate limiting (rate_limits table, max 5/hr)
  * - Database persistence (enquiries table)
  * - Multi-office regional email routing via Resend API (India, Singapore, USA)
+ * - Strict CORS restricted by ALLOWED_ORIGINS secret (no wildcard *)
+ * - Fails loudly with 500 error if secrets are missing (still saves enquiry first)
  */
 
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
-};
+function getCorsHeaders(req: Request): Record<string, string> {
+  const origin = req.headers.get("origin") || "";
+  const rawAllowed = Deno.env.get("ALLOWED_ORIGINS") || "";
+  const allowed = rawAllowed
+    .split(",")
+    .map((o) => o.trim())
+    .filter(Boolean);
 
-// Regional office email routing map
-const OFFICE_ROUTING: Record<string, string> = {
-  india: Deno.env.get("OFFICE_EMAIL_INDIA") || "sales.india@iconelectromatic.com",
-  singapore: Deno.env.get("OFFICE_EMAIL_SINGAPORE") || "sales.apac@iconelectromatic.com",
-  usa: Deno.env.get("OFFICE_EMAIL_USA") || "sales.usa@iconelectromatic.com",
-};
+  let allowOrigin = "";
+  if (allowed.length > 0) {
+    if (allowed.includes(origin)) {
+      allowOrigin = origin;
+    }
+  }
+
+  const headers: Record<string, string> = {
+    "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Vary": "Origin",
+  };
+
+  if (allowOrigin) {
+    headers["Access-Control-Allow-Origin"] = allowOrigin;
+  }
+
+  return headers;
+}
 
 serve(async (req: Request) => {
+  const corsHeaders = getCorsHeaders(req);
+
   // 1. Handle CORS preflight
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
@@ -145,7 +164,7 @@ serve(async (req: Request) => {
         }),
       }).catch(() => {});
 
-      // Insert into enquiries table
+      // Insert into enquiries table (always save first so customer enquiries are never lost)
       const insertRes = await fetch(`${supabaseUrl}/rest/v1/enquiries`, {
         method: "POST",
         headers: {
@@ -178,85 +197,110 @@ serve(async (req: Request) => {
     }
 
     // 6. Regional Office Routing & Resend Email Dispatch
-    const targetOfficeEmail = OFFICE_ROUTING[office] || OFFICE_ROUTING.india;
+    // NO invented default emails - read strictly from environment secrets
+    const officeEmails: Record<string, string | undefined> = {
+      india: Deno.env.get("OFFICE_EMAIL_INDIA"),
+      singapore: Deno.env.get("OFFICE_EMAIL_SINGAPORE"),
+      usa: Deno.env.get("OFFICE_EMAIL_USA"),
+    };
+
+    const targetOfficeEmail = officeEmails[office];
     const resendApiKey = Deno.env.get("RESEND_API_KEY");
 
-    let emailSent = false;
-    let emailMessage = "";
+    // Fail loudly with 500 error if secrets are missing, noting that enquiry was saved
+    const missingSecrets: string[] = [];
+    if (!targetOfficeEmail) {
+      missingSecrets.push(`OFFICE_EMAIL_${office.toUpperCase()}`);
+    }
+    if (!resendApiKey) {
+      missingSecrets.push("RESEND_API_KEY");
+    }
 
-    if (resendApiKey) {
-      const emailHtml = `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;">
-          <div style="background: #0f172a; color: #ffffff; padding: 20px; text-align: center;">
-            <h2 style="margin: 0; color: #ffffff;">ICON ELECTROMATIC</h2>
-            <p style="margin: 4px 0 0 0; color: #94a3b8; font-size: 0.85rem;">New Customer Technical & RFQ Enquiry</p>
-          </div>
-          <div style="padding: 24px; background: #ffffff;">
-            <div style="background: #f8fafc; border-left: 4px solid #2563eb; padding: 12px 16px; margin-bottom: 20px;">
-              <strong>Ticket ID:</strong> #${enquiryId}<br/>
-              <strong>Regional Desk:</strong> ${office.toUpperCase()} Office (${targetOfficeEmail})<br/>
-              <strong>Subject Type:</strong> ${subject.toUpperCase()}
-            </div>
-            
-            <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem; margin-bottom: 20px;">
-              <tr>
-                <td style="padding: 8px 0; color: #64748b; width: 140px;"><strong>Client Name:</strong></td>
-                <td style="padding: 8px 0; color: #0f172a;">${fullName}</td>
-              </tr>
-              <tr>
-                <td style="padding: 8px 0; color: #64748b;"><strong>Email:</strong></td>
-                <td style="padding: 8px 0; color: #0f172a;"><a href="mailto:${email}">${email}</a></td>
-              </tr>
-              <tr>
-                <td style="padding: 8px 0; color: #64748b;"><strong>Phone:</strong></td>
-                <td style="padding: 8px 0; color: #0f172a;">${phone || "Not specified"}</td>
-              </tr>
-              <tr>
-                <td style="padding: 8px 0; color: #64748b;"><strong>Company / Lab:</strong></td>
-                <td style="padding: 8px 0; color: #0f172a;">${company || "Direct Individual"}</td>
-              </tr>
-              ${
-                productModel
-                  ? `<tr>
-                <td style="padding: 8px 0; color: #64748b;"><strong>Target Hardware:</strong></td>
-                <td style="padding: 8px 0; color: #2563eb; font-weight: bold;">${productModel}</td>
-              </tr>`
-                  : ""
-              }
-            </table>
-
-            <h4 style="margin: 0 0 8px 0; color: #0f172a;">Technical Requirements & Message:</h4>
-            <div style="background: #f1f5f9; padding: 16px; border-radius: 6px; font-size: 0.9rem; line-height: 1.5; color: #334155; white-space: pre-wrap;">${message}</div>
-          </div>
-          <div style="background: #f8fafc; border-top: 1px solid #e2e8f0; padding: 12px 20px; font-size: 0.75rem; color: #94a3b8; text-align: center;">
-            Sent securely via Icon Electromatic Edge Service. IP: ${clientIp}
-          </div>
-        </div>
-      `;
-
-      const resendRes = await fetch("https://api.resend.com/emails", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${resendApiKey}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          from: "Icon Electromatic <notifications@iconelectromatic.com>",
-          to: [targetOfficeEmail],
-          reply_to: email,
-          subject: `[Icon Electromatic] ${subject.toUpperCase()} Enquiry: ${fullName} (${company || "Direct"})`,
-          html: emailHtml,
+    if (missingSecrets.length > 0) {
+      return new Response(
+        JSON.stringify({
+          error: `Email service configuration error: missing required secret(s): ${missingSecrets.join(", ")}. Your enquiry was saved under ticket #${enquiryId}, but could not be routed via email.`,
+          ticket_id: enquiryId,
+          saved_to_db: savedToDb,
         }),
-      });
+        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
 
-      if (resendRes.ok) {
-        emailSent = true;
-      } else {
-        const resendErr = await resendRes.text();
-        emailMessage = `Resend response: ${resendErr}`;
-      }
-    } else {
-      emailMessage = "RESEND_API_KEY is not configured in Supabase secrets (Simulation mode).";
+    const emailHtml = `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;">
+        <div style="background: #0f172a; color: #ffffff; padding: 20px; text-align: center;">
+          <h2 style="margin: 0; color: #ffffff;">ICON ELECTROMATIC</h2>
+          <p style="margin: 4px 0 0 0; color: #94a3b8; font-size: 0.85rem;">New Customer Technical & RFQ Enquiry</p>
+        </div>
+        <div style="padding: 24px; background: #ffffff;">
+          <div style="background: #f8fafc; border-left: 4px solid #2563eb; padding: 12px 16px; margin-bottom: 20px;">
+            <strong>Ticket ID:</strong> #${enquiryId}<br/>
+            <strong>Regional Desk:</strong> ${office.toUpperCase()} Office (${targetOfficeEmail})<br/>
+            <strong>Subject Type:</strong> ${subject.toUpperCase()}
+          </div>
+          
+          <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem; margin-bottom: 20px;">
+            <tr>
+              <td style="padding: 8px 0; color: #64748b; width: 140px;"><strong>Client Name:</strong></td>
+              <td style="padding: 8px 0; color: #0f172a;">${fullName}</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0; color: #64748b;"><strong>Email:</strong></td>
+              <td style="padding: 8px 0; color: #0f172a;"><a href="mailto:${email}">${email}</a></td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0; color: #64748b;"><strong>Phone:</strong></td>
+              <td style="padding: 8px 0; color: #0f172a;">${phone || "Not specified"}</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0; color: #64748b;"><strong>Company / Lab:</strong></td>
+              <td style="padding: 8px 0; color: #0f172a;">${company || "Direct Individual"}</td>
+            </tr>
+            ${
+              productModel
+                ? `<tr>
+              <td style="padding: 8px 0; color: #64748b;"><strong>Target Hardware:</strong></td>
+              <td style="padding: 8px 0; color: #2563eb; font-weight: bold;">${productModel}</td>
+            </tr>`
+                : ""
+            }
+          </table>
+
+          <h4 style="margin: 0 0 8px 0; color: #0f172a;">Technical Requirements & Message:</h4>
+          <div style="background: #f1f5f9; padding: 16px; border-radius: 6px; font-size: 0.9rem; line-height: 1.5; color: #334155; white-space: pre-wrap;">${message}</div>
+        </div>
+        <div style="background: #f8fafc; border-top: 1px solid #e2e8f0; padding: 12px 20px; font-size: 0.75rem; color: #94a3b8; text-align: center;">
+          Sent securely via Icon Electromatic Edge Service. IP: ${clientIp}
+        </div>
+      </div>
+    `;
+
+    const resendRes = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${resendApiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from: "Icon Electromatic <notifications@iconelectromatic.com>",
+        to: [targetOfficeEmail],
+        reply_to: email,
+        subject: `[Icon Electromatic] ${subject.toUpperCase()} Enquiry: ${fullName} (${company || "Direct"})`,
+        html: emailHtml,
+      }),
+    });
+
+    if (!resendRes.ok) {
+      const resendErr = await resendRes.text();
+      return new Response(
+        JSON.stringify({
+          error: `Email delivery failed via Resend (${resendRes.status}): ${resendErr}. Your enquiry was saved under ticket #${enquiryId}.`,
+          ticket_id: enquiryId,
+          saved_to_db: savedToDb,
+        }),
+        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
     }
 
     return new Response(
@@ -266,8 +310,7 @@ serve(async (req: Request) => {
         office_routed: office,
         target_email: targetOfficeEmail,
         saved_to_db: savedToDb,
-        email_dispatched: emailSent,
-        debug_note: emailMessage || undefined,
+        email_dispatched: true,
         message: "Thank you! Your engineering enquiry has been dispatched to our regional applications desk.",
       }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }

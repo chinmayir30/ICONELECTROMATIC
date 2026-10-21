@@ -281,6 +281,9 @@ export function renderContactPage() {
                 <input type="text" name="_honey" id="c-honey" style="display:none !important; position:absolute; left:-9999px;" tabindex="-1" autocomplete="off" />
                 <input type="hidden" name="_rendered_at" id="c-rendered-at" value="${Date.now()}" />
 
+                <!-- Inline Submission Error Banner -->
+                <div id="inquiry-form-error" style="display:none; padding:12px 16px; margin-bottom:16px; border-radius:8px; background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.35); color:#fca5a5; font-size:0.88rem; line-height:1.5;"></div>
+
                 <div class="relay-form-row">
                   <div class="relay-field">
                     <label for="c-fullname">Full Name *</label>
@@ -608,6 +611,28 @@ export function initContactPage() {
       e.preventDefault();
       const submitBtn = inquiryForm.querySelector('button[type="submit"]');
       const originalBtnHtml = submitBtn ? submitBtn.innerHTML : 'Send Message';
+      const errorBox = document.getElementById('inquiry-form-error');
+
+      // Helper to display inline error, reset button, and abort
+      function showInquiryError(msg) {
+        if (errorBox) {
+          errorBox.innerHTML = `<i class="fa-solid fa-triangle-exclamation" style="margin-right:8px;color:#ef4444;"></i>${escapeHtml(msg)}`;
+          errorBox.style.display = 'block';
+          errorBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        } else {
+          alert(msg);
+        }
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalBtnHtml;
+        }
+      }
+
+      // Clear previous error
+      if (errorBox) {
+        errorBox.style.display = 'none';
+        errorBox.innerHTML = '';
+      }
 
       const payload = {
         fullName: document.getElementById('c-fullname')?.value || '',
@@ -622,40 +647,48 @@ export function initContactPage() {
         _rendered_at: document.getElementById('c-rendered-at')?.value || '',
       };
 
+      const endpoint = import.meta.env.VITE_CONTACT_ENDPOINT ||
+        (import.meta.env.VITE_SUPABASE_URL ? `${import.meta.env.VITE_SUPABASE_URL.replace(/\/$/, '')}/functions/v1/contact` : null);
+
+      if (!endpoint) {
+        showInquiryError('Contact service endpoint is not configured. Please contact our regional office directly via telephone or email.');
+        return;
+      }
+
       if (submitBtn) {
         submitBtn.disabled = true;
         submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Dispatched to Technical Desk...';
       }
 
-      const endpoint = import.meta.env.VITE_CONTACT_ENDPOINT ||
-        (import.meta.env.VITE_SUPABASE_URL ? `${import.meta.env.VITE_SUPABASE_URL.replace(/\/$/, '')}/functions/v1/contact` : null);
+      let ticketId = null;
+      const officeLabel = payload.office.toUpperCase() + ' Regional Desk';
 
-      let ticketId = 'ICON-RFQ-' + Math.floor(100000 + Math.random() * 900000);
-      let officeLabel = payload.office.toUpperCase() + ' Regional Desk';
+      try {
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': import.meta.env.VITE_SUPABASE_ANON_KEY || '',
+          },
+          body: JSON.stringify(payload)
+        });
 
-      if (endpoint) {
-        try {
-          const res = await fetch(endpoint, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'apikey': import.meta.env.VITE_SUPABASE_ANON_KEY || '',
-            },
-            body: JSON.stringify(payload)
-          });
-          const data = await res.json();
-          if (!res.ok) {
-            alert(data.error || 'Submission could not be completed. Please check your inputs or try again.');
-            if (submitBtn) {
-              submitBtn.disabled = false;
-              submitBtn.innerHTML = originalBtnHtml;
-            }
-            return;
-          }
-          if (data.ticket_id) ticketId = data.ticket_id;
-        } catch {
-          // Graceful network fallback for offline/preview environments
+        const data = await res.json().catch(() => ({}));
+
+        if (!res.ok) {
+          showInquiryError(data.error || `Submission could not be completed (Server error ${res.status}). Please check your inputs or try again.`);
+          return;
         }
+
+        if (!data.ticket_id) {
+          showInquiryError('Submission could not be verified: server did not return a reference ticket ID.');
+          return;
+        }
+
+        ticketId = data.ticket_id;
+      } catch (netErr) {
+        showInquiryError('Network error: Unable to reach the contact service. Please check your connection and try again.');
+        return;
       }
 
       if (inquiryPanel) {
