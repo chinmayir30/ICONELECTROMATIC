@@ -53,22 +53,32 @@ You have 3 SQL files already prepared in your `supabase/` folder. Run them one-b
    - Open [supabase/migrations/002_rls_policies.sql](file:///c:/ICON%20ELECTROMATIC/supabase/migrations/002_rls_policies.sql).
    - Copy all contents, paste into a New Query, and click **Run**.
    - *(This locks the database so public visitors can only read published products, while staff can edit).*
-5. **Migration 3 (Catalog Seed Data):**
+5. **Migration 3 (Admin Schema Alignment & Storage):**
+   - Open [supabase/migrations/003_admin_schema_alignment.sql](file:///c:/ICON%20ELECTROMATIC/supabase/migrations/003_admin_schema_alignment.sql).
+   - Copy all contents, paste into a New Query, and click **Run**.
+   - *(This adds CMS columns, sets up category slug scoping, and initializes the `catalog-images` storage bucket with staff RLS).*
+6. **Migration 4 (Catalog Seed Data):**
    - Open [supabase/seed.sql](file:///c:/ICON%20ELECTROMATIC/supabase/seed.sql).
    - Copy all contents, paste into a New Query, and click **Run**.
    - *(This instantly populates all 15 OEMs, 88 categories, and 169 products with specs and image links).*
 
 ---
 
-### Step 5: Create Your First Staff Login Account
+### Step 5: Create Staff Account & Provision Admin Role
 To log in to your Admin CMS:
 1. In Supabase, click **Authentication** in the left sidebar (users icon).
 2. Click **Add user** -> **Create user**.
-3. Enter:
-   - **Email:** `admin@iconelectromatic.com` (or your own email)
-   - **Password:** Create your admin password.
-   - Check **Auto-confirm email** (so you don't need to verify via email).
-4. Click **Create user**.
+3. Enter your staff email and a strong password.
+4. Check **Auto-confirm email** (so you don't need to verify via email) and click **Create user**.
+5. **Assign Administrator Role (Mandatory for CMS access):**
+   - Go to **SQL Editor** -> **New Query**.
+   - Paste and run this command (replace `your-email@example.com` with the email you just created):
+     ```sql
+     INSERT INTO public.user_roles (user_id, role)
+     SELECT id, 'admin' FROM auth.users WHERE email = 'your-email@example.com'
+     ON CONFLICT (user_id) DO UPDATE SET role = 'admin';
+     ```
+   *(This securely grants your user the `admin` role in `public.user_roles` without exposing passwords or service keys).*
 
 ---
 
@@ -78,4 +88,4 @@ To log in to your Admin CMS:
 3. You will immediately see:
    - **`● Supabase Connected`** green badge in the topbar.
    - The login form authenticated against your live Supabase GoTrue server.
-   - The full 169 products loaded directly from your live PostgreSQL database!
+   - Products and OEMs persisted to your live PostgreSQL database!
