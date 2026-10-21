@@ -181,9 +181,9 @@ Status: Implemented (tagged)
 - **Undo:** Revert PR #13.
 
 ### Entry 10: Phase 5 — Static Site Generation, Real URLs (No Hash Routes), Sitemap, Robots.txt & Structured Data
-- **Status:** Implemented (PR #14, commit 9aaf192, 19 Oct 2026)
+- **Status:** Implemented with known gaps (PR #14, commit 9aaf192, 19 Oct 2026)
 - **What was built:**
-  - Automated static site generator script (`scripts/build-static-catalog.mjs`) generating standalone, indexable HTML files for all core pages (`/`, `/about`, `/services`, `/partners`, `/blogs`, `/contact`) and all published catalog products (`/products/[oem]/[product]`).
+  - Automated static site generator script (`scripts/build-static-catalog.mjs`, 523 lines) generating standalone, indexable HTML files for all core pages (`/`, `/about`, `/services`, `/partners`, `/blogs`, `/contact`) and all published catalog products (`/products/[oem]/[product]`).
   - Google Schema.org `Product` JSON-LD structured data with breadcrumbs and OpenGraph tags on every static page.
   - Comprehensive XML Sitemap (`public/sitemap.xml`) indexing every public canonical URL with change frequency and priority.
   - Crawler instructions (`public/robots.txt`) allowing Googlebot and Bingbot while disallowing private admin/api paths.
@@ -191,14 +191,20 @@ Status: Implemented (tagged)
   - Real URL support in client router (`src/router.js`) seamlessly syncing HTML5 History pushState and hash fallback.
 - **Technology and role:** Node.js static generator, Schema.org JSON-LD, XML Sitemap protocol, robots.txt crawler standard.
 - **How it works:** Pre-renders every public page to real HTML at build time so search engine crawlers can index every product page without executing client JavaScript.
+- **Known gaps:**
+  1. *SPA-to-Static Navigation:* While static pages are generated for all 169 products at `/products/[oem]/[slug]/index.html` for Googlebot, in-browser clicks inside the client-side SPA (`src/pages/Products.js`) remain within the catalog list/modal view rather than navigating to the dedicated pre-rendered product URLs.
+  2. *Legacy Sample Pages:* 2 legacy sample pages from Phase 1 remain at `public/products/rogers/tc350` and `public/products/rogers/rt-duroid-5880` alongside the 37 full catalog pages at `public/products/rogers-corporation/`.
+  3. *Search Console Submission & DNS Ownership:* `public/sitemap.xml` and `public/robots.txt` are built, but submission to Google Search Console and Bing Webmaster Tools requires domain ownership and DNS verification by the client.
+  4. *Thin-Content Risk on Short Descriptions:* Several products have brief descriptions (< 60 chars) extracted from client Excel files; while passing the Option B threshold (20 chars), they require marketing copy enrichment via the Admin CMS to avoid potential search ranking devaluation.
+  5. *Image Path Uniformity:* Static HTML links directly to `/catalog-images/...`, whereas SPA card fallbacks reference `/images/rf-filter.jpg`.
 - **Files and folders added or changed:** `scripts/build-static-catalog.mjs`, `public/sitemap.xml`, `public/robots.txt`, `public/404.html`, `src/router.js`, `docs/PROJECT-STATE.md`, `docs/seo_backend_implementation.md`, `package.json`.
 - **Data and security notes:** Only published products (`is_published: true`) are included in sitemap and static generation. Draft items remain hidden.
-- **Checked (and how):** Verified sitemap and HTML generation; `npm run build` passing with 0 errors; PR #14 merged to `main`.
+- **Checked (and how):** Verified sitemap (176 indexable URLs) and HTML generation (169 static product HTML pages generated via `scripts/build-static-catalog.mjs` of 523 lines). Production build passes with 0 errors: JavaScript bundle is 400.25 kB (96.61 kB gzip) and CSS is 257.87 kB (39.29 kB gzip) (total 658.12 kB raw / 135.90 kB gzip); PR #14 merged to `main`.
 - **Not checked:** Remote Google Search Console verification (client domain DNS setup).
 - **Undo:** Revert PR #14.
 
 ### Entry 11: Phase 6 — Master Setup Guide, Client Handover & Documentation
-- **Status:** In progress (PR #15)
+- **Status:** Implemented (PR #15, commit 023190b, 19 Oct 2026)
 - **What was built:**
   - Root `SETUP.md` complete handover manual for engineering, devops, and marketing editors.
   - End-to-end architecture documentation spanning Frontend, Supabase Database, Admin CMS, Contact Edge Function, and Static SSG Pre-Renderer.
@@ -210,7 +216,7 @@ Status: Implemented (tagged)
 - **How it works:** Provides client and maintenance engineers with complete operational autonomy without vendor lock-in.
 - **Files and folders added or changed:** `SETUP.md`, `docs/PROJECT-STATE.md`, `docs/seo_backend_implementation.md`.
 - **Data and security notes:** Verified `.env.example` lists empty placeholders only; verified zero real credentials committed to repository.
-- **Checked (and how):** Markdown links validated; build and test suite verified passing cleanly.
+- **Checked (and how):** Markdown links validated; build and test suite verified passing cleanly; PR #15 merged cleanly to `main`.
 - **Not checked:** None.
 - **Undo:** Revert PR #15.
 
@@ -231,8 +237,8 @@ Status: Implemented (analysis only, no files changed). Re-run independently with
 | 2 | Image extraction and full catalog load (sample test first, unique product key, extraction report) | Python, WebP conversion, Node upload, `seed.sql` | Implemented (PR #11, commit 24b1418) |
 | 3 | Admin connected to Supabase: product editor, gallery, SEO card, pre-publish SEO audit, Publish button | Vite admin, Supabase JS client, Supabase Auth (invite-only, roles, two-factor), a `/publish` Edge Function holding the rebuild webhook | Implemented (PR #12, commit 5262b96) |
 | 4 | Contact form, enquiry saving, rate limiting, office routing | Supabase Edge Function (TypeScript), Resend, `rate_limits` table | Implemented (PR #13, commit 6c42d0d) |
-| Site port | All remaining pages move to real static addresses, 404 page and sitemap | Static HTML generator, sitemap tool, `robots.txt`, JSON-LD | Implemented (PR #14, commit 9aaf192) |
-| Handover | Setup and editor guides, `.env.example`, migrations that recreate the backend | Markdown, SQL files | In progress (PR #15) |
+| Site port | All remaining pages move to real static addresses, 404 page and sitemap | Static HTML generator, sitemap tool, `robots.txt`, JSON-LD | Implemented with known gaps (PR #14, commit 9aaf192) |
+| Handover | Setup and editor guides, `.env.example`, migrations that recreate the backend | Markdown, SQL files | Implemented (PR #15, commit 023190b) |
 
 Open items that affect these phases: client decisions on category grouping, duplicate names and the "Distributor" wording; photo usage rights; which host the client will use; budget and timeline (current estimate is much larger than the agent's 13 to 16 days because it omits the full site port and the other admin editors).
 

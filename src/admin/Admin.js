@@ -63,12 +63,14 @@ function renderLogin() {
         <div style="margin-bottom: 16px; text-align: center;">
           ${isLive 
             ? '<span class="mode-status-badge live"><span class="badge-dot"></span> Supabase GoTrue Auth</span>' 
-            : '<span class="mode-status-badge demo"><span class="badge-dot"></span> Local Preview / Demo Mode</span>'}
+            : (import.meta.env.DEV 
+                ? '<span class="mode-status-badge demo"><span class="badge-dot"></span> Local Preview / Dev Mode</span>' 
+                : '<span class="mode-status-badge demo" style="background:rgba(239,68,68,0.15);color:#f87171;"><span class="badge-dot" style="background:#ef4444;"></span> Supabase is not configured</span>')}
         </div>
         <form class="a-login-form" id="a-login-form">
           <div class="a-field">
             <label>Staff Email</label>
-            <input class="a-input" type="email" id="a-email" value="admin@iconelectromatic.com" required>
+            <input class="a-input" type="email" id="a-email" placeholder="staff@company.com" required>
           </div>
           <div class="a-field">
             <label>Password</label>

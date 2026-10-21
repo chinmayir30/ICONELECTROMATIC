@@ -21,8 +21,8 @@ Stage 6 - Final Client Handover & Documentation (in progress, PR #15)
 - [x] Stage 2 - Data: final Excel, full catalog migration, batch image pipeline (PR #11)
 - [x] Stage 3 - Backend and CMS connected to Supabase (PR #12)
 - [x] Stage 4 - Enquiry forms that really send email (PR #13)
-- [x] Stage 5 - Real URLs, Static HTML Pages, Sitemap & Schema.org SEO (PR #14, commit 9aaf192)
-- [ ] Stage 6 - Client Handover, Setup Guide & Maintenance (in progress, PR #15)
+- [x] Stage 5 - Real URLs, Static HTML Pages, Sitemap & Schema.org SEO (PR #14, commit 9aaf192 - with known gaps recorded)
+- [x] Stage 6 - Client Handover, Setup Guide & Maintenance (PR #15, commit 023190b)
 
 ## Decisions (confirmed by the owner)
 | Date | Decision | Why |
@@ -32,20 +32,22 @@ Stage 6 - Final Client Handover & Documentation (in progress, PR #15)
 | 2026-10 | The CMS exposes all intended website content as editable | Owner's requirement |
 | 2026-10 | Work one step at a time with detailed explanations | Owner is a beginner and wants senior-developer practices |
 | 2026-10 | Automate via /new_feature, /finish_feature and GitHub Actions CI | Standardize branching, enforce safety rules, and ensure every PR builds clean |
+| 2026-10 | Fail loudly instead of faking success | Stop fake ticket IDs and silent fallback; enforce required secrets and production authentication |
 
 ## Proposed, not yet confirmed
 - Static site generation (Astro recommended) so every product is a real HTML page
 - A managed headless CMS (for example Sanity) as the backend; Supabase with custom admin is the alternative
 - A small serverless function for enquiries (validation, spam protection, regional email routing, saved copy)
 
-## Known issues (as of 2026-10-19)
-- Web addresses use #hash routing, so Google sees one page
-- Contact and careers forms show a thank-you message but send nothing
+## Known issues & status (as of 2026-10-21)
+- Contact form fails loudly with inline error if unconfigured or server rejects; ticket IDs only accepted from server
+- Admin sign-in blocks mock fallback in production builds; refuses login if Supabase is unconfigured
+- Edge function validates ALLOWED_ORIGINS and fails with HTTP 500 if regional office emails or RESEND_API_KEY are missing (saves enquiry first)
+- Web addresses use static HTML pages for SEO crawlers; in-app routing between catalog cards and static pages has known gaps recorded in docs/seo_backend_implementation.md
 - Demo admin: kept out of production behind VITE_ENABLE_DEMO_ADMIN (PR #7)
 - Old fake product files (products.js, ProductDetail.js) removed in Phase 0 (PR #9)
 - "4,000+ products" and "24+ categories" appear in index.html, Home.js, ContentService.js and Admin.js
-- No per-page titles or descriptions, canonical tags, sitemap, robots.txt or structured data
-- Large files: 65 MB presentation, hero videos, main JS bundle about 645 KB
+- Large files: 65 MB presentation, hero videos; main JS bundle is 400.25 kB (down from 645 kB baseline)
 - Repo is public and contains client files
 - Two development-tool vulnerabilities (Vite, esbuild); affect the dev server only
 

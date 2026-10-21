@@ -15,7 +15,13 @@ export const authService = {
   getSession() {
     try {
       const raw = localStorage.getItem(SESSION_KEY);
-      return raw ? JSON.parse(raw) : null;
+      if (!raw) return null;
+      const session = JSON.parse(raw);
+      // In production builds, refuse to honor mock tokens
+      if (!import.meta.env.DEV && session?.access_token?.startsWith('mock_')) {
+        return null;
+      }
+      return session;
     } catch {
       return null;
     }
@@ -57,8 +63,13 @@ export const authService = {
       return data;
     }
 
-    // 2. Demo / Preview mode fallback
-    // In local dev without live keys, allow staff simulation
+    // 2. Unconfigured Supabase check
+    // In production builds, fail loudly and refuse to sign in
+    if (!import.meta.env.DEV) {
+      throw new Error('Supabase is not configured.');
+    }
+
+    // 3. Demo / Preview mode fallback (ONLY when import.meta.env.DEV)
     if (password.length < 6) {
       throw new Error('Password must be at least 6 characters.');
     }

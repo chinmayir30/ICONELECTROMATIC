@@ -99,11 +99,12 @@ npx supabase login
 # Link your local project
 npx supabase link --project-ref your-project-id
 
-# Set secrets for email dispatch (replace with real emails/keys)
+# Set secrets for email dispatch (replace placeholder values with real client mailboxes and API keys):
 npx supabase secrets set RESEND_API_KEY=re_your_resend_api_key
-npx supabase secrets set OFFICE_EMAIL_INDIA=sales.india@iconelectromatic.com
-npx supabase secrets set OFFICE_EMAIL_SINGAPORE=sales.sg@iconelectromatic.com
-npx supabase secrets set OFFICE_EMAIL_USA=sales.usa@iconelectromatic.com
+npx supabase secrets set OFFICE_EMAIL_INDIA=your_india_office@domain.com
+npx supabase secrets set OFFICE_EMAIL_SINGAPORE=your_apac_office@domain.com
+npx supabase secrets set OFFICE_EMAIL_USA=your_usa_office@domain.com
+npx supabase secrets set ALLOWED_ORIGINS=https://yourdomain.com,http://localhost:5173
 
 # Deploy the function
 npx supabase functions deploy contact
