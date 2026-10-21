@@ -590,6 +590,8 @@ function renderProductCard(product, index, oem, cat) {
       .slice(0, 4);
   }
 
+  const productUrl = `/products/${oem?.id || 'all'}/${product.id}`;
+
   return `
     <div class="product-detail-card" style="--oem-accent: ${oem.accentColor};" data-product-id="${product.id}">
       <!-- Dedicated Product Picture Banner -->
@@ -618,7 +620,9 @@ function renderProductCard(product, index, oem, cat) {
 
       <!-- Card Information -->
       <div class="product-card-body">
-        <h4 class="product-card-name" title="${product.name}">${product.name}</h4>
+        <h4 class="product-card-name" title="${product.name}">
+          <a href="${productUrl}" class="product-card-title-link" style="color: inherit; text-decoration: none;">${product.name}</a>
+        </h4>
         
         <p class="product-card-desc">
           ${product.description}
@@ -668,6 +672,8 @@ function renderProductRow(product, index, oem) {
       .slice(0, 3);
   }
 
+  const productUrl = `/products/${oem?.id || 'all'}/${product.id}`;
+
   return `
     <div class="ptable-row" style="--row-index: ${index}; --oem-accent: ${oem.accentColor};">
       <div class="ptable-col ptable-col-num">
@@ -685,7 +691,9 @@ function renderProductRow(product, index, oem) {
         />
       </div>
       <div class="ptable-col ptable-col-name">
-        <span class="ptable-product-name">${product.name}</span>
+        <a href="${productUrl}" class="ptable-name-link" style="color: inherit; text-decoration: none;">
+          <span class="ptable-product-name">${product.name}</span>
+        </a>
         <span class="ptable-oem-sub" style="color: ${oem.accentColor};">${oem.shortName}</span>
       </div>
       <div class="ptable-col ptable-col-desc">

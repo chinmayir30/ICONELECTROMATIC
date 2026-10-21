@@ -14,8 +14,8 @@ export function renderHomePage() {
   const blogs = ContentService.getData('blogs');
 
   const statsList = data.stats || [
-    { value: '4,000+', label: 'PRODUCTS AVAILABLE' },
-    { value: '24+', label: 'COMPONENT LINES' },
+    { value: '160+', label: 'VERIFIED COMPONENTS' },
+    { value: '15', label: 'OEM PARTNERS' },
     { value: '100%', label: 'ROHS & ISO 9001' }
   ];
 

@@ -1,6 +1,6 @@
 # PROJECT-STATE.md - Icon Electromatic website
 
-Last updated: 2026-10-19
+Last updated: 2026-10-21
 Rule: update this file at the end of every task. Never write passwords, keys or tokens here.
 Read docs/seo_backend_implementation.md for the implementation log, technology stack and phase status.
 
@@ -11,7 +11,7 @@ an indexable page with unique content, and that is handed over with documentatio
 client-owned accounts and one year of maintenance.
 
 ## Current stage
-Stage 6 - Final Client Handover & Documentation (in progress, PR #15)
+Stage 7 - Architecture Hardening & SEO Integrity (Task 1 in progress on fix/static-seo-pipeline-repair)
 
 ## Stage checklist
 - [x] Frontend built (reviewed at commit e371aac, 15 Oct 2026)
@@ -23,6 +23,7 @@ Stage 6 - Final Client Handover & Documentation (in progress, PR #15)
 - [x] Stage 4 - Enquiry forms that really send email (PR #13)
 - [x] Stage 5 - Real URLs, Static HTML Pages, Sitemap & Schema.org SEO (PR #14, commit 9aaf192 - with known gaps recorded)
 - [x] Stage 6 - Client Handover, Setup Guide & Maintenance (PR #15, commit 023190b)
+- [x] Task 1 - Static SEO Pipeline Repair (ISS-04, 05, 06, 08, 09, 10, 15 on fix/static-seo-pipeline-repair)
 
 ## Decisions (confirmed by the owner)
 | Date | Decision | Why |
@@ -33,6 +34,7 @@ Stage 6 - Final Client Handover & Documentation (in progress, PR #15)
 | 2026-10 | Work one step at a time with detailed explanations | Owner is a beginner and wants senior-developer practices |
 | 2026-10 | Automate via /new_feature, /finish_feature and GitHub Actions CI | Standardize branching, enforce safety rules, and ensure every PR builds clean |
 | 2026-10 | Fail loudly instead of faking success | Stop fake ticket IDs and silent fallback; enforce required secrets and production authentication |
+| 2026-10 | Option 1 Architecture Repair | Complete existing Supabase + SSG static pipeline; do not rewrite or replace framework |
 
 ## Proposed, not yet confirmed
 - Static site generation (Astro recommended) so every product is a real HTML page
@@ -43,11 +45,12 @@ Stage 6 - Final Client Handover & Documentation (in progress, PR #15)
 - Contact form fails loudly with inline error if unconfigured or server rejects; ticket IDs only accepted from server
 - Admin sign-in blocks mock fallback in production builds; refuses login if Supabase is unconfigured
 - Edge function validates ALLOWED_ORIGINS and fails with HTTP 500 if regional office emails or RESEND_API_KEY are missing (saves enquiry first)
-- Web addresses use static HTML pages for SEO crawlers; in-app routing between catalog cards and static pages has known gaps recorded in docs/seo_backend_implementation.md
+- Static SEO pages pre-rendered with dynamic CSS asset detection, valid Schema.org Product Offer, responsive image dimensions, and permanent 301 redirects for legacy prototype URLs
+- Dynamic catalog cards and rows now render direct crawlable links (/products/{oem}/{slug}) to static product pages
+- "4,000+ products" and "24+ categories" claims removed from index.html, Home.js, and ContentService.js and replaced with verified counts (160+ verified components, 15 OEM partners)
 - Demo admin: kept out of production behind VITE_ENABLE_DEMO_ADMIN (PR #7)
 - Old fake product files (products.js, ProductDetail.js) removed in Phase 0 (PR #9)
-- "4,000+ products" and "24+ categories" appear in index.html, Home.js, ContentService.js and Admin.js
-- Large files: 65 MB presentation, hero videos; main JS bundle is 400.25 kB (down from 645 kB baseline)
+- Large files: 65 MB presentation, hero videos; main JS bundle is 399.46 kB (down from 645 kB baseline)
 - Repo is public and contains client files
 - Two development-tool vulnerabilities (Vite, esbuild); affect the dev server only
 
