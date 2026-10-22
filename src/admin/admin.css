@@ -390,6 +390,14 @@
   border-color: var(--a-blue);
   background: #f1f5f9;
 }
+.a-image-widget.is-uploading {
+  opacity: 0.7;
+  pointer-events: none;
+  cursor: wait;
+}
+.a-image-widget.is-uploading .a-upload-btn {
+  background: var(--a-blue-dark, #1d4ed8);
+}
 .a-img-uploader {
   display: flex;
   gap: 16px;

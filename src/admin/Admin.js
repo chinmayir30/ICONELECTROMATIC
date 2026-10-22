@@ -241,45 +241,128 @@ function rerender() {
   }
 }
 
-function showToast(msg, type = '') {
+export function showToast(msg, type = '') {
   const existing = document.getElementById('a-toast');
   if (existing) existing.remove();
 
   const t = document.createElement('div');
   t.id = 'a-toast';
-  t.className = `a-toast ${type}`;
-  t.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${msg}`;
+  t.className = type ? `a-toast ${type}` : 'a-toast';
+
+  const icon = document.createElement('i');
+  icon.className = 'fa-solid fa-circle-check';
+  t.appendChild(icon);
+
+  const span = document.createElement('span');
+  span.className = 'a-toast-msg';
+  span.textContent = String(msg ?? '');
+  t.appendChild(span);
+
   document.body.appendChild(t);
   setTimeout(() => t.remove(), 3200);
 }
 
+// ─── Universal Image Upload Widget Helpers ─────────────────────────────────────
+const UUID_REGEX = /^[0-9a-f]{8}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{12}$/i;
+
+export function isUuid(val) {
+  return typeof val === 'string' && UUID_REGEX.test(val.trim());
+}
+
+export function escapeAttr(str) {
+  if (str == null) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+export function escapeHtml(str) {
+  if (str == null) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+export function normalizeSlug(str) {
+  if (!str || typeof str !== 'string') return '';
+  return str
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+}
+
+export function resolveStorageSlug(entity, fallback = 'general') {
+  const safeFallback = normalizeSlug(fallback) || 'general';
+  if (!entity) return safeFallback;
+
+  // Direct string input
+  if (typeof entity === 'string') {
+    if (isUuid(entity)) return safeFallback;
+    return normalizeSlug(entity) || safeFallback;
+  }
+
+  // 1. Check entity.slug: reject UUID, normalize valid string
+  if (typeof entity.slug === 'string' && !isUuid(entity.slug)) {
+    const normalized = normalizeSlug(entity.slug);
+    if (normalized) return normalized;
+  }
+
+  // 2. Check entity.id: reject UUID, normalize valid string
+  if (typeof entity.id === 'string' && !isUuid(entity.id)) {
+    const normalized = normalizeSlug(entity.id);
+    if (normalized) return normalized;
+  }
+
+  // 3. Fallback to entity.name or entity.title: normalize valid string
+  const nameCandidate = entity.name || entity.title;
+  if (typeof nameCandidate === 'string') {
+    const normalized = normalizeSlug(nameCandidate);
+    if (normalized) return normalized;
+  }
+
+  return safeFallback;
+}
+
 // ─── Universal Image Upload Widget ───────────────────────────────────────────
-export function renderImageUploadField(fieldName, label, currentValue, ctxText = '') {
-  const resolved = ImageStorage.resolveImageUrl(currentValue);
-  const hasImg = Boolean(currentValue);
+export function renderImageUploadField(fieldName, label, currentValue, ctxText = '', options = {}) {
+  const safeField = String(fieldName || '').replace(/[^a-zA-Z0-9_-]/g, '');
+  const safeVal = currentValue ? String(currentValue) : '';
+  const resolved = ImageStorage.resolveImageUrl(safeVal);
+  const hasImg = Boolean(safeVal);
+
+  const folder = options.folder ? String(options.folder) : '';
+  const oemSlug = options.oemSlug ? String(options.oemSlug) : '';
+  const productSlug = options.productSlug ? String(options.productSlug) : '';
 
   return `
-    <div class="a-field span2 a-image-widget" data-field="${fieldName}">
-      <label class="a-label">${label} <span class="a-label-ctx">${ctxText}</span></label>
+    <div class="a-field span2 a-image-widget" data-field="${escapeAttr(safeField)}" data-folder="${escapeAttr(folder)}" data-oem-slug="${escapeAttr(oemSlug)}" data-product-slug="${escapeAttr(productSlug)}">
+      <label class="a-label">${escapeHtml(label)} <span class="a-label-ctx">${escapeHtml(ctxText)}</span></label>
       <div class="a-img-uploader">
-        <div class="a-img-thumb-box" id="thumb-box-${fieldName}">
-          ${hasImg 
-            ? `<img src="${resolved}" class="a-thumb-img" id="thumb-img-${fieldName}" alt="Preview" />` 
-            : `<div class="a-thumb-empty" id="thumb-empty-${fieldName}"><i class="fa-solid fa-image"></i><span>No image</span></div>`}
+        <div class="a-img-thumb-box" id="thumb-box-${escapeAttr(safeField)}">
+          ${hasImg
+            ? `<img src="${escapeAttr(resolved)}" class="a-thumb-img" id="thumb-img-${escapeAttr(safeField)}" alt="Preview" />`
+            : `<div class="a-thumb-empty" id="thumb-empty-${escapeAttr(safeField)}"><i class="fa-solid fa-image"></i><span>No image</span></div>`}
         </div>
         <div class="a-img-actions">
-          <input type="hidden" name="${fieldName}" id="hidden-${fieldName}" value="${currentValue || ''}" />
+          <input type="hidden" name="${escapeAttr(safeField)}" id="hidden-${escapeAttr(safeField)}" value="${escapeAttr(safeVal)}" />
           <div class="a-img-btn-row">
             <label class="a-btn a-btn-sm a-btn-primary a-upload-btn">
-              <i class="fa-solid fa-cloud-arrow-up"></i> <span id="upload-txt-${fieldName}">${hasImg ? 'Replace Image' : 'Upload Image'}</span>
-              <input type="file" accept="image/*" class="a-file-input" data-target="${fieldName}" style="display:none;" />
+              <i class="fa-solid fa-cloud-arrow-up"></i> <span id="upload-txt-${escapeAttr(safeField)}">${hasImg ? 'Replace Image' : 'Upload Image'}</span>
+              <input type="file" accept="image/jpeg,image/png,image/webp,image/gif" class="a-file-input" data-target="${escapeAttr(safeField)}" style="display:none;" />
             </label>
-            <button type="button" class="a-btn a-btn-sm a-btn-danger a-img-delete-btn" data-target="${fieldName}" id="del-btn-${fieldName}" style="${hasImg ? '' : 'display:none;'}">
+            <button type="button" class="a-btn a-btn-sm a-btn-danger a-img-delete-btn" data-target="${escapeAttr(safeField)}" id="del-btn-${escapeAttr(safeField)}" style="${hasImg ? '' : 'display:none;'}">
               <i class="fa-solid fa-trash"></i> Delete
             </button>
           </div>
           <div class="a-img-url-row">
-            <input type="text" class="a-input a-input-sm a-img-url-input" data-target="${fieldName}" placeholder="Or paste asset path (/images/...) or URL" value="${currentValue || ''}" />
+            <input type="text" class="a-input a-input-sm a-img-url-input" data-target="${escapeAttr(safeField)}" placeholder="Or paste asset path (/images/...) or URL" value="${escapeAttr(safeVal)}" />
           </div>
         </div>
       </div>
@@ -287,7 +370,7 @@ export function renderImageUploadField(fieldName, label, currentValue, ctxText =
   `;
 }
 
-function bindImageWidgets(container = document) {
+export function bindImageWidgets(container = document) {
   // File upload input change
   container.querySelectorAll('.a-file-input').forEach(input => {
     input.addEventListener('change', async (e) => {
@@ -295,36 +378,79 @@ function bindImageWidgets(container = document) {
       if (!file) return;
 
       const fieldName = input.getAttribute('data-target');
-      showToast('Saving image to IndexedDB...', '');
+      const widget = input.closest('.a-image-widget');
+      if (!widget || widget.classList.contains('is-uploading') || input.disabled) return;
+
+      const hiddenInput = container.querySelector(`#hidden-${fieldName}`) || container.querySelector(`input[name="${fieldName}"]`);
+      const urlInput = container.querySelector(`.a-img-url-input[data-target="${fieldName}"]`);
+      const thumbBox = container.querySelector(`#thumb-box-${fieldName}`) || container.querySelector(`.a-image-widget[data-field="${fieldName}"] .a-img-thumb-box`);
+      const delBtn = container.querySelector(`#del-btn-${fieldName}`) || container.querySelector(`.a-img-delete-btn[data-target="${fieldName}"]`);
+      const uploadTxt = container.querySelector(`#upload-txt-${fieldName}`);
+
+      // Snapshot previous state before taking any action
+      const prevVal = hiddenInput ? hiddenInput.value : '';
+      const prevUrl = urlInput ? urlInput.value : '';
+      const prevThumbHtml = thumbBox ? thumbBox.innerHTML : '';
+      const prevUploadTxt = uploadTxt ? uploadTxt.textContent : 'Upload Image';
+      const prevDelDisplay = delBtn ? delBtn.style.display : 'none';
+
+      // Enter in-flight uploading state
+      widget.classList.add('is-uploading');
+      input.disabled = true;
+      if (uploadTxt) uploadTxt.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Uploading...';
+      showToast('Uploading image...', '');
 
       try {
-        const imgId = await ImageStorage.saveImage(file);
-        const resolvedUrl = ImageStorage.resolveImageUrl(imgId);
+        const folder = widget.getAttribute('data-folder') || (fieldName.toLowerCase().includes('logo') ? 'logos' : 'general');
+        const oemSlug = widget.getAttribute('data-oem-slug') || '';
+        const productSlug = widget.getAttribute('data-product-slug') || '';
+
+        const result = await supabaseClient.uploadImage(file, { folder, oemSlug, productSlug });
+
+        // In dev fallback mode: result.path is idb:img_... reference key; result.url is blob URL
+        // In configured mode: result.url is public CDN URL; result.path is relative storage path
+        const valueToStore = result.isLocalFallback ? result.path : (result.url || result.publicUrl);
+        const previewUrl = result.url || result.publicUrl;
 
         // Update hidden input & text input
-        const hiddenInput = container.querySelector(`#hidden-${fieldName}`) || container.querySelector(`input[name="${fieldName}"]`);
-        if (hiddenInput) hiddenInput.value = imgId;
-
-        const urlInput = container.querySelector(`.a-img-url-input[data-target="${fieldName}"]`);
-        if (urlInput) urlInput.value = imgId;
+        if (hiddenInput) hiddenInput.value = valueToStore;
+        if (urlInput) urlInput.value = valueToStore;
 
         // Update thumbnail preview
-        const thumbBox = container.querySelector(`#thumb-box-${fieldName}`) || container.querySelector(`.a-image-widget[data-field="${fieldName}"] .a-img-thumb-box`);
         if (thumbBox) {
-          thumbBox.innerHTML = `<img src="${resolvedUrl}" class="a-thumb-img" alt="Preview" />`;
+          thumbBox.innerHTML = `<img src="${escapeAttr(previewUrl)}" class="a-thumb-img" alt="Preview" />`;
         }
 
         // Show delete button and update button label
-        const delBtn = container.querySelector(`#del-btn-${fieldName}`) || container.querySelector(`.a-img-delete-btn[data-target="${fieldName}"]`);
         if (delBtn) delBtn.style.display = 'inline-flex';
-
-        const uploadTxt = container.querySelector(`#upload-txt-${fieldName}`);
         if (uploadTxt) uploadTxt.textContent = 'Replace Image';
 
-        showToast('Image saved securely in IndexedDB!', 'success');
+        // Unlock widget and clear file input
+        widget.classList.remove('is-uploading');
+        input.disabled = false;
+        input.value = '';
+
+        const successMsg = result.isLocalFallback
+          ? 'Image saved locally (Dev Mode)'
+          : 'Image uploaded to Supabase Storage!';
+        showToast(successMsg, 'success');
       } catch (err) {
         console.error('Image upload failed:', err);
-        alert('Failed to save image. Please check console.');
+
+        // Revert UI to snapshot
+        if (hiddenInput) hiddenInput.value = prevVal;
+        if (urlInput) urlInput.value = prevUrl;
+        if (thumbBox) thumbBox.innerHTML = prevThumbHtml;
+        if (uploadTxt) uploadTxt.textContent = prevUploadTxt;
+        if (delBtn) delBtn.style.display = prevDelDisplay;
+
+        // Unlock widget and re-enable input
+        widget.classList.remove('is-uploading');
+        input.disabled = false;
+        input.value = '';
+
+        showToast(`Upload failed: ${err.message}`, 'error');
+        alert(`Image Upload Failed:\n${err.message}`);
       }
     });
   });
@@ -344,7 +470,7 @@ function bindImageWidgets(container = document) {
 
       if (val) {
         const resolved = ImageStorage.resolveImageUrl(val);
-        if (thumbBox) thumbBox.innerHTML = `<img src="${resolved}" class="a-thumb-img" alt="Preview" onerror="this.parentElement.innerHTML='<div class=\\'a-thumb-empty\\'><i class=\\'fa-solid fa-triangle-exclamation\\'></i><span>Invalid</span></div>'" />`;
+        if (thumbBox) thumbBox.innerHTML = `<img src="${escapeAttr(resolved)}" class="a-thumb-img" alt="Preview" onerror="this.parentElement.innerHTML='<div class=\\'a-thumb-empty\\'><i class=\\'fa-solid fa-triangle-exclamation\\'></i><span>Invalid</span></div>'" />`;
         if (delBtn) delBtn.style.display = 'inline-flex';
         if (uploadTxt) uploadTxt.textContent = 'Replace Image';
       } else {
@@ -355,17 +481,11 @@ function bindImageWidgets(container = document) {
     });
   });
 
-  // Delete image button
+  // Delete image button (unlinks form reference only; never deletes remote or local assets)
   container.querySelectorAll('.a-img-delete-btn').forEach(btn => {
     btn.addEventListener('click', async () => {
       const fieldName = btn.getAttribute('data-target');
       const hiddenInput = container.querySelector(`#hidden-${fieldName}`) || container.querySelector(`input[name="${fieldName}"]`);
-      const currentVal = hiddenInput ? hiddenInput.value : '';
-
-      if (currentVal && currentVal.startsWith('idb:')) {
-        await ImageStorage.deleteImage(currentVal);
-      }
-
       if (hiddenInput) hiddenInput.value = '';
 
       const urlInput = container.querySelector(`.a-img-url-input[data-target="${fieldName}"]`);
@@ -380,10 +500,11 @@ function bindImageWidgets(container = document) {
       const uploadTxt = container.querySelector(`#upload-txt-${fieldName}`);
       if (uploadTxt) uploadTxt.textContent = 'Upload Image';
 
-      showToast('Image removed.', '');
+      showToast('Image reference removed from form.', '');
     });
   });
 }
+
 
 // ─── Modal Dialog Helper ─────────────────────────────────────────────────────
 function openModal(title, formHtml, onSave, onInit) {
@@ -3041,7 +3162,7 @@ function bindProductsTabEvents() {
           <option value="false">Hidden (Draft / Archive)</option>
         </select>
       </div>
-      ${renderImageUploadField('logoImg', 'Principal Logo Image', '', 'Upload PNG/SVG logo with transparent background')}
+      ${renderImageUploadField('logoImg', 'Principal Logo Image', '', 'Upload WebP, PNG, or JPG with transparent background (SVG disallowed)', { folder: 'logos' })}
     `, (data) => {
       const slug = (data.shortName || data.name).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
       const newOem = {
@@ -3097,7 +3218,7 @@ function bindProductsTabEvents() {
             <option value="false" ${o.visible === false ? 'selected' : ''}>Hidden (Draft / Archive)</option>
           </select>
         </div>
-        ${renderImageUploadField('logoImg', 'Principal Logo Image', o.logoImg || '', 'Upload PNG/SVG logo with transparent background')}
+        ${renderImageUploadField('logoImg', 'Principal Logo Image', o.logoImg || '', 'Upload WebP, PNG, or JPG with transparent background (SVG disallowed)', { folder: 'logos', oemSlug: resolveStorageSlug(o) })}
       `, (data) => {
         oems[idx] = {
           ...o,
@@ -3330,7 +3451,7 @@ function bindProductsTabEvents() {
             <option value="false">Hidden (Draft / Archive)</option>
           </select>
         </div>
-        ${renderImageUploadField('image', 'Product Image / Hardware Photo', '', 'Upload high-resolution component photo or diagram')}
+        ${renderImageUploadField('image', 'Product Image / Hardware Photo', '', 'Upload high-resolution component photo or diagram', { folder: 'products', oemSlug: resolveStorageSlug(oem) })}
         <div class="a-field span2" style="margin-top:12px;">
           <label class="a-label">Technical Description</label>
           <textarea class="a-textarea" name="description" rows="3" placeholder="Key electrical characteristics, frequency range, packaging, etc."></textarea>
@@ -3426,7 +3547,7 @@ function bindProductsTabEvents() {
               <option value="false" ${prod.visible === false ? 'selected' : ''}>Draft / Unpublished</option>
             </select>
           </div>
-          ${renderImageUploadField('image', 'Primary Product Hardware Image', prod.image || '', 'Upload or select hero component image')}
+          ${renderImageUploadField('image', 'Primary Product Hardware Image', prod.image || '', 'Upload or select hero component image', { folder: 'products', oemSlug: resolveStorageSlug(oem), productSlug: resolveStorageSlug(prod) })}
           <div class="a-field span2" style="margin-top:12px;">
             <label class="a-label">Technical Description</label>
             <textarea class="a-textarea" name="description" id="input-prod-desc" rows="3">${prod.description || ''}</textarea>
@@ -3767,7 +3888,7 @@ function bindPartnersTabEvents() {
       <div class="a-field"><label class="a-label">Partner Name</label><input class="a-input" name="name" required /></div>
       <div class="a-field" style="margin-top:12px;"><label class="a-label">Domain / Specialty</label><input class="a-input" name="domain" placeholder="e.g. High-Frequency Laminates" /></div>
       <div class="a-field" style="margin-top:12px;"><label class="a-label">Accent Color (red / blue)</label><input class="a-input" name="accentColor" value="blue" /></div>
-      ${renderImageUploadField('logoImg', 'Partner Brand Logo', '', 'Transparent PNG/SVG')}
+      ${renderImageUploadField('logoImg', 'Partner Brand Logo', '', 'Transparent WebP, PNG, or JPG (SVG disallowed)', { folder: 'partners' })}
       <div class="a-field" style="margin-top:12px;"><label class="a-label">Official Website URL</label><input class="a-input" name="website" placeholder="https://..." /></div>
       <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Description</label><textarea class="a-textarea" name="description"></textarea></div>
     `, (data) => {
@@ -3788,7 +3909,7 @@ function bindPartnersTabEvents() {
         <div class="a-field"><label class="a-label">Partner Name</label><input class="a-input" name="name" value="${p.name}" required /></div>
         <div class="a-field" style="margin-top:12px;"><label class="a-label">Domain / Specialty</label><input class="a-input" name="domain" value="${p.domain || ''}" /></div>
         <div class="a-field" style="margin-top:12px;"><label class="a-label">Accent Color (red / blue)</label><input class="a-input" name="accentColor" value="${p.accentColor || 'blue'}" /></div>
-        ${renderImageUploadField('logoImg', 'Partner Brand Logo', p.logoImg || '', 'Transparent PNG/SVG')}
+        ${renderImageUploadField('logoImg', 'Partner Brand Logo', p.logoImg || '', 'Transparent WebP, PNG, or JPG (SVG disallowed)', { folder: 'partners', oemSlug: resolveStorageSlug(p) })}
         <div class="a-field" style="margin-top:12px;"><label class="a-label">Official Website URL</label><input class="a-input" name="website" value="${p.website || ''}" /></div>
         <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Description</label><textarea class="a-textarea" name="description">${p.description || ''}</textarea></div>
       `, (data) => {
@@ -4442,7 +4563,7 @@ function bindBlogsTabEvents() {
             <option value="false">Hidden (Draft)</option>
           </select>
         </div>
-        ${renderImageUploadField('image', 'Article Cover Image', '', 'Upload hero image for article')}
+        ${renderImageUploadField('image', 'Article Cover Image', '', 'Upload hero image for article', { folder: 'blogs', oemSlug: resolveStorageSlug(oem || oemId) })}
         <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Excerpt / Summary (Card Preview) *</label><textarea class="a-textarea" name="summary" rows="3" required placeholder="Short 2-3 sentence overview for the card preview..."></textarea></div>
         <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Full Technical Article Body (Rich HTML or Paragraphs)</label><textarea class="a-textarea" name="content" rows="6" placeholder="<p>Full article text, specifications, and engineering details...</p>"></textarea></div>
         <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Topic Tags (Comma-separated)</label><input class="a-input" name="tags" placeholder="e.g. 77 GHz Radar, RT/duroid, Substrate, Automotive" /></div>
@@ -4489,7 +4610,7 @@ function bindBlogsTabEvents() {
             <option value="false" ${art.visible === false ? 'selected' : ''}>Hidden (Draft)</option>
           </select>
         </div>
-        ${renderImageUploadField('image', 'Article Cover Image', art.image || '', 'Upload hero image for article')}
+        ${renderImageUploadField('image', 'Article Cover Image', art.image || '', 'Upload hero image for article', { folder: 'blogs', oemSlug: resolveStorageSlug(oemId) })}
         <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Excerpt / Summary (Card Preview) *</label><textarea class="a-textarea" name="summary" rows="3" required>${art.summary || ''}</textarea></div>
         <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Full Technical Article Body (Rich HTML or Paragraphs)</label><textarea class="a-textarea" name="content" rows="8">${art.content || ''}</textarea></div>
         <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Topic Tags (Comma-separated)</label><input class="a-input" name="tags" value="${(art.tags || []).join(', ')}" /></div>
@@ -4574,7 +4695,7 @@ function bindBlogsTabEvents() {
             <option value="false">Hidden (Draft)</option>
           </select>
         </div>
-        ${renderImageUploadField('thumbnail', 'Video Thumbnail Image', '', 'Upload video cover preview')}
+        ${renderImageUploadField('thumbnail', 'Video Thumbnail Image', '', 'Upload video cover preview', { folder: 'blogs', oemSlug: resolveStorageSlug(oem || oemId) })}
         <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Video Streaming / Embed URL (YouTube, Vimeo, MP4)</label><input class="a-input" name="videoUrl" placeholder="https://..." /></div>
         <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Session Summary</label><textarea class="a-textarea" name="summary" rows="3" placeholder="Overview of the technical topics demonstrated in the video..."></textarea></div>
         <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Takeaway Topics (Comma-separated)</label><input class="a-input" name="topics" placeholder="e.g. Sub-THz Metrology, Skin Depth Effects, Microstrip Resonators" /></div>
@@ -4621,7 +4742,7 @@ function bindBlogsTabEvents() {
             <option value="false" ${vid.visible === false ? 'selected' : ''}>Hidden (Draft)</option>
           </select>
         </div>
-        ${renderImageUploadField('thumbnail', 'Video Thumbnail Image', vid.thumbnail || '', 'Upload video cover preview')}
+        ${renderImageUploadField('thumbnail', 'Video Thumbnail Image', vid.thumbnail || '', 'Upload video cover preview', { folder: 'blogs', oemSlug: resolveStorageSlug(oemId) })}
         <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Video Streaming / Embed URL</label><input class="a-input" name="videoUrl" value="${vid.videoUrl || ''}" /></div>
         <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Session Summary</label><textarea class="a-textarea" name="summary" rows="3">${vid.summary || ''}</textarea></div>
         <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Takeaway Topics (Comma-separated)</label><input class="a-input" name="topics" value="${(vid.topics || []).join(', ')}" /></div>
@@ -4912,7 +5033,7 @@ function renderHeaderPageEditor() {
       <div class="a-card">
         <div class="a-card-header"><div><h3>Logo &amp; Brand Image</h3><p>Main website logo displayed in top navigation</p></div></div>
         <div class="a-form-grid">
-          ${renderImageUploadField('logoUrl', 'Header Brand Logo', h.logoUrl || '/icon-logo-transparent.png', 'Transparent PNG/SVG recommended')}
+          ${renderImageUploadField('logoUrl', 'Header Brand Logo', h.logoUrl || '/icon-logo-transparent.png', 'Transparent WebP, PNG, or JPG recommended (SVG disallowed)', { folder: 'general' })}
         </div>
       </div>
 
@@ -4953,7 +5074,7 @@ function renderFooterPageEditor() {
       <div class="a-card">
         <div class="a-card-header"><div><h3>Footer Branding &amp; Tagline</h3><p>Footer brand column</p></div></div>
         <div class="a-form-grid">
-          ${renderImageUploadField('logoUrl', 'Footer Logo Image', f.logoUrl || '/icon-logo-transparent.png', 'Transparent logo')}
+          ${renderImageUploadField('logoUrl', 'Footer Logo Image', f.logoUrl || '/icon-logo-transparent.png', 'Transparent logo', { folder: 'general' })}
           <div class="a-field span2"><label class="a-label">Company Mission Tagline</label><textarea class="a-textarea" name="tagline">${f.tagline || ''}</textarea></div>
           <div class="a-field span2"><label class="a-label">Copyright Notice</label><input class="a-input" name="copyrightText" value="${f.copyrightText || ''}"></div>
         </div>
