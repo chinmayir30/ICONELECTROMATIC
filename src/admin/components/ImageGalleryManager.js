@@ -1,63 +1,56 @@
 /**
  * Image Gallery Manager Component
  * Allows staff to view, reorder, designate primary hero photo,
- * and add/remove image URLs for any product.
+ * upload images via Supabase Storage, and add/remove image URLs for any product.
  */
 
-export function renderImageGalleryManager(images = []) {
-  const sorted = [...images].sort((a, b) => a.display_order - b.display_order);
+import { supabaseClient } from '../../services/supabaseClient.js';
+import { ImageStorage } from '../../data/ImageStorage.js';
 
-  return `
-    <div class="gallery-manager-box">
-      <div class="gallery-manager-header">
-        <div>
-          <h4><i class="fa-regular fa-images"></i> Product Image Gallery</h4>
-          <p class="section-subtitle">The primary hero image appears on catalog cards and Google thumbnail snippets. Reorder gallery photos with the arrows.</p>
-        </div>
-        <button type="button" class="btn-sm btn-outline" id="btn-add-image-modal">
-          <i class="fa-solid fa-plus"></i> Add Image
-        </button>
-      </div>
-
-      <div class="gallery-items-grid" id="gallery-items-container">
-        ${sorted.length === 0 ? `
-          <div class="gallery-empty-state">
-            <i class="fa-solid fa-image"></i>
-            <p>No images linked to this product yet.</p>
-            <span class="text-muted">Per Option B, a product must have at least one image before it can be published.</span>
-          </div>
-        ` : sorted.map((img, index) => renderImageCard(img, index, sorted.length)).join('')}
-      </div>
-
-      <!-- Add Image Modal / Form Inline -->
-      <div class="add-image-bar" id="add-image-bar" style="display: none;">
-        <div class="form-row form-row-3">
-          <div class="form-group">
-            <label>Image URL / Path</label>
-            <input type="text" id="new-img-url" placeholder="/catalog-images/... or https://..." />
-          </div>
-          <div class="form-group">
-            <label>Alt Text (SEO)</label>
-            <input type="text" id="new-img-alt" placeholder="Descriptive image text" />
-          </div>
-          <div class="form-group form-actions-inline">
-            <button type="button" class="btn btn-primary btn-sm" id="btn-save-new-image">Save Image</button>
-            <button type="button" class="btn btn-secondary btn-sm" id="btn-cancel-new-image">Cancel</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  `;
+function escapeHtml(str) {
+  if (str == null) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
 }
 
-function renderImageCard(img, index, total) {
+function escapeAttr(str) {
+  if (str == null) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+export function renderGalleryCardsHtml(items = []) {
+  if (!items || items.length === 0) {
+    return `
+      <div class="gallery-empty-state">
+        <i class="fa-solid fa-image"></i>
+        <p>No images linked to this product yet.</p>
+        <span class="text-muted">Per Option B, a product must have at least one image before it can be published.</span>
+      </div>
+    `;
+  }
+  return items.map((img, index) => renderImageCard(img, index, items.length)).join('');
+}
+
+export function renderImageCard(img, index, total) {
   const isPrimary = Boolean(img.is_primary);
+  const resolved = ImageStorage.resolveImageUrl(img.image_url);
+  const orderNum = img.display_order != null ? img.display_order : (index + 1);
+
   return `
-    <div class="image-card ${isPrimary ? 'is-primary-card' : ''}" data-id="${img.id || index}">
+    <div class="image-card ${isPrimary ? 'is-primary-card' : ''}" data-id="${escapeAttr(img.id || index)}">
       <div class="image-card-thumb">
-        <img src="${escapeHtml(img.image_url)}" alt="${escapeHtml(img.alt_text || 'Product image')}" loading="lazy" onerror="this.src='/favicon.ico'; this.style.opacity='0.4';" />
+        <img src="${escapeAttr(resolved)}" data-idb="${escapeAttr(img.image_url)}" alt="${escapeAttr(img.alt_text || 'Product image')}" loading="lazy" onerror="this.src='/favicon.ico'; this.style.opacity='0.4';" />
         ${isPrimary ? '<span class="primary-hero-pill"><i class="fa-solid fa-star"></i> Primary Hero</span>' : ''}
-        <span class="order-badge">#${img.display_order || index + 1}</span>
+        <span class="order-badge">#${orderNum}</span>
       </div>
       <div class="image-card-details">
         <div class="image-card-actions">
@@ -81,14 +74,63 @@ function renderImageCard(img, index, total) {
           </div>
         </div>
         <div class="image-card-alt">
-          <input type="text" class="input-sm img-alt-input" data-index="${index}" value="${escapeHtml(img.alt_text || '')}" placeholder="Alt text..." />
+          <input type="text" class="input-sm img-alt-input" data-index="${index}" value="${escapeAttr(img.alt_text || '')}" placeholder="Alt text..." />
         </div>
       </div>
     </div>
   `;
 }
 
-export function bindGalleryEvents(images, onUpdate) {
+export function renderImageGalleryManager(images = []) {
+  const sorted = [...images].sort((a, b) => a.display_order - b.display_order);
+
+  return `
+    <div class="gallery-manager-box">
+      <div class="gallery-manager-header">
+        <div>
+          <h4><i class="fa-regular fa-images"></i> Product Image Gallery</h4>
+          <p class="section-subtitle">The primary hero image appears on catalog cards and Google thumbnail snippets. Reorder gallery photos with the arrows.</p>
+        </div>
+        <div class="gallery-header-actions" style="display:flex;gap:8px;align-items:center;">
+          <label class="a-btn a-btn-sm a-btn-primary a-upload-btn" id="gallery-file-label" style="cursor:pointer;margin:0;">
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+            <span id="gallery-upload-txt">Upload Photo</span>
+            <input type="file" id="gallery-file-input" accept="image/jpeg,image/png,image/webp" style="display:none;" />
+          </label>
+          <button type="button" class="a-btn a-btn-sm a-btn-outline" id="btn-add-image-modal">
+            <i class="fa-solid fa-link"></i> Add from URL
+          </button>
+        </div>
+      </div>
+
+      <div class="gallery-items-grid" id="gallery-items-container">
+        ${renderGalleryCardsHtml(sorted)}
+      </div>
+
+      <!-- Add Image Modal / Form Inline -->
+      <div class="add-image-bar" id="add-image-bar" style="display: none;">
+        <div class="form-row form-row-3">
+          <div class="form-group">
+            <label>Image URL / Path</label>
+            <input type="text" id="new-img-url" placeholder="/catalog-images/... or https://..." />
+          </div>
+          <div class="form-group">
+            <label>Alt Text (SEO)</label>
+            <input type="text" id="new-img-alt" placeholder="Descriptive image text" />
+          </div>
+          <div class="form-group form-actions-inline">
+            <button type="button" class="btn btn-primary btn-sm" id="btn-save-new-image">Save Image</button>
+            <button type="button" class="btn btn-secondary btn-sm" id="btn-cancel-new-image">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+export function bindGalleryEvents(images, onUpdate, context = {}) {
+  let currentList = Array.isArray(images) ? [...images] : [];
+
   const container = document.getElementById('gallery-items-container');
   const addBtn = document.getElementById('btn-add-image-modal');
   const addBar = document.getElementById('add-image-bar');
@@ -96,11 +138,89 @@ export function bindGalleryEvents(images, onUpdate) {
   const cancelNewBtn = document.getElementById('btn-cancel-new-image');
   const newUrlInput = document.getElementById('new-img-url');
   const newAltInput = document.getElementById('new-img-alt');
+  const fileInput = document.getElementById('gallery-file-input');
+  const fileLabel = document.getElementById('gallery-file-label');
+  const uploadTxt = document.getElementById('gallery-upload-txt');
 
+  function renderGrid() {
+    if (!container) return;
+    const sorted = [...currentList].sort((a, b) => a.display_order - b.display_order);
+    container.innerHTML = renderGalleryCardsHtml(sorted);
+  }
+
+  function notifyUpdate() {
+    renderGrid();
+    if (typeof onUpdate === 'function') {
+      onUpdate([...currentList]);
+    }
+  }
+
+  // 1. Direct File Upload
+  if (fileInput) {
+    fileInput.addEventListener('change', async (e) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+
+      // Duplicate upload guard
+      if (fileLabel?.classList.contains('is-uploading') || fileInput.disabled) {
+        return;
+      }
+
+      const prevUploadText = uploadTxt ? uploadTxt.innerHTML : 'Upload Photo';
+      if (fileLabel) fileLabel.classList.add('is-uploading');
+      fileInput.disabled = true;
+      if (uploadTxt) uploadTxt.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Uploading...';
+
+      try {
+        const folder = context.folder || 'products';
+        const oemSlug = context.oemSlug || '';
+        const productSlug = context.productSlug || '';
+
+        const result = await supabaseClient.uploadImage(file, { folder, oemSlug, productSlug });
+        // Use result.url as primary, fallback to result.path for local dev
+        const valueToStore = result.isLocalFallback ? result.path : (result.url || result.publicUrl);
+
+        const nextOrder = currentList.length + 1;
+        const isFirst = currentList.length === 0;
+        const defaultAlt = context.productName ? `${context.productName} - Photo ${nextOrder}` : `Product Photo ${nextOrder}`;
+
+        const newImg = {
+          id: Date.now(),
+          image_url: valueToStore,
+          alt_text: defaultAlt,
+          display_order: nextOrder,
+          is_primary: isFirst
+        };
+
+        currentList.push(newImg);
+        // Ensure exactly one primary image if non-empty
+        if (!currentList.some(i => i.is_primary)) {
+          currentList[0].is_primary = true;
+        }
+
+        // Reset state
+        if (fileLabel) fileLabel.classList.remove('is-uploading');
+        fileInput.disabled = false;
+        fileInput.value = '';
+        if (uploadTxt) uploadTxt.innerHTML = prevUploadText;
+
+        notifyUpdate();
+      } catch (err) {
+        console.error('Gallery image upload failed:', err);
+        if (fileLabel) fileLabel.classList.remove('is-uploading');
+        fileInput.disabled = false;
+        fileInput.value = '';
+        if (uploadTxt) uploadTxt.innerHTML = prevUploadText;
+        alert(`Gallery Image Upload Failed:\n${err.message}`);
+      }
+    });
+  }
+
+  // 2. Manual URL / Path Entry
   if (addBtn && addBar) {
     addBtn.addEventListener('click', () => {
       addBar.style.display = addBar.style.display === 'none' ? 'block' : 'none';
-      if (newUrlInput) newUrlInput.focus();
+      if (newUrlInput && addBar.style.display !== 'none') newUrlInput.focus();
     });
   }
 
@@ -121,86 +241,93 @@ export function bindGalleryEvents(images, onUpdate) {
         return;
       }
 
-      const nextOrder = images.length + 1;
-      const isFirst = images.length === 0;
+      const nextOrder = currentList.length + 1;
+      const isFirst = currentList.length === 0;
 
       const newImg = {
         id: Date.now(),
         image_url: url,
-        alt_text: alt,
+        alt_text: alt || (context.productName ? `${context.productName} - Photo ${nextOrder}` : `Product Photo ${nextOrder}`),
         display_order: nextOrder,
         is_primary: isFirst
       };
 
-      const updated = [...images, newImg];
+      currentList.push(newImg);
+      if (!currentList.some(i => i.is_primary)) {
+        currentList[0].is_primary = true;
+      }
+
       addBar.style.display = 'none';
       newUrlInput.value = '';
       if (newAltInput) newAltInput.value = '';
-      onUpdate(updated);
+
+      notifyUpdate();
     });
   }
 
+  // 3. Grid delegation: Reorder, Make Primary, Unlink
   if (container) {
     container.addEventListener('click', (e) => {
       const btn = e.target.closest('button[data-action]');
       if (!btn) return;
 
-      const action = btn.dataset.action;
-      const idx = Number(btn.dataset.index);
+      const action = btn.dataset?.action || btn.getAttribute('data-action');
+      const idxAttr = btn.dataset?.index !== undefined ? btn.dataset.index : btn.getAttribute('data-index');
+      const idx = Number(idxAttr);
 
       if (action === 'move-up' && idx > 0) {
-        const copy = [...images];
-        const temp = copy[idx - 1];
-        copy[idx - 1] = copy[idx];
-        copy[idx] = temp;
-        // re-index display orders
-        copy.forEach((item, i) => item.display_order = i + 1);
-        onUpdate(copy);
-      } else if (action === 'move-down' && idx < images.length - 1) {
-        const copy = [...images];
-        const temp = copy[idx + 1];
-        copy[idx + 1] = copy[idx];
-        copy[idx] = temp;
-        // re-index display orders
-        copy.forEach((item, i) => item.display_order = i + 1);
-        onUpdate(copy);
+        const temp = currentList[idx - 1];
+        currentList[idx - 1] = currentList[idx];
+        currentList[idx] = temp;
+        currentList.forEach((item, i) => { item.display_order = i + 1; });
+        notifyUpdate();
+      } else if (action === 'move-down' && idx < currentList.length - 1) {
+        const temp = currentList[idx + 1];
+        currentList[idx + 1] = currentList[idx];
+        currentList[idx] = temp;
+        currentList.forEach((item, i) => { item.display_order = i + 1; });
+        notifyUpdate();
       } else if (action === 'make-primary') {
-        const copy = images.map((item, i) => ({
+        currentList = currentList.map((item, i) => ({
           ...item,
           is_primary: i === idx
         }));
-        onUpdate(copy);
+        notifyUpdate();
       } else if (action === 'delete-image') {
+        // Confirmation dialog; unlink only (NEVER delete remote or IDB storage assets)
         if (confirm('Remove this image from product gallery?')) {
-          let copy = images.filter((_, i) => i !== idx);
-          if (copy.length > 0 && !copy.some(item => item.is_primary)) {
-            copy[0].is_primary = true;
+          currentList = currentList.filter((_, i) => i !== idx);
+          if (currentList.length > 0 && !currentList.some(item => item.is_primary)) {
+            currentList[0].is_primary = true;
           }
-          copy.forEach((item, i) => item.display_order = i + 1);
-          onUpdate(copy);
+          currentList.forEach((item, i) => { item.display_order = i + 1; });
+          notifyUpdate();
         }
       }
     });
 
     container.addEventListener('change', (e) => {
       if (e.target.classList.contains('img-alt-input')) {
-        const idx = Number(e.target.dataset.index);
-        const copy = [...images];
-        if (copy[idx]) {
-          copy[idx].alt_text = e.target.value.trim();
-          onUpdate(copy);
+        const idxAttr = e.target.dataset?.index !== undefined ? e.target.dataset.index : e.target.getAttribute('data-index');
+        const idx = Number(idxAttr);
+        if (currentList[idx]) {
+          currentList[idx].alt_text = e.target.value.trim();
+          if (typeof onUpdate === 'function') {
+            onUpdate([...currentList]);
+          }
         }
       }
     });
   }
-}
 
-function escapeHtml(str) {
-  if (!str) return '';
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
+  // Return handle for external synchronization (e.g. Tab 1 to Gallery sync)
+  return {
+    setImages(newImages) {
+      currentList = Array.isArray(newImages) ? [...newImages] : [];
+      renderGrid();
+    },
+    getImages() {
+      return [...currentList];
+    }
+  };
 }

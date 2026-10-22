@@ -3509,7 +3509,9 @@ function bindProductsTabEvents() {
       const defaultCanonical = prod.canonical_url || `https://iconelectromatic.com/products/${oem.id || 'oem'}/${prod.id || 'product'}`;
 
       let currentImages = [];
-      if (prod.image) {
+      if (Array.isArray(prod.gallery) && prod.gallery.length > 0) {
+        currentImages = prod.gallery.map(img => ({ ...img }));
+      } else if (prod.image) {
         currentImages.push({
           id: 1,
           image_url: prod.image,
@@ -3523,7 +3525,7 @@ function bindProductsTabEvents() {
         <div class="a-tabs-pill-row" style="display:flex;gap:8px;margin-bottom:14px;">
           <button type="button" class="a-btn a-btn-sm a-btn-primary tab-prod-switch active" data-target="tab-core-fields"><i class="fa-solid fa-pen-to-square"></i> Product Details</button>
           <button type="button" class="a-btn a-btn-sm a-btn-outline tab-prod-switch" data-target="tab-seo-fields"><i class="fa-solid fa-magnifying-glass"></i> SEO & Google Snippet</button>
-          <button type="button" class="a-btn a-btn-sm a-btn-outline tab-prod-switch" data-target="tab-gallery-fields"><i class="fa-regular fa-images"></i> Image Gallery (${currentImages.length})</button>
+          <button type="button" class="a-btn a-btn-sm a-btn-outline tab-prod-switch" data-target="tab-gallery-fields"><i class="fa-regular fa-images"></i> Image Gallery (<span id="gallery-tab-count">${currentImages.length}</span>)</button>
         </div>
 
         <div id="tab-core-fields" class="prod-modal-tab-pane">
@@ -3596,7 +3598,9 @@ function bindProductsTabEvents() {
 
       openModal(`Edit Product: ${prod.name}`, modalHtml, (data) => {
         const newCatName = (data.category || cat.name).trim();
-        const hasImg = Boolean(data.image || currentImages.length > 0);
+        const heroImg = currentImages.find(i => i.is_primary) || currentImages[0];
+        const finalImgUrl = data.image || (heroImg?.image_url || '');
+        const hasImg = Boolean(finalImgUrl || currentImages.length > 0);
         const hasDesc = Boolean((data.description || '').trim().length >= 20);
 
         // Option B Quality Gate Check
@@ -3611,7 +3615,8 @@ function bindProductsTabEvents() {
           name: data.name.trim(),
           id: (data.id || prod.id).trim(),
           category: newCatName,
-          image: data.image || (currentImages[0]?.image_url || ''),
+          image: finalImgUrl,
+          gallery: currentImages.map(img => ({ ...img })),
           description: data.description || '',
           applications: data.applications || '',
           link: data.link || '',
@@ -3646,6 +3651,56 @@ function bindProductsTabEvents() {
         rerender();
         showToast(`Product "${updatedProd.name}" saved successfully!`, 'success');
       }, (modalContainer) => {
+        let galleryHandle = null;
+
+        function syncTab1ToGallery() {
+          const hiddenImg = modalContainer.querySelector('input[name="image"]');
+          const tab1Val = hiddenImg ? hiddenImg.value.trim() : '';
+          const currentHero = currentImages.find(i => i.is_primary) || currentImages[0];
+
+          if (tab1Val) {
+            if (!currentHero) {
+              currentImages = [{
+                id: Date.now(),
+                image_url: tab1Val,
+                alt_text: `${prod.name} - ${oem.name}`,
+                display_order: 1,
+                is_primary: true
+              }];
+              galleryHandle?.setImages(currentImages);
+            } else if (currentHero.image_url !== tab1Val) {
+              currentHero.image_url = tab1Val;
+              galleryHandle?.setImages(currentImages);
+            }
+          } else {
+            // Tab 1 image cleared
+            if (currentHero) {
+              if (currentImages.length <= 1) {
+                currentImages = [];
+              } else {
+                currentImages = currentImages.filter(i => !i.is_primary);
+                if (currentImages.length > 0) {
+                  currentImages[0].is_primary = true;
+                  currentImages.forEach((item, idx) => { item.display_order = idx + 1; });
+                  // Sync new primary hero to Tab 1
+                  const newHero = currentImages[0];
+                  if (hiddenImg) hiddenImg.value = newHero.image_url;
+                  const urlInput = modalContainer.querySelector('.a-img-url-input[data-target="image"]');
+                  if (urlInput) urlInput.value = newHero.image_url;
+                  const thumbBox = modalContainer.querySelector('#thumb-box-image');
+                  if (thumbBox) {
+                    const resolved = ImageStorage.resolveImageUrl(newHero.image_url);
+                    thumbBox.innerHTML = `<img src="${escapeAttr(resolved)}" class="a-thumb-img" id="thumb-img-image" alt="Preview" />`;
+                  }
+                }
+              }
+              galleryHandle?.setImages(currentImages);
+            }
+          }
+          const galleryCount = modalContainer.querySelector('#gallery-tab-count');
+          if (galleryCount) galleryCount.textContent = currentImages.length;
+        }
+
         // Tab switching
         modalContainer.querySelectorAll('.tab-prod-switch').forEach(tabBtn => {
           tabBtn.addEventListener('click', () => {
@@ -3657,6 +3712,10 @@ function bindProductsTabEvents() {
             tabBtn.classList.add('a-btn-primary', 'active');
 
             const targetId = tabBtn.dataset.target;
+            if (targetId === 'tab-gallery-fields') {
+              syncTab1ToGallery();
+            }
+
             modalContainer.querySelectorAll('.prod-modal-tab-pane').forEach(p => p.style.display = 'none');
             const targetPane = modalContainer.querySelector('#' + targetId);
             if (targetPane) targetPane.style.display = 'block';
@@ -3684,13 +3743,42 @@ function bindProductsTabEvents() {
         bodyDescInput?.addEventListener('input', syncLiveSeo);
 
         // Bind image gallery manager
-        bindGalleryEvents(currentImages, (updatedImgs) => {
+        galleryHandle = bindGalleryEvents(currentImages, (updatedImgs) => {
           currentImages = updatedImgs;
           const hero = currentImages.find(i => i.is_primary) || currentImages[0];
-          if (hero) {
-            const hiddenImg = modalContainer.querySelector('input[name="image"]');
-            if (hiddenImg) hiddenImg.value = hero.image_url;
+          const hiddenImg = modalContainer.querySelector('input[name="image"]');
+          const urlInput = modalContainer.querySelector('.a-img-url-input[data-target="image"]');
+          const thumbBox = modalContainer.querySelector('#thumb-box-image');
+          const delBtn = modalContainer.querySelector('#del-btn-image');
+          const uploadTxt = modalContainer.querySelector('#upload-txt-image');
+          const galleryCount = modalContainer.querySelector('#gallery-tab-count');
+
+          if (galleryCount) galleryCount.textContent = currentImages.length;
+
+          if (hero && hero.image_url) {
+            const heroUrl = hero.image_url;
+            if (hiddenImg) hiddenImg.value = heroUrl;
+            if (urlInput) urlInput.value = heroUrl;
+            if (delBtn) delBtn.style.display = 'inline-flex';
+            if (uploadTxt) uploadTxt.textContent = 'Replace Image';
+            if (thumbBox) {
+              const resolvedHero = ImageStorage.resolveImageUrl(heroUrl);
+              thumbBox.innerHTML = `<img src="${escapeAttr(resolvedHero)}" class="a-thumb-img" id="thumb-img-image" alt="Preview" />`;
+            }
+          } else {
+            if (hiddenImg) hiddenImg.value = '';
+            if (urlInput) urlInput.value = '';
+            if (delBtn) delBtn.style.display = 'none';
+            if (uploadTxt) uploadTxt.textContent = 'Upload Image';
+            if (thumbBox) {
+              thumbBox.innerHTML = `<div class="a-thumb-empty" id="thumb-empty-image"><i class="fa-solid fa-image"></i><span>No image</span></div>`;
+            }
           }
+        }, {
+          folder: 'products',
+          oemSlug: resolveStorageSlug(oem),
+          productSlug: resolveStorageSlug(prod),
+          productName: prod.name
         });
 
         // Run Audit Button
