@@ -324,7 +324,7 @@ Status: Implemented (tagged)
 
 
 ### Entry 18: Phase 1.2 — Optimistic Concurrency Protection
-- **Status:** In progress (working tree on `feat/admin-cms-supabase-persistence`, 29 Oct 2026)
+- **Status:** In progress (PR #18, branch `feat/single-domain-routing`, 29 Oct 2026)
 - **What was built:**
   - `supabase/migrations/005_cms_content_versioning.sql`: Authored idempotent unapplied DDL introducing integer `version` column and `trg_cms_content_bump_version` trigger strictly enforcing monotonic increments (`NEW.version := OLD.version + 1`) and UTC timestamps (`NEW.updated_at := now()`).
   - `src/services/supabaseClient.js`: Implemented atomic conditional updates via PostgREST `PATCH ?key=eq.<key>&version=eq.<expectedVersion>` with `Prefer: return=representation`. Detects 0 rows updated as `{ success: false, conflict: true }`. Prohibits unversioned writes on existing central records. Differentiates 404/empty from network or schema errors. Enhanced `saveProduct` and `deleteProduct` with version forwarding.
@@ -363,7 +363,7 @@ Open items that affect these phases: client decisions on category grouping, dupl
 
 
 ### Entry 19: Single-Domain Routing Alignment (Step 6)
-- **Status:** In progress (feat/single-domain-routing, not yet PR'd)
+- **Status:** In progress (PR #18, branch `feat/single-domain-routing`, 29 Oct 2026)
 - **What was built:**
   - Removed the `VITE_ENABLE_DEMO_ADMIN` / `import.meta.env.DEV` build-time condition that previously blocked the `/admin` route from being registered in production builds.
   - The route is now always registered. An unauthenticated visitor reaching `/admin` sees only the login screen (unchanged `Admin.js` behaviour).
