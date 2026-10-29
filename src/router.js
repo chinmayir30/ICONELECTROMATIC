@@ -34,11 +34,11 @@ export function handleRoute() {
   // Extract route: real pathname first (/about), hash fallback (#/about)
   let raw = '';
   if (window.location.pathname && window.location.pathname !== '/' && window.location.pathname !== '/index.html') {
-    raw = window.location.pathname;
+    raw = window.location.pathname + (window.location.search || '');
   } else if (window.location.hash) {
     raw = window.location.hash.replace(/^#\/?/, '/');
   } else {
-    raw = '/';
+    raw = '/' + (window.location.search || '');
   }
 
   const [routePath, queryStr] = raw.split('?');

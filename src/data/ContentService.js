@@ -1,6 +1,56 @@
 import { CATALOG } from './catalogData.js';
 import { OEM_BLOGS } from './blogData.js';
 import { ImageStorage } from './ImageStorage.js';
+import { supabaseClient } from '../services/supabaseClient.js';
+
+// In-memory cache for ultra-fast, synchronous access
+const memoryCache = new Map();
+let isInitialized = false;
+
+// Optimistic Concurrency Control (OCC) metadata tracking (pageKey -> { version, updated_at, isRemote })
+const sectionMetadata = new Map();
+let isRemotePersistAvailable = true;
+let remotePersistError = null;
+
+// Helper to deeply isolate cached objects and prevent unconfirmed mutation leaks
+function cloneData(val) {
+  if (val === null || typeof val !== 'object') return val;
+  if (typeof structuredClone === 'function') {
+    try {
+      return structuredClone(val);
+    } catch {}
+  }
+  return JSON.parse(JSON.stringify(val));
+}
+
+// Cross-component cache sync listener (e.g. ImageMigrationService or cross-tab events)
+if (typeof window !== 'undefined') {
+  window.addEventListener('cms-data-updated', (e) => {
+    if (e.detail && e.detail.pageKey && e.detail.data) {
+      memoryCache.set(e.detail.pageKey, cloneData(e.detail.data));
+      if (typeof e.detail.version === 'number') {
+        const existing = sectionMetadata.get(e.detail.pageKey) || {};
+        sectionMetadata.set(e.detail.pageKey, {
+          ...existing,
+          version: e.detail.version,
+          updated_at: new Date().toISOString()
+        });
+      }
+    }
+  });
+
+  // Cross-tab synchronization via browser storage events
+  window.addEventListener('storage', (e) => {
+    if (e.key && e.key.startsWith('cms_') && e.newValue) {
+      const pageKey = e.key.replace(/^cms_/, '');
+      try {
+        const parsed = JSON.parse(e.newValue);
+        memoryCache.set(pageKey, cloneData(parsed));
+        window.dispatchEvent(new CustomEvent('cms-data-updated', { detail: { pageKey, data: parsed } }));
+      } catch {}
+    }
+  });
+}
 
 // ─── Version key: bump this to ensure fresh schema sync with existing localStorage ───
 const CMS_VERSION = 'v7';
@@ -661,33 +711,96 @@ const INITIAL_CONTENT = {
 };
 
 export const ContentService = {
-  getData(pageKey) {
-    // Check version; if stale or missing, wipe old and re-seed
-    const storedVersion = localStorage.getItem('cms_version');
-    if (storedVersion !== CMS_VERSION) {
-      Object.keys(localStorage).forEach(k => {
-        if (k.startsWith('cms_')) localStorage.removeItem(k);
-      });
-      localStorage.setItem('cms_version', CMS_VERSION);
+  /**
+   * Pre-loads content from Supabase into memoryCache before routing begins.
+   * Called during main.js bootstrap.
+   */
+  async init() {
+    if (isInitialized) return;
+
+    // 1. Central database hydration if Supabase is configured
+    if (typeof supabaseClient !== 'undefined' && supabaseClient.isConfigured) {
+      try {
+        const { contentMap, metaMap } = await supabaseClient.getAllCmsContentWithMeta();
+        if (contentMap && typeof contentMap === 'object' && Object.keys(contentMap).length > 0) {
+          for (const [k, val] of Object.entries(contentMap)) {
+            memoryCache.set(k, cloneData(val));
+            if (metaMap && metaMap[k]) {
+              sectionMetadata.set(k, { ...metaMap[k] });
+            }
+            if (typeof localStorage !== 'undefined') {
+              try {
+                localStorage.setItem(`cms_${k}`, JSON.stringify(val));
+              } catch {
+                // Ignore quota error in mirror
+              }
+            }
+          }
+          isRemotePersistAvailable = true;
+          remotePersistError = null;
+          isInitialized = true;
+          return;
+        }
+        throw new Error('Configured Supabase database returned empty cms_content.');
+      } catch (err) {
+        console.warn('ContentService.init() network error; central persistence will fail closed:', err.message);
+        isRemotePersistAvailable = false;
+        remotePersistError = err.message;
+      }
     }
 
-    const local = localStorage.getItem(`cms_${pageKey}`);
+    // 2. Fallback: Check localStorage version safely
+    if (typeof localStorage !== 'undefined') {
+      const storedVersion = localStorage.getItem('cms_version');
+      if (storedVersion !== CMS_VERSION) {
+        Object.keys(localStorage).forEach(k => {
+          if (k.startsWith('cms_')) localStorage.removeItem(k);
+        });
+        localStorage.setItem('cms_version', CMS_VERSION);
+      }
+    }
+
+    isInitialized = true;
+  },
+
+  /**
+   * 100% Synchronous retrieval from in-memory cache with localStorage / initial fallback.
+   */
+  getData(pageKey) {
+    if (memoryCache.has(pageKey)) {
+      return cloneData(memoryCache.get(pageKey));
+    }
+
+    // Check version safely if running in browser
+    if (typeof localStorage !== 'undefined') {
+      const storedVersion = localStorage.getItem('cms_version');
+      if (storedVersion !== CMS_VERSION) {
+        Object.keys(localStorage).forEach(k => {
+          if (k.startsWith('cms_')) localStorage.removeItem(k);
+        });
+        localStorage.setItem('cms_version', CMS_VERSION);
+      }
+    }
+
+    const local = (typeof localStorage !== 'undefined') ? localStorage.getItem(`cms_${pageKey}`) : null;
     if (local) {
       try {
         const parsed = JSON.parse(local);
         if (pageKey === 'products') {
           // If cached products don't have categories (stale schema), ignore and reseed
           if (Array.isArray(parsed) && parsed.length > 0 && Array.isArray(parsed[0].categories)) {
+            memoryCache.set(pageKey, parsed);
             return parsed;
           }
         } else if (pageKey === 'blogs') {
           // If cached blogs has structured oemBlogs, return it
           if (parsed && Array.isArray(parsed.oemBlogs)) {
+            memoryCache.set(pageKey, parsed);
             return parsed;
           }
           // If parsed is array of oemBlogs (older schema), wrap into current schema
           if (Array.isArray(parsed) && parsed.length > 0 && parsed[0].oemId) {
-            return {
+            const wrapped = {
               heroTitle: 'OEM Technical News, Video Demos & Insights',
               heroSubtitle: 'Direct technical bulletins, video demonstrations, application whitepapers, and product release updates from ICON Electromatic\'s 15 global manufacturing partners.',
               trustBadge1: 'Application Whitepapers & Notes',
@@ -695,19 +808,24 @@ export const ContentService = {
               trustBadge3: 'Direct Manufacturer Bulletins',
               oemBlogs: parsed
             };
+            memoryCache.set(pageKey, wrapped);
+            return wrapped;
           }
         } else if (pageKey === 'partners') {
           if (parsed && Array.isArray(parsed.partners)) {
+            memoryCache.set(pageKey, parsed);
             return parsed;
           }
           if (Array.isArray(parsed)) {
-            return {
+            const wrapped = {
               heroTitle: 'Authorized Technology Partners',
               heroLead: 'We represent a diverse portfolio of OEMs across sectors, industries and application.<br />To know more about their products, make an enquiry or request samples just get in touch with us.',
               trustBadge1: '10+ Global Technology Partners',
               trustBadge2: 'Space & Mil-Spec Screening Support',
               partners: parsed
             };
+            memoryCache.set(pageKey, wrapped);
+            return wrapped;
           }
         } else if (pageKey === 'contact') {
           const defaults = INITIAL_CONTENT.contact;
@@ -720,12 +838,15 @@ export const ContentService = {
           if (!Array.isArray(mergedCareers.experienceLevels)) mergedCareers.experienceLevels = defaults.careers.experienceLevels;
           if (!Array.isArray(mergedCareers.noticeOptions)) mergedCareers.noticeOptions = defaults.careers.noticeOptions;
 
-          return {
+          const merged = {
             ...defaults,
             ...parsed,
             careers: mergedCareers
           };
+          memoryCache.set(pageKey, merged);
+          return merged;
         } else {
+          memoryCache.set(pageKey, parsed);
           return parsed;
         }
       } catch (e) {
@@ -733,6 +854,13 @@ export const ContentService = {
       }
     }
 
+    // Seed defaults if not found in memory or localStorage
+    const fallback = this._getInitialFallback(pageKey);
+    memoryCache.set(pageKey, fallback);
+    return fallback;
+  },
+
+  _getInitialFallback(pageKey) {
     // Seed products & blogs from real data files
     if (pageKey === 'products') {
       const initial = CATALOG.map(oem => ({
@@ -767,7 +895,11 @@ export const ContentService = {
           }))
         }))
       }));
-      localStorage.setItem('cms_products', JSON.stringify(initial));
+      if (typeof localStorage !== 'undefined') {
+        try {
+          localStorage.setItem('cms_products', JSON.stringify(initial));
+        } catch {}
+      }
       return initial;
     }
 
@@ -795,7 +927,11 @@ export const ContentService = {
         trustBadge2: 'Space & Mil-Spec Screening Support',
         partners: initialPartners
       };
-      localStorage.setItem('cms_partners', JSON.stringify(initial));
+      if (typeof localStorage !== 'undefined') {
+        try {
+          localStorage.setItem('cms_partners', JSON.stringify(initial));
+        } catch {}
+      }
       return initial;
     }
 
@@ -856,28 +992,170 @@ export const ContentService = {
           }))
         }))
       };
-      localStorage.setItem('cms_blogs', JSON.stringify(initial));
+      if (typeof localStorage !== 'undefined') {
+        try {
+          localStorage.setItem('cms_blogs', JSON.stringify(initial));
+        } catch {}
+      }
       return initial;
     }
 
     const initial = INITIAL_CONTENT[pageKey] || {};
-    localStorage.setItem(`cms_${pageKey}`, JSON.stringify(initial));
+    if (typeof localStorage !== 'undefined') {
+      try {
+        localStorage.setItem(`cms_${pageKey}`, JSON.stringify(initial));
+      } catch {}
+    }
     return initial;
   },
 
-  saveData(pageKey, data) {
-    localStorage.setItem(`cms_${pageKey}`, JSON.stringify(data));
-    // Dispatch event to inform live subscribers
-    if (typeof window !== 'undefined') {
-      window.dispatchEvent(new CustomEvent('cms-data-updated', { detail: { pageKey, data } }));
+  async saveData(pageKey, data, options = {}) {
+    // 1. If Supabase is configured, central persistence takes priority:
+    if (typeof supabaseClient !== 'undefined' && supabaseClient.isConfigured) {
+      // Fail-closed enforcement: if remote read failed, block all writes!
+      if (!isRemotePersistAvailable) {
+        const blockedErr = `Central persistence is unavailable (${remotePersistError || 'remote read failed'}). Writes blocked to protect central data integrity.`;
+        console.warn(`[ContentService] Save blocked for '${pageKey}':`, blockedErr);
+        return {
+          success: false,
+          error: blockedErr
+        };
+      }
+
+      // Concurrency check: determine expectedVersion from original load or options
+      const currentMeta = sectionMetadata.get(pageKey);
+      const expectedVersion = options.expectedVersion !== undefined 
+        ? options.expectedVersion 
+        : currentMeta?.version;
+
+      if (expectedVersion === undefined || expectedVersion === null) {
+        if (!options.isNew && currentMeta) {
+          return {
+            success: false,
+            error: `Optimistic concurrency check failed: expectedVersion is required to update '${pageKey}'.`
+          };
+        }
+      }
+
+      const saveOpts = {
+        ...options,
+        expectedVersion
+      };
+
+      const result = (pageKey === 'products')
+        ? await supabaseClient.saveProductCatalog(data, saveOpts)
+        : await supabaseClient.saveCmsContent(pageKey, data, saveOpts);
+
+      if (result && !result.success) {
+        if (result.conflict) {
+          console.warn(`[ContentService] Concurrency conflict for '${pageKey}':`, result.error);
+          if (typeof window !== 'undefined') {
+            window.dispatchEvent(new CustomEvent('cms-save-conflict', {
+              detail: { pageKey, expectedVersion, error: result.error, isDuplicateKey: result.isDuplicateKey }
+            }));
+          }
+        } else {
+          console.warn(`[ContentService] Remote Supabase save failed for '${pageKey}':`, result.error);
+          if (typeof window !== 'undefined') {
+            window.dispatchEvent(new CustomEvent('cms-save-warning', {
+              detail: { pageKey, error: result.error }
+            }));
+          }
+        }
+        // Do NOT mutate memoryCache or localStorage with unconfirmed data
+        return result;
+      }
+
+      // Confirmed central persistence success:
+      const newVersion = result.version || (expectedVersion ? expectedVersion + 1 : 1);
+      sectionMetadata.set(pageKey, {
+        version: newVersion,
+        updated_at: result.updated_at || new Date().toISOString(),
+        isRemote: true
+      });
+
+      memoryCache.set(pageKey, cloneData(data));
+      if (typeof localStorage !== 'undefined') {
+        try {
+          localStorage.setItem(`cms_${pageKey}`, JSON.stringify(data));
+        } catch (e) {
+          console.warn('localStorage quota exceeded in saveData mirror:', e.message);
+        }
+      }
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('cms-data-updated', { detail: { pageKey, data, version: newVersion } }));
+      }
+      return { success: true, localOnly: false, version: newVersion, data: result?.data };
     }
+
+    // 2. Unconfigured / Local demo mode:
+    const currentMockVersion = sectionMetadata.get(pageKey)?.version || 1;
+    if (options.expectedVersion !== undefined && options.expectedVersion !== null && options.expectedVersion !== currentMockVersion) {
+      return {
+        success: false,
+        conflict: true,
+        expectedVersion: options.expectedVersion,
+        currentVersion: currentMockVersion,
+        error: `Local conflict: expected version ${options.expectedVersion}, but current version is ${currentMockVersion}.`
+      };
+    }
+    const nextVersion = currentMockVersion + 1;
+    sectionMetadata.set(pageKey, {
+      version: nextVersion,
+      updated_at: new Date().toISOString(),
+      isRemote: false
+    });
+
+    memoryCache.set(pageKey, cloneData(data));
+
+    if (typeof localStorage !== 'undefined') {
+      try {
+        localStorage.setItem(`cms_${pageKey}`, JSON.stringify(data));
+      } catch (e) {
+        console.warn('localStorage quota exceeded in saveData mirror:', e.message);
+      }
+    }
+
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('cms-data-updated', { detail: { pageKey, data, version: nextVersion } }));
+    }
+
+    return { success: true, localOnly: true, version: nextVersion };
+  },
+
+  /**
+   * Returns current OCC metadata for a section (version, updated_at).
+   */
+  getSectionMeta(pageKey) {
+    const meta = sectionMetadata.get(pageKey);
+    return meta ? cloneData(meta) : { version: 1, updated_at: null, isRemote: false };
+  },
+
+  /**
+   * Indicates whether central persistence is active and reachable.
+   */
+  isRemoteAvailable() {
+    return isRemotePersistAvailable;
+  },
+
+  // Test helpers for simulating network fail-closed states
+  _setRemoteAvailable(val, err = null) {
+    isRemotePersistAvailable = val;
+    remotePersistError = err;
+  },
+  _setSectionMeta(pageKey, meta) {
+    sectionMetadata.set(pageKey, meta);
   },
 
   resetData(pageKey) {
-    localStorage.removeItem(`cms_${pageKey}`);
+    memoryCache.delete(pageKey);
+    sectionMetadata.delete(pageKey);
+    if (typeof localStorage !== 'undefined') {
+      localStorage.removeItem(`cms_${pageKey}`);
+    }
     const fresh = this.getData(pageKey);
     if (typeof window !== 'undefined') {
-      window.dispatchEvent(new CustomEvent('cms-data-updated', { detail: { pageKey, data: fresh } }));
+      window.dispatchEvent(new CustomEvent('cms-data-updated', { detail: { pageKey, data: fresh, version: 1 } }));
     }
     return fresh;
   },
@@ -889,3 +1167,4 @@ export const ContentService = {
     return ImageStorage.resolveImageUrl(url);
   }
 };
+

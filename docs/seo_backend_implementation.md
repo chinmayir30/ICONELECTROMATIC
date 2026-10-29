@@ -237,6 +237,108 @@ Status: Implemented (tagged)
 - **Not checked:** Cloud edge redirection execution on live production CDN (pending deployment merge).
 - **Undo:** Revert PR for `fix/static-seo-pipeline-repair`.
 
+### Entry 13: Step 1 — Central CMS Database Schema & Seed
+- **Status:** In progress (working tree on `feat/admin-cms-supabase-persistence`, 28 Oct 2026)
+- **What was built:**
+  - `supabase/migrations/004_cms_content.sql`: Created `public.cms_content` PostgreSQL table (`key TEXT PRIMARY KEY`, `content JSONB NOT NULL DEFAULT '{}'`, `updated_at TIMESTAMPTZ`, `updated_by UUID`), index `idx_cms_content_updated_at`, automated timestamp trigger `trg_cms_content_updated_at`, and Row-Level Security policies (public read, staff write).
+  - `scripts/seed-cms-content.mjs`: Automated extraction script extracting authentic content, 13 partner profiles, and 15 OEM technical blogs from `ContentService.js` and `blogData.js`.
+  - `supabase/seed_cms_content.sql`: 81.7 KB idempotent SQL seed script pre-populating all 12 CMS sections into PostgreSQL (`header`, `footer`, `home`, `about`, `services`, `projects`, `gallery`, `testimonials`, `contact`, `seo`, `partners`, and `blogs`).
+  - `tests/cms-content-schema.test.mjs`: Automated test suite with 4 test cases verifying table DDL, RLS policies, trigger definition, section extraction, and JSON validity.
+- **Technology and role:** PostgreSQL 15+ table, JSONB storage, Row-Level Security, Node.js seed extraction script, Node.js test runner.
+- **How it works:** Provides a permanent cloud database home for all non-product CMS content, replacing single-browser `localStorage` reliance with central PostgreSQL persistence secured by Row-Level Security.
+- **Files and folders added or changed:** `supabase/migrations/004_cms_content.sql`, `scripts/seed-cms-content.mjs`, `supabase/seed_cms_content.sql`, `tests/cms-content-schema.test.mjs`, `docs/PROJECT-STATE.md`, `docs/seo_backend_implementation.md`.
+- **Data and security notes:** Zero secrets committed; RLS restricts write permissions exclusively to authenticated users with `is_staff()` role (`admin` or `editor`).
+- **Checked (and how):** Automated tests passed (`node --test tests/cms-content-schema.test.mjs` - 4/4 passed); full repository regression passed (`node --test ...` - 87/87 passed across 5 test suites); production build passed cleanly (`npm run build` - code 0, 169 static HTML pages + 176 sitemap URLs generated in 12.93s).
+- **Not checked:** Cloud Supabase execution on live hosted project (pending client team's remote database linkage).
+- **Undo:** Delete `supabase/migrations/004_cms_content.sql`, `scripts/seed-cms-content.mjs`, `supabase/seed_cms_content.sql`, and `tests/cms-content-schema.test.mjs`.
+
+### Entry 14: Step 2 — Dual-Mode Service Layer Adapter
+- **Status:** In progress (working tree on `feat/admin-cms-supabase-persistence`, 28 Oct 2026)
+- **What was built:**
+  - `src/services/supabaseClient.js`: Added `getAllCmsContent()`, `getCmsContent(key)`, and `saveCmsContent(key, content)` with PostgREST upsert (`Prefer: resolution=merge-duplicates`) and staff JWT authentication.
+  - `src/data/ContentService.js`: Upgraded to Dual-Mode Adapter pattern. Added `memoryCache` for instant synchronous `getData(key)` lookups, async `init()` pre-loader fetching all 12 sections from Supabase in a single request, `cms-data-updated` event listener for cross-component cache sync (with `ImageMigrationService`), headless/Node.js safe guards on `localStorage`, and non-blocking `saveData()` with local fallback.
+  - `src/main.js`: Added `ContentService.init()` to the pre-router bootstrap promise alongside `ImageStorage.init()`.
+  - `tests/content-service-adapter.test.mjs`: Automated test suite with 7 test cases covering synchronous retrieval, caching, Supabase persistence, event dispatching, and unconfigured fallback.
+- **Technology and role:** In-memory caching, PostgREST REST client, event-driven cache synchronization, JavaScript Adapter pattern.
+- **How it works:** Hydrates content from Supabase PostgreSQL before routing begins, allowing all public and admin views to read live database content synchronously without changing any page component signatures.
+- **Files and folders added or changed:** `src/services/supabaseClient.js`, `src/data/ContentService.js`, `src/main.js`, `tests/content-service-adapter.test.mjs`, `docs/PROJECT-STATE.md`, `docs/seo_backend_implementation.md`.
+- **Data and security notes:** Zero secrets committed; staff JWT Bearer token enforced for cloud writes.
+- **Checked (and how):** Automated tests passed (`node --test tests/content-service-adapter.test.mjs` - 7/7 passed); full repository regression passed (`node --test ...` - 94/94 passed across 6 test suites); production build passed cleanly (`npm run build` - code 0 in 27.36s; 169 static HTML pages + 176 sitemap URLs generated).
+- **Not checked:** Cloud Supabase execution on live hosted project (pending client team's remote database linkage).
+- **Undo:** Revert changes to `src/services/supabaseClient.js`, `src/data/ContentService.js`, and `src/main.js`, and delete `tests/content-service-adapter.test.mjs`.
+
+### Entry 15: Step 3 — Centralize Product & OEM Persistence
+- **Status:** In progress (working tree on `feat/admin-cms-supabase-persistence`, 28 Oct 2026)
+- **What was built:**
+  - `scripts/seed-products-cms.mjs`: Node.js script extracting all 15 authentic OEMs, 88 categories, and 169 products from `src/data/catalogData.js` and compiling an idempotent SQL seed file.
+  - `supabase/seed_products_cms.sql`: 171.5 KB idempotent SQL script inserting and updating the complete product catalog into `public.cms_content (key, content)` under `key = 'products'`.
+  - `src/services/supabaseClient.js`: Added `getAuthoritativeCatalog()`, `saveProductCatalog(oems)`, `syncRelationalCatalog(oems)`, `saveProduct(product, oemId, categoryId)`, and `deleteProduct(productId)` with fallback to local memory and PostgREST upsert with JWT auth.
+  - `src/data/ContentService.js`: Wired `saveData('products', ...)` to route through `supabaseClient.saveProductCatalog()`, updating `memoryCache` synchronously and syncing to database.
+  - `src/admin/Admin.js`: Added visual persistence indicator badge (`Central Supabase DB` vs `Local Storage Mode`) in the Products & OEMs tab header.
+  - `tests/admin-product-persistence.test.mjs`: Automated test suite with 7 test cases verifying extraction of 15 OEMs and 169 products, idempotent SQL generation, API method exports, authoritative fallback, individual product CRUD, event routing, and offline resilience.
+- **Technology and role:** PostgreSQL JSONB persistence, PostgREST REST API, synchronous dual-mode caching, JavaScript event dispatching, Node.js automated test runner.
+- **How it works:** Centralizes the entire product catalog in Supabase PostgreSQL under `public.cms_content`. All edits made in `/admin` persist centrally to Supabase, eliminating browser-local product trapping while maintaining instant synchronous template rendering for public catalog visitors.
+- **Files and folders added or changed:** `scripts/seed-products-cms.mjs`, `supabase/seed_products_cms.sql`, `src/services/supabaseClient.js`, `src/data/ContentService.js`, `src/admin/Admin.js`, `tests/admin-product-persistence.test.mjs`, `docs/PROJECT-STATE.md`, `docs/seo_backend_implementation.md`.
+- **Data and security notes:** Zero secrets committed; staff JWT Bearer token required for remote writes; client-side validation prevents corrupting catalog tree.
+- **Checked (and how):** Automated tests passed (`node --test tests/admin-product-persistence.test.mjs` - 7/7 passed); full repository regression passed (`node --test ...` - 101/101 passed across 7 test suites); production build passed cleanly (`npm run build` - code 0 in 4.18s; 169 static HTML pages + 176 sitemap URLs generated).
+- **Not checked:** Cloud Supabase execution on live hosted project (pending client team's remote database linkage).
+- **Undo:** Delete `scripts/seed-products-cms.mjs`, `supabase/seed_products_cms.sql`, and `tests/admin-product-persistence.test.mjs`, and revert changes in `src/services/supabaseClient.js`, `src/data/ContentService.js`, and `src/admin/Admin.js`.
+
+### Entry 16: Step 4 — Connect Static Site Generator to Supabase & Hardened Gap Resolution
+- **Status:** In progress (working tree on `feat/admin-cms-supabase-persistence`, 28 Oct 2026)
+- **What was built:**
+  - `scripts/build-static-catalog.mjs`: Updated pre-renderer with `loadAuthoritativeCatalog()`, fetching published products live from Supabase REST API (`/rest/v1/cms_content?key=eq.products`) when credentials exist.
+  - Upgraded `generateProductHtml()`: Directly injects staff-customized `meta_title`, `meta_description`, `canonical_url`, and multi-image galleries (`product.gallery`) into static HTML `<head>` tags and Schema.org JSON-LD.
+  - Filtered unpublished/hidden elements: Honors `oem.visible !== false`, `cat.visible !== false`, and `prod.visible !== false`, plus the Option B SEO Quality Gate (image required, description $\ge 20$ chars).
+  - Resolved Step 4 Gaps & Edge Cases:
+    1. *Rule 5 Compliance (No Hash Routes in Schema/Breadcrumbs):* Eliminated `#${oemSlug}` in Schema.org BreadcrumbList and HTML breadcrumb markup, replacing with real parameterized URLs (`/products?oem=${encodeURIComponent(oemSlug)}`).
+    2. *Sanitized `idb:` / `blob:` / `data:` Image URIs:* Added `sanitizeImageUrl()`; if unmigrated browser-local URIs or missing paths are encountered, falls back cleanly to OEM default image (`/images/rf-laminate.jpg`), avoiding broken external crawler requests.
+    3. *Escaped Canonical & OG Attributes:* Added `escapeHtml()` to `pageUrl` in `<link rel="canonical">` and `<meta property="og:url">`.
+    4. *Sitemap `<loc>` Deduplication:* Deduplicated URLs by `<loc>` using `Set` prior to serializing `sitemap.xml`, preventing Google Search Console duplicate URL rejections.
+    5. *Execution-Time Dynamic CSS Detection:* Encapsulated CSS lookup in `getCssAssetFile()`, scanning `dist/assets` dynamically on every execution.
+    6. *SPA Query Compatibility:* Updated `src/router.js` to preserve `window.location.search` on real pathname routes, and updated `src/pages/Products.js` to parse search params and open directly to OEM categories.
+  - Resilient offline fallback: If credentials are unset or the database network fails, logs informative notice and seamlessly builds using `src/data/catalogData.js` with zero build crashes.
+  - `tests/static-catalog-builder.test.mjs`: Expanded automated test suite from 7 to 10 verification tests, confirming environment detection, remote loading, network error degradation, hidden entity filtering, Option B gate enforcement, SEO metadata injection, gallery thumbnail markup, `idb:` sanitization fallback, Rule 5 real URL breadcrumbs, and sitemap deduplication.
+- **Technology and role:** Static Site Generation (SSG), Node.js HTTP client, PostgREST API, Schema.org Product Offer markup, XML Sitemap generation.
+- **How it works:** Bridges CMS edits to live static pages. During `npm run build`, the pre-renderer pulls the live catalog from Supabase, respects staff visibility and SEO overrides, filters thin content, and outputs standalone HTML files and `sitemap.xml`.
+- **Files and folders added or changed:** `scripts/build-static-catalog.mjs`, `src/router.js`, `src/pages/Products.js`, `tests/static-catalog-builder.test.mjs`, `docs/PROJECT-STATE.md`, `docs/seo_backend_implementation.md`, `walkthrough.md`.
+- **Data and security notes:** Zero secrets committed; read-only PostgREST access via anon key; offline build fallback guarantees zero pipeline outages.
+- **Checked (and how):** Automated tests passed (`node --test tests/static-catalog-builder.test.mjs` - 10/10 passed); full repository regression passed (`node --test ...` - 111/111 passed across 8 test suites); production build passed cleanly (`npm run build` - code 0 in 14.01s; 169 static HTML pages + 176 sitemap URLs generated).
+- **Not checked:** Cloud Supabase execution on live hosted project (pending client team's remote database linkage).
+- **Undo:** Revert changes in `scripts/build-static-catalog.mjs`, `src/router.js`, and `src/pages/Products.js`, and delete `tests/static-catalog-builder.test.mjs`.
+
+### Entry 17: Step 5 — Publishing Pipeline & Webhook Integration
+- **Status:** In progress (working tree on `feat/admin-cms-supabase-persistence`, 28 Oct 2026)
+- **What was built:**
+  - `src/admin/components/SeoAuditModal.js`: Added `runCatalogPrePublishAudit()`, `renderCatalogPublishModal()`, and `bindCatalogPublishModalEvents()`. Scans entire catalog against Option B requirements (hardware photo + detailed description $\ge 20$ chars) and calculates publishing readiness metrics before any build is triggered.
+  - `src/services/supabaseClient.js`: Enhanced `triggerPublishWebhook(payload)` with clean POST request dispatching, error boundary handling, and informative simulation mode when `VITE_REBUILD_WEBHOOK_URL` is unconfigured.
+  - `src/admin/Admin.js`: Connected `#btn-publish-site` button to the pre-publish audit modal. Shows staff the exact counts of eligible components vs. draft components, prevents double-clicks via button disabling while in-flight, and provides toast notifications upon build dispatch.
+  - `tests/publish-webhook-pipeline.test.mjs`: Automated test suite with 5 unit tests verifying Option B baseline catalog audit (169/169 eligible), draft/incomplete separation, modal markup generation, simulation mode fallback, and POST error handling (200 OK vs 500 server error vs network throws).
+- **Technology and role:** Webhook dispatching, Option B Quality Gate audit, modal UI components, Node.js automated test runner.
+- **How it works:** Provides staff with an interactive pre-publish safety gate. Before static site generation is requested, the system verifies that only complete, search-engine-ready products are flagged for publication, preventing thin content from degrading SEO authority.
+- **Files and folders added or changed:** `src/admin/components/SeoAuditModal.js`, `src/services/supabaseClient.js`, `src/admin/Admin.js`, `tests/publish-webhook-pipeline.test.mjs`, `docs/PROJECT-STATE.md`, `docs/seo_backend_implementation.md`.
+- **Data and security notes:** Zero secrets committed; `VITE_REBUILD_WEBHOOK_URL` read securely from environment without exposing webhook credentials.
+- **Checked (and how):** Automated tests passed (`node --test tests/publish-webhook-pipeline.test.mjs` - 5/5 passed); full repository regression passed across all 9 test suites (116/116 passed); production build passed cleanly (`npm run build` - code 0 in 3.11s; 169 static HTML pages + 176 sitemap URLs generated).
+- **Not checked:** Remote webhook delivery on live client-owned hosting platform (pending client team's webhook URL configuration).
+- **Undo:** Delete `tests/publish-webhook-pipeline.test.mjs` and revert changes in `src/admin/components/SeoAuditModal.js`, `src/services/supabaseClient.js`, and `src/admin/Admin.js`.
+
+
+### Entry 18: Phase 1.2 — Optimistic Concurrency Protection
+- **Status:** In progress (working tree on `feat/admin-cms-supabase-persistence`, 29 Oct 2026)
+- **What was built:**
+  - `supabase/migrations/005_cms_content_versioning.sql`: Authored idempotent unapplied DDL introducing integer `version` column and `trg_cms_content_bump_version` trigger strictly enforcing monotonic increments (`NEW.version := OLD.version + 1`) and UTC timestamps (`NEW.updated_at := now()`).
+  - `src/services/supabaseClient.js`: Implemented atomic conditional updates via PostgREST `PATCH ?key=eq.<key>&version=eq.<expectedVersion>` with `Prefer: return=representation`. Detects 0 rows updated as `{ success: false, conflict: true }`. Prohibits unversioned writes on existing central records. Differentiates 404/empty from network or schema errors. Enhanced `saveProduct` and `deleteProduct` with version forwarding.
+  - `src/data/ContentService.js`: Added section-level OCC metadata tracking (`sectionMetadata`). Fails closed on remote read errors during `init()`, blocking subsequent writes to prevent fallback overwrite of central data. Injects `expectedVersion` into `saveData()`, updating cache and `localStorage` only on confirmed persistence success.
+  - `src/admin/Admin.js`: Implemented `reconcileCatalog3Way(base, local, server, context)`. Preserves user form state upon collision. Automatically merges non-conflicting concurrent catalogue changes (different products/categories) into the latest server state, and surfaces inline conflict resolution when identical entities are concurrently edited.
+  - `tests/admin-product-persistence.test.mjs`: Added Tests 19 through 25 exercising atomic conditional updates, stale-version rejection, form-state preservation, unversioned write rejection, direct writer version forwarding, fail-closed behavior on central read failure, and 3-way element-level reconciliation.
+- **Technology and role:** Optimistic Concurrency Control (OCC), PostgREST REST API conditional queries, PostgreSQL triggers, 3-way data reconciliation, JavaScript event isolation.
+- **How it works:** Prevents simultaneous administrators from silently overwriting each other's changes. Each read captures the row's integer version. Updates conditionally apply only if the version in the database matches the loaded version. When a collision occurs, form inputs are retained and non-conflicting changes are automatically merged without losing unsaved work.
+- **Files and folders added or changed:** `supabase/migrations/005_cms_content_versioning.sql`, `src/services/supabaseClient.js`, `src/data/ContentService.js`, `src/admin/Admin.js`, `tests/admin-product-persistence.test.mjs`, `docs/PROJECT-STATE.md`, `docs/seo_backend_implementation.md`.
+- **Data and security notes:** Zero secrets committed; staff JWT authorization required; migration 005 remains unapplied on disk; fail-closed protection prevents hardcoded fallback data from overwriting central storage.
+- **Checked (and how):** Automated tests passed (`node --test tests/admin-product-persistence.test.mjs` - 25/25 passed); full regression suite passed (`node --test ...` - 60/60 tests passed across 9 suites); production build and static site generator passed cleanly (`npm run build` - code 0, 169 static HTML pages + 176 sitemap URLs generated).
+- **Not checked:** Cloud Supabase execution of migration 005 on live hosted database (migration kept on disk and unapplied per project constraints).
+- **Undo:** Delete `supabase/migrations/005_cms_content_versioning.sql`, revert changes in `src/services/supabaseClient.js`, `src/data/ContentService.js`, `src/admin/Admin.js`, and `tests/admin-product-persistence.test.mjs`.
+
 ## 5. Data audit (read-only, 19 Oct 2026)
 Status: Implemented (analysis only, no files changed). Re-run independently with the same result.
 - 15 OEMs, 88 categories, 169 products.
@@ -259,6 +361,35 @@ Status: Implemented (analysis only, no files changed). Re-run independently with
 
 Open items that affect these phases: client decisions on category grouping, duplicate names and the "Distributor" wording; photo usage rights; which host the client will use; budget and timeline (current estimate is much larger than the agent's 13 to 16 days because it omits the full site port and the other admin editors).
 
+
+### Entry 19: Single-Domain Routing Alignment (Step 6)
+- **Status:** In progress (feat/single-domain-routing, not yet PR'd)
+- **What was built:**
+  - Removed the `VITE_ENABLE_DEMO_ADMIN` / `import.meta.env.DEV` build-time condition that previously blocked the `/admin` route from being registered in production builds.
+  - The route is now always registered. An unauthenticated visitor reaching `/admin` sees only the login screen (unchanged `Admin.js` behaviour).
+  - Added a `<meta name="robots" content="noindex, nofollow" data-admin="1">` tag to `document.head` when the `/admin` route fires; a delegated click listener removes it when the visitor navigates to any public route. `robots.txt` already had `Disallow: /admin`.
+  - `VITE_ENABLE_DEMO_ADMIN` retained in `Admin.js` for the display-only "Local Preview / Dev Mode" badge on the login screen.
+- **Technology and role:**
+  - Vanilla JavaScript SPA router (`src/router.js`): route registration is now unconditional.
+  - Supabase GoTrue Auth (`src/services/authService.js`): sole production access gate — mock tokens rejected, unconfigured Supabase throws immediately.
+  - Dynamic `import('./admin/Admin.js')` preserved — Admin code is a separate Vite chunk (298 kB) and never loads on public pages.
+- **How it works:** When a user navigates to `/admin`, Vite's catch-all rewrite on Vercel serves `index.html`; the SPA boots, the `/admin` route handler fires, lazy-loads `Admin.js`, and `renderAdminPage()` checks `authService.isAuthenticated()`. If false → `renderLogin()`. If true → `renderShell()` (full CMS).
+- **Files and folders added or changed:**
+  - `src/main.js` — removed 7-line `isAdminEnabled` guard; added unconditional route + noindex meta logic (net +15 lines).
+- **Data and security notes:**
+  - No Supabase schema changes. No new environment variables. No new dependencies.
+  - Production access still requires a valid Supabase JWT — same as before. The only change is that the login screen is now reachable instead of silently redirecting to home.
+  - `robots.txt` `Disallow: /admin` was already present; noindex meta is a belt-and-suspenders defence for search crawlers that ignore `robots.txt`.
+- **Checked (and how):**
+  - `npm run build` — exit 0, 169 pages, Admin emitted as separate chunk ✅
+  - Full regression suite (60/60 pass) ✅
+  - Auth boundary: 10 manual checks via `verify_auth_boundary.mjs` (production simulation) ✅
+- **Not checked (requires live deployment):**
+  - Direct URL navigation to `https://{domain}/admin` on Vercel.
+  - Browser refresh at `/admin` on live Vercel URL.
+  - Sign-in with real Supabase credentials on deployed build.
+  - No manual browser testing of the running dev or preview server was performed in this session.
+- **Undo:** Revert this PR on GitHub once merged. To undo locally: revert the change to `src/main.js` by restoring the `isAdminEnabled` guard.
 ## 7. Entry template (copy for each new phase)
 ```
 ### Entry N: name

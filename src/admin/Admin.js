@@ -6,12 +6,22 @@ import { supabaseClient } from '../services/supabaseClient.js';
 import { authService } from '../services/authService.js';
 import { renderSeoPreviewCard, initSeoPreviewCard, updateSeoPreviewLive } from './components/SeoPreviewCard.js';
 import { renderImageGalleryManager, bindGalleryEvents } from './components/ImageGalleryManager.js';
-import { runProductQualityAudit, renderAuditModal, bindAuditModalEvents } from './components/SeoAuditModal.js';
+import { runProductQualityAudit, renderAuditModal, bindAuditModalEvents, runCatalogPrePublishAudit, renderCatalogPublishModal, bindCatalogPublishModalEvents } from './components/SeoAuditModal.js';
+import { openMigrationModal } from './components/ImageMigrationModal.js';
 
 // ─── State ─────────────────────────────────────────────────────────────────
 let isAuthenticated = authService.isAuthenticated();
 let currentTab = 'dashboard';
 let currentSubTab = 'fields'; // for pages with subtabs (fields vs cards)
+
+// Listen for remote persistence warnings and alert staff
+if (typeof window !== 'undefined') {
+  window.addEventListener('cms-save-warning', (e) => {
+    if (e.detail?.error) {
+      showToast(`Saved locally. Supabase sync warning: ${e.detail.error}`, 'warning');
+    }
+  });
+}
 
 // ─── Sidebar navigation config ──────────────────────────────────────────────
 const NAV = [
@@ -205,19 +215,38 @@ function bindShell() {
     rerender();
   });
 
-  // Publish Site Rebuild Hook
-  document.getElementById('btn-publish-site')?.addEventListener('click', async () => {
-    const btn = document.getElementById('btn-publish-site');
-    if (btn) {
-      btn.disabled = true;
-      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Publishing...';
-    }
-    const res = await supabaseClient.triggerPublishWebhook();
-    if (btn) {
-      btn.disabled = false;
-      btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Publish Site';
-    }
-    showToast(res.message, res.success ? 'success' : '');
+  // Publish Site Rebuild Hook with Option B Quality Gate Audit
+  document.getElementById('btn-publish-site')?.addEventListener('click', () => {
+    const oems = ContentService.getData('products');
+    const isWebhookConfigured = Boolean(supabaseClient.REBUILD_WEBHOOK_URL);
+    const auditSummary = runCatalogPrePublishAudit(oems);
+
+    const modalHtml = renderCatalogPublishModal(auditSummary, isWebhookConfigured);
+    const container = document.createElement('div');
+    container.innerHTML = modalHtml;
+    document.body.appendChild(container.firstElementChild);
+
+    bindCatalogPublishModalEvents(async () => {
+      const btn = document.getElementById('btn-publish-site');
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Publishing...';
+      }
+      try {
+        const res = await supabaseClient.triggerPublishWebhook({
+          publishedCount: auditSummary.eligibleProducts,
+          draftCount: auditSummary.draftProducts
+        });
+        showToast(res.message, res.success ? 'success' : '');
+      } catch (e) {
+        showToast(`Publish error: ${e.message}`, '');
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Publish Site';
+        }
+      }
+    });
   });
 
   // Reset section
@@ -245,12 +274,19 @@ export function showToast(msg, type = '') {
   const existing = document.getElementById('a-toast');
   if (existing) existing.remove();
 
+  const normalizedType = (type === 'danger' || type === 'error') ? 'error' : (type === 'info' ? 'info' : (type === 'success' ? 'success' : ''));
   const t = document.createElement('div');
   t.id = 'a-toast';
-  t.className = type ? `a-toast ${type}` : 'a-toast';
+  t.className = normalizedType ? `a-toast ${normalizedType}` : 'a-toast';
 
   const icon = document.createElement('i');
-  icon.className = 'fa-solid fa-circle-check';
+  if (normalizedType === 'error') {
+    icon.className = 'fa-solid fa-triangle-exclamation';
+  } else if (normalizedType === 'info') {
+    icon.className = 'fa-solid fa-circle-info';
+  } else {
+    icon.className = 'fa-solid fa-circle-check';
+  }
   t.appendChild(icon);
 
   const span = document.createElement('span');
@@ -259,7 +295,7 @@ export function showToast(msg, type = '') {
   t.appendChild(span);
 
   document.body.appendChild(t);
-  setTimeout(() => t.remove(), 3200);
+  setTimeout(() => t.remove(), 3400);
 }
 
 // ─── Universal Image Upload Widget Helpers ─────────────────────────────────────
@@ -542,15 +578,59 @@ function openModal(title, formHtml, onSave, onInit) {
     if (e.target.id === 'a-modal-backdrop') closeModal();
   });
 
-  document.getElementById('a-modal-form')?.addEventListener('submit', (e) => {
+  const formEl = document.getElementById('a-modal-form');
+  const submitBtn = formEl?.querySelector('button[type="submit"]');
+  const cancelBtn = document.getElementById('a-modal-cancel-btn');
+  const closeBtn = document.getElementById('a-modal-close-btn');
+
+  formEl?.addEventListener('submit', async (e) => {
     e.preventDefault();
+    if (submitBtn?.disabled) return;
+
+    const originalSubmitHtml = submitBtn?.innerHTML || '<i class="fa-solid fa-floppy-disk"></i> Save Card';
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+    }
+    if (cancelBtn) cancelBtn.disabled = true;
+    if (closeBtn) closeBtn.disabled = true;
+
     const fd = new FormData(e.target);
     const data = {};
     fd.forEach((v, k) => { data[k] = v; });
-    onSave(data);
-    closeModal();
-    rerender();
-    showToast('Card saved successfully!', 'success');
+
+    try {
+      const result = await onSave(data);
+
+      if (result && result.success === false) {
+        // Save failed: preserve user inputs in the form, re-enable buttons, show error
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalSubmitHtml;
+        }
+        if (cancelBtn) cancelBtn.disabled = false;
+        if (closeBtn) closeBtn.disabled = false;
+        showToast(result.error || 'Database save failed. Your changes remain in the form.', 'error');
+        return;
+      }
+
+      // Confirmed success: close modal, rerender, show appropriate toast
+      closeModal();
+      rerender();
+      if (result && typeof result === 'object' && result.message) {
+        showToast(result.message, result.localOnly ? 'info' : 'success');
+      } else if (!result || result.silentToast !== true) {
+        showToast('Saved successfully!', 'success');
+      }
+    } catch (err) {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalSubmitHtml;
+      }
+      if (cancelBtn) cancelBtn.disabled = false;
+      if (closeBtn) closeBtn.disabled = false;
+      showToast(`Error: ${err.message}. Changes remain in form.`, 'error');
+    }
   });
 }
 
@@ -605,6 +685,7 @@ function bindTabEvents() {
 
   // Bind specific tabs
   switch (currentTab) {
+    case 'dashboard':    bindDashboardEvents(); break;
     case 'home':         bindHomeTabEvents(); break;
     case 'about':        bindAboutTabEvents(); break;
     case 'services':     bindServicesTabEvents(); break;
@@ -683,7 +764,25 @@ function renderDashboard() {
         </table>
       </div>
     </div>
+
+    <div class="a-card" style="margin-top: 20px; border-left: 4px solid var(--a-blue);">
+      <div class="a-card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+        <div>
+          <h3><i class="fa-solid fa-cloud-arrow-up" style="color: var(--a-red);"></i> Image Storage &amp; Cloud Migration</h3>
+          <p>Scan and migrate browser-local IndexedDB images to shared Supabase Cloud Storage (<code>catalog-images</code>)</p>
+        </div>
+        <button type="button" class="a-btn a-btn-primary" id="btn-open-image-migration">
+          <i class="fa-solid fa-database"></i> Launch Migration Tool
+        </button>
+      </div>
+    </div>
   `;
+}
+
+function bindDashboardEvents() {
+  document.getElementById('btn-open-image-migration')?.addEventListener('click', () => {
+    openMigrationModal();
+  });
 }
 
 // ─── HOME PAGE EDITOR ────────────────────────────────────────────────────────
@@ -2724,6 +2823,122 @@ const expandedOemIds = new Set();
 const expandedCategoryKeys = new Set();
 let catalogSearchQuery = '';
 
+/**
+ * 3-Way Catalog Reconciler
+ * @param {Array} baseCatalog - Initial catalog when administrator opened the form/action
+ * @param {Array} localCatalog - Catalog containing the administrator's local modifications
+ * @param {Array} serverCatalog - Freshly fetched catalog from central server
+ * @param {Object} context - { type: 'product-edit'|'product-add'|'product-delete', entityId: string, oemId?: string, catId?: string, newProduct?: Object }
+ * @returns {{ canAutoMerge: boolean, mergedCatalog?: Array, collision?: boolean, serverProduct?: Object, localProduct?: Object, reason?: string }}
+ */
+function reconcileCatalog3Way(baseCatalog, localCatalog, serverCatalog, context = {}) {
+  const { type, entityId, newProduct } = context;
+
+  if (!Array.isArray(baseCatalog) || !Array.isArray(localCatalog) || !Array.isArray(serverCatalog)) {
+    return { canAutoMerge: false, reason: 'Invalid catalog structure' };
+  }
+
+  const findInTree = (catArray, id) => {
+    for (const oem of catArray) {
+      for (const cat of (oem.categories || [])) {
+        const p = (cat.products || []).find(prod => prod.id === id);
+        if (p) return { oem, cat, product: p };
+      }
+    }
+    return null;
+  };
+
+  if (type === 'product-edit') {
+    const bMatch = findInTree(baseCatalog, entityId);
+    const lMatch = findInTree(localCatalog, entityId);
+    const sMatch = findInTree(serverCatalog, entityId);
+
+    if (!sMatch) {
+      return {
+        canAutoMerge: false,
+        reason: 'Product was removed from the server by another administrator.'
+      };
+    }
+
+    // Check if the server's product is identical to the baseline
+    const isServerProductSameAsBase = bMatch && JSON.stringify(bMatch.product) === JSON.stringify(sMatch.product);
+    if (isServerProductSameAsBase) {
+      // Safe Auto-Merge: concurrent changes were to OTHER products or categories!
+      const merged = JSON.parse(JSON.stringify(serverCatalog));
+      const mMatch = findInTree(merged, entityId);
+      if (mMatch && lMatch) {
+        if (lMatch.cat.name.toLowerCase() !== mMatch.cat.name.toLowerCase()) {
+          mMatch.cat.products = mMatch.cat.products.filter(p => p.id !== entityId);
+          let destCat = mMatch.oem.categories.find(c => c.name.toLowerCase() === lMatch.cat.name.toLowerCase());
+          if (!destCat) {
+            destCat = {
+              id: lMatch.cat.id || ('cat-' + Date.now()),
+              name: lMatch.cat.name,
+              label: '',
+              description: '',
+              visible: true,
+              products: []
+            };
+            mMatch.oem.categories.push(destCat);
+          }
+          destCat.products.push(JSON.parse(JSON.stringify(lMatch.product)));
+        } else {
+          const pIdx = mMatch.cat.products.findIndex(p => p.id === entityId);
+          if (pIdx !== -1) {
+            mMatch.cat.products[pIdx] = JSON.parse(JSON.stringify(lMatch.product));
+          }
+        }
+        return {
+          canAutoMerge: true,
+          mergedCatalog: merged,
+          reason: 'Your changes were merged into the latest server catalogue without conflict.'
+        };
+      }
+    }
+
+    // Collision on the exact same product
+    return {
+      canAutoMerge: false,
+      collision: true,
+      serverProduct: sMatch.product,
+      localProduct: lMatch?.product,
+      reason: `Product "${lMatch?.product?.name || entityId}" was modified concurrently on the server.`
+    };
+  }
+
+  if (type === 'product-add') {
+    const merged = JSON.parse(JSON.stringify(serverCatalog));
+    const targetOem = merged.find(o => o.id === context.oemId || o.name?.toLowerCase() === context.oemId?.toLowerCase());
+    if (targetOem) {
+      let targetCat = (targetOem.categories || []).find(c => c.id === context.catId || c.name?.toLowerCase() === context.catName?.toLowerCase());
+      if (!targetCat) {
+        targetCat = {
+          id: context.catId || ('cat-' + Date.now()),
+          name: context.catName || 'Products',
+          label: '',
+          description: '',
+          visible: true,
+          products: []
+        };
+        targetOem.categories.push(targetCat);
+      }
+      const duplicate = targetCat.products.some(p => p.id === newProduct.id || p.name.toLowerCase() === newProduct.name.toLowerCase());
+      if (duplicate) {
+        return { canAutoMerge: false, collision: true, reason: `A product with name "${newProduct.name}" already exists on the server.` };
+      }
+      targetCat.products.push(JSON.parse(JSON.stringify(newProduct)));
+      return {
+        canAutoMerge: true,
+        mergedCatalog: merged,
+        reason: 'New product merged into updated server catalogue.'
+      };
+    }
+    return { canAutoMerge: false, reason: `Target OEM "${context.oemId}" was not found on server.` };
+  }
+
+  return { canAutoMerge: false, reason: 'Concurrent changes require administrator review.' };
+}
+
 function renderProductsTab() {
   const oems = ContentService.getData('products') || [];
 
@@ -3002,7 +3217,12 @@ function renderProductsTab() {
     <div class="a-cards-box">
       <div class="a-cards-box-header" style="align-items:flex-start;">
         <div>
-          <h3>OEM Principals, Product Categories &amp; Component Catalogs</h3>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;flex-wrap:wrap;">
+            <h3 style="margin:0;">OEM Principals, Product Categories &amp; Component Catalogs</h3>
+            ${supabaseClient.isConfigured 
+              ? '<span class="a-badge a-badge-green" style="font-size:0.75rem;padding:3px 8px;"><i class="fa-solid fa-cloud-arrow-up"></i> Central Supabase DB</span>' 
+              : '<span class="a-badge a-badge-blue" style="font-size:0.75rem;padding:3px 8px;"><i class="fa-solid fa-laptop"></i> Local Storage Mode</span>'}
+          </div>
           <p>Full two-tier management: select any of the 15 authorized OEM principals to edit its product categories and labels, then expand any category to edit its Product Portfolio &amp; Component Catalog.</p>
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
@@ -3464,7 +3684,7 @@ function bindProductsTabEvents() {
           <label class="a-label">Datasheet / Official Product URL</label>
           <input class="a-input" name="link" placeholder="https://..." />
         </div>
-      `, (data) => {
+      `, async (data) => {
         if (!cat.products) cat.products = [];
 
         const prodSlug = (data.name.toLowerCase().replace(/[^a-z0-9]+/g, '-') || 'prod') + '-' + Date.now().toString().slice(-4);
@@ -3479,12 +3699,55 @@ function bindProductsTabEvents() {
           visible: data.visible === 'true',
         };
 
+        const prevProducts = [...cat.products];
         cat.products.push(newProd);
-        expandedOemIds.add(oem.id);
-        expandedCategoryKeys.add(`${oem.id}__${cat.id || catIdx}`);
-        ContentService.saveData('products', oems);
-        rerender();
-        showToast(`Added product "${newProd.name}" to ${cat.name}!`, 'success');
+
+        try {
+          let expectedVersion = ContentService.getSectionMeta('products').version;
+          const baseSnapshot = ContentService.getData('products');
+          let res = await ContentService.saveData('products', oems, { expectedVersion });
+
+          if (res && !res.success && res.conflict) {
+            // Attempt 3-way reconciliation
+            try {
+              const freshMeta = await supabaseClient.getAuthoritativeCatalogWithMeta();
+              const rec = reconcileCatalog3Way(baseSnapshot, oems, freshMeta.catalog, {
+                type: 'product-add',
+                oemId: oem.id,
+                catId: cat.id,
+                catName: cat.name,
+                newProduct: newProd
+              });
+              if (rec.canAutoMerge) {
+                expectedVersion = freshMeta.version;
+                res = await ContentService.saveData('products', rec.mergedCatalog, { expectedVersion });
+              }
+            } catch {}
+          }
+
+          if (res && !res.success) {
+            cat.products = prevProducts;
+            return {
+              success: false,
+              error: res.error || 'Failed to save product to central database. Your inputs remain in the form.'
+            };
+          }
+          expandedOemIds.add(oem.id);
+          expandedCategoryKeys.add(`${oem.id}__${cat.id || catIdx}`);
+          return {
+            success: true,
+            localOnly: res?.localOnly,
+            message: res?.localOnly 
+              ? `Added product "${newProd.name}" to ${cat.name} (local demo storage).`
+              : `Added product "${newProd.name}" to ${cat.name} and saved to central database!`
+          };
+        } catch (err) {
+          cat.products = prevProducts;
+          return {
+            success: false,
+            error: `${err.message}. Your inputs remain in the form.`
+          };
+        }
       });
     });
   });
@@ -3596,7 +3859,7 @@ function bindProductsTabEvents() {
         </div>
       `;
 
-      openModal(`Edit Product: ${prod.name}`, modalHtml, (data) => {
+      openModal(`Edit Product: ${prod.name}`, modalHtml, async (data) => {
         const newCatName = (data.category || cat.name).trim();
         const heroImg = currentImages.find(i => i.is_primary) || currentImages[0];
         const finalImgUrl = data.image || (heroImg?.image_url || '');
@@ -3626,11 +3889,20 @@ function bindProductsTabEvents() {
           canonical_url: defaultCanonical
         };
 
-        if (newCatName.toLowerCase() === cat.name.toLowerCase()) {
-          cat.products[prodIdx] = updatedProd;
+        // Re-resolve active references from live oems array
+        const activeOem = oems[oemIdx] || oem;
+        const activeCat = activeOem?.categories?.[catIdx] || cat;
+        const originalProd = activeCat?.products?.[prodIdx];
+
+        const isSameCategory = newCatName.toLowerCase() === activeCat.name.toLowerCase();
+        let targetCat = null;
+        let isNewTargetCategory = false;
+
+        if (isSameCategory) {
+          activeCat.products[prodIdx] = updatedProd;
         } else {
-          cat.products.splice(prodIdx, 1);
-          let targetCat = oem.categories.find(c => c.name.toLowerCase() === newCatName.toLowerCase());
+          activeCat.products.splice(prodIdx, 1);
+          targetCat = activeOem.categories.find(c => c.name.toLowerCase() === newCatName.toLowerCase());
           if (!targetCat) {
             const catSlug = newCatName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
             targetCat = {
@@ -3641,15 +3913,106 @@ function bindProductsTabEvents() {
               visible: true,
               products: []
             };
-            oem.categories.push(targetCat);
+            activeOem.categories.push(targetCat);
+            isNewTargetCategory = true;
           }
           targetCat.products.push(updatedProd);
         }
 
-        expandedOemIds.add(oem.id);
-        ContentService.saveData('products', oems);
-        rerender();
-        showToast(`Product "${updatedProd.name}" saved successfully!`, 'success');
+        const rollbackChanges = () => {
+          if (isSameCategory) {
+            if (originalProd) {
+              activeCat.products[prodIdx] = originalProd;
+            }
+          } else {
+            // Remove updatedProd from targetCat
+            if (targetCat) {
+              const idxInTarget = targetCat.products.indexOf(updatedProd);
+              if (idxInTarget !== -1) {
+                targetCat.products.splice(idxInTarget, 1);
+              }
+              if (isNewTargetCategory) {
+                const catIdxInOem = activeOem.categories.indexOf(targetCat);
+                if (catIdxInOem !== -1) {
+                  activeOem.categories.splice(catIdxInOem, 1);
+                }
+              }
+            }
+            // Put originalProd back into activeCat
+            if (originalProd) {
+              activeCat.products.splice(prodIdx, 0, originalProd);
+            }
+          }
+        };
+
+        try {
+          let expectedVersion = ContentService.getSectionMeta('products').version;
+          const baseSnapshot = ContentService.getData('products');
+          let res = await ContentService.saveData('products', oems, { expectedVersion });
+
+          if (res && !res.success && res.conflict) {
+            // Attempt 3-way auto-reconciliation
+            try {
+              const freshMeta = await supabaseClient.getAuthoritativeCatalogWithMeta();
+              const rec = reconcileCatalog3Way(baseSnapshot, oems, freshMeta.catalog, {
+                type: 'product-edit',
+                entityId: prod.id
+              });
+
+              if (rec.canAutoMerge) {
+                expectedVersion = freshMeta.version;
+                res = await ContentService.saveData('products', rec.mergedCatalog, { expectedVersion });
+                if (res && res.success) {
+                  expandedOemIds.add(activeOem.id);
+                  return {
+                    success: true,
+                    localOnly: res?.localOnly,
+                    message: `Conflict auto-reconciled: your changes were merged into catalogue (v${freshMeta.version}) and saved!`
+                  };
+                }
+              }
+
+              // Same-product collision: rollback in-memory array so live oems is not corrupted,
+              // but preserve form input in the open modal!
+              rollbackChanges();
+              return {
+                success: false,
+                conflict: true,
+                error: `Concurrency Conflict: ${rec.reason || 'Catalogue modified by another administrator'}. Your form edits are preserved intact. Please click Save again to overwrite with your version, or close to discard.`
+              };
+            } catch (reconErr) {
+              rollbackChanges();
+              return {
+                success: false,
+                conflict: true,
+                error: `Concurrency Conflict: ${res.error || 'Conflict detected'}. Your form edits remain intact.`
+              };
+            }
+          }
+
+          if (res && !res.success) {
+            rollbackChanges();
+            return {
+              success: false,
+              error: res.error || 'Failed to save product to central database. Your edits remain in the form.'
+            };
+          }
+
+          expandedOemIds.add(activeOem.id);
+          return {
+            success: true,
+            localOnly: res?.localOnly,
+            message: res?.localOnly 
+              ? `Product "${updatedProd.name}" saved (local demo storage).`
+              : `Product "${updatedProd.name}" saved to central database!`
+          };
+        } catch (err) {
+          rollbackChanges();
+          return {
+            success: false,
+            error: `${err.message}. Your edits remain in the form.`
+          };
+        }
       }, (modalContainer) => {
         let galleryHandle = null;
 
@@ -3805,7 +4168,7 @@ function bindProductsTabEvents() {
 
   // Delete Product
   document.querySelectorAll('.btn-del-product').forEach(btn => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', async () => {
       const oemIdx = parseInt(btn.getAttribute('data-oem-idx'), 10);
       const catIdx = parseInt(btn.getAttribute('data-cat-idx'), 10);
       const prodIdx = parseInt(btn.getAttribute('data-prod-idx'), 10);
@@ -3815,18 +4178,43 @@ function bindProductsTabEvents() {
       const prod = cat?.products?.[prodIdx];
       if (!oem || !cat || !prod) return;
 
-      if (confirm(`Delete product "${prod.name}" from ${cat.name}?`)) {
-        cat.products.splice(prodIdx, 1);
-        ContentService.saveData('products', oems);
+      if (!confirm(`Delete product "${prod.name}" from ${cat.name}?`)) return;
+
+      if (btn.disabled) return;
+      btn.disabled = true;
+      const originalHtml = btn.innerHTML;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+
+      const prevProducts = [...cat.products];
+      cat.products.splice(prodIdx, 1);
+
+      try {
+        const res = await ContentService.saveData('products', oems);
+        if (res && !res.success) {
+          cat.products = prevProducts;
+          btn.disabled = false;
+          btn.innerHTML = originalHtml;
+          showToast(`Delete failed: ${res.error || 'Database save failed'}. Product restored.`, 'error');
+          return;
+        }
+
         rerender();
-        showToast(`Deleted product "${prod.name}".`, '');
+        const msg = res?.localOnly 
+          ? `Deleted product "${prod.name}" (local demo storage).` 
+          : `Deleted product "${prod.name}" from central database.`;
+        showToast(msg, res?.localOnly ? 'info' : 'success');
+      } catch (err) {
+        cat.products = prevProducts;
+        btn.disabled = false;
+        btn.innerHTML = originalHtml;
+        showToast(`Delete failed: ${err.message}. Product restored.`, 'error');
       }
     });
   });
 
   // Move Product Up / Down within Category
   document.querySelectorAll('.btn-move-prod').forEach(btn => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', async () => {
       const oemIdx = parseInt(btn.getAttribute('data-oem-idx'), 10);
       const catIdx = parseInt(btn.getAttribute('data-cat-idx'), 10);
       const prodIdx = parseInt(btn.getAttribute('data-prod-idx'), 10);
@@ -3836,17 +4224,39 @@ function bindProductsTabEvents() {
       const cat = oem?.categories?.[catIdx];
       if (!cat || !cat.products) return;
 
+      if (btn.disabled) return;
+      btn.disabled = true;
+      const originalHtml = btn.innerHTML;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+
+      const prevProducts = [...cat.products];
       const targetIdx = dir === 'up' ? prodIdx - 1 : prodIdx + 1;
       cat.products = reorderArray(cat.products, prodIdx, targetIdx);
-      ContentService.saveData('products', oems);
-      rerender();
-      showToast('Products reordered!', 'success');
+
+      try {
+        const res = await ContentService.saveData('products', oems);
+        if (res && !res.success) {
+          cat.products = prevProducts;
+          btn.disabled = false;
+          btn.innerHTML = originalHtml;
+          showToast(`Reorder failed: ${res.error || 'Database save failed'}.`, 'error');
+          return;
+        }
+
+        rerender();
+        showToast(res?.localOnly ? 'Products reordered (local demo storage).' : 'Products reordered in central database!', res?.localOnly ? 'info' : 'success');
+      } catch (err) {
+        cat.products = prevProducts;
+        btn.disabled = false;
+        btn.innerHTML = originalHtml;
+        showToast(`Reorder failed: ${err.message}.`, 'error');
+      }
     });
   });
 
   // Toggle Product Visibility
   document.querySelectorAll('.btn-toggle-prod-vis').forEach(btn => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', async () => {
       const oemIdx = parseInt(btn.getAttribute('data-oem-idx'), 10);
       const catIdx = parseInt(btn.getAttribute('data-cat-idx'), 10);
       const prodIdx = parseInt(btn.getAttribute('data-prod-idx'), 10);
@@ -3856,10 +4266,33 @@ function bindProductsTabEvents() {
       const prod = cat?.products?.[prodIdx];
       if (!prod) return;
 
+      if (btn.disabled) return;
+      btn.disabled = true;
+      const originalHtml = btn.innerHTML;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+
+      const prevVisible = prod.visible;
       prod.visible = prod.visible === false ? true : false;
-      ContentService.saveData('products', oems);
-      rerender();
-      showToast(`Product "${prod.name}" is now ${prod.visible ? 'visible' : 'hidden'}.`, 'success');
+
+      try {
+        const res = await ContentService.saveData('products', oems);
+        if (res && !res.success) {
+          prod.visible = prevVisible;
+          btn.disabled = false;
+          btn.innerHTML = originalHtml;
+          showToast(`Visibility update failed: ${res.error || 'Database save failed'}.`, 'error');
+          return;
+        }
+
+        rerender();
+        const dest = res?.localOnly ? '(local demo storage)' : 'in central database';
+        showToast(`Product "${prod.name}" is now ${prod.visible ? 'visible' : 'hidden'} ${dest}.`, res?.localOnly ? 'info' : 'success');
+      } catch (err) {
+        prod.visible = prevVisible;
+        btn.disabled = false;
+        btn.innerHTML = originalHtml;
+        showToast(`Visibility update failed: ${err.message}.`, 'error');
+      }
     });
   });
 }

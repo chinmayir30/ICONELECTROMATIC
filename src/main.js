@@ -14,6 +14,7 @@ import { renderContactPage, initContactPage } from './pages/Contact.js';
 import { renderChatbot, initChatbot } from './components/Chatbot.js';
 import { initCustomCursor } from './components/CustomCursor.js';
 import { ImageStorage } from './data/ImageStorage.js';
+import { ContentService } from './data/ContentService.js';
 
 const app = document.getElementById('app');
 
@@ -70,22 +71,53 @@ registerRoute('/partners', () => renderPage(renderPartnersPage(), initPartnersPa
 registerRoute('/blogs', (params) => renderPage(renderBlogsPage(params), () => initBlogsPage(params)));
 registerRoute('/blog', (params) => renderPage(renderBlogsPage(params), () => initBlogsPage(params)));
 registerRoute('/contact', () => renderPage(renderContactPage(), initContactPage));
-const isAdminEnabled = import.meta.env.VITE_ENABLE_DEMO_ADMIN === 'true' || import.meta.env.DEV;
+// /admin is always registered. Access is controlled entirely at runtime by
+// authService + Supabase GoTrue — unauthenticated visitors see only the login screen.
+// robots.txt already has Disallow: /admin, so search engines will not index this route.
+registerRoute('/admin', async () => {
+  // Prevent search engines from indexing the admin shell while it is active.
+  let noindexMeta = document.querySelector('meta[name="robots"][data-admin]');
+  if (!noindexMeta) {
+    noindexMeta = document.createElement('meta');
+    noindexMeta.name = 'robots';
+    noindexMeta.content = 'noindex, nofollow';
+    noindexMeta.setAttribute('data-admin', '1');
+    document.head.appendChild(noindexMeta);
+  }
+  closeSidebarDrawer();
+  const header = document.getElementById('site-header');
+  if (header) header.style.display = 'none';
+  const app = document.getElementById('app');
+  const { renderAdminPage, initAdminPage } = await import('./admin/Admin.js');
+  app.innerHTML = renderAdminPage();
+  initAdminPage();
+});
 
-if (isAdminEnabled) {
-  registerRoute('/admin', async () => {
-    closeSidebarDrawer();
-    const header = document.getElementById('site-header');
-    if (header) header.style.display = 'none';
-    const app = document.getElementById('app');
-    const { renderAdminPage, initAdminPage } = await import('./admin/Admin.js');
-    app.innerHTML = renderAdminPage();
-    initAdminPage();
-  });
+// Remove the admin noindex tag when navigating to any public route.
+function removeAdminNoindex() {
+  document.querySelector('meta[name="robots"][data-admin]')?.remove();
 }
+// Click-based navigation (data-route links, <a href="/">, etc.)
+document.addEventListener('click', (e) => {
+  const link = e.target.closest('[data-route]:not([data-route="/admin"]), a[href^="/"]:not([href^="//"])');
+  if (link) removeAdminNoindex();
+}, { capture: true, passive: true });
+// Back/Forward (popstate) and hashchange navigation bypasses click events.
+// Remove noindex tag whenever the resolved URL is no longer /admin.
+window.addEventListener('popstate', () => {
+  const p = window.location.pathname || '/';
+  if (p !== '/admin' && p !== '/admin/') removeAdminNoindex();
+});
+window.addEventListener('hashchange', () => {
+  const h = (window.location.hash || '').replace(/^#\/?/, '/');
+  if (h !== '/admin' && h !== '/admin/') removeAdminNoindex();
+});
 
-// Initialize router and components immediately
-ImageStorage.init().finally(() => {
+// Initialize router and components immediately after storage and content are ready
+Promise.all([
+  ImageStorage.init(),
+  ContentService.init()
+]).finally(() => {
   initRouter();
   initCustomCursor();
 });
