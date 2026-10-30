@@ -324,7 +324,7 @@ Status: Implemented (tagged)
 
 
 ### Entry 18: Phase 1.2 — Optimistic Concurrency Protection
-- **Status:** In progress (PR #18, branch `feat/single-domain-routing`, 29 Oct 2026)
+- **Status:** Implemented (PR #18, merge commit `ef5db62`, 30 Oct 2026)
 - **What was built:**
   - `supabase/migrations/005_cms_content_versioning.sql`: Authored idempotent unapplied DDL introducing integer `version` column and `trg_cms_content_bump_version` trigger strictly enforcing monotonic increments (`NEW.version := OLD.version + 1`) and UTC timestamps (`NEW.updated_at := now()`).
   - `src/services/supabaseClient.js`: Implemented atomic conditional updates via PostgREST `PATCH ?key=eq.<key>&version=eq.<expectedVersion>` with `Prefer: return=representation`. Detects 0 rows updated as `{ success: false, conflict: true }`. Prohibits unversioned writes on existing central records. Differentiates 404/empty from network or schema errors. Enhanced `saveProduct` and `deleteProduct` with version forwarding.
@@ -390,6 +390,35 @@ Open items that affect these phases: client decisions on category grouping, dupl
   - Sign-in with real Supabase credentials on deployed build.
   - No manual browser testing of the running dev or preview server was performed in this session.
 - **Undo:** Revert this PR on GitHub once merged. To undo locally: revert the change to `src/main.js` by restoring the `isAdminEnabled` guard.
+### Entry 20: Fix Dark Theme Option Backgrounds on Contact Page Dropdowns
+- **Status:** Implemented (PR #19, merge commit `a633690`, 30 Oct 2026)
+- **What was built:** Added explicit background and text color styling for `<select>` dropdown options on the contact page in dark mode.
+- **Technology and role:** CSS styling rule in `src/style.css`.
+- **How it works:** Targets select option elements when `[data-theme="dark"]` is active, ensuring readable text and dark background.
+- **Files and folders added or changed:** `src/style.css`.
+- **Checked (and how):** Local build and browser inspection.
+- **Undo:** Revert PR #19.
+
+### Entry 21: Restore Employee Zone Navigation and Enable Demo Admin Fallback
+- **Status:** In progress (branch `feat/restore-employee-zone-and-demo-admin`, 30 Oct 2026)
+- **What was built:**
+  - Restored the "Employee Zone" drawer navigation link in `src/components/Header.js` so staff can open the admin panel directly from the hamburger drawer menu.
+  - Enabled demo login fallback in `src/services/authService.js` when Supabase is unconfigured, allowing staff to sign in with `admin@iconelectromatic.com` / `admin123`.
+  - Updated `src/admin/Admin.js` to display a "Demo Admin Mode" badge and helpful credential hint when Supabase is unconfigured.
+- **Technology and role:** Header drawer component, authService adapter, Admin CMS login view.
+- **How it works:** The drawer renders the Employee Zone item unconditionally with `href="/admin"`. When submitted without remote Supabase credentials, `authService.signIn` validates password length (>= 6) and issues a local demo session stored in `localStorage`.
+- **Files and folders added or changed:**
+  - `src/components/Header.js`
+  - `src/services/authService.js`
+  - `src/admin/Admin.js`
+  - `docs/PROJECT-STATE.md`
+  - `docs/seo_backend_implementation.md`
+- **Data and security notes:** No secrets added. Remote database remains unconfigured until real credentials are provided. Edits made in demo mode persist locally in IndexedDB/localStorage.
+- **Checked (and how):**
+  - `npm run build` passes with 0 errors.
+  - Test suites pass 100% (60/60 tests).
+- **Undo:** Revert this branch or PR.
+
 ## 7. Entry template (copy for each new phase)
 ```
 ### Entry N: name

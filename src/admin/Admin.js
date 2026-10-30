@@ -73,9 +73,7 @@ function renderLogin() {
         <div style="margin-bottom: 16px; text-align: center;">
           ${isLive 
             ? '<span class="mode-status-badge live"><span class="badge-dot"></span> Supabase GoTrue Auth</span>' 
-            : (import.meta.env.DEV 
-                ? '<span class="mode-status-badge demo"><span class="badge-dot"></span> Local Preview / Dev Mode</span>' 
-                : '<span class="mode-status-badge demo" style="background:rgba(239,68,68,0.15);color:#f87171;"><span class="badge-dot" style="background:#ef4444;"></span> Supabase is not configured</span>')}
+            : '<span class="mode-status-badge demo"><span class="badge-dot"></span> Demo Admin Mode</span>'}
         </div>
         <form class="a-login-form" id="a-login-form">
           <div class="a-field">
@@ -89,8 +87,13 @@ function renderLogin() {
           <div id="a-login-error" style="color: #ef4444; font-size: 0.8rem; margin-bottom: 8px; display: none;"></div>
           <button type="submit" class="a-btn a-btn-primary" id="btn-login-submit">Sign In <i class="fa-solid fa-arrow-right"></i></button>
         </form>
+        ${!isLive ? `
+          <div style="margin-top: 12px; font-size: 0.78rem; color: #94a3b8; text-align: center; background: rgba(37,99,235,0.08); padding: 8px 12px; border-radius: 6px; border: 1px solid rgba(37,99,235,0.2);">
+            Demo Mode active. Sign in with <strong>admin@iconelectromatic.com</strong> / <strong>admin123</strong>
+          </div>
+        ` : ''}
         <div style="margin-top: 16px; text-align: center;">
-          <a href="#/" class="a-btn a-btn-outline a-btn-sm" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none;">
+          <a href="/" class="a-btn a-btn-outline a-btn-sm" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none;">
             <i class="fa-solid fa-arrow-left"></i> Return to Website
           </a>
         </div>
