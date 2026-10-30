@@ -1106,6 +1106,14 @@ h1, h2, h3, h4, h5, h6 {
   transition: all var(--transition-fast);
 }
 
+
+.relay-field select option,
+.careers-form-group select option {
+  background-color: #0b1329;
+  color: #f1f5f9;
+  padding: 8px 12px;
+}
+
 .relay-field input:focus,
 .relay-field select:focus,
 .relay-field textarea:focus {
@@ -4947,6 +4955,13 @@ html[data-theme="light"],
 [data-theme="light"] .relay-field input::placeholder,
 [data-theme="light"] .relay-field textarea::placeholder {
   color: #94a3b8 !important;
+}
+
+
+[data-theme="light"] .relay-field select option,
+[data-theme="light"] .careers-form-group select option {
+  background-color: #ffffff !important;
+  color: #0f1d3d !important;
 }
 
 [data-theme="light"] .relay-field input:focus,
