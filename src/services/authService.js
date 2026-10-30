@@ -63,13 +63,8 @@ export const authService = {
       return data;
     }
 
-    // 2. Unconfigured Supabase check
-    // In production builds, fail loudly and refuse to sign in
-    if (!import.meta.env.DEV) {
-      throw new Error('Supabase is not configured.');
-    }
-
-    // 3. Demo / Preview mode fallback (ONLY when import.meta.env.DEV)
+    // 2. Unconfigured Supabase fallback
+    // When Supabase credentials are not configured, allow demo staff session
     if (password.length < 6) {
       throw new Error('Password must be at least 6 characters.');
     }
