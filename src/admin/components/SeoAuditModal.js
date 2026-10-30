@@ -193,3 +193,170 @@ export function bindAuditModalEvents(onConfirmPublish) {
     });
   }
 }
+
+/**
+ * Catalog-wide Pre-Publish Quality Audit.
+ * Scans all OEMs, categories, and products to calculate Option B readiness.
+ *
+ * @param {Array} oems - Full array of OEMs with categories and products
+ * @returns {Object} Catalog audit metrics
+ */
+export function runCatalogPrePublishAudit(oems = []) {
+  let totalOems = 0;
+  let totalCategories = 0;
+  let totalProducts = 0;
+  let eligibleProducts = 0;
+  let draftProducts = 0;
+  let hiddenProducts = 0;
+  const issues = [];
+  const warnings = [];
+
+  for (const oem of oems) {
+    if (oem.visible === false) continue;
+    totalOems++;
+    for (const cat of (oem.categories || [])) {
+      if (cat.visible === false) continue;
+      totalCategories++;
+      for (const prod of (cat.products || [])) {
+        totalProducts++;
+        if (prod.visible === false) {
+          hiddenProducts++;
+          continue;
+        }
+
+        const hasImg = Boolean(
+          (prod.image && !prod.image.startsWith('idb:')) ||
+          (Array.isArray(prod.gallery) && prod.gallery.length > 0 && prod.gallery.some(g => (g.image_url || g.url) && !(g.image_url || g.url).startsWith('idb:'))) ||
+          oem.defaultImage
+        );
+        const hasDesc = Boolean(prod.description && prod.description.trim().length >= 20);
+
+        if (hasImg && hasDesc) {
+          eligibleProducts++;
+        } else {
+          draftProducts++;
+          if (!hasImg) {
+            issues.push(`Product "${prod.name}" (${oem.name}) is missing a hardware photo.`);
+          }
+          if (!hasDesc) {
+            warnings.push(`Product "${prod.name}" (${oem.name}) has a thin description (< 20 chars).`);
+          }
+        }
+      }
+    }
+  }
+
+  const score = totalProducts > 0 ? Math.round((eligibleProducts / totalProducts) * 100) : 100;
+
+  return {
+    totalOems,
+    totalCategories,
+    totalProducts,
+    eligibleProducts,
+    draftProducts,
+    hiddenProducts,
+    score,
+    issues,
+    warnings,
+    canPublish: eligibleProducts > 0
+  };
+}
+
+/**
+ * Render the Catalog-Wide Pre-Publish Audit Modal.
+ *
+ * @param {Object} auditSummary - Output from runCatalogPrePublishAudit
+ * @param {boolean} isWebhookConfigured - Whether VITE_REBUILD_WEBHOOK_URL is set
+ * @returns {string} Modal HTML markup
+ */
+export function renderCatalogPublishModal(auditSummary, isWebhookConfigured) {
+  return `
+    <div class="audit-modal-backdrop" id="publish-audit-modal-backdrop">
+      <div class="audit-modal-card">
+        <div class="audit-modal-header">
+          <div class="audit-score-circle ${auditSummary.canPublish ? 'circle-pass' : 'circle-fail'}">
+            <span>${auditSummary.score}%</span>
+          </div>
+          <div>
+            <h3>Pre-Publish SEO &amp; Quality Gate Audit</h3>
+            <p class="subtitle">Verifying catalog readiness before triggering static site regeneration.</p>
+          </div>
+          <button type="button" class="btn-close" id="btn-close-publish-audit"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <div class="audit-modal-body">
+          <div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:10px;text-align:center;margin-bottom:10px;">
+            <div style="background:#f1f5f9;padding:12px;border-radius:8px;">
+              <div style="font-size:1.4rem;font-weight:700;color:#0f172a;">${auditSummary.eligibleProducts}</div>
+              <div style="font-size:0.75rem;color:#64748b;font-weight:600;text-transform:uppercase;">Eligible to Publish</div>
+            </div>
+            <div style="background:#fef2f2;padding:12px;border-radius:8px;">
+              <div style="font-size:1.4rem;font-weight:700;color:#dc2626;">${auditSummary.draftProducts}</div>
+              <div style="font-size:0.75rem;color:#dc2626;font-weight:600;text-transform:uppercase;">Drafts (Incomplete)</div>
+            </div>
+            <div style="background:#f8fafc;padding:12px;border-radius:8px;">
+              <div style="font-size:1.4rem;font-weight:700;color:#64748b;">${auditSummary.totalProducts}</div>
+              <div style="font-size:0.75rem;color:#64748b;font-weight:600;text-transform:uppercase;">Total In Catalog</div>
+            </div>
+          </div>
+
+          <div class="audit-group pass-group">
+            <h4><i class="fa-solid fa-circle-check"></i> Option B SEO Quality Gate</h4>
+            <p style="font-size:0.85rem;color:#334155;margin-top:4px;">
+              ${auditSummary.eligibleProducts} component(s) meet the Option B quality standard (valid hardware photo + detailed engineering description). These will be pre-rendered into indexable static HTML pages and submitted to the XML Sitemap.
+            </p>
+          </div>
+
+          ${auditSummary.draftProducts > 0 ? `
+            <div class="audit-group warning-group">
+              <h4><i class="fa-solid fa-triangle-exclamation"></i> Draft Protection (${auditSummary.draftProducts})</h4>
+              <p style="font-size:0.85rem;color:#92400e;margin-top:4px;">
+                ${auditSummary.draftProducts} product(s) do not meet the minimum requirements and will remain safely hidden from search engines to protect site ranking authority.
+              </p>
+            </div>
+          ` : ''}
+
+          <div style="background:${isWebhookConfigured ? '#eff6ff' : '#fffbeb'};border:1px solid ${isWebhookConfigured ? '#bfdbfe' : '#fde68a'};padding:12px;border-radius:8px;font-size:0.82rem;color:${isWebhookConfigured ? '#1e40af' : '#92400e'};">
+            <i class="fa-solid ${isWebhookConfigured ? 'fa-satellite-dish' : 'fa-info-circle'}"></i>
+            <strong>Publishing Pipeline:</strong> ${isWebhookConfigured 
+              ? 'Live deploy webhook is configured. Confirming will signal your production static builder to rebuild the website.' 
+              : 'Simulation Mode: VITE_REBUILD_WEBHOOK_URL is not set. Confirming will simulate a publish event without pinging a remote server.'}
+          </div>
+        </div>
+
+        <div class="audit-modal-footer">
+          <button type="button" class="btn btn-secondary" id="btn-cancel-publish-audit">Cancel</button>
+          <button type="button" class="btn btn-success" id="btn-confirm-global-publish" ${!auditSummary.canPublish ? 'disabled' : ''}>
+            <i class="fa-solid fa-cloud-arrow-up"></i> Confirm &amp; Publish (${auditSummary.eligibleProducts} Products)
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+/**
+ * Bind event handlers for the catalog pre-publish modal.
+ *
+ * @param {Function} onConfirm - Callback triggered when user clicks Confirm & Publish
+ */
+export function bindCatalogPublishModalEvents(onConfirm) {
+  const backdrop = document.getElementById('publish-audit-modal-backdrop');
+  const closeBtn = document.getElementById('btn-close-publish-audit');
+  const cancelBtn = document.getElementById('btn-cancel-publish-audit');
+  const confirmBtn = document.getElementById('btn-confirm-global-publish');
+
+  function closeModal() {
+    if (backdrop) backdrop.remove();
+  }
+
+  if (closeBtn) closeBtn.addEventListener('click', closeModal);
+  if (cancelBtn) cancelBtn.addEventListener('click', closeModal);
+  if (confirmBtn) {
+    confirmBtn.addEventListener('click', () => {
+      closeModal();
+      if (onConfirm) onConfirm();
+    });
+  }
+}
+

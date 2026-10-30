@@ -19,17 +19,31 @@ const SITE_URL = 'https://iconelectromatic.com';
 const TODAY = new Date().toISOString().split('T')[0];
 
 // Detect dynamic CSS asset from Vite build output
-let cssAssetFile = 'index-DmDkINf5.css'; // fallback
-try {
-  const assetsDir = path.resolve(DIST_DIR, 'assets');
-  if (fs.existsSync(assetsDir)) {
-    const found = fs.readdirSync(assetsDir).find(file => file.startsWith('index-') && file.endsWith('.css'));
-    if (found) {
-      cssAssetFile = found;
+export function getCssAssetFile() {
+  const fallback = 'index-DmDkINf5.css';
+  try {
+    const assetsDir = path.resolve(DIST_DIR, 'assets');
+    if (fs.existsSync(assetsDir)) {
+      const found = fs.readdirSync(assetsDir).find(file => file.startsWith('index-') && file.endsWith('.css'));
+      if (found) {
+        return found;
+      }
     }
+  } catch (e) {
+    console.warn('Could not inspect dist/assets, falling back to default CSS asset:', e.message);
   }
-} catch (e) {
-  console.warn('Could not inspect dist/assets, falling back to default CSS asset:', e.message);
+  return fallback;
+}
+
+export function sanitizeImageUrl(url, fallback = '/images/rf-laminate.jpg') {
+  if (!url || typeof url !== 'string') return fallback;
+  const trimmed = url.trim();
+  if (!trimmed) return fallback;
+  // IndexedDB, blob, or raw data URLs cannot be fetched by search engines or external browsers
+  if (trimmed.startsWith('idb:') || trimmed.startsWith('blob:') || trimmed.startsWith('data:')) {
+    return fallback;
+  }
+  return trimmed;
 }
 
 // Load extraction report to link images
@@ -41,6 +55,72 @@ try {
   }
 } catch (e) {
   console.warn('Could not read extraction report, proceeding with CATALOG data:', e.message);
+}
+
+function loadEnv() {
+  const env = { ...process.env };
+  const envFiles = ['.env.local', '.env'];
+  for (const f of envFiles) {
+    const full = path.resolve(ROOT_DIR, f);
+    if (fs.existsSync(full)) {
+      try {
+        const content = fs.readFileSync(full, 'utf8');
+        for (const line of content.split(/\r?\n/)) {
+          const trimmed = line.trim();
+          if (trimmed && !trimmed.startsWith('#')) {
+            const eqIdx = trimmed.indexOf('=');
+            if (eqIdx !== -1) {
+              const k = trimmed.slice(0, eqIdx).trim();
+              let v = trimmed.slice(eqIdx + 1).trim();
+              if ((v.startsWith('"') && v.endsWith('"')) || (v.startsWith("'") && v.endsWith("'"))) {
+                v = v.slice(1, -1);
+              }
+              if (!env[k]) env[k] = v;
+            }
+          }
+        }
+      } catch {}
+    }
+  }
+  return env;
+}
+
+export async function loadAuthoritativeCatalog(options = {}) {
+  const env = options.env || loadEnv();
+  const supabaseUrl = env.VITE_SUPABASE_URL || env.SUPABASE_URL || '';
+  const supabaseKey = env.VITE_SUPABASE_ANON_KEY || env.SUPABASE_ANON_KEY || '';
+
+  if (supabaseUrl && supabaseKey) {
+    try {
+      const fetchFn = options.fetch || globalThis.fetch;
+      const endpoint = `${supabaseUrl.replace(/\/$/, '')}/rest/v1/cms_content?key=eq.products&select=content`;
+      const res = await fetchFn(endpoint, {
+        method: 'GET',
+        headers: {
+          'apikey': supabaseKey,
+          'Authorization': `Bearer ${supabaseKey}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (res && res.ok) {
+        const rows = await res.json();
+        if (Array.isArray(rows) && rows.length > 0 && Array.isArray(rows[0].content) && rows[0].content.length > 0) {
+          console.log(`[SSG] Successfully loaded authoritative catalog (${rows[0].content.length} OEMs) from Supabase PostgreSQL.`);
+          return rows[0].content;
+        }
+      } else {
+        const statusText = res ? `status ${res.status}` : 'no response';
+        console.warn(`[SSG] Supabase endpoint returned ${statusText}. Falling back to CATALOG.`);
+      }
+    } catch (e) {
+      console.warn(`[SSG] Supabase network error (${e.message}). Falling back to CATALOG.`);
+    }
+  } else {
+    console.log('[SSG] Supabase credentials not configured in environment. Using local CATALOG dataset.');
+  }
+
+  return CATALOG;
 }
 
 function ensureDir(dirPath) {
@@ -76,18 +156,23 @@ const sitemapUrls = [
   { loc: `${SITE_URL}/contact`, priority: '0.8', changefreq: 'monthly' },
 ];
 
-function generateProductHtml(product, oem, category, images) {
+export function generateProductHtml(product, oem, category, images = []) {
   const oemSlug = oem.id || slugify(oem.name);
   const prodSlug = product.id || slugify(product.name);
-  const pageUrl = `${SITE_URL}/products/${oemSlug}/${prodSlug}`;
-  const title = `${product.name} | ${oem.name} Distributor | Icon Electromatic`;
-  const description = product.description 
+  const pageUrl = product.canonical_url || `${SITE_URL}/products/${oemSlug}/${prodSlug}`;
+  const title = product.meta_title || `${product.name} | ${oem.name} Distributor | Icon Electromatic`;
+  const description = product.meta_description || (product.description 
     ? (product.description.length > 155 ? product.description.slice(0, 152) + '...' : product.description)
-    : `Buy authentic ${product.name} components manufactured by ${oem.name}. Distributed by Icon Electromatic across India, Singapore and USA.`;
+    : `Buy authentic ${product.name} components manufactured by ${oem.name}. Distributed by Icon Electromatic across India, Singapore and USA.`);
 
-  const heroImage = images.find(i => i.is_primary) || images[0] || {
-    url: oem.defaultImage || '/images/rf-laminate.jpg',
+  const fallbackHero = sanitizeImageUrl(oem.defaultImage, '/images/rf-laminate.jpg');
+  const rawHero = images.find(i => i.is_primary) || images[0] || {
+    url: fallbackHero,
     alt: `${product.name} - ${oem.name}`
+  };
+  const heroImage = {
+    url: sanitizeImageUrl(rawHero.url, fallbackHero),
+    alt: rawHero.alt || `${product.name} - ${oem.name}`
   };
 
   const schemaJson = {
@@ -134,7 +219,7 @@ function generateProductHtml(product, oem, category, images) {
         "@type": "ListItem",
         "position": 3,
         "name": oem.name,
-        "item": `${SITE_URL}/products#${oemSlug}`
+        "item": `${SITE_URL}/products?oem=${encodeURIComponent(oemSlug)}`
       },
       {
         "@type": "ListItem",
@@ -148,6 +233,7 @@ function generateProductHtml(product, oem, category, images) {
   const specs = product.specs || {};
   const features = product.features || [];
   const applications = product.applications || (product.applications_raw ? [product.applications_raw] : []);
+  const cssFile = getCssAssetFile();
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -156,14 +242,14 @@ function generateProductHtml(product, oem, category, images) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${escapeHtml(title)}</title>
   <meta name="description" content="${escapeHtml(description)}">
-  <link rel="canonical" href="${pageUrl}">
+  <link rel="canonical" href="${escapeHtml(pageUrl)}">
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
 
   <!-- OpenGraph Social Tags -->
   <meta property="og:type" content="product">
   <meta property="og:title" content="${escapeHtml(title)}">
   <meta property="og:description" content="${escapeHtml(description)}">
-  <meta property="og:url" content="${pageUrl}">
+  <meta property="og:url" content="${escapeHtml(pageUrl)}">
   ${heroImage.url ? `<meta property="og:image" content="${heroImage.url.startsWith('http') ? heroImage.url : `${SITE_URL}${heroImage.url}`}">` : ''}
 
   <!-- Google Structured Data (JSON-LD) -->
@@ -177,7 +263,7 @@ ${JSON.stringify(breadcrumbsSchema, null, 2)}
   <!-- Typography & Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/${cssAssetFile}">
+  <link rel="stylesheet" href="/assets/${cssFile}">
 
   <style>
     :root {
@@ -385,7 +471,7 @@ ${JSON.stringify(breadcrumbsSchema, null, 2)}
       <span>&rsaquo;</span>
       <a href="/products">Products</a>
       <span>&rsaquo;</span>
-      <a href="/products">${escapeHtml(oem.name)}</a>
+      <a href="/products?oem=${encodeURIComponent(oemSlug)}">${escapeHtml(oem.name)}</a>
       <span>&rsaquo;</span>
       <span style="color:#fff;">${escapeHtml(product.name)}</span>
     </nav>
@@ -455,52 +541,78 @@ ${JSON.stringify(breadcrumbsSchema, null, 2)}
 </html>`;
 }
 
-async function run() {
+export async function run(options = {}) {
   console.log('--- Generating Static SEO HTML & Sitemap ---');
   let productCount = 0;
+  const sitemapUrls = [
+    { loc: `${SITE_URL}/`, priority: '1.0', changefreq: 'weekly' },
+    { loc: `${SITE_URL}/products`, priority: '0.9', changefreq: 'daily' },
+    { loc: `${SITE_URL}/about`, priority: '0.8', changefreq: 'monthly' },
+    { loc: `${SITE_URL}/services`, priority: '0.8', changefreq: 'monthly' },
+    { loc: `${SITE_URL}/partners`, priority: '0.8', changefreq: 'weekly' },
+    { loc: `${SITE_URL}/blogs`, priority: '0.7', changefreq: 'weekly' },
+    { loc: `${SITE_URL}/contact`, priority: '0.8', changefreq: 'monthly' },
+  ];
 
-  for (const oem of CATALOG) {
+  const catalog = await loadAuthoritativeCatalog(options);
+
+  for (const oem of catalog) {
+    if (oem.visible === false) continue;
     const oemSlug = oem.id || slugify(oem.name);
+
     for (const cat of (oem.categories || [])) {
+      if (cat.visible === false) continue;
+
       for (const prod of (cat.products || [])) {
-        // Collect product images from extraction report or fallback
+        if (prod.visible === false) continue;
+
+        // Collect product images from product.gallery, extraction report, or fallback
         const prodKey = `${oemSlug}__${prod.id || slugify(prod.name)}`;
         const extracted = extractionReport[prodKey] || [];
+        const fallbackImage = sanitizeImageUrl(oem.defaultImage, '/images/rf-laminate.jpg');
         
         let images = [];
-        if (extracted.length > 0) {
+        if (Array.isArray(prod.gallery) && prod.gallery.length > 0) {
+          images = prod.gallery.map((g, idx) => ({
+            url: sanitizeImageUrl(g.image_url || g.url, fallbackImage),
+            alt: g.alt_text || `${prod.name} - ${oem.name}`,
+            is_primary: Boolean(g.is_primary || idx === 0)
+          })).filter(img => Boolean(img.url));
+        } else if (extracted.length > 0) {
           images = extracted.map((ext, idx) => ({
-            url: ext.web_path,
+            url: sanitizeImageUrl(ext.web_path, fallbackImage),
             alt: `${prod.name} - ${oem.name} (${ext.drawing_name})`,
             is_primary: ext.is_primary || idx === 0
           }));
         } else if (prod.image) {
           images = [{
-            url: prod.image,
+            url: sanitizeImageUrl(prod.image, fallbackImage),
             alt: `${prod.name} - ${oem.name}`,
             is_primary: true
           }];
         }
 
         // Only generate standalone static SEO pages for products meeting Option B quality gate
-        const hasImg = images.length > 0;
+        const hasImg = images.length > 0 && Boolean(images[0].url);
         const hasDesc = Boolean(prod.description && prod.description.trim().length >= 20);
 
         if (hasImg && hasDesc) {
           const prodSlug = prod.id || slugify(prod.name);
           const html = generateProductHtml(prod, oem, cat, images);
 
-          // Write to dist/ and public/
-          const distDir = path.resolve(DIST_DIR, 'products', oemSlug, prodSlug);
-          const pubDir = path.resolve(PUBLIC_DIR, 'products', oemSlug, prodSlug);
-          ensureDir(distDir);
-          ensureDir(pubDir);
+          if (!options.dryRun) {
+            // Write to dist/ and public/
+            const distDir = path.resolve(DIST_DIR, 'products', oemSlug, prodSlug);
+            const pubDir = path.resolve(PUBLIC_DIR, 'products', oemSlug, prodSlug);
+            ensureDir(distDir);
+            ensureDir(pubDir);
 
-          fs.writeFileSync(path.resolve(distDir, 'index.html'), html, 'utf8');
-          fs.writeFileSync(path.resolve(pubDir, 'index.html'), html, 'utf8');
+            fs.writeFileSync(path.resolve(distDir, 'index.html'), html, 'utf8');
+            fs.writeFileSync(path.resolve(pubDir, 'index.html'), html, 'utf8');
+          }
 
           sitemapUrls.push({
-            loc: `${SITE_URL}/products/${oemSlug}/${prodSlug}`,
+            loc: prod.canonical_url || `${SITE_URL}/products/${oemSlug}/${prodSlug}`,
             priority: '0.8',
             changefreq: 'monthly'
           });
@@ -510,11 +622,21 @@ async function run() {
     }
   }
 
+  // Deduplicate Sitemap URLs by location to prevent Search Console errors
+  const seenLocs = new Set();
+  const uniqueSitemapUrls = [];
+  for (const u of sitemapUrls) {
+    if (!seenLocs.has(u.loc)) {
+      seenLocs.add(u.loc);
+      uniqueSitemapUrls.push(u);
+    }
+  }
+
   // Generate Sitemap XML
   const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${sitemapUrls.map(u => `  <url>
-    <loc>${u.loc}</loc>
+${uniqueSitemapUrls.map(u => `  <url>
+    <loc>${escapeHtml(u.loc)}</loc>
     <lastmod>${TODAY}</lastmod>
     <changefreq>${u.changefreq}</changefreq>
     <priority>${u.priority}</priority>
@@ -522,13 +644,20 @@ ${sitemapUrls.map(u => `  <url>
 </urlset>
 `;
 
-  fs.writeFileSync(path.resolve(PUBLIC_DIR, 'sitemap.xml'), sitemapXml, 'utf8');
-  if (fs.existsSync(DIST_DIR)) {
-    fs.writeFileSync(path.resolve(DIST_DIR, 'sitemap.xml'), sitemapXml, 'utf8');
+  if (!options.dryRun) {
+    fs.writeFileSync(path.resolve(PUBLIC_DIR, 'sitemap.xml'), sitemapXml, 'utf8');
+    if (fs.existsSync(DIST_DIR)) {
+      fs.writeFileSync(path.resolve(DIST_DIR, 'sitemap.xml'), sitemapXml, 'utf8');
+    }
   }
 
   console.log(`Generated ${productCount} static product HTML pages with JSON-LD schema.`);
-  console.log(`Generated sitemap.xml with ${sitemapUrls.length} indexable URLs.`);
+  console.log(`Generated sitemap.xml with ${uniqueSitemapUrls.length} indexable URLs.`);
+
+  return { productCount, sitemapUrlCount: uniqueSitemapUrls.length, sitemapXml };
 }
 
-run().catch(console.error);
+if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
+  run().catch(console.error);
+}
+

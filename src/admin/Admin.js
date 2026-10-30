@@ -6,12 +6,22 @@ import { supabaseClient } from '../services/supabaseClient.js';
 import { authService } from '../services/authService.js';
 import { renderSeoPreviewCard, initSeoPreviewCard, updateSeoPreviewLive } from './components/SeoPreviewCard.js';
 import { renderImageGalleryManager, bindGalleryEvents } from './components/ImageGalleryManager.js';
-import { runProductQualityAudit, renderAuditModal, bindAuditModalEvents } from './components/SeoAuditModal.js';
+import { runProductQualityAudit, renderAuditModal, bindAuditModalEvents, runCatalogPrePublishAudit, renderCatalogPublishModal, bindCatalogPublishModalEvents } from './components/SeoAuditModal.js';
+import { openMigrationModal } from './components/ImageMigrationModal.js';
 
 // ─── State ─────────────────────────────────────────────────────────────────
 let isAuthenticated = authService.isAuthenticated();
 let currentTab = 'dashboard';
 let currentSubTab = 'fields'; // for pages with subtabs (fields vs cards)
+
+// Listen for remote persistence warnings and alert staff
+if (typeof window !== 'undefined') {
+  window.addEventListener('cms-save-warning', (e) => {
+    if (e.detail?.error) {
+      showToast(`Saved locally. Supabase sync warning: ${e.detail.error}`, 'warning');
+    }
+  });
+}
 
 // ─── Sidebar navigation config ──────────────────────────────────────────────
 const NAV = [
@@ -205,19 +215,38 @@ function bindShell() {
     rerender();
   });
 
-  // Publish Site Rebuild Hook
-  document.getElementById('btn-publish-site')?.addEventListener('click', async () => {
-    const btn = document.getElementById('btn-publish-site');
-    if (btn) {
-      btn.disabled = true;
-      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Publishing...';
-    }
-    const res = await supabaseClient.triggerPublishWebhook();
-    if (btn) {
-      btn.disabled = false;
-      btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Publish Site';
-    }
-    showToast(res.message, res.success ? 'success' : '');
+  // Publish Site Rebuild Hook with Option B Quality Gate Audit
+  document.getElementById('btn-publish-site')?.addEventListener('click', () => {
+    const oems = ContentService.getData('products');
+    const isWebhookConfigured = Boolean(supabaseClient.REBUILD_WEBHOOK_URL);
+    const auditSummary = runCatalogPrePublishAudit(oems);
+
+    const modalHtml = renderCatalogPublishModal(auditSummary, isWebhookConfigured);
+    const container = document.createElement('div');
+    container.innerHTML = modalHtml;
+    document.body.appendChild(container.firstElementChild);
+
+    bindCatalogPublishModalEvents(async () => {
+      const btn = document.getElementById('btn-publish-site');
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Publishing...';
+      }
+      try {
+        const res = await supabaseClient.triggerPublishWebhook({
+          publishedCount: auditSummary.eligibleProducts,
+          draftCount: auditSummary.draftProducts
+        });
+        showToast(res.message, res.success ? 'success' : '');
+      } catch (e) {
+        showToast(`Publish error: ${e.message}`, '');
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Publish Site';
+        }
+      }
+    });
   });
 
   // Reset section
@@ -241,45 +270,135 @@ function rerender() {
   }
 }
 
-function showToast(msg, type = '') {
+export function showToast(msg, type = '') {
   const existing = document.getElementById('a-toast');
   if (existing) existing.remove();
 
+  const normalizedType = (type === 'danger' || type === 'error') ? 'error' : (type === 'info' ? 'info' : (type === 'success' ? 'success' : ''));
   const t = document.createElement('div');
   t.id = 'a-toast';
-  t.className = `a-toast ${type}`;
-  t.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${msg}`;
+  t.className = normalizedType ? `a-toast ${normalizedType}` : 'a-toast';
+
+  const icon = document.createElement('i');
+  if (normalizedType === 'error') {
+    icon.className = 'fa-solid fa-triangle-exclamation';
+  } else if (normalizedType === 'info') {
+    icon.className = 'fa-solid fa-circle-info';
+  } else {
+    icon.className = 'fa-solid fa-circle-check';
+  }
+  t.appendChild(icon);
+
+  const span = document.createElement('span');
+  span.className = 'a-toast-msg';
+  span.textContent = String(msg ?? '');
+  t.appendChild(span);
+
   document.body.appendChild(t);
-  setTimeout(() => t.remove(), 3200);
+  setTimeout(() => t.remove(), 3400);
+}
+
+// ─── Universal Image Upload Widget Helpers ─────────────────────────────────────
+const UUID_REGEX = /^[0-9a-f]{8}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{12}$/i;
+
+export function isUuid(val) {
+  return typeof val === 'string' && UUID_REGEX.test(val.trim());
+}
+
+export function escapeAttr(str) {
+  if (str == null) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+export function escapeHtml(str) {
+  if (str == null) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+export function normalizeSlug(str) {
+  if (!str || typeof str !== 'string') return '';
+  return str
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+}
+
+export function resolveStorageSlug(entity, fallback = 'general') {
+  const safeFallback = normalizeSlug(fallback) || 'general';
+  if (!entity) return safeFallback;
+
+  // Direct string input
+  if (typeof entity === 'string') {
+    if (isUuid(entity)) return safeFallback;
+    return normalizeSlug(entity) || safeFallback;
+  }
+
+  // 1. Check entity.slug: reject UUID, normalize valid string
+  if (typeof entity.slug === 'string' && !isUuid(entity.slug)) {
+    const normalized = normalizeSlug(entity.slug);
+    if (normalized) return normalized;
+  }
+
+  // 2. Check entity.id: reject UUID, normalize valid string
+  if (typeof entity.id === 'string' && !isUuid(entity.id)) {
+    const normalized = normalizeSlug(entity.id);
+    if (normalized) return normalized;
+  }
+
+  // 3. Fallback to entity.name or entity.title: normalize valid string
+  const nameCandidate = entity.name || entity.title;
+  if (typeof nameCandidate === 'string') {
+    const normalized = normalizeSlug(nameCandidate);
+    if (normalized) return normalized;
+  }
+
+  return safeFallback;
 }
 
 // ─── Universal Image Upload Widget ───────────────────────────────────────────
-export function renderImageUploadField(fieldName, label, currentValue, ctxText = '') {
-  const resolved = ImageStorage.resolveImageUrl(currentValue);
-  const hasImg = Boolean(currentValue);
+export function renderImageUploadField(fieldName, label, currentValue, ctxText = '', options = {}) {
+  const safeField = String(fieldName || '').replace(/[^a-zA-Z0-9_-]/g, '');
+  const safeVal = currentValue ? String(currentValue) : '';
+  const resolved = ImageStorage.resolveImageUrl(safeVal);
+  const hasImg = Boolean(safeVal);
+
+  const folder = options.folder ? String(options.folder) : '';
+  const oemSlug = options.oemSlug ? String(options.oemSlug) : '';
+  const productSlug = options.productSlug ? String(options.productSlug) : '';
 
   return `
-    <div class="a-field span2 a-image-widget" data-field="${fieldName}">
-      <label class="a-label">${label} <span class="a-label-ctx">${ctxText}</span></label>
+    <div class="a-field span2 a-image-widget" data-field="${escapeAttr(safeField)}" data-folder="${escapeAttr(folder)}" data-oem-slug="${escapeAttr(oemSlug)}" data-product-slug="${escapeAttr(productSlug)}">
+      <label class="a-label">${escapeHtml(label)} <span class="a-label-ctx">${escapeHtml(ctxText)}</span></label>
       <div class="a-img-uploader">
-        <div class="a-img-thumb-box" id="thumb-box-${fieldName}">
-          ${hasImg 
-            ? `<img src="${resolved}" class="a-thumb-img" id="thumb-img-${fieldName}" alt="Preview" />` 
-            : `<div class="a-thumb-empty" id="thumb-empty-${fieldName}"><i class="fa-solid fa-image"></i><span>No image</span></div>`}
+        <div class="a-img-thumb-box" id="thumb-box-${escapeAttr(safeField)}">
+          ${hasImg
+            ? `<img src="${escapeAttr(resolved)}" class="a-thumb-img" id="thumb-img-${escapeAttr(safeField)}" alt="Preview" />`
+            : `<div class="a-thumb-empty" id="thumb-empty-${escapeAttr(safeField)}"><i class="fa-solid fa-image"></i><span>No image</span></div>`}
         </div>
         <div class="a-img-actions">
-          <input type="hidden" name="${fieldName}" id="hidden-${fieldName}" value="${currentValue || ''}" />
+          <input type="hidden" name="${escapeAttr(safeField)}" id="hidden-${escapeAttr(safeField)}" value="${escapeAttr(safeVal)}" />
           <div class="a-img-btn-row">
             <label class="a-btn a-btn-sm a-btn-primary a-upload-btn">
-              <i class="fa-solid fa-cloud-arrow-up"></i> <span id="upload-txt-${fieldName}">${hasImg ? 'Replace Image' : 'Upload Image'}</span>
-              <input type="file" accept="image/*" class="a-file-input" data-target="${fieldName}" style="display:none;" />
+              <i class="fa-solid fa-cloud-arrow-up"></i> <span id="upload-txt-${escapeAttr(safeField)}">${hasImg ? 'Replace Image' : 'Upload Image'}</span>
+              <input type="file" accept="image/jpeg,image/png,image/webp,image/gif" class="a-file-input" data-target="${escapeAttr(safeField)}" style="display:none;" />
             </label>
-            <button type="button" class="a-btn a-btn-sm a-btn-danger a-img-delete-btn" data-target="${fieldName}" id="del-btn-${fieldName}" style="${hasImg ? '' : 'display:none;'}">
+            <button type="button" class="a-btn a-btn-sm a-btn-danger a-img-delete-btn" data-target="${escapeAttr(safeField)}" id="del-btn-${escapeAttr(safeField)}" style="${hasImg ? '' : 'display:none;'}">
               <i class="fa-solid fa-trash"></i> Delete
             </button>
           </div>
           <div class="a-img-url-row">
-            <input type="text" class="a-input a-input-sm a-img-url-input" data-target="${fieldName}" placeholder="Or paste asset path (/images/...) or URL" value="${currentValue || ''}" />
+            <input type="text" class="a-input a-input-sm a-img-url-input" data-target="${escapeAttr(safeField)}" placeholder="Or paste asset path (/images/...) or URL" value="${escapeAttr(safeVal)}" />
           </div>
         </div>
       </div>
@@ -287,7 +406,7 @@ export function renderImageUploadField(fieldName, label, currentValue, ctxText =
   `;
 }
 
-function bindImageWidgets(container = document) {
+export function bindImageWidgets(container = document) {
   // File upload input change
   container.querySelectorAll('.a-file-input').forEach(input => {
     input.addEventListener('change', async (e) => {
@@ -295,36 +414,79 @@ function bindImageWidgets(container = document) {
       if (!file) return;
 
       const fieldName = input.getAttribute('data-target');
-      showToast('Saving image to IndexedDB...', '');
+      const widget = input.closest('.a-image-widget');
+      if (!widget || widget.classList.contains('is-uploading') || input.disabled) return;
+
+      const hiddenInput = container.querySelector(`#hidden-${fieldName}`) || container.querySelector(`input[name="${fieldName}"]`);
+      const urlInput = container.querySelector(`.a-img-url-input[data-target="${fieldName}"]`);
+      const thumbBox = container.querySelector(`#thumb-box-${fieldName}`) || container.querySelector(`.a-image-widget[data-field="${fieldName}"] .a-img-thumb-box`);
+      const delBtn = container.querySelector(`#del-btn-${fieldName}`) || container.querySelector(`.a-img-delete-btn[data-target="${fieldName}"]`);
+      const uploadTxt = container.querySelector(`#upload-txt-${fieldName}`);
+
+      // Snapshot previous state before taking any action
+      const prevVal = hiddenInput ? hiddenInput.value : '';
+      const prevUrl = urlInput ? urlInput.value : '';
+      const prevThumbHtml = thumbBox ? thumbBox.innerHTML : '';
+      const prevUploadTxt = uploadTxt ? uploadTxt.textContent : 'Upload Image';
+      const prevDelDisplay = delBtn ? delBtn.style.display : 'none';
+
+      // Enter in-flight uploading state
+      widget.classList.add('is-uploading');
+      input.disabled = true;
+      if (uploadTxt) uploadTxt.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Uploading...';
+      showToast('Uploading image...', '');
 
       try {
-        const imgId = await ImageStorage.saveImage(file);
-        const resolvedUrl = ImageStorage.resolveImageUrl(imgId);
+        const folder = widget.getAttribute('data-folder') || (fieldName.toLowerCase().includes('logo') ? 'logos' : 'general');
+        const oemSlug = widget.getAttribute('data-oem-slug') || '';
+        const productSlug = widget.getAttribute('data-product-slug') || '';
+
+        const result = await supabaseClient.uploadImage(file, { folder, oemSlug, productSlug });
+
+        // In dev fallback mode: result.path is idb:img_... reference key; result.url is blob URL
+        // In configured mode: result.url is public CDN URL; result.path is relative storage path
+        const valueToStore = result.isLocalFallback ? result.path : (result.url || result.publicUrl);
+        const previewUrl = result.url || result.publicUrl;
 
         // Update hidden input & text input
-        const hiddenInput = container.querySelector(`#hidden-${fieldName}`) || container.querySelector(`input[name="${fieldName}"]`);
-        if (hiddenInput) hiddenInput.value = imgId;
-
-        const urlInput = container.querySelector(`.a-img-url-input[data-target="${fieldName}"]`);
-        if (urlInput) urlInput.value = imgId;
+        if (hiddenInput) hiddenInput.value = valueToStore;
+        if (urlInput) urlInput.value = valueToStore;
 
         // Update thumbnail preview
-        const thumbBox = container.querySelector(`#thumb-box-${fieldName}`) || container.querySelector(`.a-image-widget[data-field="${fieldName}"] .a-img-thumb-box`);
         if (thumbBox) {
-          thumbBox.innerHTML = `<img src="${resolvedUrl}" class="a-thumb-img" alt="Preview" />`;
+          thumbBox.innerHTML = `<img src="${escapeAttr(previewUrl)}" class="a-thumb-img" alt="Preview" />`;
         }
 
         // Show delete button and update button label
-        const delBtn = container.querySelector(`#del-btn-${fieldName}`) || container.querySelector(`.a-img-delete-btn[data-target="${fieldName}"]`);
         if (delBtn) delBtn.style.display = 'inline-flex';
-
-        const uploadTxt = container.querySelector(`#upload-txt-${fieldName}`);
         if (uploadTxt) uploadTxt.textContent = 'Replace Image';
 
-        showToast('Image saved securely in IndexedDB!', 'success');
+        // Unlock widget and clear file input
+        widget.classList.remove('is-uploading');
+        input.disabled = false;
+        input.value = '';
+
+        const successMsg = result.isLocalFallback
+          ? 'Image saved locally (Dev Mode)'
+          : 'Image uploaded to Supabase Storage!';
+        showToast(successMsg, 'success');
       } catch (err) {
         console.error('Image upload failed:', err);
-        alert('Failed to save image. Please check console.');
+
+        // Revert UI to snapshot
+        if (hiddenInput) hiddenInput.value = prevVal;
+        if (urlInput) urlInput.value = prevUrl;
+        if (thumbBox) thumbBox.innerHTML = prevThumbHtml;
+        if (uploadTxt) uploadTxt.textContent = prevUploadTxt;
+        if (delBtn) delBtn.style.display = prevDelDisplay;
+
+        // Unlock widget and re-enable input
+        widget.classList.remove('is-uploading');
+        input.disabled = false;
+        input.value = '';
+
+        showToast(`Upload failed: ${err.message}`, 'error');
+        alert(`Image Upload Failed:\n${err.message}`);
       }
     });
   });
@@ -344,7 +506,7 @@ function bindImageWidgets(container = document) {
 
       if (val) {
         const resolved = ImageStorage.resolveImageUrl(val);
-        if (thumbBox) thumbBox.innerHTML = `<img src="${resolved}" class="a-thumb-img" alt="Preview" onerror="this.parentElement.innerHTML='<div class=\\'a-thumb-empty\\'><i class=\\'fa-solid fa-triangle-exclamation\\'></i><span>Invalid</span></div>'" />`;
+        if (thumbBox) thumbBox.innerHTML = `<img src="${escapeAttr(resolved)}" class="a-thumb-img" alt="Preview" onerror="this.parentElement.innerHTML='<div class=\\'a-thumb-empty\\'><i class=\\'fa-solid fa-triangle-exclamation\\'></i><span>Invalid</span></div>'" />`;
         if (delBtn) delBtn.style.display = 'inline-flex';
         if (uploadTxt) uploadTxt.textContent = 'Replace Image';
       } else {
@@ -355,17 +517,11 @@ function bindImageWidgets(container = document) {
     });
   });
 
-  // Delete image button
+  // Delete image button (unlinks form reference only; never deletes remote or local assets)
   container.querySelectorAll('.a-img-delete-btn').forEach(btn => {
     btn.addEventListener('click', async () => {
       const fieldName = btn.getAttribute('data-target');
       const hiddenInput = container.querySelector(`#hidden-${fieldName}`) || container.querySelector(`input[name="${fieldName}"]`);
-      const currentVal = hiddenInput ? hiddenInput.value : '';
-
-      if (currentVal && currentVal.startsWith('idb:')) {
-        await ImageStorage.deleteImage(currentVal);
-      }
-
       if (hiddenInput) hiddenInput.value = '';
 
       const urlInput = container.querySelector(`.a-img-url-input[data-target="${fieldName}"]`);
@@ -380,10 +536,11 @@ function bindImageWidgets(container = document) {
       const uploadTxt = container.querySelector(`#upload-txt-${fieldName}`);
       if (uploadTxt) uploadTxt.textContent = 'Upload Image';
 
-      showToast('Image removed.', '');
+      showToast('Image reference removed from form.', '');
     });
   });
 }
+
 
 // ─── Modal Dialog Helper ─────────────────────────────────────────────────────
 function openModal(title, formHtml, onSave, onInit) {
@@ -421,15 +578,59 @@ function openModal(title, formHtml, onSave, onInit) {
     if (e.target.id === 'a-modal-backdrop') closeModal();
   });
 
-  document.getElementById('a-modal-form')?.addEventListener('submit', (e) => {
+  const formEl = document.getElementById('a-modal-form');
+  const submitBtn = formEl?.querySelector('button[type="submit"]');
+  const cancelBtn = document.getElementById('a-modal-cancel-btn');
+  const closeBtn = document.getElementById('a-modal-close-btn');
+
+  formEl?.addEventListener('submit', async (e) => {
     e.preventDefault();
+    if (submitBtn?.disabled) return;
+
+    const originalSubmitHtml = submitBtn?.innerHTML || '<i class="fa-solid fa-floppy-disk"></i> Save Card';
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+    }
+    if (cancelBtn) cancelBtn.disabled = true;
+    if (closeBtn) closeBtn.disabled = true;
+
     const fd = new FormData(e.target);
     const data = {};
     fd.forEach((v, k) => { data[k] = v; });
-    onSave(data);
-    closeModal();
-    rerender();
-    showToast('Card saved successfully!', 'success');
+
+    try {
+      const result = await onSave(data);
+
+      if (result && result.success === false) {
+        // Save failed: preserve user inputs in the form, re-enable buttons, show error
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalSubmitHtml;
+        }
+        if (cancelBtn) cancelBtn.disabled = false;
+        if (closeBtn) closeBtn.disabled = false;
+        showToast(result.error || 'Database save failed. Your changes remain in the form.', 'error');
+        return;
+      }
+
+      // Confirmed success: close modal, rerender, show appropriate toast
+      closeModal();
+      rerender();
+      if (result && typeof result === 'object' && result.message) {
+        showToast(result.message, result.localOnly ? 'info' : 'success');
+      } else if (!result || result.silentToast !== true) {
+        showToast('Saved successfully!', 'success');
+      }
+    } catch (err) {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalSubmitHtml;
+      }
+      if (cancelBtn) cancelBtn.disabled = false;
+      if (closeBtn) closeBtn.disabled = false;
+      showToast(`Error: ${err.message}. Changes remain in form.`, 'error');
+    }
   });
 }
 
@@ -484,6 +685,7 @@ function bindTabEvents() {
 
   // Bind specific tabs
   switch (currentTab) {
+    case 'dashboard':    bindDashboardEvents(); break;
     case 'home':         bindHomeTabEvents(); break;
     case 'about':        bindAboutTabEvents(); break;
     case 'services':     bindServicesTabEvents(); break;
@@ -562,7 +764,25 @@ function renderDashboard() {
         </table>
       </div>
     </div>
+
+    <div class="a-card" style="margin-top: 20px; border-left: 4px solid var(--a-blue);">
+      <div class="a-card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+        <div>
+          <h3><i class="fa-solid fa-cloud-arrow-up" style="color: var(--a-red);"></i> Image Storage &amp; Cloud Migration</h3>
+          <p>Scan and migrate browser-local IndexedDB images to shared Supabase Cloud Storage (<code>catalog-images</code>)</p>
+        </div>
+        <button type="button" class="a-btn a-btn-primary" id="btn-open-image-migration">
+          <i class="fa-solid fa-database"></i> Launch Migration Tool
+        </button>
+      </div>
+    </div>
   `;
+}
+
+function bindDashboardEvents() {
+  document.getElementById('btn-open-image-migration')?.addEventListener('click', () => {
+    openMigrationModal();
+  });
 }
 
 // ─── HOME PAGE EDITOR ────────────────────────────────────────────────────────
@@ -2603,6 +2823,122 @@ const expandedOemIds = new Set();
 const expandedCategoryKeys = new Set();
 let catalogSearchQuery = '';
 
+/**
+ * 3-Way Catalog Reconciler
+ * @param {Array} baseCatalog - Initial catalog when administrator opened the form/action
+ * @param {Array} localCatalog - Catalog containing the administrator's local modifications
+ * @param {Array} serverCatalog - Freshly fetched catalog from central server
+ * @param {Object} context - { type: 'product-edit'|'product-add'|'product-delete', entityId: string, oemId?: string, catId?: string, newProduct?: Object }
+ * @returns {{ canAutoMerge: boolean, mergedCatalog?: Array, collision?: boolean, serverProduct?: Object, localProduct?: Object, reason?: string }}
+ */
+function reconcileCatalog3Way(baseCatalog, localCatalog, serverCatalog, context = {}) {
+  const { type, entityId, newProduct } = context;
+
+  if (!Array.isArray(baseCatalog) || !Array.isArray(localCatalog) || !Array.isArray(serverCatalog)) {
+    return { canAutoMerge: false, reason: 'Invalid catalog structure' };
+  }
+
+  const findInTree = (catArray, id) => {
+    for (const oem of catArray) {
+      for (const cat of (oem.categories || [])) {
+        const p = (cat.products || []).find(prod => prod.id === id);
+        if (p) return { oem, cat, product: p };
+      }
+    }
+    return null;
+  };
+
+  if (type === 'product-edit') {
+    const bMatch = findInTree(baseCatalog, entityId);
+    const lMatch = findInTree(localCatalog, entityId);
+    const sMatch = findInTree(serverCatalog, entityId);
+
+    if (!sMatch) {
+      return {
+        canAutoMerge: false,
+        reason: 'Product was removed from the server by another administrator.'
+      };
+    }
+
+    // Check if the server's product is identical to the baseline
+    const isServerProductSameAsBase = bMatch && JSON.stringify(bMatch.product) === JSON.stringify(sMatch.product);
+    if (isServerProductSameAsBase) {
+      // Safe Auto-Merge: concurrent changes were to OTHER products or categories!
+      const merged = JSON.parse(JSON.stringify(serverCatalog));
+      const mMatch = findInTree(merged, entityId);
+      if (mMatch && lMatch) {
+        if (lMatch.cat.name.toLowerCase() !== mMatch.cat.name.toLowerCase()) {
+          mMatch.cat.products = mMatch.cat.products.filter(p => p.id !== entityId);
+          let destCat = mMatch.oem.categories.find(c => c.name.toLowerCase() === lMatch.cat.name.toLowerCase());
+          if (!destCat) {
+            destCat = {
+              id: lMatch.cat.id || ('cat-' + Date.now()),
+              name: lMatch.cat.name,
+              label: '',
+              description: '',
+              visible: true,
+              products: []
+            };
+            mMatch.oem.categories.push(destCat);
+          }
+          destCat.products.push(JSON.parse(JSON.stringify(lMatch.product)));
+        } else {
+          const pIdx = mMatch.cat.products.findIndex(p => p.id === entityId);
+          if (pIdx !== -1) {
+            mMatch.cat.products[pIdx] = JSON.parse(JSON.stringify(lMatch.product));
+          }
+        }
+        return {
+          canAutoMerge: true,
+          mergedCatalog: merged,
+          reason: 'Your changes were merged into the latest server catalogue without conflict.'
+        };
+      }
+    }
+
+    // Collision on the exact same product
+    return {
+      canAutoMerge: false,
+      collision: true,
+      serverProduct: sMatch.product,
+      localProduct: lMatch?.product,
+      reason: `Product "${lMatch?.product?.name || entityId}" was modified concurrently on the server.`
+    };
+  }
+
+  if (type === 'product-add') {
+    const merged = JSON.parse(JSON.stringify(serverCatalog));
+    const targetOem = merged.find(o => o.id === context.oemId || o.name?.toLowerCase() === context.oemId?.toLowerCase());
+    if (targetOem) {
+      let targetCat = (targetOem.categories || []).find(c => c.id === context.catId || c.name?.toLowerCase() === context.catName?.toLowerCase());
+      if (!targetCat) {
+        targetCat = {
+          id: context.catId || ('cat-' + Date.now()),
+          name: context.catName || 'Products',
+          label: '',
+          description: '',
+          visible: true,
+          products: []
+        };
+        targetOem.categories.push(targetCat);
+      }
+      const duplicate = targetCat.products.some(p => p.id === newProduct.id || p.name.toLowerCase() === newProduct.name.toLowerCase());
+      if (duplicate) {
+        return { canAutoMerge: false, collision: true, reason: `A product with name "${newProduct.name}" already exists on the server.` };
+      }
+      targetCat.products.push(JSON.parse(JSON.stringify(newProduct)));
+      return {
+        canAutoMerge: true,
+        mergedCatalog: merged,
+        reason: 'New product merged into updated server catalogue.'
+      };
+    }
+    return { canAutoMerge: false, reason: `Target OEM "${context.oemId}" was not found on server.` };
+  }
+
+  return { canAutoMerge: false, reason: 'Concurrent changes require administrator review.' };
+}
+
 function renderProductsTab() {
   const oems = ContentService.getData('products') || [];
 
@@ -2881,7 +3217,12 @@ function renderProductsTab() {
     <div class="a-cards-box">
       <div class="a-cards-box-header" style="align-items:flex-start;">
         <div>
-          <h3>OEM Principals, Product Categories &amp; Component Catalogs</h3>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;flex-wrap:wrap;">
+            <h3 style="margin:0;">OEM Principals, Product Categories &amp; Component Catalogs</h3>
+            ${supabaseClient.isConfigured 
+              ? '<span class="a-badge a-badge-green" style="font-size:0.75rem;padding:3px 8px;"><i class="fa-solid fa-cloud-arrow-up"></i> Central Supabase DB</span>' 
+              : '<span class="a-badge a-badge-blue" style="font-size:0.75rem;padding:3px 8px;"><i class="fa-solid fa-laptop"></i> Local Storage Mode</span>'}
+          </div>
           <p>Full two-tier management: select any of the 15 authorized OEM principals to edit its product categories and labels, then expand any category to edit its Product Portfolio &amp; Component Catalog.</p>
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
@@ -3041,7 +3382,7 @@ function bindProductsTabEvents() {
           <option value="false">Hidden (Draft / Archive)</option>
         </select>
       </div>
-      ${renderImageUploadField('logoImg', 'Principal Logo Image', '', 'Upload PNG/SVG logo with transparent background')}
+      ${renderImageUploadField('logoImg', 'Principal Logo Image', '', 'Upload WebP, PNG, or JPG with transparent background (SVG disallowed)', { folder: 'logos' })}
     `, (data) => {
       const slug = (data.shortName || data.name).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
       const newOem = {
@@ -3097,7 +3438,7 @@ function bindProductsTabEvents() {
             <option value="false" ${o.visible === false ? 'selected' : ''}>Hidden (Draft / Archive)</option>
           </select>
         </div>
-        ${renderImageUploadField('logoImg', 'Principal Logo Image', o.logoImg || '', 'Upload PNG/SVG logo with transparent background')}
+        ${renderImageUploadField('logoImg', 'Principal Logo Image', o.logoImg || '', 'Upload WebP, PNG, or JPG with transparent background (SVG disallowed)', { folder: 'logos', oemSlug: resolveStorageSlug(o) })}
       `, (data) => {
         oems[idx] = {
           ...o,
@@ -3330,7 +3671,7 @@ function bindProductsTabEvents() {
             <option value="false">Hidden (Draft / Archive)</option>
           </select>
         </div>
-        ${renderImageUploadField('image', 'Product Image / Hardware Photo', '', 'Upload high-resolution component photo or diagram')}
+        ${renderImageUploadField('image', 'Product Image / Hardware Photo', '', 'Upload high-resolution component photo or diagram', { folder: 'products', oemSlug: resolveStorageSlug(oem) })}
         <div class="a-field span2" style="margin-top:12px;">
           <label class="a-label">Technical Description</label>
           <textarea class="a-textarea" name="description" rows="3" placeholder="Key electrical characteristics, frequency range, packaging, etc."></textarea>
@@ -3343,7 +3684,7 @@ function bindProductsTabEvents() {
           <label class="a-label">Datasheet / Official Product URL</label>
           <input class="a-input" name="link" placeholder="https://..." />
         </div>
-      `, (data) => {
+      `, async (data) => {
         if (!cat.products) cat.products = [];
 
         const prodSlug = (data.name.toLowerCase().replace(/[^a-z0-9]+/g, '-') || 'prod') + '-' + Date.now().toString().slice(-4);
@@ -3358,12 +3699,55 @@ function bindProductsTabEvents() {
           visible: data.visible === 'true',
         };
 
+        const prevProducts = [...cat.products];
         cat.products.push(newProd);
-        expandedOemIds.add(oem.id);
-        expandedCategoryKeys.add(`${oem.id}__${cat.id || catIdx}`);
-        ContentService.saveData('products', oems);
-        rerender();
-        showToast(`Added product "${newProd.name}" to ${cat.name}!`, 'success');
+
+        try {
+          let expectedVersion = ContentService.getSectionMeta('products').version;
+          const baseSnapshot = ContentService.getData('products');
+          let res = await ContentService.saveData('products', oems, { expectedVersion });
+
+          if (res && !res.success && res.conflict) {
+            // Attempt 3-way reconciliation
+            try {
+              const freshMeta = await supabaseClient.getAuthoritativeCatalogWithMeta();
+              const rec = reconcileCatalog3Way(baseSnapshot, oems, freshMeta.catalog, {
+                type: 'product-add',
+                oemId: oem.id,
+                catId: cat.id,
+                catName: cat.name,
+                newProduct: newProd
+              });
+              if (rec.canAutoMerge) {
+                expectedVersion = freshMeta.version;
+                res = await ContentService.saveData('products', rec.mergedCatalog, { expectedVersion });
+              }
+            } catch {}
+          }
+
+          if (res && !res.success) {
+            cat.products = prevProducts;
+            return {
+              success: false,
+              error: res.error || 'Failed to save product to central database. Your inputs remain in the form.'
+            };
+          }
+          expandedOemIds.add(oem.id);
+          expandedCategoryKeys.add(`${oem.id}__${cat.id || catIdx}`);
+          return {
+            success: true,
+            localOnly: res?.localOnly,
+            message: res?.localOnly 
+              ? `Added product "${newProd.name}" to ${cat.name} (local demo storage).`
+              : `Added product "${newProd.name}" to ${cat.name} and saved to central database!`
+          };
+        } catch (err) {
+          cat.products = prevProducts;
+          return {
+            success: false,
+            error: `${err.message}. Your inputs remain in the form.`
+          };
+        }
       });
     });
   });
@@ -3388,7 +3772,9 @@ function bindProductsTabEvents() {
       const defaultCanonical = prod.canonical_url || `https://iconelectromatic.com/products/${oem.id || 'oem'}/${prod.id || 'product'}`;
 
       let currentImages = [];
-      if (prod.image) {
+      if (Array.isArray(prod.gallery) && prod.gallery.length > 0) {
+        currentImages = prod.gallery.map(img => ({ ...img }));
+      } else if (prod.image) {
         currentImages.push({
           id: 1,
           image_url: prod.image,
@@ -3402,7 +3788,7 @@ function bindProductsTabEvents() {
         <div class="a-tabs-pill-row" style="display:flex;gap:8px;margin-bottom:14px;">
           <button type="button" class="a-btn a-btn-sm a-btn-primary tab-prod-switch active" data-target="tab-core-fields"><i class="fa-solid fa-pen-to-square"></i> Product Details</button>
           <button type="button" class="a-btn a-btn-sm a-btn-outline tab-prod-switch" data-target="tab-seo-fields"><i class="fa-solid fa-magnifying-glass"></i> SEO & Google Snippet</button>
-          <button type="button" class="a-btn a-btn-sm a-btn-outline tab-prod-switch" data-target="tab-gallery-fields"><i class="fa-regular fa-images"></i> Image Gallery (${currentImages.length})</button>
+          <button type="button" class="a-btn a-btn-sm a-btn-outline tab-prod-switch" data-target="tab-gallery-fields"><i class="fa-regular fa-images"></i> Image Gallery (<span id="gallery-tab-count">${currentImages.length}</span>)</button>
         </div>
 
         <div id="tab-core-fields" class="prod-modal-tab-pane">
@@ -3426,7 +3812,7 @@ function bindProductsTabEvents() {
               <option value="false" ${prod.visible === false ? 'selected' : ''}>Draft / Unpublished</option>
             </select>
           </div>
-          ${renderImageUploadField('image', 'Primary Product Hardware Image', prod.image || '', 'Upload or select hero component image')}
+          ${renderImageUploadField('image', 'Primary Product Hardware Image', prod.image || '', 'Upload or select hero component image', { folder: 'products', oemSlug: resolveStorageSlug(oem), productSlug: resolveStorageSlug(prod) })}
           <div class="a-field span2" style="margin-top:12px;">
             <label class="a-label">Technical Description</label>
             <textarea class="a-textarea" name="description" id="input-prod-desc" rows="3">${prod.description || ''}</textarea>
@@ -3473,9 +3859,11 @@ function bindProductsTabEvents() {
         </div>
       `;
 
-      openModal(`Edit Product: ${prod.name}`, modalHtml, (data) => {
+      openModal(`Edit Product: ${prod.name}`, modalHtml, async (data) => {
         const newCatName = (data.category || cat.name).trim();
-        const hasImg = Boolean(data.image || currentImages.length > 0);
+        const heroImg = currentImages.find(i => i.is_primary) || currentImages[0];
+        const finalImgUrl = data.image || (heroImg?.image_url || '');
+        const hasImg = Boolean(finalImgUrl || currentImages.length > 0);
         const hasDesc = Boolean((data.description || '').trim().length >= 20);
 
         // Option B Quality Gate Check
@@ -3490,7 +3878,8 @@ function bindProductsTabEvents() {
           name: data.name.trim(),
           id: (data.id || prod.id).trim(),
           category: newCatName,
-          image: data.image || (currentImages[0]?.image_url || ''),
+          image: finalImgUrl,
+          gallery: currentImages.map(img => ({ ...img })),
           description: data.description || '',
           applications: data.applications || '',
           link: data.link || '',
@@ -3500,11 +3889,20 @@ function bindProductsTabEvents() {
           canonical_url: defaultCanonical
         };
 
-        if (newCatName.toLowerCase() === cat.name.toLowerCase()) {
-          cat.products[prodIdx] = updatedProd;
+        // Re-resolve active references from live oems array
+        const activeOem = oems[oemIdx] || oem;
+        const activeCat = activeOem?.categories?.[catIdx] || cat;
+        const originalProd = activeCat?.products?.[prodIdx];
+
+        const isSameCategory = newCatName.toLowerCase() === activeCat.name.toLowerCase();
+        let targetCat = null;
+        let isNewTargetCategory = false;
+
+        if (isSameCategory) {
+          activeCat.products[prodIdx] = updatedProd;
         } else {
-          cat.products.splice(prodIdx, 1);
-          let targetCat = oem.categories.find(c => c.name.toLowerCase() === newCatName.toLowerCase());
+          activeCat.products.splice(prodIdx, 1);
+          targetCat = activeOem.categories.find(c => c.name.toLowerCase() === newCatName.toLowerCase());
           if (!targetCat) {
             const catSlug = newCatName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
             targetCat = {
@@ -3515,16 +3913,157 @@ function bindProductsTabEvents() {
               visible: true,
               products: []
             };
-            oem.categories.push(targetCat);
+            activeOem.categories.push(targetCat);
+            isNewTargetCategory = true;
           }
           targetCat.products.push(updatedProd);
         }
 
-        expandedOemIds.add(oem.id);
-        ContentService.saveData('products', oems);
-        rerender();
-        showToast(`Product "${updatedProd.name}" saved successfully!`, 'success');
+        const rollbackChanges = () => {
+          if (isSameCategory) {
+            if (originalProd) {
+              activeCat.products[prodIdx] = originalProd;
+            }
+          } else {
+            // Remove updatedProd from targetCat
+            if (targetCat) {
+              const idxInTarget = targetCat.products.indexOf(updatedProd);
+              if (idxInTarget !== -1) {
+                targetCat.products.splice(idxInTarget, 1);
+              }
+              if (isNewTargetCategory) {
+                const catIdxInOem = activeOem.categories.indexOf(targetCat);
+                if (catIdxInOem !== -1) {
+                  activeOem.categories.splice(catIdxInOem, 1);
+                }
+              }
+            }
+            // Put originalProd back into activeCat
+            if (originalProd) {
+              activeCat.products.splice(prodIdx, 0, originalProd);
+            }
+          }
+        };
+
+        try {
+          let expectedVersion = ContentService.getSectionMeta('products').version;
+          const baseSnapshot = ContentService.getData('products');
+          let res = await ContentService.saveData('products', oems, { expectedVersion });
+
+          if (res && !res.success && res.conflict) {
+            // Attempt 3-way auto-reconciliation
+            try {
+              const freshMeta = await supabaseClient.getAuthoritativeCatalogWithMeta();
+              const rec = reconcileCatalog3Way(baseSnapshot, oems, freshMeta.catalog, {
+                type: 'product-edit',
+                entityId: prod.id
+              });
+
+              if (rec.canAutoMerge) {
+                expectedVersion = freshMeta.version;
+                res = await ContentService.saveData('products', rec.mergedCatalog, { expectedVersion });
+                if (res && res.success) {
+                  expandedOemIds.add(activeOem.id);
+                  return {
+                    success: true,
+                    localOnly: res?.localOnly,
+                    message: `Conflict auto-reconciled: your changes were merged into catalogue (v${freshMeta.version}) and saved!`
+                  };
+                }
+              }
+
+              // Same-product collision: rollback in-memory array so live oems is not corrupted,
+              // but preserve form input in the open modal!
+              rollbackChanges();
+              return {
+                success: false,
+                conflict: true,
+                error: `Concurrency Conflict: ${rec.reason || 'Catalogue modified by another administrator'}. Your form edits are preserved intact. Please click Save again to overwrite with your version, or close to discard.`
+              };
+            } catch (reconErr) {
+              rollbackChanges();
+              return {
+                success: false,
+                conflict: true,
+                error: `Concurrency Conflict: ${res.error || 'Conflict detected'}. Your form edits remain intact.`
+              };
+            }
+          }
+
+          if (res && !res.success) {
+            rollbackChanges();
+            return {
+              success: false,
+              error: res.error || 'Failed to save product to central database. Your edits remain in the form.'
+            };
+          }
+
+          expandedOemIds.add(activeOem.id);
+          return {
+            success: true,
+            localOnly: res?.localOnly,
+            message: res?.localOnly 
+              ? `Product "${updatedProd.name}" saved (local demo storage).`
+              : `Product "${updatedProd.name}" saved to central database!`
+          };
+        } catch (err) {
+          rollbackChanges();
+          return {
+            success: false,
+            error: `${err.message}. Your edits remain in the form.`
+          };
+        }
       }, (modalContainer) => {
+        let galleryHandle = null;
+
+        function syncTab1ToGallery() {
+          const hiddenImg = modalContainer.querySelector('input[name="image"]');
+          const tab1Val = hiddenImg ? hiddenImg.value.trim() : '';
+          const currentHero = currentImages.find(i => i.is_primary) || currentImages[0];
+
+          if (tab1Val) {
+            if (!currentHero) {
+              currentImages = [{
+                id: Date.now(),
+                image_url: tab1Val,
+                alt_text: `${prod.name} - ${oem.name}`,
+                display_order: 1,
+                is_primary: true
+              }];
+              galleryHandle?.setImages(currentImages);
+            } else if (currentHero.image_url !== tab1Val) {
+              currentHero.image_url = tab1Val;
+              galleryHandle?.setImages(currentImages);
+            }
+          } else {
+            // Tab 1 image cleared
+            if (currentHero) {
+              if (currentImages.length <= 1) {
+                currentImages = [];
+              } else {
+                currentImages = currentImages.filter(i => !i.is_primary);
+                if (currentImages.length > 0) {
+                  currentImages[0].is_primary = true;
+                  currentImages.forEach((item, idx) => { item.display_order = idx + 1; });
+                  // Sync new primary hero to Tab 1
+                  const newHero = currentImages[0];
+                  if (hiddenImg) hiddenImg.value = newHero.image_url;
+                  const urlInput = modalContainer.querySelector('.a-img-url-input[data-target="image"]');
+                  if (urlInput) urlInput.value = newHero.image_url;
+                  const thumbBox = modalContainer.querySelector('#thumb-box-image');
+                  if (thumbBox) {
+                    const resolved = ImageStorage.resolveImageUrl(newHero.image_url);
+                    thumbBox.innerHTML = `<img src="${escapeAttr(resolved)}" class="a-thumb-img" id="thumb-img-image" alt="Preview" />`;
+                  }
+                }
+              }
+              galleryHandle?.setImages(currentImages);
+            }
+          }
+          const galleryCount = modalContainer.querySelector('#gallery-tab-count');
+          if (galleryCount) galleryCount.textContent = currentImages.length;
+        }
+
         // Tab switching
         modalContainer.querySelectorAll('.tab-prod-switch').forEach(tabBtn => {
           tabBtn.addEventListener('click', () => {
@@ -3536,6 +4075,10 @@ function bindProductsTabEvents() {
             tabBtn.classList.add('a-btn-primary', 'active');
 
             const targetId = tabBtn.dataset.target;
+            if (targetId === 'tab-gallery-fields') {
+              syncTab1ToGallery();
+            }
+
             modalContainer.querySelectorAll('.prod-modal-tab-pane').forEach(p => p.style.display = 'none');
             const targetPane = modalContainer.querySelector('#' + targetId);
             if (targetPane) targetPane.style.display = 'block';
@@ -3563,13 +4106,42 @@ function bindProductsTabEvents() {
         bodyDescInput?.addEventListener('input', syncLiveSeo);
 
         // Bind image gallery manager
-        bindGalleryEvents(currentImages, (updatedImgs) => {
+        galleryHandle = bindGalleryEvents(currentImages, (updatedImgs) => {
           currentImages = updatedImgs;
           const hero = currentImages.find(i => i.is_primary) || currentImages[0];
-          if (hero) {
-            const hiddenImg = modalContainer.querySelector('input[name="image"]');
-            if (hiddenImg) hiddenImg.value = hero.image_url;
+          const hiddenImg = modalContainer.querySelector('input[name="image"]');
+          const urlInput = modalContainer.querySelector('.a-img-url-input[data-target="image"]');
+          const thumbBox = modalContainer.querySelector('#thumb-box-image');
+          const delBtn = modalContainer.querySelector('#del-btn-image');
+          const uploadTxt = modalContainer.querySelector('#upload-txt-image');
+          const galleryCount = modalContainer.querySelector('#gallery-tab-count');
+
+          if (galleryCount) galleryCount.textContent = currentImages.length;
+
+          if (hero && hero.image_url) {
+            const heroUrl = hero.image_url;
+            if (hiddenImg) hiddenImg.value = heroUrl;
+            if (urlInput) urlInput.value = heroUrl;
+            if (delBtn) delBtn.style.display = 'inline-flex';
+            if (uploadTxt) uploadTxt.textContent = 'Replace Image';
+            if (thumbBox) {
+              const resolvedHero = ImageStorage.resolveImageUrl(heroUrl);
+              thumbBox.innerHTML = `<img src="${escapeAttr(resolvedHero)}" class="a-thumb-img" id="thumb-img-image" alt="Preview" />`;
+            }
+          } else {
+            if (hiddenImg) hiddenImg.value = '';
+            if (urlInput) urlInput.value = '';
+            if (delBtn) delBtn.style.display = 'none';
+            if (uploadTxt) uploadTxt.textContent = 'Upload Image';
+            if (thumbBox) {
+              thumbBox.innerHTML = `<div class="a-thumb-empty" id="thumb-empty-image"><i class="fa-solid fa-image"></i><span>No image</span></div>`;
+            }
           }
+        }, {
+          folder: 'products',
+          oemSlug: resolveStorageSlug(oem),
+          productSlug: resolveStorageSlug(prod),
+          productName: prod.name
         });
 
         // Run Audit Button
@@ -3596,7 +4168,7 @@ function bindProductsTabEvents() {
 
   // Delete Product
   document.querySelectorAll('.btn-del-product').forEach(btn => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', async () => {
       const oemIdx = parseInt(btn.getAttribute('data-oem-idx'), 10);
       const catIdx = parseInt(btn.getAttribute('data-cat-idx'), 10);
       const prodIdx = parseInt(btn.getAttribute('data-prod-idx'), 10);
@@ -3606,18 +4178,43 @@ function bindProductsTabEvents() {
       const prod = cat?.products?.[prodIdx];
       if (!oem || !cat || !prod) return;
 
-      if (confirm(`Delete product "${prod.name}" from ${cat.name}?`)) {
-        cat.products.splice(prodIdx, 1);
-        ContentService.saveData('products', oems);
+      if (!confirm(`Delete product "${prod.name}" from ${cat.name}?`)) return;
+
+      if (btn.disabled) return;
+      btn.disabled = true;
+      const originalHtml = btn.innerHTML;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+
+      const prevProducts = [...cat.products];
+      cat.products.splice(prodIdx, 1);
+
+      try {
+        const res = await ContentService.saveData('products', oems);
+        if (res && !res.success) {
+          cat.products = prevProducts;
+          btn.disabled = false;
+          btn.innerHTML = originalHtml;
+          showToast(`Delete failed: ${res.error || 'Database save failed'}. Product restored.`, 'error');
+          return;
+        }
+
         rerender();
-        showToast(`Deleted product "${prod.name}".`, '');
+        const msg = res?.localOnly 
+          ? `Deleted product "${prod.name}" (local demo storage).` 
+          : `Deleted product "${prod.name}" from central database.`;
+        showToast(msg, res?.localOnly ? 'info' : 'success');
+      } catch (err) {
+        cat.products = prevProducts;
+        btn.disabled = false;
+        btn.innerHTML = originalHtml;
+        showToast(`Delete failed: ${err.message}. Product restored.`, 'error');
       }
     });
   });
 
   // Move Product Up / Down within Category
   document.querySelectorAll('.btn-move-prod').forEach(btn => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', async () => {
       const oemIdx = parseInt(btn.getAttribute('data-oem-idx'), 10);
       const catIdx = parseInt(btn.getAttribute('data-cat-idx'), 10);
       const prodIdx = parseInt(btn.getAttribute('data-prod-idx'), 10);
@@ -3627,17 +4224,39 @@ function bindProductsTabEvents() {
       const cat = oem?.categories?.[catIdx];
       if (!cat || !cat.products) return;
 
+      if (btn.disabled) return;
+      btn.disabled = true;
+      const originalHtml = btn.innerHTML;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+
+      const prevProducts = [...cat.products];
       const targetIdx = dir === 'up' ? prodIdx - 1 : prodIdx + 1;
       cat.products = reorderArray(cat.products, prodIdx, targetIdx);
-      ContentService.saveData('products', oems);
-      rerender();
-      showToast('Products reordered!', 'success');
+
+      try {
+        const res = await ContentService.saveData('products', oems);
+        if (res && !res.success) {
+          cat.products = prevProducts;
+          btn.disabled = false;
+          btn.innerHTML = originalHtml;
+          showToast(`Reorder failed: ${res.error || 'Database save failed'}.`, 'error');
+          return;
+        }
+
+        rerender();
+        showToast(res?.localOnly ? 'Products reordered (local demo storage).' : 'Products reordered in central database!', res?.localOnly ? 'info' : 'success');
+      } catch (err) {
+        cat.products = prevProducts;
+        btn.disabled = false;
+        btn.innerHTML = originalHtml;
+        showToast(`Reorder failed: ${err.message}.`, 'error');
+      }
     });
   });
 
   // Toggle Product Visibility
   document.querySelectorAll('.btn-toggle-prod-vis').forEach(btn => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', async () => {
       const oemIdx = parseInt(btn.getAttribute('data-oem-idx'), 10);
       const catIdx = parseInt(btn.getAttribute('data-cat-idx'), 10);
       const prodIdx = parseInt(btn.getAttribute('data-prod-idx'), 10);
@@ -3647,10 +4266,33 @@ function bindProductsTabEvents() {
       const prod = cat?.products?.[prodIdx];
       if (!prod) return;
 
+      if (btn.disabled) return;
+      btn.disabled = true;
+      const originalHtml = btn.innerHTML;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+
+      const prevVisible = prod.visible;
       prod.visible = prod.visible === false ? true : false;
-      ContentService.saveData('products', oems);
-      rerender();
-      showToast(`Product "${prod.name}" is now ${prod.visible ? 'visible' : 'hidden'}.`, 'success');
+
+      try {
+        const res = await ContentService.saveData('products', oems);
+        if (res && !res.success) {
+          prod.visible = prevVisible;
+          btn.disabled = false;
+          btn.innerHTML = originalHtml;
+          showToast(`Visibility update failed: ${res.error || 'Database save failed'}.`, 'error');
+          return;
+        }
+
+        rerender();
+        const dest = res?.localOnly ? '(local demo storage)' : 'in central database';
+        showToast(`Product "${prod.name}" is now ${prod.visible ? 'visible' : 'hidden'} ${dest}.`, res?.localOnly ? 'info' : 'success');
+      } catch (err) {
+        prod.visible = prevVisible;
+        btn.disabled = false;
+        btn.innerHTML = originalHtml;
+        showToast(`Visibility update failed: ${err.message}.`, 'error');
+      }
     });
   });
 }
@@ -3767,7 +4409,7 @@ function bindPartnersTabEvents() {
       <div class="a-field"><label class="a-label">Partner Name</label><input class="a-input" name="name" required /></div>
       <div class="a-field" style="margin-top:12px;"><label class="a-label">Domain / Specialty</label><input class="a-input" name="domain" placeholder="e.g. High-Frequency Laminates" /></div>
       <div class="a-field" style="margin-top:12px;"><label class="a-label">Accent Color (red / blue)</label><input class="a-input" name="accentColor" value="blue" /></div>
-      ${renderImageUploadField('logoImg', 'Partner Brand Logo', '', 'Transparent PNG/SVG')}
+      ${renderImageUploadField('logoImg', 'Partner Brand Logo', '', 'Transparent WebP, PNG, or JPG (SVG disallowed)', { folder: 'partners' })}
       <div class="a-field" style="margin-top:12px;"><label class="a-label">Official Website URL</label><input class="a-input" name="website" placeholder="https://..." /></div>
       <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Description</label><textarea class="a-textarea" name="description"></textarea></div>
     `, (data) => {
@@ -3788,7 +4430,7 @@ function bindPartnersTabEvents() {
         <div class="a-field"><label class="a-label">Partner Name</label><input class="a-input" name="name" value="${p.name}" required /></div>
         <div class="a-field" style="margin-top:12px;"><label class="a-label">Domain / Specialty</label><input class="a-input" name="domain" value="${p.domain || ''}" /></div>
         <div class="a-field" style="margin-top:12px;"><label class="a-label">Accent Color (red / blue)</label><input class="a-input" name="accentColor" value="${p.accentColor || 'blue'}" /></div>
-        ${renderImageUploadField('logoImg', 'Partner Brand Logo', p.logoImg || '', 'Transparent PNG/SVG')}
+        ${renderImageUploadField('logoImg', 'Partner Brand Logo', p.logoImg || '', 'Transparent WebP, PNG, or JPG (SVG disallowed)', { folder: 'partners', oemSlug: resolveStorageSlug(p) })}
         <div class="a-field" style="margin-top:12px;"><label class="a-label">Official Website URL</label><input class="a-input" name="website" value="${p.website || ''}" /></div>
         <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Description</label><textarea class="a-textarea" name="description">${p.description || ''}</textarea></div>
       `, (data) => {
@@ -4442,7 +5084,7 @@ function bindBlogsTabEvents() {
             <option value="false">Hidden (Draft)</option>
           </select>
         </div>
-        ${renderImageUploadField('image', 'Article Cover Image', '', 'Upload hero image for article')}
+        ${renderImageUploadField('image', 'Article Cover Image', '', 'Upload hero image for article', { folder: 'blogs', oemSlug: resolveStorageSlug(oem || oemId) })}
         <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Excerpt / Summary (Card Preview) *</label><textarea class="a-textarea" name="summary" rows="3" required placeholder="Short 2-3 sentence overview for the card preview..."></textarea></div>
         <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Full Technical Article Body (Rich HTML or Paragraphs)</label><textarea class="a-textarea" name="content" rows="6" placeholder="<p>Full article text, specifications, and engineering details...</p>"></textarea></div>
         <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Topic Tags (Comma-separated)</label><input class="a-input" name="tags" placeholder="e.g. 77 GHz Radar, RT/duroid, Substrate, Automotive" /></div>
@@ -4489,7 +5131,7 @@ function bindBlogsTabEvents() {
             <option value="false" ${art.visible === false ? 'selected' : ''}>Hidden (Draft)</option>
           </select>
         </div>
-        ${renderImageUploadField('image', 'Article Cover Image', art.image || '', 'Upload hero image for article')}
+        ${renderImageUploadField('image', 'Article Cover Image', art.image || '', 'Upload hero image for article', { folder: 'blogs', oemSlug: resolveStorageSlug(oemId) })}
         <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Excerpt / Summary (Card Preview) *</label><textarea class="a-textarea" name="summary" rows="3" required>${art.summary || ''}</textarea></div>
         <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Full Technical Article Body (Rich HTML or Paragraphs)</label><textarea class="a-textarea" name="content" rows="8">${art.content || ''}</textarea></div>
         <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Topic Tags (Comma-separated)</label><input class="a-input" name="tags" value="${(art.tags || []).join(', ')}" /></div>
@@ -4574,7 +5216,7 @@ function bindBlogsTabEvents() {
             <option value="false">Hidden (Draft)</option>
           </select>
         </div>
-        ${renderImageUploadField('thumbnail', 'Video Thumbnail Image', '', 'Upload video cover preview')}
+        ${renderImageUploadField('thumbnail', 'Video Thumbnail Image', '', 'Upload video cover preview', { folder: 'blogs', oemSlug: resolveStorageSlug(oem || oemId) })}
         <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Video Streaming / Embed URL (YouTube, Vimeo, MP4)</label><input class="a-input" name="videoUrl" placeholder="https://..." /></div>
         <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Session Summary</label><textarea class="a-textarea" name="summary" rows="3" placeholder="Overview of the technical topics demonstrated in the video..."></textarea></div>
         <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Takeaway Topics (Comma-separated)</label><input class="a-input" name="topics" placeholder="e.g. Sub-THz Metrology, Skin Depth Effects, Microstrip Resonators" /></div>
@@ -4621,7 +5263,7 @@ function bindBlogsTabEvents() {
             <option value="false" ${vid.visible === false ? 'selected' : ''}>Hidden (Draft)</option>
           </select>
         </div>
-        ${renderImageUploadField('thumbnail', 'Video Thumbnail Image', vid.thumbnail || '', 'Upload video cover preview')}
+        ${renderImageUploadField('thumbnail', 'Video Thumbnail Image', vid.thumbnail || '', 'Upload video cover preview', { folder: 'blogs', oemSlug: resolveStorageSlug(oemId) })}
         <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Video Streaming / Embed URL</label><input class="a-input" name="videoUrl" value="${vid.videoUrl || ''}" /></div>
         <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Session Summary</label><textarea class="a-textarea" name="summary" rows="3">${vid.summary || ''}</textarea></div>
         <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Takeaway Topics (Comma-separated)</label><input class="a-input" name="topics" value="${(vid.topics || []).join(', ')}" /></div>
@@ -4912,7 +5554,7 @@ function renderHeaderPageEditor() {
       <div class="a-card">
         <div class="a-card-header"><div><h3>Logo &amp; Brand Image</h3><p>Main website logo displayed in top navigation</p></div></div>
         <div class="a-form-grid">
-          ${renderImageUploadField('logoUrl', 'Header Brand Logo', h.logoUrl || '/icon-logo-transparent.png', 'Transparent PNG/SVG recommended')}
+          ${renderImageUploadField('logoUrl', 'Header Brand Logo', h.logoUrl || '/icon-logo-transparent.png', 'Transparent WebP, PNG, or JPG recommended (SVG disallowed)', { folder: 'general' })}
         </div>
       </div>
 
@@ -4953,7 +5595,7 @@ function renderFooterPageEditor() {
       <div class="a-card">
         <div class="a-card-header"><div><h3>Footer Branding &amp; Tagline</h3><p>Footer brand column</p></div></div>
         <div class="a-form-grid">
-          ${renderImageUploadField('logoUrl', 'Footer Logo Image', f.logoUrl || '/icon-logo-transparent.png', 'Transparent logo')}
+          ${renderImageUploadField('logoUrl', 'Footer Logo Image', f.logoUrl || '/icon-logo-transparent.png', 'Transparent logo', { folder: 'general' })}
           <div class="a-field span2"><label class="a-label">Company Mission Tagline</label><textarea class="a-textarea" name="tagline">${f.tagline || ''}</textarea></div>
           <div class="a-field span2"><label class="a-label">Copyright Notice</label><input class="a-input" name="copyrightText" value="${f.copyrightText || ''}"></div>
         </div>

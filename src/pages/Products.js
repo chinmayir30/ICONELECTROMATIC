@@ -78,12 +78,22 @@ let navState = {
 
 export function renderProductsPage() {
   const hash = window.location.hash || '';
-  const queryStr = hash.includes('?') ? hash.split('?')[1] : '';
+  const search = window.location.search || '';
+  let queryStr = '';
+  if (search.includes('?')) {
+    queryStr = search.slice(search.indexOf('?') + 1);
+  } else if (hash.includes('?')) {
+    queryStr = hash.slice(hash.indexOf('?') + 1);
+  }
   const params = new URLSearchParams(queryStr);
 
-  navState.level = params.get('level') || 'oems';
-  navState.oemId = params.get('oem') || null;
-  navState.categoryId = params.get('category') || null;
+  const oemParam = params.get('oem') || null;
+  const categoryParam = params.get('category') || null;
+  const levelParam = params.get('level') || (categoryParam ? 'products' : (oemParam ? 'categories' : 'oems'));
+
+  navState.level = levelParam;
+  navState.oemId = oemParam;
+  navState.categoryId = categoryParam;
 
   return `
     <div class="page-content catalog-page" id="catalog-page" style="min-height:100vh;">

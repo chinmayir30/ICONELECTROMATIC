@@ -1,6 +1,6 @@
 # PROJECT-STATE.md - Icon Electromatic website
 
-Last updated: 2026-10-21
+Last updated: 2026-10-29
 Rule: update this file at the end of every task. Never write passwords, keys or tokens here.
 Read docs/seo_backend_implementation.md for the implementation log, technology stack and phase status.
 
@@ -11,7 +11,7 @@ an indexable page with unique content, and that is handed over with documentatio
 client-owned accounts and one year of maintenance.
 
 ## Current stage
-Stage 7 - Architecture Hardening & SEO Integrity (Task 1 in progress on fix/static-seo-pipeline-repair)
+Stage 7 - Central CMS Supabase Persistence & SSG Integration (feat/admin-cms-supabase-persistence + feat/single-domain-routing)
 
 ## Stage checklist
 - [x] Frontend built (reviewed at commit e371aac, 15 Oct 2026)
@@ -24,6 +24,13 @@ Stage 7 - Architecture Hardening & SEO Integrity (Task 1 in progress on fix/stat
 - [x] Stage 5 - Real URLs, Static HTML Pages, Sitemap & Schema.org SEO (PR #14, commit 9aaf192 - with known gaps recorded)
 - [x] Stage 6 - Client Handover, Setup Guide & Maintenance (PR #15, commit 023190b)
 - [x] Task 1 - Static SEO Pipeline Repair (ISS-04, 05, 06, 08, 09, 10, 15 on fix/static-seo-pipeline-repair)
+- [x] Step 1 - Central CMS Database Schema & Seed (004_cms_content.sql, seed_cms_content.sql)
+- [x] Step 2 - Dual-Mode Service Layer Adapter (ContentService.js, supabaseClient.js)
+- [x] Step 3 - Centralize Product & OEM Persistence (Admin.js -> Supabase, seed_products_cms.sql)
+- [x] Step 4 - Connect Static Site Generator to Supabase (build-static-catalog.mjs, static-catalog-builder.test.mjs - 10/10 verified)
+- [x] Step 5 - Publishing Pipeline & Rebuild Webhook Integration (Admin.js, triggerPublishWebhook, SeoAuditModal.js - 5/5 verified)
+- [x] Phase 1.2 - Optimistic Concurrency Protection (supabaseClient.js, ContentService.js, Admin.js, migration 005 - 25/25 verified)
+- [x] Step 6 - Single-Domain Routing Alignment (/ vs /admin, src/main.js - locally verified)
 
 ## Decisions (confirmed by the owner)
 | Date | Decision | Why |
@@ -48,7 +55,7 @@ Stage 7 - Architecture Hardening & SEO Integrity (Task 1 in progress on fix/stat
 - Static SEO pages pre-rendered with dynamic CSS asset detection, valid Schema.org Product Offer, responsive image dimensions, and permanent 301 redirects for legacy prototype URLs
 - Dynamic catalog cards and rows now render direct crawlable links (/products/{oem}/{slug}) to static product pages
 - "4,000+ products" and "24+ categories" claims removed from index.html, Home.js, and ContentService.js and replaced with verified counts (160+ verified components, 15 OEM partners)
-- Demo admin: kept out of production behind VITE_ENABLE_DEMO_ADMIN (PR #7)
+- Admin CMS (/admin): always routable in production; runtime Supabase auth enforces access; VITE_ENABLE_DEMO_ADMIN retained for display-only badge on login screen (PR #7 for original gate, Step 6 for routing change)
 - Old fake product files (products.js, ProductDetail.js) removed in Phase 0 (PR #9)
 - Large files: 65 MB presentation, hero videos; main JS bundle is 399.46 kB (down from 645 kB baseline)
 - Repo is public and contains client files

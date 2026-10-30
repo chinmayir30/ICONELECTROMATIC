@@ -1,0 +1,258 @@
+/* ──────────────────────────────────────────────
+   Phase 2.2.4: IndexedDB Image Migration Modal Styles
+   ────────────────────────────────────────────── */
+
+.migration-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(11, 46, 89, 0.65);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+}
+
+.migration-modal-card {
+  background: #ffffff;
+  width: 100%;
+  max-width: 860px;
+  max-height: 90vh;
+  border-radius: 12px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: var(--a-font, 'Inter', system-ui, sans-serif);
+  color: #1e293b;
+}
+
+.migration-modal-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f8fafc;
+}
+
+.migration-modal-header h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #0b2e59;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.migration-modal-header p {
+  font-size: 0.85rem;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+.migration-modal-body {
+  padding: 24px;
+  overflow-y: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Preflight Checklist Cards */
+.migration-preflight-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.migration-preflight-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 0.82rem;
+}
+
+.migration-preflight-card.valid {
+  border-color: #10b981;
+  background: rgba(16, 185, 129, 0.05);
+}
+
+.migration-preflight-card.invalid {
+  border-color: #ef4444;
+  background: rgba(239, 68, 68, 0.05);
+}
+
+.migration-preflight-card strong {
+  display: block;
+  font-size: 0.88rem;
+  color: #0b2e59;
+  margin-bottom: 4px;
+}
+
+/* Statistics Grid */
+.migration-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.migration-stat-box {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 14px;
+  text-align: center;
+}
+
+.migration-stat-box h4 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0b2e59;
+  margin-bottom: 2px;
+}
+
+.migration-stat-box p {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.migration-stat-box.highlight {
+  border-color: #0e3a72;
+  background: rgba(14, 58, 114, 0.04);
+}
+
+.migration-stat-box.warning {
+  border-color: #f59e0b;
+  background: rgba(245, 158, 11, 0.05);
+}
+
+.migration-stat-box.error {
+  border-color: #ef4444;
+  background: rgba(239, 68, 68, 0.05);
+}
+
+/* Orphaned blobs toggle */
+.migration-option-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: #f1f5f9;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+
+/* Progress box */
+.migration-progress-box {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.migration-progress-bar-bg {
+  height: 10px;
+  background: #e2e8f0;
+  border-radius: 5px;
+  overflow: hidden;
+  margin: 10px 0 6px;
+}
+
+.migration-progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #0b2e59, #e51e2a);
+  width: 0%;
+  transition: width 0.3s ease;
+}
+
+/* Console Log Box */
+.migration-console {
+  background: #0f172a;
+  color: #94a3b8;
+  border-radius: 6px;
+  padding: 12px;
+  font-family: monospace;
+  font-size: 0.78rem;
+  max-height: 140px;
+  overflow-y: auto;
+  line-height: 1.5;
+}
+
+.migration-console .log-info { color: #38bdf8; }
+.migration-console .log-warn { color: #fbbf24; }
+.migration-console .log-error { color: #f87171; }
+.migration-console .log-success { color: #4ade80; }
+
+/* Status Banners */
+.migration-banner {
+  padding: 14px 18px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.9rem;
+}
+
+.migration-banner.success {
+  background: #ecfdf5;
+  border: 1px solid #10b981;
+  color: #065f46;
+}
+
+.migration-banner.warning {
+  background: #fffbeb;
+  border: 1px solid #f59e0b;
+  color: #92400e;
+}
+
+.migration-banner.error {
+  background: #fef2f2;
+  border: 1px solid #ef4444;
+  color: #991b1b;
+}
+
+/* Modal Footer */
+.migration-modal-footer {
+  padding: 16px 24px;
+  border-top: 1px solid #e2e8f0;
+  background: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+/* Audit & Residuals Table */
+.migration-table-wrap {
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  overflow-x: auto;
+  max-height: 180px;
+}
+
+.migration-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+}
+
+.migration-table th, .migration-table td {
+  padding: 8px 12px;
+  text-align: left;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.migration-table th {
+  background: #f8fafc;
+  color: #475569;
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+}
