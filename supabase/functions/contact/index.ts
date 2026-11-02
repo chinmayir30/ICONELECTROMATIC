@@ -14,6 +14,7 @@
  */
 
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
+import { consumeContactRateLimit, hashClientIp } from "./rateLimit.ts";
 
 function getCorsHeaders(req: Request): Record<string, string> {
   const origin = req.headers.get("origin") || "";
@@ -70,7 +71,7 @@ serve(async (req: Request) => {
 
   try {
     const body = await req.json().catch(() => ({}));
-    const clientIp = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "127.0.0.1";
+
 
     // 2. Anti-Spam: Honeypot check (_honey must be empty)
     if (body._honey && String(body._honey).trim().length > 0) {
@@ -244,46 +245,44 @@ serve(async (req: Request) => {
     };
     const targetOfficeEmail = officeEmails[office] || "sales@iconelectromatic.com";
 
-    if (supabaseUrl && supabaseServiceKey) {
-      // 1. Sliding window IP rate limit check (max 5/hr)
-      const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
-      const rateLimitCheckUrl = `${supabaseUrl}/rest/v1/rate_limits?ip_address=eq.${encodeURIComponent(
-        clientIp
-      )}&action=eq.contact_submission&created_at=gte.${encodeURIComponent(oneHourAgo)}&select=id`;
+    // Rate limiting is mandatory: fail closed if server-side dependencies
+    // or a client address supplied by the edge proxy are unavailable.
+    if (!supabaseUrl || !supabaseServiceKey) {
+      return new Response(JSON.stringify({ error: "Enquiry service is temporarily unavailable." }), {
+        status: 503, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
 
-      const rateRes = await fetch(rateLimitCheckUrl, {
-        headers: {
-          apikey: supabaseServiceKey,
-          Authorization: `Bearer ${supabaseServiceKey}`,
-        },
-      }).catch(() => null);
+    const forwardedFor = req.headers.get("x-forwarded-for");
+    const clientIp = forwardedFor?.split(",")[0]?.trim()
+      || req.headers.get("cf-connecting-ip")?.trim()
+      || req.headers.get("x-real-ip")?.trim();
+    const hashSecret = Deno.env.get("RATE_LIMIT_HASH_SECRET");
 
-      if (rateRes && rateRes.ok) {
-        const attempts = await rateRes.json();
-        if (Array.isArray(attempts) && attempts.length >= 5) {
-          return new Response(
-            JSON.stringify({
-              error: "Rate limit reached. Maximum 5 inquiries allowed per hour. Please try again later or call our office.",
-            }),
-            { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-          );
-        }
+    if (!clientIp || !hashSecret || new TextEncoder().encode(hashSecret).byteLength < 32) {
+      console.error("Contact rate limiting is not configured with a trusted client IP and strong HMAC secret.");
+      return new Response(JSON.stringify({ error: "Enquiry service is temporarily unavailable." }), {
+        status: 503, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    try {
+      const ipHash = await hashClientIp(clientIp, hashSecret);
+      const allowed = await consumeContactRateLimit(supabaseUrl, supabaseServiceKey, ipHash);
+      if (!allowed) {
+        return new Response(
+          JSON.stringify({
+            error: "Rate limit reached. Maximum 5 inquiries allowed per hour. Please try again later or call our office.",
+          }),
+          { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
       }
-
-      // Record rate limit attempt
-      await fetch(`${supabaseUrl}/rest/v1/rate_limits`, {
-        method: "POST",
-        headers: {
-          apikey: supabaseServiceKey,
-          Authorization: `Bearer ${supabaseServiceKey}`,
-          "Content-Type": "application/json",
-          Prefer: "return=minimal",
-        },
-        body: JSON.stringify({
-          ip_address: clientIp,
-          action: "contact_submission",
-        }),
-      }).catch(() => {});
+    } catch (rateLimitError) {
+      console.error("Contact rate-limit check failed:", rateLimitError);
+      return new Response(JSON.stringify({ error: "Enquiry service is temporarily unavailable." }), {
+        status: 503, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
 
       // 2. Insert into enquiries table with dual-field compatibility
       const insertRes = await fetch(`${supabaseUrl}/rest/v1/enquiries`, {
