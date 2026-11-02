@@ -95,6 +95,23 @@ In the Supabase Dashboard, open the **SQL Editor** (`>_`) and run the SQL migrat
 7. `supabase/migrations/007_atomic_contact_rate_limit.sql`: Creates the private HMAC-hash event table and atomic rate-limit RPC.
 8. `supabase/seed.sql`: Populates the complete catalog of 13 OEMs, 86 categories, and 167 products with specs and image relations.
 
+### Migration backup, recovery and rollback requirements
+
+Before applying any migration to a client-owned or production database:
+
+1. Apply the complete ordered migration chain to a disposable environment first, using the same Supabase-managed services and PostgreSQL major version where possible.
+2. Confirm a recent database backup exists and that the client can restore it. Use the backup/PITR facilities offered by the selected database provider, or take a provider-supported logical export (for example, `pg_dump`) and store it outside the application repository. Backup availability and retention depend on the selected plan/provider; verify them rather than assuming they are enabled.
+3. Record the current migration history, database version, row counts for affected tables, and the current schema before applying changes.
+4. Prefer a forward-fix migration over manually reversing a migration that has already been applied. Do not edit an already-applied migration in a deployed environment; create a new migration for subsequent corrections.
+5. If recovery is required, restore the backup into an isolated database first, validate schema and row counts, and only then plan a client-approved production recovery. Never test restore or rollback procedures against the live database.
+
+Phase 1 migration-specific safeguards:
+
+- Migration 006 intentionally preserves the legacy `rate_limits.ip_hash` primary key and its NOT NULL constraint. Do not drop or relax that key as part of rate-limit remediation.
+- Migration 007 introduces `contact_rate_limit_events` and its service-role-only RPC. Retain the legacy `rate_limits` table until all older consumers are proven retired. Do not remove the new table or RPC during rollback while the contact Edge Function depends on them.
+- Migration 003's rollback notes are in the migration file. In particular, never delete the `catalog-images` bucket or its objects as a schema rollback, and do not restore the global category-slug uniqueness constraint unless duplicate slugs have been ruled out.
+- Migration 006 changes enquiry columns and adds a synchronization trigger. Preserve existing enquiry rows and validate them before any rollback; do not drop compatibility columns merely to restore the former schema.
+
 ### Step 4: Deploy the Contact Edge Function
 Using the Supabase CLI:
 ```bash
