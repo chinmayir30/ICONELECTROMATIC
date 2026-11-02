@@ -58,7 +58,7 @@ BEGIN
 
     RETURN NEW;
 END;
-$$ LANGUAGE plpgsql;
+$ LANGUAGE plpgsql SET search_path = pg_catalog, public;
 
 DROP TRIGGER IF EXISTS trg_sync_enquiry_columns ON public.enquiries;
 CREATE TRIGGER trg_sync_enquiry_columns
