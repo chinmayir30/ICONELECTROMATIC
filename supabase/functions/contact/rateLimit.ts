@@ -1,5 +1,17 @@
 const encoder = new TextEncoder();
 
+/**
+ * Hosted Supabase Edge Functions are fronted by Cloudflare. Use only the
+ * single-value CF-Connecting-IP header for the hosted ingress path.
+ * Do not trust the leftmost X-Forwarded-For value: callers can prepend it.
+ * If this header is absent, fail closed instead of guessing an identity.
+ */
+export function getTrustedClientIp(headers: Headers): string | null {
+  const value = headers.get("cf-connecting-ip")?.trim();
+  if (!value || value.includes(",")) return null;
+  return value;
+}
+
 export async function hashClientIp(ipAddress: string, secret: string): Promise<string> {
   if (!ipAddress || !secret || encoder.encode(secret).byteLength < 32) {
     throw new Error("RATE_LIMIT_HASH_SECRET must be configured with at least 32 bytes.");
