@@ -88,7 +88,12 @@ Follow these steps to connect your own Supabase project:
 In the Supabase Dashboard, open the **SQL Editor** (`>_`) and run the SQL migration files in this order:
 1. `supabase/migrations/001_initial_schema.sql`: Creates `oems`, `categories`, `products`, `product_images`, `product_specs`, `enquiries`, and `rate_limits` tables.
 2. `supabase/migrations/002_rls_policies.sql`: Enables Row Level Security and defines public read and admin write policies.
-3. `supabase/seed.sql`: Populates the complete catalog of 13 OEMs, 86 categories, and 167 products with specs and image relations.
+3. `supabase/migrations/003_admin_schema_alignment.sql`: Aligns admin/catalogue schema and storage policies.
+4. `supabase/migrations/004_cms_content.sql`: Creates CMS content storage.
+5. `supabase/migrations/005_cms_content_versioning.sql`: Adds CMS version tracking.
+6. `supabase/migrations/006_align_enquiries_and_rate_limits.sql`: Aligns enquiry fields and creates career application storage. The legacy `rate_limits` table is retained; do not manually alter its primary key.
+7. `supabase/migrations/007_atomic_contact_rate_limit.sql`: Creates the private HMAC-hash event table and atomic rate-limit RPC.
+8. `supabase/seed.sql`: Populates the complete catalog of 13 OEMs, 86 categories, and 167 products with specs and image relations.
 
 ### Step 4: Deploy the Contact Edge Function
 Using the Supabase CLI:
@@ -101,6 +106,8 @@ npx supabase link --project-ref your-project-id
 
 # Set secrets for email dispatch (replace placeholder values with real client mailboxes and API keys):
 npx supabase secrets set RESEND_API_KEY=re_your_resend_api_key
+# Generate a random secret of at least 32 bytes; keep it server-side only.
+npx supabase secrets set RATE_LIMIT_HASH_SECRET=replace_with_random_secret_at_least_32_bytes
 npx supabase secrets set OFFICE_EMAIL_INDIA=your_india_office@domain.com
 npx supabase secrets set OFFICE_EMAIL_SINGAPORE=your_apac_office@domain.com
 npx supabase secrets set OFFICE_EMAIL_USA=your_usa_office@domain.com
