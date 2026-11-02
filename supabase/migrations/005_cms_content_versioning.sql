@@ -24,7 +24,7 @@ BEGIN
     NEW.updated_at := now();
     RETURN NEW;
 END;
-$$ LANGUAGE plpgsql;
+$ LANGUAGE plpgsql SET search_path = pg_catalog, public;
 
 -- ------------------------------------------------------------------------------
 -- 3. Bind trigger to public.cms_content (BEFORE UPDATE)
