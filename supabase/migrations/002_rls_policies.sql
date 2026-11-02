@@ -23,7 +23,10 @@ BEGIN
         AND role IN ('admin', 'editor')
     );
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public, auth, pg_temp;
+
+REVOKE ALL ON FUNCTION public.is_staff() FROM PUBLIC, anon;
+GRANT EXECUTE ON FUNCTION public.is_staff() TO authenticated, service_role;
 
 -- Helper function to check if current user is admin
 CREATE OR REPLACE FUNCTION public.is_admin()
@@ -35,7 +38,10 @@ BEGIN
         AND role = 'admin'
     );
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public, auth, pg_temp;
+
+REVOKE ALL ON FUNCTION public.is_admin() FROM PUBLIC, anon;
+GRANT EXECUTE ON FUNCTION public.is_admin() TO authenticated, service_role;
 
 -- ------------------------------------------------------------------------------
 -- OEMs Policies
