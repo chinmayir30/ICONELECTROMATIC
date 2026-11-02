@@ -15,4 +15,5 @@ jobs:
       - run: npm ci
       - run: npm run build
       - name: Validate GitHub Actions workflow YAML
-        run: ruby -e 'require "yaml"; Dir.glob(".github/workflows/*.{yml,yaml}").each { |path| YAML.load_file(path, aliases: true); puts "Valid YAML: #{path}" }'
+        run: |
+          ruby -e 'require "yaml"; Dir.glob(".github/workflows/*.{yml,yaml}").each { |path| YAML.load_file(path, aliases: true); puts "Valid YAML: #{path}" }'
