@@ -128,12 +128,12 @@ CREATE TABLE IF NOT EXISTS public.rate_limits (
 
 -- Trigger to update updated_at automatically
 CREATE OR REPLACE FUNCTION public.set_updated_at()
-RETURNS TRIGGER AS $$
+RETURNS TRIGGER AS $trigger$
 BEGIN
     NEW.updated_at = timezone('utc'::text, now());
     RETURN NEW;
 END;
-$ LANGUAGE plpgsql SET search_path = pg_catalog, public;
+$trigger$ LANGUAGE plpgsql SET search_path = pg_catalog, public;
 
 CREATE OR REPLACE TRIGGER trg_oems_updated_at
     BEFORE UPDATE ON public.oems
