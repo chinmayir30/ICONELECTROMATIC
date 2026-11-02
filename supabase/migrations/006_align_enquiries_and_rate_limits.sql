@@ -75,8 +75,8 @@ ALTER TABLE public.rate_limits
     ADD COLUMN IF NOT EXISTS id UUID DEFAULT gen_random_uuid();
 
 -- Relax NOT NULL on ip_hash for queries that use ip_address
-ALTER TABLE public.rate_limits
-    ALTER COLUMN ip_hash DROP NOT NULL;
+-- Keep legacy ip_hash NOT NULL: it is the existing primary key. New atomic
+-- rate limiting is implemented in contact_rate_limit_events by migration 007.
 
 -- Performance index for edge function sliding window checks
 CREATE INDEX IF NOT EXISTS idx_rate_limits_sliding_window
