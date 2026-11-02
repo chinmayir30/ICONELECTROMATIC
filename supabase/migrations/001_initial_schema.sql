@@ -133,7 +133,7 @@ BEGIN
     NEW.updated_at = timezone('utc'::text, now());
     RETURN NEW;
 END;
-$$ LANGUAGE plpgsql;
+$ LANGUAGE plpgsql SET search_path = pg_catalog, public;
 
 CREATE OR REPLACE TRIGGER trg_oems_updated_at
     BEFORE UPDATE ON public.oems
