@@ -42,23 +42,3 @@ jobs:
         run: sudo apt-get update && sudo apt-get install --yes postgresql-client
       - name: Verify clean database migrations and rate-limit concurrency
         run: bash scripts/test-db-migrations.sh
-      - name: Verify hosted Supabase trusted client IP header
-        if: github.event_name == 'pull_request' && github.event.pull_request.number == 26
-        shell: bash
-        run: |
-          endpoint="https://dozurbswsquxxyjljmww.supabase.co/functions/v1/phase1-ip-header-diagnostic"
-          normal="$(curl --fail --silent --show-error --retry 3 --retry-delay 2 "$endpoint")"
-          forged="$(curl --fail --silent --show-error --retry 3 --retry-delay 2 \
-            -H "CF-Connecting-IP: 198.51.100.77" \
-            -H "X-Forwarded-For: 203.0.113.88" "$endpoint")"
-          normal_ip="$(jq -r '.cf_connecting_ip // empty' <<< "$normal")"
-          forged_ip="$(jq -r '.cf_connecting_ip // empty' <<< "$forged")"
-          if [[ -z "$normal_ip" || -z "$forged_ip" ]]; then
-            echo "Trusted IP diagnostic did not return a client IP."
-            exit 1
-          fi
-          if [[ "$forged_ip" == "198.51.100.77" || "$forged_ip" != "$normal_ip" ]]; then
-            echo "Hosted ingress did not preserve the same trusted client IP across normal and forged requests."
-            exit 1
-          fi
-          echo "PASS: hosted Supabase ingress overwrote the forged CF-Connecting-IP header."
