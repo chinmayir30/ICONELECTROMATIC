@@ -52,26 +52,26 @@ export function renderHeaderInner(currentRoute) {
           <span class="sidebar-bar"></span>
         </button>
 
-        <a href="#/" class="logo-container" data-route="/" title="ICON ELECTROMATIC Home">
+        <a href="/" class="logo-container" data-route="/" title="ICON ELECTROMATIC Home">
           <img src="${logoSrc}" alt="ICON ELECTROMATIC" class="site-header-logo-img" />
         </a>
       </div>
 
       <nav class="main-nav" id="main-nav">
         ${navLinks.map(link => `
-          <a href="#${link.path}" class="nav-link ${route === link.path ? 'active' : ''}" data-route="${link.path}">
+          <a href="${link.path}" class="nav-link ${route === link.path ? 'active' : ''}" data-route="${link.path}">
             ${link.label}
           </a>
         `).join('')}
         <div class="mobile-nav-cta">
-          <a href="#${ctaLink}" class="btn-relay-red mobile-drawer-cta" data-route="${ctaLink}">
+          <a href="${ctaLink}" class="btn-relay-red mobile-drawer-cta" data-route="${ctaLink}">
             ${ctaText} <i class="fa-solid fa-arrow-right"></i>
           </a>
         </div>
       </nav>
 
       <div class="header-actions">
-        <a href="#${ctaLink}" class="btn-relay-border" data-route="${ctaLink}">
+        <a href="${ctaLink}" class="btn-relay-border" data-route="${ctaLink}">
           ${ctaText}
         </a>
         <button class="theme-toggle-btn theme-toggle-switch ${isLight ? 'is-light' : ''}" id="theme-toggle-btn" role="switch" aria-checked="${isLight ? 'true' : 'false'}" aria-label="Toggle dark and light theme" title="${isLight ? 'Switch to Darker Version' : 'Switch to Lighter Version'}">
@@ -138,7 +138,7 @@ function renderSidebarDrawerHTML(currentRoute) {
     <div class="sidebar-drawer-overlay" id="sidebar-drawer-overlay" aria-hidden="true"></div>
     <aside class="sidebar-drawer" id="sidebar-drawer" aria-label="Quick Navigation Sidebar" aria-hidden="true">
       <div class="drawer-header">
-        <a href="#/" class="drawer-logo" data-route="/" title="ICON ELECTROMATIC Home" style="background: transparent !important; border: none !important; box-shadow: none !important; padding: 4px 0 !important; display: inline-flex !important; align-items: center !important;">
+        <a href="/" class="drawer-logo" data-route="/" title="ICON ELECTROMATIC Home" style="background: transparent !important; border: none !important; box-shadow: none !important; padding: 4px 0 !important; display: inline-flex !important; align-items: center !important;">
           <img src="${logoSrc}" alt="ICON ELECTROMATIC" style="height: 34px; max-height: 34px; width: auto; object-fit: contain; display: block;" />
         </a>
         <button class="drawer-close-btn" id="drawer-close-btn" aria-label="Close navigation sidebar" title="Close">
@@ -148,7 +148,7 @@ function renderSidebarDrawerHTML(currentRoute) {
 
       <div class="drawer-body">
         ${drawerLinks.map(link => `
-          <a href="#${link.path}" class="drawer-nav-item ${route === link.path ? 'active' : ''}" data-route="${link.path}">
+          <a href="${link.path}" class="drawer-nav-item ${route === link.path ? 'active' : ''}" data-route="${link.path}">
             <div class="drawer-nav-item-content">
               <span class="drawer-icon"><i class="${link.icon}"></i></span>
               <span>${link.label}</span>
@@ -157,18 +157,11 @@ function renderSidebarDrawerHTML(currentRoute) {
           </a>
         `).join('')}
 
-        <div class="drawer-divider"></div>
-        <a href="/admin" class="drawer-nav-item drawer-employee-item ${route === '/admin' ? 'active' : ''}" data-route="/admin" id="drawer-employee-zone-link" title="Open Employee Zone Admin Panel">
-          <div class="drawer-nav-item-content">
-            <span class="drawer-icon employee-icon"><i class="fa-solid fa-id-badge"></i></span>
-            <span class="drawer-item-title" style="font-weight: 600;">Employee Zone</span>
-          </div>
-          <span class="drawer-employee-badge"><i class="fa-solid fa-shield-halved"></i> Admin</span>
-        </a>
+
       </div>
 
       <div class="drawer-footer">
-        <a href="#${ctaLink}" class="btn-relay-red drawer-footer-cta" data-route="${ctaLink}">
+        <a href="${ctaLink}" class="btn-relay-red drawer-footer-cta" data-route="${ctaLink}">
           ${ctaText} <i class="fa-solid fa-arrow-right"></i>
         </a>
       </div>

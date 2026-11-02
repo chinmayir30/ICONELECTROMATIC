@@ -440,6 +440,48 @@ Open items that affect these phases: client decisions on category grouping, dupl
   - All test suites pass (60/60 tests).
 - **Undo:** Delete `.github/workflows/supabase-keepalive.yml` or revert this branch.
 
+### Entry 23: Complete Remediation of All Audit Gaps, Schema Alignment & Hash Route Cleanup
+- **Status:** In progress (branch `fix/remediation-audit-gaps`, 02 Nov 2026)
+- **What was built:**
+  - Migration `006_align_enquiries_and_rate_limits.sql`: aligned `public.enquiries` and `public.rate_limits` with Edge Function payloads, added `public.career_applications` table with RLS.
+  - Updated `supabase/functions/contact/index.ts` with dual-field insertion (`full_name`/`name`, `office`/`destination_office`), CORS defaults, and career application handler.
+  - Connected careers form in `src/pages/Contact.js` to Edge Function with real server ticket generation.
+  - Converted all 29 legacy `#/` hash routes to clean HTML5 URLs across all templates (Rule 5 compliance).
+  - Fixed PowerRF logo path in `ContentService.js` and `seed_cms_content.sql`.
+  - Removed Spellman and AEE Israel partners from catalog, blogs, and chatbot per stakeholder punch-list (active count: 167 products across 13 OEMs).
+  - Added silent JWT refresh and fixed demo session retention on reload in `authService.js`.
+  - Added RLS write permission detection for 0-row PATCH returns in `supabaseClient.js`.
+  - Removed Employee Zone link from mobile drawer for public visitors.
+- **Technology and role:** SQL migrations, Supabase Edge Function, client auth service, SSG pipeline, DOM routing.
+- **How it works:** The database accepts both legacy and modern column formats seamlessly. The Edge Function dual-populates records, and client-side links navigate through HTML5 history cleanly.
+- **Files and folders added or changed:**
+  - `supabase/migrations/006_align_enquiries_and_rate_limits.sql`
+  - `supabase/functions/contact/index.ts`
+  - `supabase/seed_cms_content.sql`
+  - `src/services/authService.js`
+  - `src/services/supabaseClient.js`
+  - `src/pages/Contact.js`
+  - `src/components/Header.js`
+  - `src/components/Footer.js`
+  - `src/components/Chatbot.js`
+  - `src/components/ProductCard.js`
+  - `src/pages/About.js`
+  - `src/pages/Blogs.js`
+  - `src/pages/Home.js`
+  - `src/pages/Products.js`
+  - `src/router.js`
+  - `src/data/catalogData.js`
+  - `src/data/blogData.js`
+  - `src/data/ContentService.js`
+  - `tests/*.test.mjs`
+  - `docs/PROJECT-STATE.md`
+  - `docs/seo_backend_implementation.md`
+- **Data and security notes:** No secrets committed. Public submissions validated server-side. RLS enforced.
+- **Checked (and how):**
+  - All 9 test suites pass (100% pass rate).
+  - `npm run build` succeeds (167 static pages, sitemap with 174 indexable URLs).
+- **Undo:** Revert this branch or PR.
+
 ## 7. Entry template (copy for each new phase)
 ```
 ### Entry N: name

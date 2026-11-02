@@ -32,7 +32,6 @@ function findOem(query) {
     if (oem.id === 'rfuw-engineering' && (q.includes('rfuw') || q.includes('rf&w'))) return oem;
     if (oem.id === 'triteq' && (q.includes('tri-teq') || q.includes('triteq'))) return oem;
     if (oem.id === 'nee' && (q.includes('new england etching') || q.includes('nee') || q.includes('new england'))) return oem;
-    if (oem.id === 'aee-isarael' && (q.includes('aee') || q.includes('pids') || q.includes('perimeter'))) return oem;
     if (oem.id === 'transline-technology' && q.includes('transline')) return oem;
     if (oem.id === 'evans' && (q.includes('eulex') || q.includes('paktron') || q.includes('evans capacitor'))) return oem;
     if (oem.id === 'tecdia' && (q.includes('tecdia') || q.includes('single layer cap'))) return oem;
@@ -400,7 +399,8 @@ export function initChatbot() {
         e.preventDefault();
         const route = btn.getAttribute('data-route');
         if (route) {
-          window.location.hash = route;
+          window.history.pushState(null, '', route);
+          window.dispatchEvent(new PopStateEvent('popstate'));
           modal.classList.remove('open');
         }
       });

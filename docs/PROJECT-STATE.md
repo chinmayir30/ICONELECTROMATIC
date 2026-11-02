@@ -32,6 +32,7 @@ Stage 7 - Central CMS Supabase Persistence, SSG Integration & Automated Free-Tie
 - [x] Phase 1.2 - Optimistic Concurrency Protection (supabaseClient.js, ContentService.js, Admin.js, migration 005 - 25/25 verified)
 - [x] Step 6 - Single-Domain Routing Alignment (/ vs /admin, src/main.js - locally verified)
 - [x] Step 7 - Automated Supabase Keep-Alive Workflow & Handover Agreement (.github/workflows/supabase-keepalive.yml, docs/DEPLOYMENT-RESPONSIBILITY-HANDOVER.md)
+- [x] Step 8 - Complete Remediation of Audit Gaps, Schema Alignment & Hash Route Cleanup (006_align_enquiries_and_rate_limits.sql, index.ts, Contact.js, authService.js, 167 products / 13 OEMs - 9/9 test suites verified)
 
 ## Decisions (confirmed by the owner)
 | Date | Decision | Why |

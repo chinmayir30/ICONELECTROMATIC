@@ -174,7 +174,7 @@ function renderShell() {
             <button type="button" class="a-btn a-btn-primary a-btn-sm" id="btn-publish-site" title="Trigger static site generation rebuild hook">
               <i class="fa-solid fa-cloud-arrow-up"></i> Publish Site
             </button>
-            <a href="#/" class="a-btn a-btn-outline a-btn-sm" style="text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+            <a href="/" class="a-btn a-btn-outline a-btn-sm" style="text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
               <i class="fa-solid fa-globe"></i> View Site
             </a>
             <button class="a-btn a-btn-outline a-btn-sm" id="a-reset-btn" title="Reset this section to authentic default data">

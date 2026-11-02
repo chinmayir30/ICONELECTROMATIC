@@ -16,10 +16,10 @@ test('Publishing Pipeline & Webhook Integration Suite', async (t) => {
   await t.test('Test 1: runCatalogPrePublishAudit validates authentic catalog against Option B', () => {
     const audit = runCatalogPrePublishAudit(CATALOG);
 
-    assert.equal(audit.totalOems, 15, 'Must audit all 15 OEMs');
-    assert.equal(audit.totalCategories, 88, 'Must audit all 88 categories');
-    assert.equal(audit.totalProducts, 169, 'Must audit all 169 products');
-    assert.equal(audit.eligibleProducts, 169, 'All 169 verified products in baseline CATALOG must pass Option B');
+    assert.equal(audit.totalOems, 13, 'Must audit all 13 OEMs');
+    assert.equal(audit.totalCategories, 86, 'Must audit all 86 categories');
+    assert.equal(audit.totalProducts, 167, 'Must audit all 167 products');
+    assert.equal(audit.eligibleProducts, 167, 'All 167 verified products in baseline CATALOG must pass Option B');
     assert.equal(audit.draftProducts, 0, 'Zero incomplete products in baseline');
     assert.equal(audit.score, 100, 'Baseline catalog score must be 100%');
     assert.equal(audit.canPublish, true, 'Catalog must be eligible to publish');
@@ -98,7 +98,7 @@ test('Publishing Pipeline & Webhook Integration Suite', async (t) => {
   await t.test('Test 3: renderCatalogPublishModal includes audit metrics and webhook mode', () => {
     const mockAudit = {
       totalOems: 15,
-      totalCategories: 88,
+      totalCategories: 86,
       totalProducts: 169,
       eligibleProducts: 160,
       draftProducts: 9,

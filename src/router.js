@@ -96,7 +96,7 @@ export function handleRoute() {
           <div style="min-height: 80vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px; color: #fff;">
             <h1 style="font-size: 2rem; margin-bottom: 16px; color: #dd2b1c;">Unable to display page</h1>
             <p style="color: #94a3b8; max-width: 500px; margin-bottom: 24px;">An error occurred while loading this section.</p>
-            <a href="#/" class="btn-relay-red" onclick="window.location.reload()">Reload Home</a>
+            <a href="/" class="btn-relay-red" onclick="window.location.reload()">Reload Home</a>
           </div>
         `;
       }

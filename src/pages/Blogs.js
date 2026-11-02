@@ -314,7 +314,7 @@ function renderAllOemsBlogView() {
           <span style="font-size:0.8rem;color:var(--text-gray-400);">
             <i class="fa-solid fa-shield-check" style="color:var(--success);margin-right:5px;"></i> Official Technical Dispatch
           </span>
-          <a class="btn-relay-blue" id="modal-article-rfq-link" href="#/contact?subject=technical">
+          <a class="btn-relay-blue" id="modal-article-rfq-link" href="/contact?subject=technical">
             <i class="fa-solid fa-paper-plane"></i> Inquire on this Technology
           </a>
         </div>
@@ -380,7 +380,7 @@ function renderSingleOemBlogView(oem, blog, activeTab) {
               <button class="btn-relay-dark" id="back-to-all-oems-btn">
                 <i class="fa-solid fa-arrow-left"></i> All OEMs
               </button>
-              <a class="btn-relay-blue" href="#/contact?subject=technical&oem=${encodeURIComponent(oem.name)}">
+              <a class="btn-relay-blue" href="/contact?subject=technical&oem=${encodeURIComponent(oem.name)}">
                 <i class="fa-solid fa-paper-plane"></i> Technical Inquiry
               </a>
             </div>
@@ -522,7 +522,7 @@ function renderSingleOemBlogView(oem, blog, activeTab) {
                     `).join('')}
                   </ul>
 
-                  <a class="btn-relay-border" href="#/contact?subject=technical&oem=${encodeURIComponent(oem.name)}" style="width:100%;justify-content:center;margin-top:auto;">
+                  <a class="btn-relay-border" href="/contact?subject=technical&oem=${encodeURIComponent(oem.name)}" style="width:100%;justify-content:center;margin-top:auto;">
                     <i class="fa-solid fa-paper-plane"></i> Request Engineering Consultation
                   </a>
                 </div>
@@ -547,7 +547,7 @@ function renderSingleOemBlogView(oem, blog, activeTab) {
             <a class="btn-relay-dark" data-route="/products?level=categories&oem=${oem.id}">
               <i class="fa-solid fa-boxes-stacked"></i> Browse Catalog
             </a>
-            <a class="btn-relay-blue" href="#/contact?subject=rfq&oem=${encodeURIComponent(oem.name)}">
+            <a class="btn-relay-blue" href="/contact?subject=rfq&oem=${encodeURIComponent(oem.name)}">
               <i class="fa-solid fa-file-invoice"></i> Request Quote for ${oem.shortName}
             </a>
           </div>
@@ -571,7 +571,7 @@ function renderSingleOemBlogView(oem, blog, activeTab) {
           <span style="font-size:0.8rem;color:var(--text-gray-400);">
             <i class="fa-solid fa-shield-check" style="color:var(--success);margin-right:5px;"></i> Official Technical Bulletin
           </span>
-          <a class="btn-relay-blue" id="modal-article-rfq-link" href="#/contact?subject=technical">
+          <a class="btn-relay-blue" id="modal-article-rfq-link" href="/contact?subject=technical">
             <i class="fa-solid fa-paper-plane"></i> Inquire on this Technology
           </a>
         </div>
