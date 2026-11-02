@@ -15,7 +15,7 @@ export function renderHomePage() {
 
   const statsList = data.stats || [
     { value: '160+', label: 'VERIFIED COMPONENTS' },
-    { value: '15', label: 'OEM PARTNERS' },
+    { value: '13', label: 'OEM PARTNERS' },
     { value: '100%', label: 'ROHS & ISO 9001' }
   ];
 

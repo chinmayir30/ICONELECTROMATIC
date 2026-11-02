@@ -1,6 +1,6 @@
 -- ==============================================================================
 -- seed.sql (Full Catalog Seed)
--- Complete dataset: 15 OEMs, 88 Categories, 169 Products + Images + SEO Metadata
+-- Complete dataset: 13 OEMs, 86 Categories, 167 Products + Images + SEO Metadata
 -- Generated automatically from catalogData.js and full_extraction_report.json
 -- ==============================================================================
 
@@ -124,24 +124,6 @@ INSERT INTO public.oems (id, name, slug, logo_url, description, priority_order, 
     'Transline Technology is an elite fabricator of advanced RF, microwave, and millimeter-wave printed circuit boards utilizing Rogers, PTFE, and hybrid dielectric stackups for aerospace and defense electronics.',
     13,
     'https://translinetech.com'
-  ),
-(
-    '00000000-0000-0000-0000-000000000014',
-    'Spellman',
-    'spellman',
-    '/images/gan-power-chip.jpg',
-    'Spellman High Voltage Electronics Corporation is a world leader in high-voltage DC power supplies, modular power converters, X-ray generators, and custom power solutions for defense, aerospace, medical, and industrial applications.',
-    14,
-    'https://www.spellmanhv.com'
-  ),
-(
-    '00000000-0000-0000-0000-000000000015',
-    'AEE ISARAEL',
-    'aee-israel',
-    '/images/rf-filter.jpg',
-    'AEE Israel specializes in high-security physical and electronic perimeter detection, fiber-optic boundary sensing, taut-wire fences, drone defense, and command & control security management systems.',
-    15,
-    'https://www.aee-israel.com'
   )
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name,
@@ -842,27 +824,13 @@ Frequency drift: 5ppb.',
       'pcb-fabrication',
       'RF, Microwave, and mmWave PCB Fabrication Experts',
       '00000000-0000-0000-0000-000000000013'
-    ),
-(
-      '00000000-0000-0000-0001-000000000087',
-      'high voltage power supplies',
-      'high-voltage-power-supplies',
-      'Modular High Voltage Power Supply, Rack Mount Power Supply, X-Ray Generators, and Monoblock® Sources',
-      '00000000-0000-0000-0000-000000000014'
-    ),
-(
-      '00000000-0000-0000-0001-000000000088',
-      'Perimeter Intrusion Detection System (PIDS)',
-      'perimeter-intrusion-detection-system-pids',
-      'High security fencing, C4I security management, fiber & copper vibration systems, seismic sensors, and anti-drone defense',
-      '00000000-0000-0000-0000-000000000015'
     )
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name,
   description = EXCLUDED.description;
 
 -- ------------------------------------------------------------------------------
--- 3. Products (169 items with specifications and SEO tags)
+-- 3. Products (167 items with specifications and SEO tags)
 -- ------------------------------------------------------------------------------
 INSERT INTO public.products (
   id, name, slug, oem_id, category_id, description,
@@ -4116,42 +4084,6 @@ Frequency drift: 5ppb.',
         'Transline Technology PCB Fabrication PCB Fabrication | Icon Electromatic',
         'Buy genuine Transline Technology PCB Fabrication PCB Fabrication from Icon Electromatic. Technical specifications and pricing for India, Singapore & USA.',
         'https://iconelectromatic.com/products/transline-technology/pcb-fabrication',
-        NULL
-      ),
-(
-        '00000000-0000-0000-0002-000000000168',
-        'High Voltage Power Supplies & X-Ray Sources',
-        'high-voltage-power-supplies-x-ray-sources',
-        '00000000-0000-0000-0000-000000000014',
-        '00000000-0000-0000-0001-000000000087',
-        'Modular High Voltage Power Supply, Rack Mount High Voltage Power Supply, X-Ray Generator, X-Ray Source (Monoblock®), Custom High Voltage Power Supply, Application Specific High Voltage Power Supply, Portable NDT X-Ray Imaging Products',
-        '{}'::jsonb,
-        '{}'::text[],
-        ARRAY['Ion Beam Implantation', 'Electron Beam Welding', 'Electrostatic Separators', 'Electron Beam Evaporation', 'Ion Milling', 'Neutron Generators', 'Plasma Igniters', 'Sputtering', 'Marx Generators', 'Electrostatic Lenses', 'Oil Well Data Logging'],
-        NULL,
-        false,
-        false,
-        'Spellman High Voltage Power Supplies & X-Ray Sources high voltage power supplies | Icon Electromatic',
-        'Buy genuine Spellman High Voltage Power Supplies & X-Ray Sources high voltage power supplies from Icon Electromatic. Technical specifications and pricing for India, Singapore & USA.',
-        'https://iconelectromatic.com/products/spellman/high-voltage-power-supplies-x-ray-sources',
-        NULL
-      ),
-(
-        '00000000-0000-0000-0002-000000000169',
-        'Perimeter Intrusion Detection System (PIDS)',
-        'perimeter-intrusion-detection-system-pids',
-        '00000000-0000-0000-0000-000000000015',
-        '00000000-0000-0000-0001-000000000088',
-        'High Security Fencing, Industrial and Residential fencing systems, Command and Control C4I and Security Management Systems, Taut wire and Electric fences, Seismic systems, Fence mounted vibration ranging systems (Copper & Fiber), Drone Systems, Jammer equipment and Anti-Drone Systems, Radar, Aesthetic Smart Decorative Detection Fences, Fire & Smoke Detection system, Video Analytic (3D) and Behavior based on AI, Face Recognition Systems, Laser Sensor & Infra-Red Towers, Barrier & Bollards, Balloon Tactical Surveillance, Buried cable systems',
-        '{}'::jsonb,
-        '{}'::text[],
-        ARRAY['Military Bases', 'Radar Installations', 'Aerospace Test Facilities', 'Critical Infrastructure', 'Industrial and Defense Perimeters'],
-        NULL,
-        false,
-        false,
-        'AEE Israel Perimeter Intrusion Detection System (PIDS) Perimeter Intrusion Detection System (PIDS) | Icon Electromatic',
-        'Buy genuine AEE Israel Perimeter Intrusion Detection System (PIDS) Perimeter Intrusion Detection System (PIDS) from Icon Electromatic. Technical specifications and pricing for India, Singapore & USA.',
-        'https://iconelectromatic.com/products/aee-israel/perimeter-intrusion-detection-system-pids',
         NULL
       )
 ON CONFLICT (oem_id, slug) DO UPDATE SET

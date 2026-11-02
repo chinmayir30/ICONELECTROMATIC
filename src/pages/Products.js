@@ -1,6 +1,6 @@
 /**
  * Products Catalog Page — ICON ELECTROMATIC
- * Hierarchical Navigation: Companies (15 OEMs) → Categories → Products
+ * Hierarchical Navigation: Companies (13 OEMs) → Categories → Products
  * Direct source: 'Icon Website Product Info - Mrora.v2.xlsx'
  */
 import {
@@ -211,7 +211,7 @@ function renderCurrentLevel() {
 }
 
 // ═════════════════════════════════════════════════════════════════════════════
-// LEVEL 1: ALL COMPANIES (15 OEMs)
+// LEVEL 1: ALL COMPANIES (13 OEMs)
 // ═════════════════════════════════════════════════════════════════════════════
 function renderOEMsLevel() {
   const oems = getActiveOEMs();

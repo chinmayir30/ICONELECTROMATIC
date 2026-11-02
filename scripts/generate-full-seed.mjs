@@ -1,7 +1,7 @@
 // ==============================================================================
 // generate-full-seed.mjs
-// Generates the comprehensive supabase/seed.sql for all 15 OEMs, 88 Categories,
-// and 169 Products, with on-record SEO metadata and image relations.
+// Generates the comprehensive supabase/seed.sql for all 13 OEMs, 86 Categories,
+// and 167 Products, with on-record SEO metadata and image relations.
 // ==============================================================================
 
 import fs from 'fs';
@@ -49,7 +49,7 @@ console.log(`Loaded ${imageMap.size} image mappings from extraction report.`);
 
 let sql = `-- ==============================================================================
 -- seed.sql (Full Catalog Seed)
--- Complete dataset: 15 OEMs, 88 Categories, 169 Products + Images + SEO Metadata
+-- Complete dataset: 13 OEMs, 86 Categories, 167 Products + Images + SEO Metadata
 -- Generated automatically from catalogData.js and full_extraction_report.json
 -- ==============================================================================
 
@@ -228,7 +228,7 @@ for (const oem of CATALOG) {
 }
 
 sql += `-- ------------------------------------------------------------------------------
--- 3. Products (169 items with specifications and SEO tags)
+-- 3. Products (167 items with specifications and SEO tags)
 -- ------------------------------------------------------------------------------
 INSERT INTO public.products (
   id, name, slug, oem_id, category_id, description,

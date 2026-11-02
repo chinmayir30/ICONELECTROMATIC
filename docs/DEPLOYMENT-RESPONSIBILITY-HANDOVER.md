@@ -14,7 +14,7 @@
 To ensure zero technical ambiguities and a seamless go-live, this document provides an **exhaustive breakdown** of every component in the ICON ELECTROMATIC project.
 
 As agreed:
-- **Developer Responsibility:** Delivers the complete, self-contained application source code, 169 pre-rendered product pages, 190+ packaged image assets, 5 PostgreSQL database migrations, 3 seed datasets, serverless contact functions, and configuration templates.
+- **Developer Responsibility:** Delivers the complete, self-contained application source code, 167 pre-rendered product pages, 190+ packaged image assets, 6 PostgreSQL database migrations, 3 seed datasets, serverless contact functions, and configuration templates.
 - **Client / Innovate Electronics Responsibility:** Owns and provisions cloud accounts (Supabase, Resend), hosting infrastructure, domain DNS records (`iconelectromatic.com`), and executes production deployment.
 
 ---
@@ -24,8 +24,8 @@ As agreed:
 ### 2.1 The Product Catalog & Static Generation (SSG)
 | Area | Developer Delivers (Our Side) | Client IT Responsibility (Your Side) |
 |---|---|---|
-| **169 B2B Products** | Complete catalog representing 15 global OEM partners (Rogers, Mini-Circuits, Qorvo, Tecdia, Tri-TeQ, etc.) mapped with categories, descriptions, specs, and applications. | Review and approve product descriptions; supply any proprietary internal part numbers if needed. |
-| **Static HTML Pages** | 169 pre-rendered static HTML detail pages in `/products/` that load instantly and are 100% crawlable by Google without requiring JavaScript execution. | Host on a modern static-compatible edge network (Vercel, AWS Amplify, Cloudflare Pages, Netlify). |
+| **167 B2B Products** | Complete catalog representing 13 global OEM partners (Rogers, Mini-Circuits, Qorvo, Tecdia, Tri-TeQ, etc.) mapped with categories, descriptions, specs, and applications. | Review and approve product descriptions; supply any proprietary internal part numbers if needed. |
+| **Static HTML Pages** | 167 pre-rendered static HTML detail pages in `/products/` that load instantly and are 100% crawlable by Google without requiring JavaScript execution. | Host on a modern static-compatible edge network (Vercel, AWS Amplify, Cloudflare Pages, Netlify). |
 | **"Publish Catalog" Webhook** | In-admin "Publish Catalog" trigger button wired to `VITE_REBUILD_WEBHOOK_URL` so staff edits can trigger a background static rebuild. | **Create a Deploy Hook** in your hosting dashboard (e.g. Vercel Settings $\rightarrow$ Git $\rightarrow$ Deploy Hooks) and paste the URL into `VITE_REBUILD_WEBHOOK_URL`. |
 
 ### 2.2 Product Images, Logos & Media Assets
@@ -39,8 +39,8 @@ As agreed:
 ### 2.3 The Database (Supabase PostgreSQL 15) & Free-Tier Keep-Alive
 | Database Component | Developer Delivers (Our Side) | Client IT Responsibility (Your Side) |
 |---|---|---|
-| **5 SQL Migrations** | `001_initial_schema.sql` (Tables: `oems`, `categories`, `products`, `enquiries`, `rate_limits`, `user_roles`)<br>`002_rls_policies.sql` (Row-Level Security)<br>`003_admin_schema_alignment.sql` (Storage bucket `catalog-images` & alignment)<br>`004_cms_content.sql` (Key-value CMS store)<br>`005_cms_content_versioning.sql` (Optimistic concurrency control) | **Provision Supabase project** (recommended region: `ap-south-1` Mumbai or `ap-southeast-1` Singapore) under company email.<br>Run migrations sequentially in the Supabase SQL Editor. |
-| **3 Seed Datasets** | `seed.sql` (Base roles, OEMs, categories)<br>`seed_cms_content.sql` (Initial website copy, office info)<br>`seed_products_cms.sql` (All 169 products in CMS JSON store) | Run the 3 seed scripts in order after applying the migrations. Run `NOTIFY pgrst, 'reload schema';` once complete. |
+| **6 SQL Migrations** | `001_initial_schema.sql` (Tables: `oems`, `categories`, `products`, `enquiries`, `rate_limits`, `user_roles`)<br>`002_rls_policies.sql` (Row-Level Security)<br>`003_admin_schema_alignment.sql` (Storage bucket `catalog-images` & alignment)<br>`004_cms_content.sql` (Key-value CMS store)<br>`005_cms_content_versioning.sql` (Optimistic concurrency control)<br>`006_align_enquiries_and_rate_limits.sql` (Enquiries, career applications & rate limits) | **Provision Supabase project** (recommended region: `ap-south-1` Mumbai or `ap-southeast-1` Singapore) under company email.<br>Run migrations sequentially in the Supabase SQL Editor. |
+| **3 Seed Datasets** | `seed.sql` (Base roles, OEMs, categories)<br>`seed_cms_content.sql` (Initial website copy, office info)<br>`seed_products_cms.sql` (All 167 products in CMS JSON store) | Run the 3 seed scripts in order after applying the migrations. Run `NOTIFY pgrst, 'reload schema';` once complete. |
 | **First Admin User Creation** | Role-Based Access Control logic (`admin`, `staff`, `viewer`). | **Mandatory Step**: After signing up the first staff email in Supabase Authentication, run: <br>`INSERT INTO public.user_roles (user_id, role) VALUES ('<USER_UUID>', 'admin');`<br>*(Without this, staff cannot log into `/admin`)*. |
 | **Automated Keep-Alive Workflow** | `.github/workflows/supabase-keepalive.yml` pings Supabase every 3 days via GitHub Actions. | Automatically keeps the Supabase Free Tier active 24/7/365, preventing the 7-day inactivity pause rule. |
 
@@ -54,9 +54,9 @@ As agreed:
 ### 2.5 Search Engine Optimization (SEO) & Domain
 | Item | Developer Delivers (Our Side) | Client IT Responsibility (Your Side) |
 |---|---|---|
-| **Canonical Domain** | All 169 static HTML files, OpenGraph metadata, JSON-LD schemas, and `sitemap.xml` strictly declare `https://iconelectromatic.com`. | **Point DNS records** (`A` and `CNAME`) at domain registrar to your hosting server. |
+| **Canonical Domain** | All 167 static HTML files, OpenGraph metadata, JSON-LD schemas, and `sitemap.xml` strictly declare `https://iconelectromatic.com`. | **Point DNS records** (`A` and `CNAME`) at domain registrar to your hosting server. |
 | **In-Admin SEO Tools** | Interactive SERP preview card with live Google desktop/mobile simulation and character/pixel counters in `/admin`. | Administrative staff can fine-tune meta titles and descriptions for any product directly from the CMS. |
-| **XML Sitemap** | Automated generation of `/sitemap.xml` with 176 indexed URLs. | Submit `https://iconelectromatic.com/sitemap.xml` in **Google Search Console** post-launch. |
+| **XML Sitemap** | Automated generation of `/sitemap.xml` with 174 indexed URLs. | Submit `https://iconelectromatic.com/sitemap.xml` in **Google Search Console** post-launch. |
 | **Robots Directives** | `public/robots.txt` disallows `/admin` and references the sitemap; `/admin` route injects `<meta name="robots" content="noindex, nofollow">`. | None (pre-configured in code). |
 
 ---

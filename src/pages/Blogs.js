@@ -1,7 +1,7 @@
 /**
  * Blogs & OEM Technical News Page — ICON ELECTROMATIC
  * Sleek Dark Relay Aesthetics
- * Displays all 15 manufacturing partner OEMs, technical news releases,
+ * Displays all 13 manufacturing partner OEMs, technical news releases,
  * demonstration videos, application notes, and official technical website links.
  */
 import { CATALOG } from '../data/catalogData.js';
@@ -15,7 +15,7 @@ function getBlogCmsData() {
   }
   return {
     heroTitle: 'OEM Technical News, Video Demos & Insights',
-    heroSubtitle: 'Direct technical bulletins, video demonstrations, application whitepapers, and product release updates from ICON Electromatic\'s 15 global manufacturing partners.',
+    heroSubtitle: 'Direct technical bulletins, video demonstrations, application whitepapers, and product release updates from ICON Electromatic\'s 13 global manufacturing partners.',
     trustBadge1: 'Application Whitepapers & Notes',
     trustBadge2: 'Video Demos & Technical Webinars',
     trustBadge3: 'Direct Manufacturer Bulletins',
@@ -123,7 +123,7 @@ function renderAllOemsBlogView() {
               ${cmsData.heroTitle || 'OEM Technical News, Video Demos &amp; Insights'}
             </h1>
             <p class="page-lead-unified">
-              ${cmsData.heroSubtitle || 'Direct technical bulletins, video demonstrations, application whitepapers, and product release updates from ICON Electromatic\'s 15 global manufacturing partners.'}
+              ${cmsData.heroSubtitle || 'Direct technical bulletins, video demonstrations, application whitepapers, and product release updates from ICON Electromatic\'s 13 global manufacturing partners.'}
             </p>
           </div>
 
@@ -151,7 +151,7 @@ function renderAllOemsBlogView() {
           <!-- Quick Filter Chips by OEM -->
           <div class="blogs-oem-selector-bar">
             <button class="blogs-oem-chip active" data-filter="all">
-              <i class="fa-solid fa-layer-group"></i> All 15 OEMs
+              <i class="fa-solid fa-layer-group"></i> All 13 OEMs
             </button>
           ${CATALOG.map(oem => `
             <button class="blogs-oem-chip" data-oem-select="${oem.id}">
@@ -173,7 +173,7 @@ function renderAllOemsBlogView() {
           </div>
         </div>
 
-        <!-- 15 OEMs Grid -->
+        <!-- 13 OEMs Grid -->
         <div class="blogs-oem-grid">
           ${CATALOG.map(oem => {
             const counts = getActiveOemContentCount(oem.id);
@@ -625,14 +625,16 @@ export function initBlogsPage() {
     });
   });
 
-  // "All 15 OEMs" chip
+  // "All 13 OEMs" chip
   document.querySelector('.blogs-oem-chip[data-filter="all"]')?.addEventListener('click', () => {
-    window.location.hash = '#/blogs';
+    window.history.pushState(null, '', '/blogs');
+    window.dispatchEvent(new Event('popstate'));
   });
 
   // Back to All OEMs button in single OEM view
   document.getElementById('back-to-all-oems-btn')?.addEventListener('click', () => {
-    window.location.hash = '#/blogs';
+    window.history.pushState(null, '', '/blogs');
+    window.dispatchEvent(new Event('popstate'));
   });
 
   // Tab switching in single OEM view

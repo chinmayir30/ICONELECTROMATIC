@@ -64,7 +64,7 @@ Stage 7 - Central CMS Supabase Persistence, SSG Integration & Automated Free-Tie
 - Two development-tool vulnerabilities (Vite, esbuild); affect the dev server only
 
 ## Open questions
-1. Final product count: 169 in code, about 130 stated by the owner, 400+ claimed by the client
+1. Final product count: 167 in code (across 13 OEMs and 86 categories after removing Spellman & AEE Israel), about 130 stated by the owner, 400+ claimed by the client
 2. Who builds the backend?
 3. Who edits and publishes at the client; is an approval step needed; do they add images and videos?
 4. Which email receives enquiries for each office (India, Singapore, USA)?

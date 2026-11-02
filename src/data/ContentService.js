@@ -105,7 +105,7 @@ const INITIAL_CONTENT = {
     ctaQuoteLink: '/contact',
     stats: [
       { id: 'stat-1', value: '160+', label: 'VERIFIED COMPONENTS' },
-      { id: 'stat-2', value: '15', label: 'OEM PARTNERS' },
+      { id: 'stat-2', value: '13', label: 'OEM PARTNERS' },
       { id: 'stat-3', value: '100%', label: 'ROHS & ISO 9001' },
     ],
     coreCapabilitiesTitle: 'Core Capabilities',
@@ -196,7 +196,7 @@ const INITIAL_CONTENT = {
     stats: [
       { id: 's-1', target: '1500', suffix: '+', label: 'Products', icon: 'fa-solid fa-boxes-stacked', color: 'red' },
       { id: 's-2', target: '150', suffix: '+', label: 'Years of combined experience', icon: 'fa-solid fa-calendar-check', color: 'blue' },
-      { id: 's-3', target: '15', suffix: '+', label: 'Partners', icon: 'fa-solid fa-handshake-angle', color: 'red' },
+      { id: 's-3', target: '13', suffix: '+', label: 'Partners', icon: 'fa-solid fa-handshake-angle', color: 'red' },
     ],
     visionTitle: 'Our Vision',
     visionDesc: 'To be India’s foremost and most trusted source of essential electronics components for research, development, and manufacturing across both public and private sectors.',
@@ -802,7 +802,7 @@ export const ContentService = {
           if (Array.isArray(parsed) && parsed.length > 0 && parsed[0].oemId) {
             const wrapped = {
               heroTitle: 'OEM Technical News, Video Demos & Insights',
-              heroSubtitle: 'Direct technical bulletins, video demonstrations, application whitepapers, and product release updates from ICON Electromatic\'s 15 global manufacturing partners.',
+              heroSubtitle: 'Direct technical bulletins, video demonstrations, application whitepapers, and product release updates from ICON Electromatic\'s 13 global manufacturing partners.',
               trustBadge1: 'Application Whitepapers & Notes',
               trustBadge2: 'Video Demos & Technical Webinars',
               trustBadge3: 'Direct Manufacturer Bulletins',
@@ -938,7 +938,7 @@ export const ContentService = {
     if (pageKey === 'blogs') {
       const initial = {
         heroTitle: 'OEM Technical News, Video Demos & Insights',
-        heroSubtitle: 'Direct technical bulletins, video demonstrations, application whitepapers, and product release updates from ICON Electromatic\'s 15 global manufacturing partners.',
+        heroSubtitle: 'Direct technical bulletins, video demonstrations, application whitepapers, and product release updates from ICON Electromatic\'s 13 global manufacturing partners.',
         trustBadge1: 'Application Whitepapers & Notes',
         trustBadge2: 'Video Demos & Technical Webinars',
         trustBadge3: 'Direct Manufacturer Bulletins',
