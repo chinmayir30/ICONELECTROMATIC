@@ -119,6 +119,10 @@ npx supabase functions deploy contact
 
 ---
 
+### Trusted client IP for contact rate limiting
+
+The hosted Supabase Edge Function rate limiter uses only the single-value `CF-Connecting-IP` request header for the client identity. It deliberately does not fall back to `X-Forwarded-For` or `X-Real-IP`, because caller-supplied forwarded values must not be trusted for security decisions. If the trusted header is missing or malformed, the contact endpoint fails closed with HTTP 503 rather than bypassing rate limiting. This assumption applies to the hosted Supabase ingress path; if the client deploys the function on another platform or behind a different proxy, that platform's trusted-proxy contract must be independently established and tested before adapting the header source.
+
 ## 4. Production Hosting & Deployment
 
 The static build output in `dist/` is 100% host-independent.
