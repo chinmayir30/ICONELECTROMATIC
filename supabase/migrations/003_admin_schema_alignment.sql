@@ -177,7 +177,7 @@ ON CONFLICT (id) DO UPDATE SET
 -- Supabase Storage owns storage.objects (typically as supabase_storage_admin).
 -- Do not ALTER this managed table from the application migration role. Verify
 -- the platform prerequisite and fail with a clear message if it is absent.
-DO $
+DO $storage$
 BEGIN
     IF NOT EXISTS (
         SELECT 1
@@ -187,7 +187,7 @@ BEGIN
     ) THEN
         RAISE EXCEPTION 'Supabase Storage prerequisite missing: RLS must be enabled on storage.objects';
     END IF;
-END $;
+END $storage$;
 
 DROP POLICY IF EXISTS "Public Access for catalog-images" ON storage.objects;
 CREATE POLICY "Public Access for catalog-images"
