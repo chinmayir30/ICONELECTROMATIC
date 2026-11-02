@@ -661,6 +661,7 @@ export function initContactPage() {
       }
 
       let ticketId = null;
+      let emailDispatched = false;
       const officeLabel = payload.office.toUpperCase() + ' Regional Desk';
 
       try {
@@ -686,6 +687,7 @@ export function initContactPage() {
         }
 
         ticketId = data.ticket_id;
+        emailDispatched = data.email_dispatched === true;
       } catch (netErr) {
         showInquiryError('Network error: Unable to reach the contact service. Please check your connection and try again.');
         return;
@@ -702,7 +704,9 @@ export function initContactPage() {
               Reference Ticket: #${ticketId} &bull; ${officeLabel}
             </div>
             <p style="color:var(--text-gray-400);font-size:0.95rem;max-width:480px;margin:0 auto var(--space-6);line-height:1.6;">
-              Your technical requirements have been received and routed to our application engineering team. A formal RFQ response and datasheet package will be dispatched to <strong>${escapeHtml(payload.email)}</strong> within 24 business hours.
+              ${emailDispatched
+                ? `Your enquiry has been saved and the notification was accepted by the email provider. The regional applications desk will follow up at <strong>${escapeHtml(payload.email)}</strong>.`
+                : `Your enquiry has been saved, but email notification could not be confirmed. If your request is urgent, please contact the regional office directly.`}
             </p>
             <div>
               <button class="btn-relay-secondary" id="reset-inquiry-btn" style="padding:8px 18px;font-size:0.85rem;">
@@ -756,10 +760,18 @@ export function initContactPage() {
       const endpoint = import.meta.env.VITE_CONTACT_ENDPOINT ||
         (import.meta.env.VITE_SUPABASE_URL ? `${import.meta.env.VITE_SUPABASE_URL.replace(/\/$/, '')}/functions/v1/contact` : null);
 
-      let candRefId = (careers.candidateIdPrefix || 'ICON-CAREER-') + Math.floor(100000 + Math.random() * 900000);
+      if (!endpoint) {
+        alert('Application service is not configured. Please contact careers@iconelectromatic.com directly.');
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<i class="fa-solid fa-briefcase"></i> Submit Engineering Application';
+        }
+        return;
+      }
 
-      if (endpoint) {
-        try {
+      let candRefId = '';
+
+      try {
           const compMessage = `Location: ${city}\nExperience: ${experience}\nOrganization: ${organization}\nNotice: ${notice}\nSkills: ${skills}\nLinkedIn: ${linkedin}\n\nStatement:\n${statement}`;
           const res = await fetch(endpoint, {
             method: 'POST',
@@ -779,20 +791,23 @@ export function initContactPage() {
           });
 
           const data = await res.json().catch(() => ({}));
-          if (res.ok && data.application_ref) {
-            candRefId = data.application_ref;
-          } else if (!res.ok) {
-            alert(data.error || 'Failed to submit application to server. Please try again or email careers@iconelectromatic.com directly.');
+          if (!res.ok || !data.application_ref || data.saved_to_db !== true) {
+            alert(data.error || 'The application could not be verified as saved. Please try again or email careers@iconelectromatic.com directly.');
             if (submitBtn) {
               submitBtn.disabled = false;
               submitBtn.innerHTML = '<i class="fa-solid fa-briefcase"></i> Submit Engineering Application';
             }
             return;
           }
+          candRefId = data.application_ref;
         } catch (err) {
-          console.warn('Recruiting submission network warning:', err.message);
+          alert('Network error: Unable to verify that your application was saved. Please try again or email careers@iconelectromatic.com directly.');
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fa-solid fa-briefcase"></i> Submit Engineering Application';
+          }
+          return;
         }
-      }
 
       const subtitleTemplate = careers.successSubtitle || 'Thank you, {name}.';
       const formattedSubtitle = subtitleTemplate.replace('{name}', candName);
