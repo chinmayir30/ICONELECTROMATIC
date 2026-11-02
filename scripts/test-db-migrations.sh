@@ -10,7 +10,37 @@ export PGHOST PGPORT PGUSER PGPASSWORD PGDATABASE
 
 psql -v ON_ERROR_STOP=1 -f supabase/tests/bootstrap_supabase.sql
 
+first_migration="supabase/migrations/001_initial_schema.sql"
+echo "Applying ${first_migration}"
+psql -v ON_ERROR_STOP=1 -f "${first_migration}"
+
+echo "Seeding representative legacy rows before alignment migrations"
+psql -v ON_ERROR_STOP=1 <<'SQL'
+INSERT INTO public.oems (id, name, slug)
+VALUES ('10000000-0000-4000-8000-000000000001', 'Legacy OEM', 'legacy-oem');
+
+INSERT INTO public.categories (id, name, slug, oem_id)
+VALUES ('20000000-0000-4000-8000-000000000001', 'Legacy Category', 'legacy-category',
+        '10000000-0000-4000-8000-000000000001');
+
+INSERT INTO public.products (id, name, slug, oem_id, category_id, is_published)
+VALUES ('30000000-0000-4000-8000-000000000001', 'Legacy Product', 'legacy-product',
+        '10000000-0000-4000-8000-000000000001',
+        '20000000-0000-4000-8000-000000000001', true);
+
+INSERT INTO public.enquiries
+    (id, name, email, destination_office, destination_email, message, ip_hash, status)
+VALUES
+    ('40000000-0000-4000-8000-000000000001', 'Legacy Contact', 'legacy@example.test',
+     'india', 'legacy@example.test', 'Legacy enquiry retained through alignment',
+     'legacy-ip-hash', 'received');
+
+INSERT INTO public.rate_limits (ip_hash, request_count)
+VALUES ('legacy-rate-limit-hash', 3);
+SQL
+
 for migration in supabase/migrations/[0-9][0-9][0-9]_*.sql; do
+  [[ "${migration}" == "${first_migration}" ]] && continue
   echo "Applying ${migration}"
   psql -v ON_ERROR_STOP=1 -f "${migration}"
 done
@@ -23,6 +53,25 @@ BEGIN
     SELECT 1 FROM information_schema.columns
     WHERE table_schema='public' AND table_name='cms_content' AND column_name='version'
   ) THEN RAISE EXCEPTION 'cms_content.version missing'; END IF;
+
+  IF NOT EXISTS (
+    SELECT 1 FROM public.enquiries
+    WHERE id='40000000-0000-4000-8000-000000000001'
+      AND name='Legacy Contact'
+      AND destination_office='india'
+      AND status='received'
+  ) THEN RAISE EXCEPTION 'legacy enquiry row was not preserved'; END IF;
+
+  IF NOT EXISTS (
+    SELECT 1 FROM public.rate_limits
+    WHERE ip_hash='legacy-rate-limit-hash' AND request_count=3
+  ) THEN RAISE EXCEPTION 'legacy rate-limit row was not preserved'; END IF;
+
+  IF NOT EXISTS (
+    SELECT 1 FROM public.products
+    WHERE id='30000000-0000-4000-8000-000000000001'
+      AND name='Legacy Product' AND is_published
+  ) THEN RAISE EXCEPTION 'legacy product row was not preserved'; END IF;
 
   IF NOT EXISTS (
     SELECT 1 FROM pg_constraint
