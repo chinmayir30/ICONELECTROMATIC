@@ -1,8 +1,27 @@
-import { consumeContactRateLimit, hashClientIp } from "./rateLimit.ts";
+import { consumeContactRateLimit, getTrustedClientIp, hashClientIp } from "./rateLimit.ts";
 
 function assert(condition: unknown, message: string): asserts condition {
   if (!condition) throw new Error(message);
 }
+
+Deno.test("trusted client IP comes only from the single-value CF-Connecting-IP header", () => {
+  const headers = new Headers({
+    "cf-connecting-ip": "203.0.113.10",
+    "x-forwarded-for": "198.51.100.77, 203.0.113.10",
+    "x-real-ip": "198.51.100.88",
+  });
+  assert(getTrustedClientIp(headers) === "203.0.113.10", "CF-Connecting-IP must be preferred");
+});
+
+Deno.test("spoofed X-Forwarded-For is never used when CF-Connecting-IP is missing", () => {
+  const headers = new Headers({ "x-forwarded-for": "198.51.100.77" });
+  assert(getTrustedClientIp(headers) === null, "must fail closed without trusted ingress header");
+});
+
+Deno.test("malformed multi-value CF-Connecting-IP is rejected", () => {
+  const headers = new Headers({ "cf-connecting-ip": "203.0.113.10, 198.51.100.77" });
+  assert(getTrustedClientIp(headers) === null, "single-value header required");
+});
 
 Deno.test("HMAC IP hashes are deterministic and do not expose the IP", async () => {
   const ip = "203.0.113.10";
