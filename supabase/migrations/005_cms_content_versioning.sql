@@ -18,13 +18,13 @@ ADD COLUMN IF NOT EXISTS version integer DEFAULT 1 NOT NULL;
 --    and refreshes updated_at using PostgreSQL standard now()
 -- ------------------------------------------------------------------------------
 CREATE OR REPLACE FUNCTION public.bump_cms_version()
-RETURNS TRIGGER AS $$
+RETURNS TRIGGER AS $trigger$
 BEGIN
     NEW.version := OLD.version + 1;
     NEW.updated_at := now();
     RETURN NEW;
 END;
-$ LANGUAGE plpgsql SET search_path = pg_catalog, public;
+$trigger$ LANGUAGE plpgsql SET search_path = pg_catalog, public;
 
 -- ------------------------------------------------------------------------------
 -- 3. Bind trigger to public.cms_content (BEFORE UPDATE)
