@@ -43,6 +43,39 @@ BEGIN
 
   IF NOT has_function_privilege('service_role', 'public.consume_contact_rate_limit(text,text,integer,integer)', 'EXECUTE')
   THEN RAISE EXCEPTION 'service_role cannot execute rate-limit RPC'; END IF;
+
+  IF has_function_privilege('anon', 'public.is_staff()', 'EXECUTE')
+     OR has_function_privilege('anon', 'public.is_admin()', 'EXECUTE')
+  THEN RAISE EXCEPTION 'anonymous role can execute admin helper functions'; END IF;
+
+  IF NOT has_function_privilege('authenticated', 'public.is_staff()', 'EXECUTE')
+     OR NOT has_function_privilege('authenticated', 'public.is_admin()', 'EXECUTE')
+  THEN RAISE EXCEPTION 'authenticated RLS policies cannot execute admin helper functions'; END IF;
+
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_proc
+    WHERE oid='public.is_staff()'::regprocedure
+      AND proconfig @> ARRAY['search_path=public, auth, pg_temp']
+  ) OR NOT EXISTS (
+    SELECT 1 FROM pg_proc
+    WHERE oid='public.is_admin()'::regprocedure
+      AND proconfig @> ARRAY['search_path=public, auth, pg_temp']
+  ) THEN RAISE EXCEPTION 'admin helper search_path is not pinned'; END IF;
+
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_class
+    WHERE oid='storage.objects'::regclass AND relrowsecurity
+  ) THEN RAISE EXCEPTION 'Storage objects RLS prerequisite missing'; END IF;
+
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies
+    WHERE schemaname='storage' AND tablename='objects'
+      AND policyname='Public Access for catalog-images'
+  ) OR NOT EXISTS (
+    SELECT 1 FROM pg_policies
+    WHERE schemaname='storage' AND tablename='objects'
+      AND policyname='Staff Manage catalog-images'
+  ) THEN RAISE EXCEPTION 'catalog-images Storage policies missing'; END IF;
 END $$;
 SQL
 
