@@ -309,15 +309,24 @@ serve(async (req: Request) => {
       }),
     }).catch(() => null);
 
-    if (insertRes && insertRes.ok) {
-      const inserted = await insertRes.json();
-      if (inserted && inserted[0] && inserted[0].id) {
-        enquiryId = inserted[0].id;
-        savedToDb = true;
-      }
+    if (!insertRes || !insertRes.ok) {
+      console.error("Enquiry persistence failed:", insertRes?.status ?? "network error");
+      return new Response(JSON.stringify({ error: "Your enquiry could not be saved. Please try again." }), {
+        status: 503, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
+    const inserted = await insertRes.json().catch(() => []);
+    if (!Array.isArray(inserted) || !inserted[0]?.id) {
+      console.error("Enquiry insert did not return a persisted record ID.");
+      return new Response(JSON.stringify({ error: "Your enquiry could not be verified as saved. Please contact our regional office." }), {
+        status: 503, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+    enquiryId = inserted[0].id;
+
     // 3. Dispatch Email Notification via Resend (if configured)
+    let emailDispatched = false;
     if (resendApiKey) {
       const emailHtml = `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;">
@@ -368,7 +377,7 @@ serve(async (req: Request) => {
         </div>
       `;
 
-      await fetch("https://api.resend.com/emails", {
+      const emailResponse = await fetch("https://api.resend.com/emails", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${resendApiKey}`,
@@ -381,7 +390,9 @@ serve(async (req: Request) => {
           subject: `[Icon Electromatic] ${subject.toUpperCase()} Enquiry: ${fullName} (${company || "Direct"})`,
           html: emailHtml,
         }),
-      }).catch(() => {});
+      });
+      emailDispatched = emailResponse.ok;
+      if (!emailDispatched) console.error("Enquiry notification provider returned HTTP", emailResponse.status);
     }
 
     return new Response(
@@ -390,8 +401,11 @@ serve(async (req: Request) => {
         ticket_id: enquiryId,
         office_routed: office,
         target_email: targetOfficeEmail,
-        saved_to_db: savedToDb,
-        message: "Thank you! Your engineering enquiry has been dispatched to our regional applications desk.",
+        saved_to_db: true,
+        email_dispatched: emailDispatched,
+        message: emailDispatched
+          ? "Your enquiry has been saved and routed to the regional applications desk."
+          : "Your enquiry has been saved. Email notification could not be confirmed; please contact the regional desk if urgent.",
       }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
