@@ -284,38 +284,38 @@ serve(async (req: Request) => {
     }
 
     // 2. Insert into enquiries table with dual-field compatibility
-  const insertRes = await fetch(`${supabaseUrl}/rest/v1/enquiries`, {
-    method: "POST",
-    headers: {
-      apikey: supabaseServiceKey,
-      Authorization: `Bearer ${supabaseServiceKey}`,
-      "Content-Type": "application/json",
-      Prefer: "return=representation",
-    },
-    body: JSON.stringify({
-      full_name: fullName,
-      name: fullName,
-      email,
-      phone: phone || null,
-      company: company || null,
-      office,
-      destination_office: office,
-      destination_email: targetOfficeEmail,
-      subject,
-      product_model: productModel || null,
-      message,
-      ip_address: clientIp,
-      status: "received",
-    }),
-  }).catch(() => null);
+    const insertRes = await fetch(`${supabaseUrl}/rest/v1/enquiries`, {
+      method: "POST",
+      headers: {
+        apikey: supabaseServiceKey,
+        Authorization: `Bearer ${supabaseServiceKey}`,
+        "Content-Type": "application/json",
+        Prefer: "return=representation",
+      },
+      body: JSON.stringify({
+        full_name: fullName,
+        name: fullName,
+        email,
+        phone: phone || null,
+        company: company || null,
+        office,
+        destination_office: office,
+        destination_email: targetOfficeEmail,
+        subject,
+        product_model: productModel || null,
+        message,
+        ip_address: clientIp,
+        status: "received",
+      }),
+    }).catch(() => null);
 
-  if (insertRes && insertRes.ok) {
-    const inserted = await insertRes.json();
-    if (inserted && inserted[0] && inserted[0].id) {
-      enquiryId = inserted[0].id;
-      savedToDb = true;
+    if (insertRes && insertRes.ok) {
+      const inserted = await insertRes.json();
+      if (inserted && inserted[0] && inserted[0].id) {
+        enquiryId = inserted[0].id;
+        savedToDb = true;
+      }
     }
-  }
 
     // 3. Dispatch Email Notification via Resend (if configured)
     if (resendApiKey) {
