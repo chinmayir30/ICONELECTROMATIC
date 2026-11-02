@@ -1,6 +1,6 @@
 # PROJECT-STATE.md - Icon Electromatic website
 
-Last updated: 2026-10-30
+Last updated: 2026-11-02
 Rule: update this file at the end of every task. Never write passwords, keys or tokens here.
 Read docs/seo_backend_implementation.md for the implementation log, technology stack and phase status.
 
@@ -11,7 +11,7 @@ an indexable page with unique content, and that is handed over with documentatio
 client-owned accounts and one year of maintenance.
 
 ## Current stage
-Stage 7 - Central CMS Supabase Persistence & SSG Integration (feat/admin-cms-supabase-persistence + feat/single-domain-routing)
+Stage 7 - Central CMS Supabase Persistence, SSG Integration & Automated Free-Tier Keep-Alive
 
 ## Stage checklist
 - [x] Frontend built (reviewed at commit e371aac, 15 Oct 2026)
@@ -31,6 +31,7 @@ Stage 7 - Central CMS Supabase Persistence & SSG Integration (feat/admin-cms-sup
 - [x] Step 5 - Publishing Pipeline & Rebuild Webhook Integration (Admin.js, triggerPublishWebhook, SeoAuditModal.js - 5/5 verified)
 - [x] Phase 1.2 - Optimistic Concurrency Protection (supabaseClient.js, ContentService.js, Admin.js, migration 005 - 25/25 verified)
 - [x] Step 6 - Single-Domain Routing Alignment (/ vs /admin, src/main.js - locally verified)
+- [x] Step 7 - Automated Supabase Keep-Alive Workflow & Handover Agreement (.github/workflows/supabase-keepalive.yml, docs/DEPLOYMENT-RESPONSIBILITY-HANDOVER.md)
 
 ## Decisions (confirmed by the owner)
 | Date | Decision | Why |

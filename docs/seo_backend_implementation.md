@@ -400,7 +400,7 @@ Open items that affect these phases: client decisions on category grouping, dupl
 - **Undo:** Revert PR #19.
 
 ### Entry 21: Restore Employee Zone Navigation and Enable Demo Admin Fallback
-- **Status:** In progress (branch `feat/restore-employee-zone-and-demo-admin`, 30 Oct 2026)
+- **Status:** Implemented (PR #20, merge commit 3a6c446, 30 Oct 2026)
 - **What was built:**
   - Restored the "Employee Zone" drawer navigation link in `src/components/Header.js` so staff can open the admin panel directly from the hamburger drawer menu.
   - Enabled demo login fallback in `src/services/authService.js` when Supabase is unconfigured, allowing staff to sign in with `admin@iconelectromatic.com` / `admin123`.
@@ -418,6 +418,27 @@ Open items that affect these phases: client decisions on category grouping, dupl
   - `npm run build` passes with 0 errors.
   - Test suites pass 100% (60/60 tests).
 - **Undo:** Revert this branch or PR.
+
+
+### Entry 22: Automated Supabase Free-Tier Keep-Alive Workflow & Handover Agreement
+- **Status:** In progress (branch `feat/supabase-keepalive-workflow`, 02 Nov 2026)
+- **What was built:**
+  - Automated GitHub Actions keep-alive workflow (`.github/workflows/supabase-keepalive.yml`) running every 3 days via cron schedule (`0 4 */3 * *`) and manual trigger.
+  - Lightweight HTTP keep-alive ping to Supabase PostgREST endpoint (`/rest/v1/cms_content?select=key&limit=1`) to reset Supabase's 7-day inactivity pause counter automatically.
+  - Formal client deployment responsibility and handover agreement document (`docs/DEPLOYMENT-RESPONSIBILITY-HANDOVER.md`).
+- **Technology and role:** GitHub Actions workflow, cron scheduler, curl HTTP REST client, handover documentation.
+- **How it works:** Every 3 days at 04:00 UTC, the workflow checks for repository secrets/variables `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`. When present, it issues an HTTP GET to PostgREST. Supabase registers incoming traffic and resets the 7-day pause timer back to zero. If secrets are not yet configured, it skips gracefully without failing.
+- **Files and folders added or changed:**
+  - `.github/workflows/supabase-keepalive.yml`
+  - `docs/DEPLOYMENT-RESPONSIBILITY-HANDOVER.md`
+  - `docs/PROJECT-STATE.md`
+  - `docs/seo_backend_implementation.md`
+- **Data and security notes:** No secrets committed to repository. Secrets are injected at runtime via GitHub Secrets/Variables.
+- **Checked (and how):**
+  - Workflow YAML syntax verified.
+  - `npm run build` passed cleanly.
+  - All test suites pass (60/60 tests).
+- **Undo:** Delete `.github/workflows/supabase-keepalive.yml` or revert this branch.
 
 ## 7. Entry template (copy for each new phase)
 ```
