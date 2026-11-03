@@ -125,7 +125,7 @@ function renderSidebarDrawerHTML(currentRoute) {
   const ctaText = data.ctaLabel || data.ctaText || 'Request Quote';
   const ctaLink = data.ctaLink || '/contact';
   // Keep the Employee Zone entry out of the public drawer while preserving
-  // navigation for signed-in staff. Route-level RLS remains the authorization boundary.
+  // navigation for signed-in staff. This is presentation only; route-level RLS is the authorization boundary.
   const employeeZoneLink = authService.isAuthenticated() ? `
     <div class="drawer-divider"></div>
     <a href="/admin" class="drawer-nav-item drawer-employee-item ${route === '/admin' ? 'active' : ''}" data-route="/admin" id="drawer-employee-zone-link" title="Open Employee Zone Admin Panel">
