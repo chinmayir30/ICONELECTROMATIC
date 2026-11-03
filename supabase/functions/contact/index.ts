@@ -106,6 +106,45 @@ serve(async (req: Request) => {
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
     const resendApiKey = Deno.env.get("RESEND_API_KEY");
 
+    // Rate limiting is mandatory: fail closed if server-side dependencies
+    // or a client address supplied by the edge proxy are unavailable.
+    if (!supabaseUrl || !supabaseServiceKey) {
+      return new Response(JSON.stringify({ error: "Enquiry service is temporarily unavailable." }), {
+        status: 503, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    // Hosted Supabase Edge Functions are fronted by Cloudflare. Do not use
+    // the leftmost X-Forwarded-For value for security decisions: callers can
+    // prepend a forged address. Missing CF-Connecting-IP fails closed.
+    const clientIp = getTrustedClientIp(req.headers);
+    const hashSecret = Deno.env.get("RATE_LIMIT_HASH_SECRET");
+
+    if (!clientIp || !hashSecret || new TextEncoder().encode(hashSecret).byteLength < 32) {
+      console.error("Contact rate limiting is not configured with a trusted client IP and strong HMAC secret.");
+      return new Response(JSON.stringify({ error: "Enquiry service is temporarily unavailable." }), {
+        status: 503, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    try {
+      const ipHash = await hashClientIp(clientIp, hashSecret);
+      const allowed = await consumeContactRateLimit(supabaseUrl, supabaseServiceKey, ipHash);
+      if (!allowed) {
+        return new Response(
+          JSON.stringify({
+            error: "Rate limit reached. Maximum 5 inquiries allowed per hour. Please try again later or call our office.",
+          }),
+          { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+    } catch (rateLimitError) {
+      console.error("Contact rate-limit check failed:", rateLimitError);
+      return new Response(JSON.stringify({ error: "Enquiry service is temporarily unavailable." }), {
+        status: 503, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     // ─── ROUTE A: CAREER APPLICATION ──────────────────────────────────────────
     if (action === "career_application" || action === "career") {
       const fullName = String(body.fullName || "").trim();
@@ -268,45 +307,6 @@ serve(async (req: Request) => {
       usa: Deno.env.get("OFFICE_EMAIL_USA"),
     };
     const targetOfficeEmail = officeEmails[office] || "sales@iconelectromatic.com";
-
-    // Rate limiting is mandatory: fail closed if server-side dependencies
-    // or a client address supplied by the edge proxy are unavailable.
-    if (!supabaseUrl || !supabaseServiceKey) {
-      return new Response(JSON.stringify({ error: "Enquiry service is temporarily unavailable." }), {
-        status: 503, headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-
-    // Hosted Supabase Edge Functions are fronted by Cloudflare. Do not use
-    // the leftmost X-Forwarded-For value for security decisions: callers can
-    // prepend a forged address. Missing CF-Connecting-IP fails closed.
-    const clientIp = getTrustedClientIp(req.headers);
-    const hashSecret = Deno.env.get("RATE_LIMIT_HASH_SECRET");
-
-    if (!clientIp || !hashSecret || new TextEncoder().encode(hashSecret).byteLength < 32) {
-      console.error("Contact rate limiting is not configured with a trusted client IP and strong HMAC secret.");
-      return new Response(JSON.stringify({ error: "Enquiry service is temporarily unavailable." }), {
-        status: 503, headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-
-    try {
-      const ipHash = await hashClientIp(clientIp, hashSecret);
-      const allowed = await consumeContactRateLimit(supabaseUrl, supabaseServiceKey, ipHash);
-      if (!allowed) {
-        return new Response(
-          JSON.stringify({
-            error: "Rate limit reached. Maximum 5 inquiries allowed per hour. Please try again later or call our office.",
-          }),
-          { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-        );
-      }
-    } catch (rateLimitError) {
-      console.error("Contact rate-limit check failed:", rateLimitError);
-      return new Response(JSON.stringify({ error: "Enquiry service is temporarily unavailable." }), {
-        status: 503, headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
 
     // 2. Insert into enquiries table with dual-field compatibility
     const insertRes = await fetch(`${supabaseUrl}/rest/v1/enquiries`, {
