@@ -6,9 +6,25 @@ const encoder = new TextEncoder();
  * Do not trust the leftmost X-Forwarded-For value: callers can prepend it.
  * If this header is absent, fail closed instead of guessing an identity.
  */
+function isIpLiteral(value: string): boolean {
+  if (value.includes(":")) {
+    try {
+      const hostname = new URL(`http://[${value}]/`).hostname;
+      return hostname.startsWith("[") && hostname.endsWith("]");
+    } catch {
+      return false;
+    }
+  }
+
+  const octets = value.split(".");
+  return octets.length === 4 && octets.every((octet) =>
+    /^(0|[1-9]\\d{0,2})$/.test(octet) && Number(octet) <= 255
+  );
+}
+
 export function getTrustedClientIp(headers: Headers): string | null {
   const value = headers.get("cf-connecting-ip")?.trim();
-  if (!value || value.includes(",")) return null;
+  if (!value || value.includes(",") || !isIpLiteral(value)) return null;
   return value;
 }
 
