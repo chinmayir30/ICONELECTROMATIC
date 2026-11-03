@@ -43,3 +43,6 @@ jobs:
         run: sudo apt-get update && sudo apt-get install --yes postgresql-client
       - name: Verify clean database migrations and rate-limit concurrency
         run: bash scripts/test-db-migrations.sh
+      - name: Validate GitHub Actions workflow YAML
+        run: |
+          ruby -e 'require "yaml"; Dir.glob(".github/workflows/*.{yml,yaml}").each { |path| YAML.load_file(path, aliases: true); puts "Valid YAML: #{path}" }'
