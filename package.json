@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build && node scripts/build-static-catalog.mjs",
     "preview": "vite preview",
-    "test": "node --test"
+    "test": "node scripts/run-tests.mjs"
   },
   "devDependencies": {
     "vite": "^5.4.0"
