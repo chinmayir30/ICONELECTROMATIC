@@ -93,6 +93,13 @@ BEGIN
   IF NOT has_function_privilege('service_role', 'public.consume_contact_rate_limit(text,text,integer,integer)', 'EXECUTE')
   THEN RAISE EXCEPTION 'service_role cannot execute rate-limit RPC'; END IF;
 
+  IF has_table_privilege('anon', 'public.career_applications', 'INSERT')
+     OR has_table_privilege('authenticated', 'public.career_applications', 'INSERT')
+  THEN RAISE EXCEPTION 'client roles can insert career applications'; END IF;
+
+  IF NOT has_table_privilege('service_role', 'public.career_applications', 'INSERT')
+  THEN RAISE EXCEPTION 'service_role cannot insert career applications'; END IF;
+
   IF has_function_privilege('anon', 'public.is_staff()', 'EXECUTE')
      OR has_function_privilege('anon', 'public.is_admin()', 'EXECUTE')
   THEN RAISE EXCEPTION 'anonymous role can execute admin helper functions'; END IF;
