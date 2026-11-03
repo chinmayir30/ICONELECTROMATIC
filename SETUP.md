@@ -96,7 +96,8 @@ In the Supabase Dashboard, open the **SQL Editor** (`>_`) and run the SQL migrat
 8. `supabase/migrations/008_restrict_career_application_writes.sql`: Restricts career application inserts to the service role; browser roles cannot insert candidate records.
 9. `supabase/migrations/009_restrict_legacy_rate_limit_access.sql`: Revokes direct Data API access to the retained legacy rate-limit table from browser roles.
 10. `supabase/migrations/010_restrict_career_application_select_grants.sql`: Allows authenticated staff reads under RLS and service-role inserts; denies anonymous access.
-11. `supabase/seed.sql`: Populates the complete catalog of 13 OEMs, 86 categories, and 167 products with specs and image relations.
+11. `supabase/migrations/011_move_rls_helpers_to_private_schema.sql`: Moves SECURITY DEFINER authorization helpers into the non-exposed `private` schema and updates all dependent RLS policies.
+12. `supabase/seed.sql`: Populates the complete catalog of 13 OEMs, 86 categories, and 167 products with specs and image relations.
 
 ### Migration backup, recovery and rollback requirements
 
