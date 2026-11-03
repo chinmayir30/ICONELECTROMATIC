@@ -103,3 +103,21 @@ Deno.test("resume URLs must use HTTPS and must not contain credentials", () => {
   assert(!isValidHttpsUrl("javascript:alert(1)"), "script URL must fail");
   assert(!isValidHttpsUrl("https://user:pass@files.example.com/resume.pdf"), "credential-bearing URL must fail");
 });
+
+Deno.test("trusted client IP uses only the single Cloudflare ingress header", () => {
+  const trusted = getTrustedClientIp(new Headers({
+    "cf-connecting-ip": " 203.0.113.10 ",
+    "x-forwarded-for": "198.51.100.99, 192.0.2.10",
+  }));
+  assert(trusted === "203.0.113.10", "must prefer the single trusted ingress value");
+
+  const forwardedOnly = getTrustedClientIp(new Headers({
+    "x-forwarded-for": "198.51.100.99",
+  }));
+  assert(forwardedOnly === null, "must not fall back to caller-controlled X-Forwarded-For");
+
+  const ambiguous = getTrustedClientIp(new Headers({
+    "cf-connecting-ip": "203.0.113.10, 198.51.100.99",
+  }));
+  assert(ambiguous === null, "must reject multi-value ingress header");
+});
