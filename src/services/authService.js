@@ -6,20 +6,27 @@
 
 const SUPABASE_URL = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SUPABASE_URL) || '';
 const SUPABASE_ANON_KEY = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SUPABASE_ANON_KEY) || '';
+const SUPABASE_CONFIGURED = Boolean(SUPABASE_URL && SUPABASE_ANON_KEY);
+const DEMO_AUTH_ENABLED = !SUPABASE_CONFIGURED
+  && typeof import.meta !== 'undefined'
+  && import.meta.env?.DEV === true
+  && import.meta.env?.VITE_ENABLE_DEMO_ADMIN === 'true';
 
 const SESSION_KEY = 'icon_staff_session';
 const TOKEN_KEY = 'icon_staff_token';
 
 export const authService = {
-  isConfigured: Boolean(SUPABASE_URL && SUPABASE_ANON_KEY),
+  isConfigured: SUPABASE_CONFIGURED,
+  isDemoEnabled: DEMO_AUTH_ENABLED,
 
   getSession() {
     try {
+      if (!this.isConfigured && !DEMO_AUTH_ENABLED) return null;
       const raw = localStorage.getItem(SESSION_KEY);
       if (!raw) return null;
       const session = JSON.parse(raw);
-      // In production builds where Supabase IS configured, strictly refuse to honor mock tokens
-      if (this.isConfigured && session?.access_token?.startsWith('mock_')) {
+      // Accept mock sessions only in explicit, unconfigured local development.
+      if (session?.access_token?.startsWith('mock_') && !DEMO_AUTH_ENABLED) {
         return null;
       }
       return session;
@@ -39,6 +46,7 @@ export const authService = {
 
   async getValidToken() {
     if (!this.isConfigured) {
+      if (!DEMO_AUTH_ENABLED) return null;
       return (typeof localStorage !== 'undefined') ? (localStorage.getItem(TOKEN_KEY) || 'mock_staff_token') : 'mock_staff_token';
     }
 
@@ -124,8 +132,11 @@ export const authService = {
       return data;
     }
 
-    // 2. Unconfigured Supabase fallback
-    // When Supabase credentials are not configured, allow demo staff session
+    // 2. Explicit local demo mode only; never create a production mock session.
+    if (!DEMO_AUTH_ENABLED) {
+      throw new Error('Staff sign-in is unavailable because Supabase is not configured.');
+    }
+
     if (password.length < 6) {
       throw new Error('Password must be at least 6 characters.');
     }
