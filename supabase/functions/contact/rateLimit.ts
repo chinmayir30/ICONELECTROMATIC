@@ -18,7 +18,7 @@ function isIpLiteral(value: string): boolean {
 
   const octets = value.split(".");
   return octets.length === 4 && octets.every((octet) =>
-    /^(0|[1-9]\\d{0,2})$/.test(octet) && Number(octet) <= 255
+    /^(0|[1-9]\d{0,2})$/.test(octet) && Number(octet) <= 255
   );
 }
 
