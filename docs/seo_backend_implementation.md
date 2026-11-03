@@ -400,7 +400,7 @@ Open items that affect these phases: client decisions on category grouping, dupl
 - **Undo:** Revert PR #19.
 
 ### Entry 21: Restore Employee Zone Navigation and Enable Demo Admin Fallback
-- **Status:** In progress (branch `feat/restore-employee-zone-and-demo-admin`, 30 Oct 2026)
+- **Status:** Implemented (PR #20, merge commit `3a6c446`, 30 Oct 2026)
 - **What was built:**
   - Restored the "Employee Zone" drawer navigation link in `src/components/Header.js` so staff can open the admin panel directly from the hamburger drawer menu.
   - Enabled demo login fallback in `src/services/authService.js` when Supabase is unconfigured, allowing staff to sign in with `admin@iconelectromatic.com` / `admin123`.
@@ -417,7 +417,32 @@ Open items that affect these phases: client decisions on category grouping, dupl
 - **Checked (and how):**
   - `npm run build` passes with 0 errors.
   - Test suites pass 100% (60/60 tests).
-- **Undo:** Revert this branch or PR.
+- **Undo:** Revert PR #20.
+
+### Entry 22: Header Refinement & Homepage Core Capabilities Removal
+- **Status:** In progress (branch `feat/header-refinement-alignment`, 03 Nov 2026)
+- **What was built:**
+  - Scaled down the Icon Electromatic logo proportionally in the header (desktop height reduced from 85px to 50px, laptop to 44px, tablet to 40px, mobile to 34px) while preserving exact aspect ratio (`width: auto`, `object-fit: contain`).
+  - Removed the "Request Quote" button from the header action area, eliminating header crowding while keeping full quote request functionality everywhere else on the site (Contact page, sidebar drawer, product cards, blogs, etc.).
+  - Perfectly aligned the logo cluster, 7 navigation links, and theme toggle button in a single balanced row with balanced spacing (`gap: 1.5rem`, `font-size: 1rem`, `white-space: nowrap`) across all screen widths.
+  - Removed the entire Core Capabilities section from the homepage (`src/pages/Home.js`), including heading, subtitle, lead text, and all four capability cards, keeping other homepage sections in their original sequence and preserving Core Capabilities on the About page.
+- **Technology and role:** Header UI component, CSS responsive layout styles, Home page template.
+- **How it works:** The header inner container uses flexbox (`justify-content: space-between; align-items: center;`) with adjusted logo height, streamlined nav link spacing, and only the theme toggle on the right. The homepage renders directly from Hero into Popular Products without the intermediate capabilities section.
+- **Files and folders added or changed:**
+  - `src/components/Header.js`
+  - `src/styles/index.css`
+  - `src/pages/Home.js`
+  - `docs/PROJECT-STATE.md`
+  - `docs/seo_backend_implementation.md`
+- **Data and security notes:** Pure frontend layout and component adjustments. No new dependencies, no secrets, no backend changes.
+- **Checked (and how):**
+  - `npm run build` passed with 0 errors.
+  - Full automated test suite (60/60 tests passed).
+  - Dev server active and serving cleanly on localhost:3000.
+  - Core capabilities section confirmed preserved in `src/pages/About.js`.
+- **Not checked:**
+  - Production deployment URL (will be checked when merged and deployed).
+- **Undo:** Revert this branch or pull request.
 
 ## 7. Entry template (copy for each new phase)
 ```

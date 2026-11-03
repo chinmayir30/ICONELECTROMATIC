@@ -71,9 +71,6 @@ export function renderHeaderInner(currentRoute) {
       </nav>
 
       <div class="header-actions">
-        <a href="#${ctaLink}" class="btn-relay-border" data-route="${ctaLink}">
-          ${ctaText}
-        </a>
         <button class="theme-toggle-btn theme-toggle-switch ${isLight ? 'is-light' : ''}" id="theme-toggle-btn" role="switch" aria-checked="${isLight ? 'true' : 'false'}" aria-label="Toggle dark and light theme" title="${isLight ? 'Switch to Darker Version' : 'Switch to Lighter Version'}">
           <span class="theme-switch-track">
             <span class="theme-switch-icon theme-switch-moon" title="Darker Version">

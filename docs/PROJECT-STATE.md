@@ -1,6 +1,6 @@
 # PROJECT-STATE.md - Icon Electromatic website
 
-Last updated: 2026-10-30
+Last updated: 2026-11-03
 Rule: update this file at the end of every task. Never write passwords, keys or tokens here.
 Read docs/seo_backend_implementation.md for the implementation log, technology stack and phase status.
 
@@ -31,6 +31,7 @@ Stage 7 - Central CMS Supabase Persistence & SSG Integration (feat/admin-cms-sup
 - [x] Step 5 - Publishing Pipeline & Rebuild Webhook Integration (Admin.js, triggerPublishWebhook, SeoAuditModal.js - 5/5 verified)
 - [x] Phase 1.2 - Optimistic Concurrency Protection (supabaseClient.js, ContentService.js, Admin.js, migration 005 - 25/25 verified)
 - [x] Step 6 - Single-Domain Routing Alignment (/ vs /admin, src/main.js - locally verified)
+- [x] Header Refinement & Homepage Capabilities Removal (feat/header-refinement-alignment)
 
 ## Decisions (confirmed by the owner)
 | Date | Decision | Why |
@@ -42,6 +43,7 @@ Stage 7 - Central CMS Supabase Persistence & SSG Integration (feat/admin-cms-sup
 | 2026-10 | Automate via /new_feature, /finish_feature and GitHub Actions CI | Standardize branching, enforce safety rules, and ensure every PR builds clean |
 | 2026-10 | Fail loudly instead of faking success | Stop fake ticket IDs and silent fallback; enforce required secrets and production authentication |
 | 2026-10 | Option 1 Architecture Repair | Complete existing Supabase + SSG static pipeline; do not rewrite or replace framework |
+| 2026-11 | Streamline Header and Homepage Layout | Reduce header crowding, remove redundant Request Quote header CTA (preserving quote elsewhere), and remove Core Capabilities section from homepage |
 
 ## Proposed, not yet confirmed
 - Static site generation (Astro recommended) so every product is a real HTML page
