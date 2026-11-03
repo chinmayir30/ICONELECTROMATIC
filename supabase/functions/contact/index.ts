@@ -16,6 +16,16 @@
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 import { consumeContactRateLimit, getTrustedClientIp, hashClientIp } from "./rateLimit.ts";
 
+function escapeHtml(value: string): string {
+  return value.replace(/[&<>"']/g, (character) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;",
+  })[character] ?? character);
+}
+
 function getCorsHeaders(req: Request): Record<string, string> {
   const origin = req.headers.get("origin") || "";
   const rawAllowed = Deno.env.get("ALLOWED_ORIGINS") || "";
@@ -95,6 +105,11 @@ serve(async (req: Request) => {
     }
 
     const action = String(body.action || "enquiry").trim().toLowerCase();
+    if (!["enquiry", "career_application", "career"].includes(action)) {
+      return new Response(JSON.stringify({ error: "Unsupported submission type." }), {
+        status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
     const supabaseUrl = Deno.env.get("SUPABASE_URL");
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
     const resendApiKey = Deno.env.get("RESEND_API_KEY");
@@ -181,17 +196,17 @@ serve(async (req: Request) => {
             </div>
             <div style="padding: 24px; background: #ffffff;">
               <div style="background: #ecfdf5; border-left: 4px solid #10b981; padding: 12px 16px; margin-bottom: 20px;">
-                <strong>Application Ref:</strong> #${appRef}<br/>
-                <strong>Position Applied:</strong> ${position}
+                <strong>Application Ref:</strong> #${escapeHtml(appRef)}<br/>
+                <strong>Position Applied:</strong> ${escapeHtml(position)}
               </div>
               <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem; margin-bottom: 20px;">
-                <tr><td style="padding: 8px 0; color: #64748b; width: 140px;"><strong>Candidate Name:</strong></td><td style="padding: 8px 0; color: #0f172a;">${fullName}</td></tr>
-                <tr><td style="padding: 8px 0; color: #64748b;"><strong>Email:</strong></td><td style="padding: 8px 0; color: #0f172a;"><a href="mailto:${email}">${email}</a></td></tr>
-                <tr><td style="padding: 8px 0; color: #64748b;"><strong>Phone:</strong></td><td style="padding: 8px 0; color: #0f172a;">${phone || "Not specified"}</td></tr>
-                ${resumeUrl ? `<tr><td style="padding: 8px 0; color: #64748b;"><strong>Resume Link:</strong></td><td style="padding: 8px 0; color: #2563eb;"><a href="${resumeUrl}" target="_blank">View Uploaded Resume</a></td></tr>` : ""}
+                <tr><td style="padding: 8px 0; color: #64748b; width: 140px;"><strong>Candidate Name:</strong></td><td style="padding: 8px 0; color: #0f172a;">${escapeHtml(fullName)}</td></tr>
+                <tr><td style="padding: 8px 0; color: #64748b;"><strong>Email:</strong></td><td style="padding: 8px 0; color: #0f172a;"><a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a></td></tr>
+                <tr><td style="padding: 8px 0; color: #64748b;"><strong>Phone:</strong></td><td style="padding: 8px 0; color: #0f172a;">${escapeHtml(phone || "Not specified")}</td></tr>
+                ${resumeUrl ? `<tr><td style="padding: 8px 0; color: #64748b;"><strong>Resume Link:</strong></td><td style="padding: 8px 0; color: #2563eb;"><a href="${escapeHtml(resumeUrl)}" target="_blank">View Uploaded Resume</a></td></tr>` : ""}
               </table>
               <h4 style="margin: 0 0 8px 0; color: #0f172a;">Candidate Cover Note:</h4>
-              <div style="background: #f1f5f9; padding: 16px; border-radius: 6px; font-size: 0.9rem; line-height: 1.5; color: #334155; white-space: pre-wrap;">${message || "No cover note provided."}</div>
+              <div style="background: #f1f5f9; padding: 16px; border-radius: 6px; font-size: 0.9rem; line-height: 1.5; color: #334155; white-space: pre-wrap;">${escapeHtml(message || "No cover note provided.")}</div>
             </div>
           </div>
         `;
@@ -362,43 +377,43 @@ serve(async (req: Request) => {
           </div>
           <div style="padding: 24px; background: #ffffff;">
             <div style="background: #f8fafc; border-left: 4px solid #2563eb; padding: 12px 16px; margin-bottom: 20px;">
-              <strong>Ticket ID:</strong> #${enquiryId}<br/>
-              <strong>Regional Desk:</strong> ${office.toUpperCase()} Office (${targetOfficeEmail})<br/>
-              <strong>Subject Type:</strong> ${subject.toUpperCase()}
+              <strong>Ticket ID:</strong> #${escapeHtml(String(enquiryId))}<br/>
+              <strong>Regional Desk:</strong> ${escapeHtml(office.toUpperCase())} Office (${escapeHtml(targetOfficeEmail)})<br/>
+              <strong>Subject Type:</strong> ${escapeHtml(subject.toUpperCase())}
             </div>
             
             <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem; margin-bottom: 20px;">
               <tr>
                 <td style="padding: 8px 0; color: #64748b; width: 140px;"><strong>Client Name:</strong></td>
-                <td style="padding: 8px 0; color: #0f172a;">${fullName}</td>
+                <td style="padding: 8px 0; color: #0f172a;">${escapeHtml(fullName)}</td>
               </tr>
               <tr>
                 <td style="padding: 8px 0; color: #64748b;"><strong>Email:</strong></td>
-                <td style="padding: 8px 0; color: #0f172a;"><a href="mailto:${email}">${email}</a></td>
+                <td style="padding: 8px 0; color: #0f172a;"><a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a></td>
               </tr>
               <tr>
                 <td style="padding: 8px 0; color: #64748b;"><strong>Phone:</strong></td>
-                <td style="padding: 8px 0; color: #0f172a;">${phone || "Not specified"}</td>
+                <td style="padding: 8px 0; color: #0f172a;">${escapeHtml(phone || "Not specified")}</td>
               </tr>
               <tr>
                 <td style="padding: 8px 0; color: #64748b;"><strong>Company / Lab:</strong></td>
-                <td style="padding: 8px 0; color: #0f172a;">${company || "Direct Individual"}</td>
+                <td style="padding: 8px 0; color: #0f172a;">${escapeHtml(company || "Direct Individual")}</td>
               </tr>
               ${
                 productModel
                   ? `<tr>
                 <td style="padding: 8px 0; color: #64748b;"><strong>Target Hardware:</strong></td>
-                <td style="padding: 8px 0; color: #2563eb; font-weight: bold;">${productModel}</td>
+                <td style="padding: 8px 0; color: #2563eb; font-weight: bold;">${escapeHtml(productModel)}</td>
               </tr>`
                   : ""
               }
             </table>
 
             <h4 style="margin: 0 0 8px 0; color: #0f172a;">Technical Requirements & Message:</h4>
-            <div style="background: #f1f5f9; padding: 16px; border-radius: 6px; font-size: 0.9rem; line-height: 1.5; color: #334155; white-space: pre-wrap;">${message}</div>
+            <div style="background: #f1f5f9; padding: 16px; border-radius: 6px; font-size: 0.9rem; line-height: 1.5; color: #334155; white-space: pre-wrap;">${escapeHtml(message)}</div>
           </div>
           <div style="background: #f8fafc; border-top: 1px solid #e2e8f0; padding: 12px 20px; font-size: 0.75rem; color: #94a3b8; text-align: center;">
-            Sent securely via Icon Electromatic Edge Service. IP: ${clientIp}
+            Sent securely via Icon Electromatic Edge Service. IP: ${escapeHtml(clientIp)}
           </div>
         </div>
       `;
