@@ -93,7 +93,8 @@ In the Supabase Dashboard, open the **SQL Editor** (`>_`) and run the SQL migrat
 5. `supabase/migrations/005_cms_content_versioning.sql`: Adds CMS version tracking.
 6. `supabase/migrations/006_align_enquiries_and_rate_limits.sql`: Aligns enquiry fields and creates career application storage. The legacy `rate_limits` table is retained; do not manually alter its primary key.
 7. `supabase/migrations/007_atomic_contact_rate_limit.sql`: Creates the private HMAC-hash event table and atomic rate-limit RPC.
-8. `supabase/seed.sql`: Populates the complete catalog of 13 OEMs, 86 categories, and 167 products with specs and image relations.
+8. `supabase/migrations/008_restrict_career_application_writes.sql`: Restricts career application inserts to the service role; browser roles cannot insert candidate records.
+9. `supabase/seed.sql`: Populates the complete catalog of 13 OEMs, 86 categories, and 167 products with specs and image relations.
 
 ### Migration backup, recovery and rollback requirements
 
