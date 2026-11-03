@@ -301,7 +301,7 @@ test('Static Catalog Builder Suite', async (t) => {
 
     // 7 base static URLs + 1 deduplicated product URL = 8 total sitemap URLs
     assert.equal(result.sitemapUrlCount, 8, 'Sitemap must deduplicate duplicate canonical locations');
-    assert.doesNotMatch(result.sitemapXml, /<lastmod>/, 'No synthetic build-date lastmod is emitted without authoritative content timestamps');
+    assert.doesNotMatch(result.sitemapXml, /<lastmod>/, 'Omit sitemap lastmod when source content has no trustworthy modification timestamp');
     const matches = result.sitemapXml.match(/https:\/\/iconelectromatic\.com\/products\/oem-dup\/prod-canonical/g);
     assert.equal(matches.length, 1, 'Canonical URL must appear exactly once in sitemap.xml');
   });
