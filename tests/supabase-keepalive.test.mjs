@@ -21,7 +21,7 @@ async function runKeepAlive({ url, key, httpStatus = '200', curlExit = 0 } = {})
     'printf \'%s\' "$MOCK_HTTP_STATUS"',
     'exit "$MOCK_CURL_EXIT"',
     ''
-  ].join('\\n');
+  ].join('\n');
   await writeFile(fakeCurl, fakeCurlSource);
   await chmod(fakeCurl, 0o755);
 
