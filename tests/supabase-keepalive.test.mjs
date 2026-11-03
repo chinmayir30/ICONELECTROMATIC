@@ -45,7 +45,7 @@ async function runKeepAlive({ url, key, httpStatus = '200', curlExit = 0 } = {})
 test('fails before curl when Supabase credentials are missing', async () => {
   const result = await runKeepAlive({ url: '', key: 'test-key' });
   assert.notEqual(result.status, 0);
-  assert.match(result.stderr, /credentials are required/i);
+  assert.match(result.stderr, /URL and API key are required/i);
   assert.equal(result.curlArgs, undefined);
 });
 
