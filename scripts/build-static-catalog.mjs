@@ -16,7 +16,6 @@ const DIST_DIR = path.resolve(ROOT_DIR, 'dist');
 const PUBLIC_DIR = path.resolve(ROOT_DIR, 'public');
 
 const SITE_URL = 'https://iconelectromatic.com';
-const TODAY = new Date().toISOString().split('T')[0];
 
 // Detect dynamic CSS asset from Vite build output
 export function getCssAssetFile() {
@@ -637,7 +636,6 @@ export async function run(options = {}) {
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${uniqueSitemapUrls.map(u => `  <url>
     <loc>${escapeHtml(u.loc)}</loc>
-    <lastmod>${TODAY}</lastmod>
     <changefreq>${u.changefreq}</changefreq>
     <priority>${u.priority}</priority>
   </url>`).join('\n')}
