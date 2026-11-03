@@ -15,16 +15,8 @@
 
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 import { consumeContactRateLimit, getTrustedClientIp, hashClientIp } from "./rateLimit.ts";
+import { escapeHtml, isOriginAllowed, isValidHttpsUrl } from "./submissionSecurity.ts";
 
-function escapeHtml(value: string): string {
-  return value.replace(/[&<>"']/g, (character) => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#39;",
-  })[character] ?? character);
-}
 
 function getCorsHeaders(req: Request): Record<string, string> {
   const origin = req.headers.get("origin") || "";
@@ -47,7 +39,7 @@ function getCorsHeaders(req: Request): Record<string, string> {
   }
 
   let allowOrigin = "";
-  if (allowed.includes(origin)) {
+  if (isOriginAllowed(origin, allowed)) {
     allowOrigin = origin;
   }
 
@@ -138,18 +130,10 @@ serve(async (req: Request) => {
         );
       }
 
-      if (resumeUrl) {
-        let parsedResumeUrl: URL;
-        try { parsedResumeUrl = new URL(resumeUrl); } catch {
-          return new Response(JSON.stringify({ error: "Resume URL must be a valid HTTPS URL." }), {
-            status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
-          });
-        }
-        if (parsedResumeUrl.protocol !== "https:") {
-          return new Response(JSON.stringify({ error: "Resume URL must use HTTPS." }), {
-            status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
-          });
-        }
+      if (resumeUrl && !isValidHttpsUrl(resumeUrl)) {
+        return new Response(JSON.stringify({ error: "Resume URL must be a valid HTTPS URL without embedded credentials." }), {
+          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
       }
       const appRef = `ICON-CAREER-${crypto.randomUUID()}`;
       const insertAppRes = await fetch(`${supabaseUrl}/rest/v1/career_applications`, {
