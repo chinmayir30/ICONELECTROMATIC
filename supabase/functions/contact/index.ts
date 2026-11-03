@@ -37,7 +37,7 @@ function getCorsHeaders(req: Request): Record<string, string> {
   }
 
   let allowOrigin = "";
-  if (allowed.includes(origin) || (origin && origin.endsWith(".vercel.app"))) {
+  if (allowed.includes(origin)) {
     allowOrigin = origin;
   }
 
@@ -123,37 +123,55 @@ serve(async (req: Request) => {
         );
       }
 
-      const appRef = "ICON-CAREER-" + Math.floor(100000 + Math.random() * 900000);
-      let savedToDb = false;
-
-      if (supabaseUrl && supabaseServiceKey) {
-        const insertAppRes = await fetch(`${supabaseUrl}/rest/v1/career_applications`, {
-          method: "POST",
-          headers: {
-            apikey: supabaseServiceKey,
-            Authorization: `Bearer ${supabaseServiceKey}`,
-            "Content-Type": "application/json",
-            Prefer: "return=representation",
-          },
-          body: JSON.stringify({
-            application_ref: appRef,
-            full_name: fullName,
-            email,
-            phone: phone || null,
-            position,
-            message: message || null,
-            resume_url: resumeUrl || null,
-            status: "new",
-          }),
-        }).catch(() => null);
-
-        if (insertAppRes && insertAppRes.ok) {
-          savedToDb = true;
+      if (resumeUrl) {
+        let parsedResumeUrl: URL;
+        try { parsedResumeUrl = new URL(resumeUrl); } catch {
+          return new Response(JSON.stringify({ error: "Resume URL must be a valid HTTPS URL." }), {
+            status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+          });
+        }
+        if (parsedResumeUrl.protocol !== "https:") {
+          return new Response(JSON.stringify({ error: "Resume URL must use HTTPS." }), {
+            status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+          });
         }
       }
-
+      const appRef = `ICON-CAREER-${crypto.randomUUID()}`;
+      const insertAppRes = await fetch(`${supabaseUrl}/rest/v1/career_applications`, {
+        method: "POST",
+        headers: {
+          apikey: supabaseServiceKey,
+          Authorization: `Bearer ${supabaseServiceKey}`,
+          "Content-Type": "application/json",
+          Prefer: "return=representation",
+        },
+        body: JSON.stringify({
+          application_ref: appRef,
+          full_name: fullName,
+          email,
+          phone: phone || null,
+          position,
+          message: message || null,
+          resume_url: resumeUrl || null,
+          status: "new",
+        }),
+      }).catch(() => null);
+      if (!insertAppRes || !insertAppRes.ok) {
+        console.error("Career application persistence failed:", insertAppRes?.status ?? "network error");
+        return new Response(JSON.stringify({ error: "Your application could not be saved. Please try again." }), {
+          status: 503, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      const insertedApplication = await insertAppRes.json().catch(() => []);
+      if (!Array.isArray(insertedApplication) || !insertedApplication[0]?.id || !insertedApplication[0]?.application_ref) {
+        console.error("Career application insert did not return a persisted record.");
+        return new Response(JSON.stringify({ error: "Your application could not be verified as saved. Please contact the careers team." }), {
+          status: 503, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      const persistedAppRef = insertedApplication[0].application_ref;
+      let emailDispatched = false;
       const careersEmail = Deno.env.get("CAREERS_EMAIL") || "careers@iconelectromatic.com";
-
       if (resendApiKey) {
         const careerEmailHtml = `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;">
@@ -178,25 +196,33 @@ serve(async (req: Request) => {
           </div>
         `;
 
-        await fetch("https://api.resend.com/emails", {
-          method: "POST",
-          headers: { Authorization: `Bearer ${resendApiKey}`, "Content-Type": "application/json" },
-          body: JSON.stringify({
-            from: "Icon Electromatic <notifications@iconelectromatic.com>",
-            to: [careersEmail],
-            reply_to: email,
-            subject: `[Career Application] ${position}: ${fullName}`,
-            html: careerEmailHtml,
-          }),
-        }).catch(() => {});
+        try {
+          const emailResponse = await fetch("https://api.resend.com/emails", {
+            method: "POST",
+            headers: { Authorization: `Bearer ${resendApiKey}`, "Content-Type": "application/json" },
+            body: JSON.stringify({
+              from: "Icon Electromatic <notifications@iconelectromatic.com>",
+              to: [careersEmail],
+              reply_to: email,
+              subject: `[Career Application] ${position}: ${fullName}`,
+              html: careerEmailHtml,
+            }),
+          });
+          emailDispatched = emailResponse.ok;
+          if (!emailDispatched) console.error("Career notification provider returned HTTP", emailResponse.status);
+        } catch (emailError) {
+          console.error("Career notification dispatch failed:", emailError);
+        }
       }
-
       return new Response(
         JSON.stringify({
           success: true,
-          application_ref: appRef,
-          saved_to_db: savedToDb,
-          message: "Application submitted successfully to Technical Evaluation Committee.",
+          application_ref: persistedAppRef,
+          saved_to_db: true,
+          email_dispatched: emailDispatched,
+          message: emailDispatched
+            ? "Your application has been saved and the careers team notification was accepted by the email provider."
+            : "Your application has been saved, but email notification could not be confirmed. Please contact the careers team if urgent.",
         }),
         { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
@@ -377,6 +403,7 @@ serve(async (req: Request) => {
         </div>
       `;
 
+      try {
       const emailResponse = await fetch("https://api.resend.com/emails", {
         method: "POST",
         headers: {
@@ -391,8 +418,11 @@ serve(async (req: Request) => {
           html: emailHtml,
         }),
       });
-      emailDispatched = emailResponse.ok;
-      if (!emailDispatched) console.error("Enquiry notification provider returned HTTP", emailResponse.status);
+        emailDispatched = emailResponse.ok;
+        if (!emailDispatched) console.error("Enquiry notification provider returned HTTP", emailResponse.status);
+      } catch (emailError) {
+        console.error("Enquiry notification dispatch failed:", emailError);
+      }
     }
 
     return new Response(
