@@ -4,6 +4,7 @@
  */
 import { getCurrentPath, navigate } from '../router.js';
 import { ContentService } from '../data/ContentService.js';
+import { authService } from '../services/authService.js';
 import './sidebar-drawer.css';
 
 const DRAWER_LINKS = [
@@ -22,6 +23,18 @@ export function renderHeaderInner(currentRoute) {
   const data = ContentService.getData('header');
   const ctaText = data.ctaLabel || data.ctaText || 'Request Quote';
   const ctaLink = data.ctaLink || '/contact';
+  // Keep the Employee Zone entry out of the public drawer while preserving
+  // navigation for signed-in staff. Route-level RLS remains the authorization boundary.
+  const employeeZoneLink = authService.isAuthenticated() ? `
+    <div class="drawer-divider"></div>
+    <a href="/admin" class="drawer-nav-item drawer-employee-item ${route === '/admin' ? 'active' : ''}" data-route="/admin" id="drawer-employee-zone-link" title="Open Employee Zone Admin Panel">
+      <div class="drawer-nav-item-content">
+        <span class="drawer-icon employee-icon"><i class="fa-solid fa-id-badge"></i></span>
+        <span class="drawer-item-title" style="font-weight: 600;">Employee Zone</span>
+      </div>
+      <span class="drawer-employee-badge"><i class="fa-solid fa-shield-halved"></i> Admin</span>
+    </a>
+  ` : '';
 
   const navLinks = [
     { path: '/', label: data.navHome || 'Home' },
@@ -156,6 +169,7 @@ function renderSidebarDrawerHTML(currentRoute) {
             <i class="fa-solid fa-chevron-right drawer-chevron"></i>
           </a>
         `).join('')}
+        ${employeeZoneLink}
 
 
       </div>
