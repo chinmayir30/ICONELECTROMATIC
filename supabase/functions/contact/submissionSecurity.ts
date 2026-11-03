@@ -18,3 +18,7 @@ export function isValidHttpsUrl(value: string): boolean {
     return parsed.protocol === "https:" && !parsed.username && !parsed.password;
   } catch { return false; }
 }
+
+export function safeEmailHeader(value: string): string {
+  return value.replace(/[\\r\\n\\u0000-\\u001f\\u007f]+/g, " ").trim().slice(0, 160);
+}
