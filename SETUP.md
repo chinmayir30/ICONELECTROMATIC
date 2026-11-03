@@ -19,12 +19,12 @@ The system is engineered as a high-performance, host-independent, and SEO-optimi
            │                                 │
            ▼                                 ▼
 [ Supabase Edge Functions ]       [ Supabase PostgreSQL ]
-  - /contact (Honeypot + Resend)    - 15 OEMs, 88 Categories, 169 Products
+  - /contact (Honeypot + Resend)    - 13 OEMs, 86 Categories, 167 Products
   - Rate limiting & anti-spam       - Row Level Security (RLS)
 ```
 
 1. **Frontend & Routing:** Pure Vanilla JavaScript with Vite. Utilizes HTML5 History API (`window.history.pushState`) for clean real URLs (e.g., `/products`, `/about`, `/contact`, `/products/rogers-corporation/rtduroid-5880`) without hash routes.
-2. **Static Site Generation (SSG) & SEO:** Built with `scripts/build-static-catalog.mjs`. Pre-renders 169 standalone HTML pages containing Google Schema.org `Product` & `BreadcrumbList` JSON-LD, OpenGraph tags, canonical tags, `sitemap.xml`, and `robots.txt`. Readable with zero client JavaScript.
+2. **Static Site Generation (SSG) & SEO:** Built with `scripts/build-static-catalog.mjs`. Pre-renders 167 standalone HTML pages containing Google Schema.org `Product` & `BreadcrumbList` JSON-LD, OpenGraph tags, canonical tags, `sitemap.xml`, and `robots.txt`. Readable with zero client JavaScript.
 3. **Database & Storage:** Hosted on Supabase (PostgreSQL 15+). Secured with strict Row Level Security (RLS) policies allowing public read access for published products, authenticated write access for administrators, and insert-only rate limiting.
 4. **Image Pipeline:** All 95 catalog pictures extracted left-to-right from client Excel sheets, normalized and converted to WebP format under `public/catalog-images/`.
 5. **Custom Admin CMS:** Zero-dependency admin panel accessible at `/admin`. Includes an Option B pre-publish SEO audit modal, Google SERP snippet preview card, interactive image gallery reordering, and a rebuild trigger. Guarded in production by `VITE_ENABLE_DEMO_ADMIN`.
@@ -88,7 +88,7 @@ Follow these steps to connect your own Supabase project:
 In the Supabase Dashboard, open the **SQL Editor** (`>_`) and run the SQL migration files in this order:
 1. `supabase/migrations/001_initial_schema.sql`: Creates `oems`, `categories`, `products`, `product_images`, `product_specs`, `enquiries`, and `rate_limits` tables.
 2. `supabase/migrations/002_rls_policies.sql`: Enables Row Level Security and defines public read and admin write policies.
-3. `supabase/seed.sql`: Populates the complete catalog of 15 OEMs, 88 categories, and 169 products with specs and image relations.
+3. `supabase/seed.sql`: Populates the complete catalog of 13 OEMs, 86 categories, and 167 products with specs and image relations.
 
 ### Step 4: Deploy the Contact Edge Function
 Using the Supabase CLI:

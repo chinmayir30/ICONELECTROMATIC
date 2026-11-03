@@ -1,6 +1,6 @@
 /**
  * Products Catalog Page — ICON ELECTROMATIC
- * Hierarchical Navigation: Companies (15 OEMs) → Categories → Products
+ * Hierarchical Navigation: Companies (13 OEMs) → Categories → Products
  * Direct source: 'Icon Website Product Info - Mrora.v2.xlsx'
  */
 import {
@@ -211,7 +211,7 @@ function renderCurrentLevel() {
 }
 
 // ═════════════════════════════════════════════════════════════════════════════
-// LEVEL 1: ALL COMPANIES (15 OEMs)
+// LEVEL 1: ALL COMPANIES (13 OEMs)
 // ═════════════════════════════════════════════════════════════════════════════
 function renderOEMsLevel() {
   const oems = getActiveOEMs();
@@ -657,11 +657,11 @@ function renderProductCard(product, index, oem, cat) {
 
       <!-- Card Action Buttons -->
       <div class="product-card-footer">
-        <a href="#/contact?subject=technical&model=${encodeURIComponent(product.name)}&product=${encodeURIComponent(product.name)}&oem=${encodeURIComponent(oem.name)}" class="pcard-link-btn" style="background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.12); color: #CBD5E1;">
+        <a href="/contact?subject=technical&model=${encodeURIComponent(product.name)}&product=${encodeURIComponent(product.name)}&oem=${encodeURIComponent(oem.name)}" class="pcard-link-btn" style="background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.12); color: #CBD5E1;">
           <i class="fa-solid fa-circle-info"></i>
           <span>Technical Inquiry</span>
         </a>
-        <a href="#/contact?subject=rfq&model=${encodeURIComponent(product.name)}&product=${encodeURIComponent(product.name)}&oem=${encodeURIComponent(oem.name)}" class="pcard-rfq-btn" style="background: ${oem.accentColor};">
+        <a href="/contact?subject=rfq&model=${encodeURIComponent(product.name)}&product=${encodeURIComponent(product.name)}&oem=${encodeURIComponent(oem.name)}" class="pcard-rfq-btn" style="background: ${oem.accentColor};">
           <span>Request RFQ</span>
         </a>
       </div>
@@ -715,7 +715,7 @@ function renderProductRow(product, index, oem) {
         </div>
       </div>
       <div class="ptable-col ptable-col-actions">
-        <a href="#/contact?subject=rfq&model=${encodeURIComponent(product.name)}&product=${encodeURIComponent(product.name)}&oem=${encodeURIComponent(oem.name)}" class="ptable-action-rfq" title="Request Quote" style="background: ${oem.accentColor};">
+        <a href="/contact?subject=rfq&model=${encodeURIComponent(product.name)}&product=${encodeURIComponent(product.name)}&oem=${encodeURIComponent(oem.name)}" class="ptable-action-rfq" title="Request Quote" style="background: ${oem.accentColor};">
           Request RFQ
         </a>
       </div>

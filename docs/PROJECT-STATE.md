@@ -32,6 +32,7 @@ Stage 7 - Central CMS Supabase Persistence, SSG Integration & Automated Free-Tie
 - [x] Phase 1.2 - Optimistic Concurrency Protection (supabaseClient.js, ContentService.js, Admin.js, migration 005 - 25/25 verified)
 - [x] Step 6 - Single-Domain Routing Alignment (/ vs /admin, src/main.js - locally verified)
 - [x] Step 7 - Automated Supabase Keep-Alive Workflow & Handover Agreement (.github/workflows/supabase-keepalive.yml, docs/DEPLOYMENT-RESPONSIBILITY-HANDOVER.md)
+- [x] Step 8 - Complete Remediation of Audit Gaps, Schema Alignment & Hash Route Cleanup (006_align_enquiries_and_rate_limits.sql, index.ts, Contact.js, authService.js, 167 products / 13 OEMs - 9/9 test suites verified)
 
 ## Decisions (confirmed by the owner)
 | Date | Decision | Why |
@@ -63,7 +64,7 @@ Stage 7 - Central CMS Supabase Persistence, SSG Integration & Automated Free-Tie
 - Two development-tool vulnerabilities (Vite, esbuild); affect the dev server only
 
 ## Open questions
-1. Final product count: 169 in code, about 130 stated by the owner, 400+ claimed by the client
+1. Final product count: 167 in code (across 13 OEMs and 86 categories after removing Spellman & AEE Israel), about 130 stated by the owner, 400+ claimed by the client
 2. Who builds the backend?
 3. Who edits and publishes at the client; is an approval step needed; do they add images and videos?
 4. Which email receives enquiries for each office (India, Singapore, USA)?

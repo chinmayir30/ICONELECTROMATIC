@@ -60,7 +60,7 @@ You have 3 SQL files already prepared in your `supabase/` folder. Run them one-b
 6. **Migration 4 (Catalog Seed Data):**
    - Open [supabase/seed.sql](file:///c:/ICON%20ELECTROMATIC/supabase/seed.sql).
    - Copy all contents, paste into a New Query, and click **Run**.
-   - *(This instantly populates all 15 OEMs, 88 categories, and 169 products with specs and image links).*
+   - *(This instantly populates all 13 OEMs, 86 categories, and 167 products with specs and image links).*
 
 ---
 

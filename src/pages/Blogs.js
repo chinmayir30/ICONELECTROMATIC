@@ -1,7 +1,7 @@
 /**
  * Blogs & OEM Technical News Page — ICON ELECTROMATIC
  * Sleek Dark Relay Aesthetics
- * Displays all 15 manufacturing partner OEMs, technical news releases,
+ * Displays all 13 manufacturing partner OEMs, technical news releases,
  * demonstration videos, application notes, and official technical website links.
  */
 import { CATALOG } from '../data/catalogData.js';
@@ -15,7 +15,7 @@ function getBlogCmsData() {
   }
   return {
     heroTitle: 'OEM Technical News, Video Demos & Insights',
-    heroSubtitle: 'Direct technical bulletins, video demonstrations, application whitepapers, and product release updates from ICON Electromatic\'s 15 global manufacturing partners.',
+    heroSubtitle: 'Direct technical bulletins, video demonstrations, application whitepapers, and product release updates from ICON Electromatic\'s 13 global manufacturing partners.',
     trustBadge1: 'Application Whitepapers & Notes',
     trustBadge2: 'Video Demos & Technical Webinars',
     trustBadge3: 'Direct Manufacturer Bulletins',
@@ -123,7 +123,7 @@ function renderAllOemsBlogView() {
               ${cmsData.heroTitle || 'OEM Technical News, Video Demos &amp; Insights'}
             </h1>
             <p class="page-lead-unified">
-              ${cmsData.heroSubtitle || 'Direct technical bulletins, video demonstrations, application whitepapers, and product release updates from ICON Electromatic\'s 15 global manufacturing partners.'}
+              ${cmsData.heroSubtitle || 'Direct technical bulletins, video demonstrations, application whitepapers, and product release updates from ICON Electromatic\'s 13 global manufacturing partners.'}
             </p>
           </div>
 
@@ -151,7 +151,7 @@ function renderAllOemsBlogView() {
           <!-- Quick Filter Chips by OEM -->
           <div class="blogs-oem-selector-bar">
             <button class="blogs-oem-chip active" data-filter="all">
-              <i class="fa-solid fa-layer-group"></i> All 15 OEMs
+              <i class="fa-solid fa-layer-group"></i> All 13 OEMs
             </button>
           ${CATALOG.map(oem => `
             <button class="blogs-oem-chip" data-oem-select="${oem.id}">
@@ -173,7 +173,7 @@ function renderAllOemsBlogView() {
           </div>
         </div>
 
-        <!-- 15 OEMs Grid -->
+        <!-- 13 OEMs Grid -->
         <div class="blogs-oem-grid">
           ${CATALOG.map(oem => {
             const counts = getActiveOemContentCount(oem.id);
@@ -314,7 +314,7 @@ function renderAllOemsBlogView() {
           <span style="font-size:0.8rem;color:var(--text-gray-400);">
             <i class="fa-solid fa-shield-check" style="color:var(--success);margin-right:5px;"></i> Official Technical Dispatch
           </span>
-          <a class="btn-relay-blue" id="modal-article-rfq-link" href="#/contact?subject=technical">
+          <a class="btn-relay-blue" id="modal-article-rfq-link" href="/contact?subject=technical">
             <i class="fa-solid fa-paper-plane"></i> Inquire on this Technology
           </a>
         </div>
@@ -380,7 +380,7 @@ function renderSingleOemBlogView(oem, blog, activeTab) {
               <button class="btn-relay-dark" id="back-to-all-oems-btn">
                 <i class="fa-solid fa-arrow-left"></i> All OEMs
               </button>
-              <a class="btn-relay-blue" href="#/contact?subject=technical&oem=${encodeURIComponent(oem.name)}">
+              <a class="btn-relay-blue" href="/contact?subject=technical&oem=${encodeURIComponent(oem.name)}">
                 <i class="fa-solid fa-paper-plane"></i> Technical Inquiry
               </a>
             </div>
@@ -522,7 +522,7 @@ function renderSingleOemBlogView(oem, blog, activeTab) {
                     `).join('')}
                   </ul>
 
-                  <a class="btn-relay-border" href="#/contact?subject=technical&oem=${encodeURIComponent(oem.name)}" style="width:100%;justify-content:center;margin-top:auto;">
+                  <a class="btn-relay-border" href="/contact?subject=technical&oem=${encodeURIComponent(oem.name)}" style="width:100%;justify-content:center;margin-top:auto;">
                     <i class="fa-solid fa-paper-plane"></i> Request Engineering Consultation
                   </a>
                 </div>
@@ -547,7 +547,7 @@ function renderSingleOemBlogView(oem, blog, activeTab) {
             <a class="btn-relay-dark" data-route="/products?level=categories&oem=${oem.id}">
               <i class="fa-solid fa-boxes-stacked"></i> Browse Catalog
             </a>
-            <a class="btn-relay-blue" href="#/contact?subject=rfq&oem=${encodeURIComponent(oem.name)}">
+            <a class="btn-relay-blue" href="/contact?subject=rfq&oem=${encodeURIComponent(oem.name)}">
               <i class="fa-solid fa-file-invoice"></i> Request Quote for ${oem.shortName}
             </a>
           </div>
@@ -571,7 +571,7 @@ function renderSingleOemBlogView(oem, blog, activeTab) {
           <span style="font-size:0.8rem;color:var(--text-gray-400);">
             <i class="fa-solid fa-shield-check" style="color:var(--success);margin-right:5px;"></i> Official Technical Bulletin
           </span>
-          <a class="btn-relay-blue" id="modal-article-rfq-link" href="#/contact?subject=technical">
+          <a class="btn-relay-blue" id="modal-article-rfq-link" href="/contact?subject=technical">
             <i class="fa-solid fa-paper-plane"></i> Inquire on this Technology
           </a>
         </div>
@@ -625,14 +625,16 @@ export function initBlogsPage() {
     });
   });
 
-  // "All 15 OEMs" chip
+  // "All 13 OEMs" chip
   document.querySelector('.blogs-oem-chip[data-filter="all"]')?.addEventListener('click', () => {
-    window.location.hash = '#/blogs';
+    window.history.pushState(null, '', '/blogs');
+    window.dispatchEvent(new Event('popstate'));
   });
 
   // Back to All OEMs button in single OEM view
   document.getElementById('back-to-all-oems-btn')?.addEventListener('click', () => {
-    window.location.hash = '#/blogs';
+    window.history.pushState(null, '', '/blogs');
+    window.dispatchEvent(new Event('popstate'));
   });
 
   // Tab switching in single OEM view

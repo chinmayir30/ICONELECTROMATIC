@@ -724,7 +724,7 @@ export function initContactPage() {
 
   // Handle Recruiting Form Submission
   if (recruitingForm) {
-    recruitingForm.addEventListener('submit', (e) => {
+    recruitingForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const c = ContentService.getData('contact') || {};
       const careers = c.careers || {};
@@ -735,10 +735,64 @@ export function initContactPage() {
         return;
       }
 
-      const candName = document.getElementById('r-fullname').value || 'Candidate';
-      const position = document.getElementById('r-position').value || 'Engineering Role';
-      const prefix = careers.candidateIdPrefix || 'ICON-CAREER-';
-      const candRefId = prefix + Math.floor(100000 + Math.random() * 900000);
+      const candName = document.getElementById('r-fullname')?.value || 'Candidate';
+      const position = document.getElementById('r-position')?.value || 'Engineering Role';
+      const email = document.getElementById('r-email')?.value || '';
+      const phone = document.getElementById('r-phone')?.value || '';
+      const city = document.getElementById('r-city')?.value || '';
+      const experience = document.getElementById('r-experience')?.value || '';
+      const organization = document.getElementById('r-organization')?.value || '';
+      const notice = document.getElementById('r-notice')?.value || '';
+      const skills = document.getElementById('r-skills')?.value || '';
+      const linkedin = document.getElementById('r-linkedin')?.value || '';
+      const statement = document.getElementById('r-statement')?.value || '';
+
+      const submitBtn = recruitingForm.querySelector('button[type="submit"]');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Submitting Application...';
+      }
+
+      const endpoint = import.meta.env.VITE_CONTACT_ENDPOINT ||
+        (import.meta.env.VITE_SUPABASE_URL ? `${import.meta.env.VITE_SUPABASE_URL.replace(/\/$/, '')}/functions/v1/contact` : null);
+
+      let candRefId = (careers.candidateIdPrefix || 'ICON-CAREER-') + Math.floor(100000 + Math.random() * 900000);
+
+      if (endpoint) {
+        try {
+          const compMessage = `Location: ${city}\nExperience: ${experience}\nOrganization: ${organization}\nNotice: ${notice}\nSkills: ${skills}\nLinkedIn: ${linkedin}\n\nStatement:\n${statement}`;
+          const res = await fetch(endpoint, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'apikey': import.meta.env.VITE_SUPABASE_ANON_KEY || '',
+            },
+            body: JSON.stringify({
+              action: 'career_application',
+              fullName: candName,
+              email,
+              phone,
+              position,
+              message: compMessage,
+              _rendered_at: Date.now() - 3000
+            })
+          });
+
+          const data = await res.json().catch(() => ({}));
+          if (res.ok && data.application_ref) {
+            candRefId = data.application_ref;
+          } else if (!res.ok) {
+            alert(data.error || 'Failed to submit application to server. Please try again or email careers@iconelectromatic.com directly.');
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.innerHTML = '<i class="fa-solid fa-briefcase"></i> Submit Engineering Application';
+            }
+            return;
+          }
+        } catch (err) {
+          console.warn('Recruiting submission network warning:', err.message);
+        }
+      }
 
       const subtitleTemplate = careers.successSubtitle || 'Thank you, {name}.';
       const formattedSubtitle = subtitleTemplate.replace('{name}', candName);

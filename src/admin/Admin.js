@@ -62,6 +62,7 @@ export function initAdminPage() {
 // ─── Login ───────────────────────────────────────────────────────────────────
 function renderLogin() {
   const isLive = authService.isConfigured;
+  const isDemo = authService.isDemoEnabled;
   return `
     <div class="a-login-page">
       <div class="a-login-box">
@@ -70,12 +71,14 @@ function renderLogin() {
         </div>
         <h2>Admin CMS</h2>
         <p>Icon Electromatic Content Portal</p>
-        <div style="margin-bottom: 16px; text-align: center;">
-          ${isLive 
-            ? '<span class="mode-status-badge live"><span class="badge-dot"></span> Supabase GoTrue Auth</span>' 
-            : '<span class="mode-status-badge demo"><span class="badge-dot"></span> Demo Admin Mode</span>'}
-        </div>
-        <form class="a-login-form" id="a-login-form">
+        ${isLive || isDemo ? `<div style="margin-bottom: 16px; text-align: center;">
+          ${isLive
+            ? '<span class="mode-status-badge live"><span class="badge-dot"></span> Supabase GoTrue Auth</span>'
+            : '<span class="mode-status-badge demo"><span class="badge-dot"></span> Local Demo Mode</span>'}
+        </div>` : ''}
+        ${!isLive && !isDemo ? `
+          <p role="status" style="color: #b45309; text-align: center;">Staff sign-in is unavailable because this site has not been connected to Supabase.</p>
+        ` : `<form class="a-login-form" id="a-login-form">
           <div class="a-field">
             <label>Staff Email</label>
             <input class="a-input" type="email" id="a-email" placeholder="staff@company.com" required>
@@ -86,10 +89,10 @@ function renderLogin() {
           </div>
           <div id="a-login-error" style="color: #ef4444; font-size: 0.8rem; margin-bottom: 8px; display: none;"></div>
           <button type="submit" class="a-btn a-btn-primary" id="btn-login-submit">Sign In <i class="fa-solid fa-arrow-right"></i></button>
-        </form>
-        ${!isLive ? `
+        </form>`}
+        ${isDemo && !isLive ? `
           <div style="margin-top: 12px; font-size: 0.78rem; color: #94a3b8; text-align: center; background: rgba(37,99,235,0.08); padding: 8px 12px; border-radius: 6px; border: 1px solid rgba(37,99,235,0.2);">
-            Demo Mode active. Sign in with <strong>admin@iconelectromatic.com</strong> / <strong>admin123</strong>
+            Local demo authentication is enabled for development only. Do not use this mode for staff accounts.
           </div>
         ` : ''}
         <div style="margin-top: 16px; text-align: center;">
@@ -174,7 +177,7 @@ function renderShell() {
             <button type="button" class="a-btn a-btn-primary a-btn-sm" id="btn-publish-site" title="Trigger static site generation rebuild hook">
               <i class="fa-solid fa-cloud-arrow-up"></i> Publish Site
             </button>
-            <a href="#/" class="a-btn a-btn-outline a-btn-sm" style="text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+            <a href="/" class="a-btn a-btn-outline a-btn-sm" style="text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
               <i class="fa-solid fa-globe"></i> View Site
             </a>
             <button class="a-btn a-btn-outline a-btn-sm" id="a-reset-btn" title="Reset this section to authentic default data">
@@ -756,7 +759,7 @@ function renderDashboard() {
             <tr><td><strong>Projects</strong></td><td><i class="fa-solid fa-check" style="color:var(--a-success);"></i> Project covers</td><td>Defense &amp; Space engineering project cards</td><td><span class="a-badge a-badge-green">Full CRUD</span></td></tr>
             <tr><td><strong>Gallery</strong></td><td><i class="fa-solid fa-check" style="color:var(--a-success);"></i> Hardware photos</td><td>Component &amp; hardware gallery cards</td><td><span class="a-badge a-badge-green">Full CRUD</span></td></tr>
             <tr><td><strong>Testimonials</strong></td><td><i class="fa-solid fa-check" style="color:var(--a-success);"></i> Client avatars</td><td>Scientist &amp; Engineer testimonial cards</td><td><span class="a-badge a-badge-green">Full CRUD</span></td></tr>
-            <tr><td><strong>Products / OEMs</strong></td><td><i class="fa-solid fa-check" style="color:var(--a-success);"></i> OEM Logos</td><td>All 15 global manufacturers with logo upload</td><td><span class="a-badge a-badge-green">Full CRUD</span></td></tr>
+            <tr><td><strong>Products / OEMs</strong></td><td><i class="fa-solid fa-check" style="color:var(--a-success);"></i> OEM Logos</td><td>All 13 global manufacturers with logo upload</td><td><span class="a-badge a-badge-green">Full CRUD</span></td></tr>
             <tr><td><strong>Partners</strong></td><td><i class="fa-solid fa-check" style="color:var(--a-success);"></i> Partner Logos</td><td>All 13 partners in running ticker &amp; static grid</td><td><span class="a-badge a-badge-green">Full CRUD</span></td></tr>
             <tr><td><strong>Blogs</strong></td><td><i class="fa-solid fa-check" style="color:var(--a-success);"></i> Article covers</td><td>Technical news, notes, and bulletins</td><td><span class="a-badge a-badge-green">Full CRUD</span></td></tr>
             <tr><td><strong>Contact &amp; Offices</strong></td><td><i class="fa-solid fa-minus" style="color:#94a3b8;"></i> Text based</td><td>Offices (India, Singapore, USA) &amp; Requirement presets</td><td><span class="a-badge a-badge-green">Connected</span></td></tr>
@@ -4478,7 +4481,7 @@ function getCmsBlogsPayload() {
   }
   return {
     heroTitle: 'OEM Technical News, Video Demos & Insights',
-    heroSubtitle: 'Direct technical bulletins, video demonstrations, application whitepapers, and product release updates from ICON Electromatic\'s 15 global manufacturing partners.',
+    heroSubtitle: 'Direct technical bulletins, video demonstrations, application whitepapers, and product release updates from ICON Electromatic\'s 13 global manufacturing partners.',
     trustBadge1: 'Application Whitepapers & Notes',
     trustBadge2: 'Video Demos & Technical Webinars',
     trustBadge3: 'Direct Manufacturer Bulletins',
@@ -4490,7 +4493,7 @@ function renderBlogsTab() {
   const cmsBlogs = getCmsBlogsPayload();
   const oemBlogs = cmsBlogs.oemBlogs || [];
 
-  // Ensure all 15 OEMs from CATALOG exist in oemBlogs
+  // Ensure all 13 OEMs from CATALOG exist in oemBlogs
   CATALOG.forEach(oem => {
     let b = oemBlogs.find(x => x.oemId === oem.id);
     if (!b) {
@@ -4912,7 +4915,7 @@ function renderBlogsTab() {
       <div class="a-cards-box-header" style="align-items:flex-start;">
         <div>
           <h3>OEM Technical Blogs, Video Demos &amp; Whitepapers Catalog</h3>
-          <p>Full pin-to-pin CMS management for all 15 global manufacturing partners. Edit technical articles, full dispatch text, video webinars, whitepapers, and official links.</p>
+          <p>Full pin-to-pin CMS management for all 13 global manufacturing partners. Edit technical articles, full dispatch text, video webinars, whitepapers, and official links.</p>
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
           <button type="button" class="a-btn a-btn-outline a-btn-sm" id="btn-edit-blog-hero"><i class="fa-solid fa-heading"></i> Edit Page Hero &amp; Badges</button>

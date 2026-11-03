@@ -1,6 +1,6 @@
 /**
  * Chatbot Component — ICON ELECTROMATIC
- * Intelligent engineering dispatch chatbot with complete knowledge of all 15 OEMs,
+ * Intelligent engineering dispatch chatbot with complete knowledge of all 13 OEMs,
  * their component categories, and flagship products.
  */
 import { CATALOG } from '../data/catalogData.js';
@@ -32,7 +32,6 @@ function findOem(query) {
     if (oem.id === 'rfuw-engineering' && (q.includes('rfuw') || q.includes('rf&w'))) return oem;
     if (oem.id === 'triteq' && (q.includes('tri-teq') || q.includes('triteq'))) return oem;
     if (oem.id === 'nee' && (q.includes('new england etching') || q.includes('nee') || q.includes('new england'))) return oem;
-    if (oem.id === 'aee-isarael' && (q.includes('aee') || q.includes('pids') || q.includes('perimeter'))) return oem;
     if (oem.id === 'transline-technology' && q.includes('transline')) return oem;
     if (oem.id === 'evans' && (q.includes('eulex') || q.includes('paktron') || q.includes('evans capacitor'))) return oem;
     if (oem.id === 'tecdia' && (q.includes('tecdia') || q.includes('single layer cap'))) return oem;
@@ -182,7 +181,7 @@ export function getBotReply(userText) {
   ) {
     return `
       <div>
-        ICON Electromatic is the specialized engineering distributor for <strong>15 global technology OEMs</strong>:
+        ICON Electromatic is the specialized engineering distributor for <strong>13 global technology OEMs</strong>:
         <br/><br/>
         <ul style="padding-left:16px;margin:0 0 10px;font-size:0.8rem;line-height:1.6;color:var(--text-gray-300);">
           <li><strong>Rogers Corporation</strong> — High Frequency PTFE Laminates</li>
@@ -193,8 +192,7 @@ export function getBotReply(userText) {
           <li><strong>RFuW Engineering</strong> — High-Power Limiters &amp; Switches</li>
           <li><strong>Tri-TeQ</strong> — Harmonic Switched Filters</li>
           <li><strong>YTTEK</strong> — Ultra-Wideband Software Defined Radios (HyperSDR)</li>
-          <li><strong>Spellman</strong> — High Voltage Power Supplies</li>
-          <li><strong>Thermosen, TecDia, Evans, NEE, PowerFactor (PowerRF), AEE Israel, Transline Technology</strong></li>
+          <li><strong>Thermosen, TecDia, Evans, NEE, PowerFactor (PowerRF), Transline Technology</strong></li>
         </ul>
         <div style="display:flex;flex-wrap:wrap;gap:6px;">
           <button class="chat-action-badge" style="background:rgba(37,99,235,0.15);border-color:rgba(37,99,235,0.4);color:var(--logo-blue-light);" data-route="/products">
@@ -349,14 +347,14 @@ export function renderChatbot() {
         <div class="chat-bubble-bot">
           👋 Welcome to <strong>ICON ELECTROMATIC</strong>. 
           <br/><br/>
-          I can assist you with information about our <strong>15 authorized OEMs</strong>, component categories (Laminates, GaN Amplifiers, 3D RF Optics, Limiters, SDRs), and flagship models.
+          I can assist you with information about our <strong>13 authorized OEMs</strong>, component categories (Laminates, GaN Amplifiers, 3D RF Optics, Limiters, SDRs), and flagship models.
           <br/><br/>
           <em>What component or manufacturer can I assist you with today?</em>
         </div>
       </div>
 
       <div class="chat-quick-chips">
-        <button class="chat-chip" data-q="All 15 OEMs">All 15 OEMs</button>
+        <button class="chat-chip" data-q="All 13 OEMs">All 13 OEMs</button>
         <button class="chat-chip" data-q="Rogers Laminates">Rogers Laminates</button>
         <button class="chat-chip" data-q="Qorvo GaN & ICs">Qorvo GaN &amp; ICs</button>
         <button class="chat-chip" data-q="Fortify 3D Optics">Fortify 3D Optics</button>
@@ -400,7 +398,8 @@ export function initChatbot() {
         e.preventDefault();
         const route = btn.getAttribute('data-route');
         if (route) {
-          window.location.hash = route;
+          window.history.pushState(null, '', route);
+          window.dispatchEvent(new PopStateEvent('popstate'));
           modal.classList.remove('open');
         }
       });

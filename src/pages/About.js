@@ -23,7 +23,7 @@ export function renderAboutPage() {
   const stats = d.stats || [
     { target: '1500', suffix: '+', label: 'Products', icon: 'fa-solid fa-boxes-stacked', color: 'red' },
     { target: '150', suffix: '+', label: 'Years of combined experience', icon: 'fa-solid fa-calendar-check', color: 'blue' },
-    { target: '15', suffix: '+', label: 'Partners', icon: 'fa-solid fa-handshake-angle', color: 'red' },
+    { target: '13', suffix: '+', label: 'Partners', icon: 'fa-solid fa-handshake-angle', color: 'red' },
   ];
 
   const milestones = d.milestones || [
@@ -65,7 +65,7 @@ export function renderAboutPage() {
         <div class="container" style="position:relative;z-index:2;">
           <!-- Breadcrumb -->
           <nav class="breadcrumb-dark">
-            <a href="#/" data-route="/">Home</a>
+            <a href="/" data-route="/">Home</a>
             <span class="sep"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;"></i></span>
             <span class="crumb-current" style="color:var(--text-white);font-weight:600;">About Us</span>
           </nav>

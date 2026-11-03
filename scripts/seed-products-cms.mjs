@@ -1,6 +1,6 @@
 // ==============================================================================
 // seed-products-cms.mjs
-// Extracts authentic 15 OEMs, 88 categories, and 169 products from catalogData.js
+// Extracts authentic 13 OEMs, 86 categories, and 167 products from catalogData.js
 // and generates idempotent PostgreSQL seed commands for public.cms_content
 // with key = 'products'
 // ==============================================================================

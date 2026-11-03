@@ -6,6 +6,7 @@
 
 import { CATALOG } from '../data/catalogData.js';
 import { ImageStorage } from '../data/ImageStorage.js';
+import { authService } from './authService.js';
 
 const env = (typeof import.meta !== 'undefined' && import.meta.env) ? import.meta.env : (typeof process !== 'undefined' && process.env ? process.env : {});
 const SUPABASE_URL = env.VITE_SUPABASE_URL || '';
@@ -140,7 +141,12 @@ async function restRequest(path, options = {}) {
     throw new Error('Supabase is not configured.');
   }
 
-  const token = localStorage.getItem('icon_staff_token') || SUPABASE_ANON_KEY;
+  let token = SUPABASE_ANON_KEY;
+  if (typeof authService !== 'undefined' && authService.getValidToken) {
+    token = (await authService.getValidToken()) || SUPABASE_ANON_KEY;
+  } else if (typeof localStorage !== 'undefined') {
+    token = localStorage.getItem('icon_staff_token') || SUPABASE_ANON_KEY;
+  }
   const url = `${SUPABASE_URL.replace(/\/$/, '')}/rest/v1/${path}`;
 
   const headers = {
@@ -492,8 +498,22 @@ export const supabaseClient = {
           }
         });
 
-        // If 0 rows returned: version did not match or record disappeared -> CONFLICT!
+        // If 0 rows returned: version did not match, record disappeared, or RLS blocked update
         if (!Array.isArray(rows) || rows.length === 0) {
+          try {
+            const verifyRows = await restRequest(`cms_content?key=eq.${encodeURIComponent(key)}&select=key,version`);
+            const currentRecord = verifyRows && verifyRows[0];
+            if (currentRecord && currentRecord.version === options.expectedVersion) {
+              return {
+                success: false,
+                permissionDenied: true,
+                error: `Permission denied: Your account lacks staff write privileges in public.user_roles to update section '${key}'.`
+              };
+            }
+          } catch {
+            // Best effort verification; proceed with standard conflict notification
+          }
+
           return {
             success: false,
             conflict: true,
@@ -889,7 +909,9 @@ export const supabaseClient = {
     }
 
     // 3. Authentication Verification for Configured Mode
-    const token = localStorage.getItem('icon_staff_token');
+    const token = (typeof authService !== 'undefined' && authService.getValidToken)
+      ? (await authService.getValidToken())
+      : (typeof localStorage !== 'undefined' ? localStorage.getItem('icon_staff_token') : null);
     if (!token || token.startsWith('mock_')) {
       throw new Error('Authentication required. Please log in as staff to upload images.');
     }
@@ -978,7 +1000,9 @@ export const supabaseClient = {
       throw new Error('Supabase Storage is not configured. Cannot delete remote image.');
     }
 
-    const token = localStorage.getItem('icon_staff_token');
+    const token = (typeof authService !== 'undefined' && authService.getValidToken)
+      ? (await authService.getValidToken())
+      : (typeof localStorage !== 'undefined' ? localStorage.getItem('icon_staff_token') : null);
     if (!token || token.startsWith('mock_')) {
       throw new Error('Authentication required to delete images.');
     }

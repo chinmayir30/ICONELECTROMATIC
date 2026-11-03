@@ -15,7 +15,7 @@ export function renderHomePage() {
 
   const statsList = data.stats || [
     { value: '160+', label: 'VERIFIED COMPONENTS' },
-    { value: '15', label: 'OEM PARTNERS' },
+    { value: '13', label: 'OEM PARTNERS' },
     { value: '100%', label: 'ROHS & ISO 9001' }
   ];
 
@@ -76,10 +76,10 @@ export function renderHomePage() {
           </p>
 
           <div class="hero-actions-row">
-            <a href="#${data.ctaExploreLink || '/products'}" class="btn-relay-red" data-route="${data.ctaExploreLink || '/products'}">
+            <a href="${data.ctaExploreLink || '/products'}" class="btn-relay-red" data-route="${data.ctaExploreLink || '/products'}">
               ${data.ctaExploreText || 'Explore Products'} <i class="fa-solid fa-arrow-right"></i>
             </a>
-            <a href="#${data.ctaQuoteLink || '/contact'}" class="btn-relay-dark" style="background:#ffffff; color:#000000;" data-route="${data.ctaQuoteLink || '/contact'}">
+            <a href="${data.ctaQuoteLink || '/contact'}" class="btn-relay-dark" style="background:#ffffff; color:#000000;" data-route="${data.ctaQuoteLink || '/contact'}">
               ${data.ctaQuoteText || 'Request a Quote'}
             </a>
           </div>

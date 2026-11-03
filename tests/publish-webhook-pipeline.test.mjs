@@ -16,10 +16,10 @@ test('Publishing Pipeline & Webhook Integration Suite', async (t) => {
   await t.test('Test 1: runCatalogPrePublishAudit validates authentic catalog against Option B', () => {
     const audit = runCatalogPrePublishAudit(CATALOG);
 
-    assert.equal(audit.totalOems, 15, 'Must audit all 15 OEMs');
-    assert.equal(audit.totalCategories, 88, 'Must audit all 88 categories');
-    assert.equal(audit.totalProducts, 169, 'Must audit all 169 products');
-    assert.equal(audit.eligibleProducts, 169, 'All 169 verified products in baseline CATALOG must pass Option B');
+    assert.equal(audit.totalOems, 13, 'Must audit all 13 OEMs');
+    assert.equal(audit.totalCategories, 86, 'Must audit all 86 categories');
+    assert.equal(audit.totalProducts, 167, 'Must audit all 167 products');
+    assert.equal(audit.eligibleProducts, 167, 'All 167 verified products in baseline CATALOG must pass Option B');
     assert.equal(audit.draftProducts, 0, 'Zero incomplete products in baseline');
     assert.equal(audit.score, 100, 'Baseline catalog score must be 100%');
     assert.equal(audit.canPublish, true, 'Catalog must be eligible to publish');
@@ -97,9 +97,9 @@ test('Publishing Pipeline & Webhook Integration Suite', async (t) => {
 
   await t.test('Test 3: renderCatalogPublishModal includes audit metrics and webhook mode', () => {
     const mockAudit = {
-      totalOems: 15,
-      totalCategories: 88,
-      totalProducts: 169,
+      totalOems: 13,
+      totalCategories: 86,
+      totalProducts: 167,
       eligibleProducts: 160,
       draftProducts: 9,
       hiddenProducts: 0,
@@ -119,7 +119,7 @@ test('Publishing Pipeline & Webhook Integration Suite', async (t) => {
   await t.test('Test 4: triggerPublishWebhook defaults gracefully to Simulation Mode when URL is empty', async () => {
     // When VITE_REBUILD_WEBHOOK_URL is unset
     const result = await supabaseClient.triggerPublishWebhook({
-      publishedCount: 169,
+      publishedCount: 167,
       draftCount: 0
     });
 
@@ -143,21 +143,21 @@ test('Publishing Pipeline & Webhook Integration Suite', async (t) => {
     supabaseClient.REBUILD_WEBHOOK_URL = 'https://api.buildhost.com/deploy-hook';
 
     try {
-      const okRes = await supabaseClient.triggerPublishWebhook({ publishedCount: 169 });
+      const okRes = await supabaseClient.triggerPublishWebhook({ publishedCount: 167 });
       assert.equal(okRes.success, true);
       assert.equal(okRes.status, 200);
       assert.match(okRes.message, /triggered successfully/);
 
       // Simulate failure (500 Server Error)
       globalThis.fetch = async () => ({ ok: false, status: 500 });
-      const failRes = await supabaseClient.triggerPublishWebhook({ publishedCount: 169 });
+      const failRes = await supabaseClient.triggerPublishWebhook({ publishedCount: 167 });
       assert.equal(failRes.success, false);
       assert.equal(failRes.status, 500);
       assert.match(failRes.message, /status 500/);
 
       // Simulate network exception (Fetch throws)
       globalThis.fetch = async () => { throw new Error('ECONNREFUSED'); };
-      const netRes = await supabaseClient.triggerPublishWebhook({ publishedCount: 169 });
+      const netRes = await supabaseClient.triggerPublishWebhook({ publishedCount: 167 });
       assert.equal(netRes.success, false);
       assert.match(netRes.message, /ECONNREFUSED/);
     } finally {
