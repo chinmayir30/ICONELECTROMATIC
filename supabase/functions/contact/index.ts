@@ -15,7 +15,7 @@
 
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 import { consumeContactRateLimit, getTrustedClientIp, hashClientIp } from "./rateLimit.ts";
-import { escapeHtml, isOriginAllowed, isValidHttpsUrl } from "./submissionSecurity.ts";
+import { escapeHtml, isOriginAllowed, isValidHttpsUrl, safeEmailHeader } from "./submissionSecurity.ts";
 
 
 function getCorsHeaders(req: Request): Record<string, string> {
@@ -169,6 +169,12 @@ serve(async (req: Request) => {
         );
       }
 
+      if (position.length < 2 || position.length > 100 || message.length > 5000 || phone.length > 50) {
+        return new Response(JSON.stringify({ error: "Position, phone, or application message exceeds the allowed length." }), {
+          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
       if (resumeUrl && !isValidHttpsUrl(resumeUrl)) {
         return new Response(JSON.stringify({ error: "Resume URL must be a valid HTTPS URL without embedded credentials." }), {
           status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -242,7 +248,7 @@ serve(async (req: Request) => {
               from: "Icon Electromatic <notifications@iconelectromatic.com>",
               to: [careersEmail],
               reply_to: email,
-              subject: `[Career Application] ${position}: ${fullName}`,
+              subject: `[Career Application] ${safeEmailHeader(position)}: ${safeEmailHeader(fullName)}`,
               html: careerEmailHtml,
             }),
           });
@@ -275,6 +281,17 @@ serve(async (req: Request) => {
     const subject = String(body.subject || "rfq").trim();
     const productModel = String(body.productModel || "").trim();
     const message = String(body.message || "").trim();
+
+    if (!["india", "singapore", "usa"].includes(office)) {
+      return new Response(JSON.stringify({ error: "Select a valid regional office." }), {
+        status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+    if (!["rfq", "technical", "bespoke", "delivery", "general"].includes(subject)) {
+      return new Response(JSON.stringify({ error: "Select a valid enquiry type." }), {
+        status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
 
     if (!fullName || fullName.length < 2 || fullName.length > 100) {
       return new Response(
@@ -413,7 +430,7 @@ serve(async (req: Request) => {
           from: "Icon Electromatic <notifications@iconelectromatic.com>",
           to: [targetOfficeEmail],
           reply_to: email,
-          subject: `[Icon Electromatic] ${subject.toUpperCase()} Enquiry: ${fullName} (${company || "Direct"})`,
+          subject: `[Icon Electromatic] ${subject.toUpperCase()} Enquiry`,
           html: emailHtml,
         }),
       });
