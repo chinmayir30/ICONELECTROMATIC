@@ -1,4 +1,5 @@
 import { consumeContactRateLimit, getTrustedClientIp, hashClientIp } from "./rateLimit.ts";
+import { escapeHtml, isOriginAllowed, isValidHttpsUrl } from "./submissionSecurity.ts";
 
 function assert(condition: unknown, message: string): asserts condition {
   if (!condition) throw new Error(message);
@@ -81,4 +82,24 @@ Deno.test("RPC errors fail closed", async () => {
     );
   } catch { failed = true; }
   assert(failed, "non-2xx response must throw");
+});
+
+Deno.test("CORS allows only explicitly configured exact origins", () => {
+  const allowed = ["https://iconelectromatic.com", "http://localhost:5173"];
+  assert(isOriginAllowed("https://iconelectromatic.com", allowed), "configured origin should pass");
+  assert(isOriginAllowed("http://localhost:5173", allowed), "configured localhost origin should pass");
+  assert(!isOriginAllowed("https://attacker.vercel.app", allowed), "arbitrary Vercel preview origin must be rejected");
+  assert(!isOriginAllowed("https://iconelectromatic.com.evil.example", allowed), "lookalike origin must be rejected");
+  assert(!isOriginAllowed("https://iconelectromatic.com/path", allowed), "origin with a path must be rejected");
+});
+
+Deno.test("notification HTML escapes untrusted submission content", () => {
+  assert(escapeHtml("<script>alert('x')</script>") === "&lt;script&gt;alert(&#39;x&#39;)&lt;/script&gt;", "HTML metacharacters must be escaped");
+});
+
+Deno.test("resume URLs must use HTTPS and must not contain credentials", () => {
+  assert(isValidHttpsUrl("https://files.example.com/resume.pdf"), "valid HTTPS URL should pass");
+  assert(!isValidHttpsUrl("http://files.example.com/resume.pdf"), "HTTP URL must fail");
+  assert(!isValidHttpsUrl("javascript:alert(1)"), "script URL must fail");
+  assert(!isValidHttpsUrl("https://user:pass@files.example.com/resume.pdf"), "credential-bearing URL must fail");
 });
