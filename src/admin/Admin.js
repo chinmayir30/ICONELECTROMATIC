@@ -62,6 +62,7 @@ export function initAdminPage() {
 // ─── Login ───────────────────────────────────────────────────────────────────
 function renderLogin() {
   const isLive = authService.isConfigured;
+  const isDemo = authService.isDemoEnabled;
   return `
     <div class="a-login-page">
       <div class="a-login-box">
@@ -70,12 +71,14 @@ function renderLogin() {
         </div>
         <h2>Admin CMS</h2>
         <p>Icon Electromatic Content Portal</p>
-        <div style="margin-bottom: 16px; text-align: center;">
-          ${isLive 
-            ? '<span class="mode-status-badge live"><span class="badge-dot"></span> Supabase GoTrue Auth</span>' 
-            : '<span class="mode-status-badge demo"><span class="badge-dot"></span> Demo Admin Mode</span>'}
-        </div>
-        <form class="a-login-form" id="a-login-form">
+        ${isLive || isDemo ? `<div style="margin-bottom: 16px; text-align: center;">
+          ${isLive
+            ? '<span class="mode-status-badge live"><span class="badge-dot"></span> Supabase GoTrue Auth</span>'
+            : '<span class="mode-status-badge demo"><span class="badge-dot"></span> Local Demo Mode</span>'}
+        </div>` : ''}
+        ${!isLive && !isDemo ? `
+          <p role="status" style="color: #b45309; text-align: center;">Staff sign-in is unavailable because this site has not been connected to Supabase.</p>
+        ` : `<form class="a-login-form" id="a-login-form">
           <div class="a-field">
             <label>Staff Email</label>
             <input class="a-input" type="email" id="a-email" placeholder="staff@company.com" required>
@@ -86,10 +89,10 @@ function renderLogin() {
           </div>
           <div id="a-login-error" style="color: #ef4444; font-size: 0.8rem; margin-bottom: 8px; display: none;"></div>
           <button type="submit" class="a-btn a-btn-primary" id="btn-login-submit">Sign In <i class="fa-solid fa-arrow-right"></i></button>
-        </form>
-        ${!isLive ? `
+        </form>`}
+        ${isDemo && !isLive ? `
           <div style="margin-top: 12px; font-size: 0.78rem; color: #94a3b8; text-align: center; background: rgba(37,99,235,0.08); padding: 8px 12px; border-radius: 6px; border: 1px solid rgba(37,99,235,0.2);">
-            Demo Mode active. Sign in with <strong>admin@iconelectromatic.com</strong> / <strong>admin123</strong>
+            Local demo authentication is enabled for development only. Do not use this mode for staff accounts.
           </div>
         ` : ''}
         <div style="margin-top: 16px; text-align: center;">
