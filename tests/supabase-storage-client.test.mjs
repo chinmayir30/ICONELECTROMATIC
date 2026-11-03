@@ -579,7 +579,8 @@ await test('Remote delete network error is caught and bubbles descriptive error'
   );
 });
 
-// Restore global fetch
+// Restore test globals
+authService.getValidToken = originalGetValidToken;
 global.fetch = originalFetch;
 
 console.log(`\n--- Test Results: ${passedTests}/${totalTests} Passed ---`);
