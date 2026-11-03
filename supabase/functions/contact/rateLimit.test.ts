@@ -123,6 +123,6 @@ Deno.test("trusted client IP uses only the single Cloudflare ingress header", ()
 });
 
 Deno.test("email header values remove CRLF and control characters", () => {
-  const safe = safeEmailHeader("RFQ\\r\\nBcc: attacker@example.com\\u0000");
+  const safe = safeEmailHeader("RFQ\r\nBcc: attacker@example.com\u0000");
   assert(safe === "RFQ Bcc: attacker@example.com", "header controls must be replaced with spaces");
 });
