@@ -1,5 +1,5 @@
 import { consumeContactRateLimit, getTrustedClientIp, hashClientIp } from "./rateLimit.ts";
-import { escapeHtml, isOriginAllowed, isValidHttpsUrl } from "./submissionSecurity.ts";
+import { escapeHtml, isOriginAllowed, isValidHttpsUrl, safeEmailHeader } from "./submissionSecurity.ts";
 
 function assert(condition: unknown, message: string): asserts condition {
   if (!condition) throw new Error(message);
@@ -120,4 +120,9 @@ Deno.test("trusted client IP uses only the single Cloudflare ingress header", ()
     "cf-connecting-ip": "203.0.113.10, 198.51.100.99",
   }));
   assert(ambiguous === null, "must reject multi-value ingress header");
+});
+
+Deno.test("email header values remove CRLF and control characters", () => {
+  const safe = safeEmailHeader("RFQ\\r\\nBcc: attacker@example.com\\u0000");
+  assert(safe === "RFQ Bcc: attacker@example.com", "header controls must be replaced with spaces");
 });
