@@ -120,6 +120,16 @@ Deno.test("trusted client IP uses only the single Cloudflare ingress header", ()
     "cf-connecting-ip": "203.0.113.10, 198.51.100.99",
   }));
   assert(ambiguous === null, "must reject multi-value ingress header");
+
+  const malformed = getTrustedClientIp(new Headers({
+    "cf-connecting-ip": "not-an-ip",
+  }));
+  assert(malformed === null, "must reject malformed ingress values");
+
+  const ipv6 = getTrustedClientIp(new Headers({
+    "cf-connecting-ip": "2001:db8::1",
+  }));
+  assert(ipv6 === "2001:db8::1", "must accept valid IPv6 ingress values");
 });
 
 Deno.test("email header values remove CRLF and control characters", () => {
