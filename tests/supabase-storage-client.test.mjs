@@ -5,11 +5,19 @@
 // ==============================================================================
 
 import assert from 'assert';
+import { authService } from '../src/services/authService.js';
 
 // ------------------------------------------------------------------------------
 // Mock DOM / Browser Environment
 // ------------------------------------------------------------------------------
 const mockStorage = new Map();
+
+// The Storage client tests configure Supabase via process.env, while the browser
+// auth service reads Vite's import.meta.env. Isolate Storage authorization here;
+// authService has dedicated tests for live session validation and token refresh.
+const originalGetValidToken = authService.getValidToken;
+authService.getValidToken = async () => mockStorage.get('icon_staff_token') || null;
+
 global.localStorage = {
   getItem: (key) => mockStorage.get(key) || null,
   setItem: (key, val) => mockStorage.set(key, String(val)),
@@ -571,7 +579,8 @@ await test('Remote delete network error is caught and bubbles descriptive error'
   );
 });
 
-// Restore global fetch
+// Restore test globals
+authService.getValidToken = originalGetValidToken;
 global.fetch = originalFetch;
 
 console.log(`\n--- Test Results: ${passedTests}/${totalTests} Passed ---`);
