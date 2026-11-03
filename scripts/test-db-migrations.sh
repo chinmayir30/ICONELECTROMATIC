@@ -110,23 +110,32 @@ BEGIN
      OR has_table_privilege('authenticated', 'public.rate_limits', 'INSERT')
   THEN RAISE EXCEPTION 'client roles retain direct access to legacy rate_limits'; END IF;
 
-  IF has_function_privilege('anon', 'public.is_staff()', 'EXECUTE')
-     OR has_function_privilege('anon', 'public.is_admin()', 'EXECUTE')
-  THEN RAISE EXCEPTION 'anonymous role can execute admin helper functions'; END IF;
+  IF to_regprocedure('public.is_staff()') IS NOT NULL
+     OR to_regprocedure('public.is_admin()') IS NOT NULL
+  THEN RAISE EXCEPTION 'SECURITY DEFINER helpers remain in the exposed public schema'; END IF;
 
-  IF NOT has_function_privilege('authenticated', 'public.is_staff()', 'EXECUTE')
-     OR NOT has_function_privilege('authenticated', 'public.is_admin()', 'EXECUTE')
-  THEN RAISE EXCEPTION 'authenticated RLS policies cannot execute admin helper functions'; END IF;
+  IF has_function_privilege('anon', 'private.is_staff()', 'EXECUTE')
+     OR has_function_privilege('anon', 'private.is_admin()', 'EXECUTE')
+  THEN RAISE EXCEPTION 'anonymous role can execute private admin helper functions'; END IF;
+
+  IF NOT has_function_privilege('authenticated', 'private.is_staff()', 'EXECUTE')
+     OR NOT has_function_privilege('authenticated', 'private.is_admin()', 'EXECUTE')
+  THEN RAISE EXCEPTION 'authenticated RLS policies cannot execute private admin helpers'; END IF;
 
   IF NOT EXISTS (
     SELECT 1 FROM pg_proc
-    WHERE oid='public.is_staff()'::regprocedure
-      AND proconfig @> ARRAY['search_path=public, auth, pg_temp']
+    WHERE oid='private.is_staff()'::regprocedure
+      AND proconfig @> ARRAY['search_path=pg_catalog, public, auth']
   ) OR NOT EXISTS (
     SELECT 1 FROM pg_proc
-    WHERE oid='public.is_admin()'::regprocedure
-      AND proconfig @> ARRAY['search_path=public, auth, pg_temp']
-  ) THEN RAISE EXCEPTION 'admin helper search_path is not pinned'; END IF;
+    WHERE oid='private.is_admin()'::regprocedure
+      AND proconfig @> ARRAY['search_path=pg_catalog, public, auth']
+  ) THEN RAISE EXCEPTION 'private admin helper search_path is not pinned'; END IF;
+
+  IF (SELECT count(*) FROM pg_policies
+      WHERE (coalesce(qual,'') || coalesce(with_check,'')) LIKE '%private.is_staff%'
+         OR (coalesce(qual,'') || coalesce(with_check,'')) LIKE '%private.is_admin%') < 13
+  THEN RAISE EXCEPTION 'RLS policies do not consistently use private authorization helpers'; END IF;
 
   IF NOT EXISTS (
     SELECT 1 FROM pg_class
