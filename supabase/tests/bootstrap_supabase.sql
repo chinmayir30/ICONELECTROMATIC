@@ -10,6 +10,11 @@ BEGIN
 END
 $$;
 
+-- Supabase grants client roles access to public tables by default; model that here
+-- so later REVOKE statements are tested against a realistic baseline.
+ALTER DEFAULT PRIVILEGES FOR ROLE postgres IN SCHEMA public
+  GRANT ALL ON TABLES TO anon, authenticated, service_role;
+
 CREATE SCHEMA IF NOT EXISTS auth;
 CREATE SCHEMA IF NOT EXISTS storage;
 
