@@ -33,6 +33,8 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
+      - name: Run admin-auth and keep-alive regression tests
+        run: node --test tests/auth-service.test.mjs tests/supabase-keepalive.test.mjs
       - run: npm run build
       - uses: denoland/setup-deno@v2
         with:
