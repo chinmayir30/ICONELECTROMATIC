@@ -98,7 +98,7 @@ export function renderHomePage() {
             <div class="popular-header" style="margin-bottom: 24px;">
               <h2 class="section-tag-mono red-section-title" style="font-size: 2.75rem; font-weight: 800; letter-spacing: 0.05em; margin: 0; line-height: 1.2;">${data.popularTitle || 'Popular Products &amp; Components'}</h2>
             </div>
-            <p class="section-lead" style="font-size: 1.25rem; max-width: 850px; color: #e2e8f0; margin: 0;">
+            <p class="section-lead" style="font-size: 1.25rem; max-width: 850px; margin: 0;">
               ${data.popularLead || 'High-frequency laminates, precision GaN semiconductors, 3D metamaterial optics, and microwave modules from our global OEM partners.'}
             </p>
           </div>

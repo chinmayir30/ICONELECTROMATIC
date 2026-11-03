@@ -419,15 +419,17 @@ Open items that affect these phases: client decisions on category grouping, dupl
   - Test suites pass 100% (60/60 tests).
 - **Undo:** Revert PR #20.
 
-### Entry 22: Header Refinement & Homepage Core Capabilities Removal
+### Entry 22: Header Refinement, Homepage Capabilities Removal & Light Theme Elevation
 - **Status:** In progress (branch `feat/header-refinement-alignment`, 03 Nov 2026)
 - **What was built:**
-  - Scaled down the Icon Electromatic logo proportionally in the header (desktop height reduced from 85px to 50px, laptop to 44px, tablet to 40px, mobile to 34px) while preserving exact aspect ratio (`width: auto`, `object-fit: contain`).
+  - Scaled down the Icon Electromatic logo proportionally in the header (desktop height 52px, laptop to 46px, tablet to 42px, mobile to 36px) while preserving exact aspect ratio (`width: auto`, `object-fit: contain`).
   - Removed the "Request Quote" button from the header action area, eliminating header crowding while keeping full quote request functionality everywhere else on the site (Contact page, sidebar drawer, product cards, blogs, etc.).
-  - Perfectly aligned the logo cluster, 7 navigation links, and theme toggle button in a single balanced row with balanced spacing (`gap: 1.5rem`, `font-size: 1rem`, `white-space: nowrap`) across all screen widths.
-  - Removed the entire Core Capabilities section from the homepage (`src/pages/Home.js`), including heading, subtitle, lead text, and all four capability cards, keeping other homepage sections in their original sequence and preserving Core Capabilities on the About page.
+  - Perfectly aligned the logo cluster, 7 navigation links, and theme toggle button in a single balanced row; increased header height to 92px (laptop 86px, tablet 76px) and expanded nav gap (`1.75rem`) and container padding (`var(--space-8)`) so the header feels spacious, open, and uncrowded across all screen widths.
+  - Removed the entire Core Capabilities section from the homepage (`src/pages/Home.js`), including heading, subtitle, lead text, and all four capability cards, keeping other homepage sections in their original sequence and preserving Core Capabilities intact on the About page.
+  - Modernized the homepage light theme with a clean white palette (`#ffffff` / `#f8fafc`) across all sections (Hero, Popular Products, Latest Blogs, Connect with Engineering), matching the professional White, Deep Navy Blue (`#0f1d3d`), and Signature Red (`#e32726`) brand aesthetic.
+  - Fine-tuned the homepage background video in light mode to be slightly darker with enhanced contrast (`brightness(0.80)`, `contrast(115%)`, `opacity: 0.65`) and a directional vignette for crisp text contrast without washing out the video details.
 - **Technology and role:** Header UI component, CSS responsive layout styles, Home page template.
-- **How it works:** The header inner container uses flexbox (`justify-content: space-between; align-items: center;`) with adjusted logo height, streamlined nav link spacing, and only the theme toggle on the right. The homepage renders directly from Hero into Popular Products without the intermediate capabilities section.
+- **How it works:** The header inner container uses flexbox (`justify-content: space-between; align-items: center;`) with adjusted logo height, streamlined nav link spacing, and only the theme toggle on the right. The homepage renders directly from Hero into Popular Products with clean light mode CSS scoped specifically to `[data-theme="light"]` on homepage section classes.
 - **Files and folders added or changed:**
   - `src/components/Header.js`
   - `src/styles/index.css`
