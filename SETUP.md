@@ -116,6 +116,8 @@ Phase 1 migration-specific safeguards:
 - Migration 003's rollback notes are in the migration file. In particular, never delete the `catalog-images` bucket or its objects as a schema rollback, and do not restore the global category-slug uniqueness constraint unless duplicate slugs have been ruled out.
 - Migration 006 changes enquiry columns and adds a synchronization trigger. Preserve existing enquiry rows and validate them before any rollback; do not drop compatibility columns merely to restore the former schema.
 
+**Security note:** Keep the `private` schema created by migration 011 out of Supabase's exposed API schemas. RLS policies call its authorization helpers internally; browser clients should not call those helpers through PostgREST.
+
 ### Step 4: Deploy the Contact Edge Function
 Using the Supabase CLI:
 ```bash
