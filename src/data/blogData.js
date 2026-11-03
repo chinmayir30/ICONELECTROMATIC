@@ -541,62 +541,6 @@ export const OEM_BLOGS = [
     ]
   },
   {
-    oemId: 'spellman',
-    officialWebsite: 'https://www.spellmanhv.com',
-    portalName: 'Spellman High Voltage Technical Center',
-    headline: 'Precision High-Voltage DC Power Supplies & X-Ray Generators',
-    articles: [
-      {
-        id: 'spellman-art-1',
-        title: 'Spellman Introduces Modular 100kV Ultra-Low Ripple Power Supplies for Vacuum Tube TWTAs',
-        date: 'August 2026',
-        category: 'High Voltage DC',
-        readTime: '4 min read',
-        image: '/images/gan-power-chip.jpg',
-        summary: 'Compact high-voltage DC modules provide <0.001% peak-to-peak voltage ripple, safeguarding traveling wave tubes (TWT) and electron gun filaments in satellite uplink transmitters.',
-        content: `
-          <p>High-power microwave vacuum devices such as klystrons and traveling wave tube amplifiers (TWTAs) require extraordinarily stable DC bias potentials. Spellman’s modular high-voltage power converters incorporate resonant inverter topologies that eliminate high-frequency switching hash from radiated RF signals.</p>
-        `,
-        tags: ['High Voltage', 'TWTA Power', 'Low Ripple', 'Vacuum Electronics']
-      }
-    ],
-    videos: [
-      {
-        id: 'spellman-vid-1',
-        title: 'High Voltage Safety & Arc Fault Recovery in Microwave Transmitters',
-        speaker: 'Spellman Power Systems Lab',
-        duration: '13:50',
-        date: 'March 2026',
-        thumbnail: '/images/gan-power-chip.jpg',
-        summary: 'Demonstration of sub-microsecond electronic crowbar circuits protecting expensive electron tube grids during vacuum flashover events.',
-        topics: ['Arc Protection', 'Crowbar Circuits', 'Safety Protocols']
-      }
-    ],
-    whitepapers: [
-      {
-        id: 'spellman-wp-1',
-        title: 'Minimizing Phase Noise in TWT Radar Transmitters via Ultra-Clean HV Biasing',
-        author: 'Spellman High Voltage Electronics Corp.',
-        date: 'May 2026',
-        pages: '12 Pages',
-        frequencyBand: 'High Voltage DC',
-        summary: 'Mathematical modeling linking high voltage collector ripple to transmitter Doppler phase noise skirts in long-range search radar.',
-        keyFindings: [
-          'Ripple reduction to 10 ppm improves radar Doppler sub-clutter visibility by 8 dB.',
-          'Solid-state encapsulation allows high-altitude airborne operation up to 50,000 feet without corona breakdown.'
-        ]
-      }
-    ],
-    officialLinks: [
-      {
-        title: 'Spellman High Voltage Electronics Official Site',
-        url: 'https://www.spellmanhv.com',
-        description: 'Technical application notes on high-voltage power supplies, X-ray sources, and custom OEM converters.',
-        icon: 'fa-bolt-lightning'
-      }
-    ]
-  },
-  {
     oemId: 'thermosen',
     officialWebsite: 'https://www.thermosen.com',
     portalName: 'Thermosen Sensor Labs',
@@ -817,62 +761,6 @@ export const OEM_BLOGS = [
         url: 'https://www.nee-intl.com',
         description: 'Photochemical etching capabilities, material alloy selector, and metal tolerance guidelines.',
         icon: 'fa-scissors'
-      }
-    ]
-  },
-  {
-    oemId: 'aee-isarael',
-    officialWebsite: 'https://www.aee-israel.com',
-    portalName: 'AEE Israel Perimeter Defense Systems Center',
-    headline: 'Perimeter Intrusion Detection Systems (PIDS) & Fiber-Optic Sensor Arrays',
-    articles: [
-      {
-        id: 'aee-art-1',
-        title: 'AEE Israel Deploys Next-Gen Fiber-Optic PIDS with AI Classification of Physical Breaches',
-        date: 'May 2026',
-        category: 'Perimeter Security',
-        readTime: '4 min read',
-        image: '/images/rf-filter.jpg',
-        summary: 'Military-grade perimeter detection systems utilizing phase-sensitive Optical Time-Domain Reflectometry (phi-OTDR) distinguish vehicle movement from human cutting with zero false alarms.',
-        content: `
-          <p>Critical infrastructure protection around radar installations, defense laboratories, and military perimeters requires 100% detection probability without nuisance alarms caused by wildlife or wind. AEE Israel’s integrated fiber-optic sensory perimeter provides continuous 50-kilometer boundary monitoring with location accuracy within 2 meters.</p>
-        `,
-        tags: ['PIDS', 'Fiber-Optic Sensing', 'Base Defense', 'Intrusion Detection']
-      }
-    ],
-    videos: [
-      {
-        id: 'aee-vid-1',
-        title: 'Field Demonstration: Detecting Fence Climbing and Sub-Surface Tunneling',
-        speaker: 'AEE Defense Operations Division',
-        duration: '11:15',
-        date: 'January 2026',
-        thumbnail: '/images/rf-filter.jpg',
-        summary: 'Real-time telemetry showing live event detection, automated PTZ camera tracking, and military command system alerting.',
-        topics: ['OTDR Sensing', 'Fence Alarms', 'Command Integration']
-      }
-    ],
-    whitepapers: [
-      {
-        id: 'aee-wp-1',
-        title: 'Eliminating Nuisance Alarms in High-Wind Environments with Deep Learning Signal Processing',
-        author: 'AEE Israel R&D Labs',
-        date: 'November 2025',
-        pages: '12 Pages',
-        frequencyBand: 'Acoustic / Optical',
-        summary: 'Spectrogram analysis separating fence vibration patterns of mechanical wire cutting from heavy meteorological weather events.',
-        keyFindings: [
-          'False alarm rate reduced by 99.4% in desert and coastal installations.',
-          'Zero electrical power required along the passive fiber sensor perimeter line.'
-        ]
-      }
-    ],
-    officialLinks: [
-      {
-        title: 'AEE Israel Official Security Portal',
-        url: 'https://www.aee-israel.com',
-        description: 'Perimeter intrusion detection systems, seismic sensors, and defense facility security hardware.',
-        icon: 'fa-shield'
       }
     ]
   },

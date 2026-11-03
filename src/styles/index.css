@@ -3615,6 +3615,7 @@ h1, h2, h3, h4, h5, h6 {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 22px;
+  margin-top: 10px;
 }
 
 @media (max-width: 768px) {
@@ -7552,6 +7553,7 @@ html[data-theme="light"],
 }
 
 .category-count-badge {
+  display: none !important;
   position: absolute;
   top: 12px;
   right: 12px;

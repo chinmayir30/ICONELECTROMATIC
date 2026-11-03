@@ -32,6 +32,9 @@ Stage 7 - Central CMS Supabase Persistence & SSG Integration (feat/admin-cms-sup
 - [x] Phase 1.2 - Optimistic Concurrency Protection (supabaseClient.js, ContentService.js, Admin.js, migration 005 - 25/25 verified)
 - [x] Step 6 - Single-Domain Routing Alignment (/ vs /admin, src/main.js - locally verified)
 - [x] Header Refinement, Homepage Capabilities Removal & Light Theme Elevation (feat/header-refinement-alignment)
+- [x] Remove Spellman & AEE Israel from Products & Blogs (13 OEMs, 167 Products on feat/header-refinement-alignment)
+- [x] Remove Strategic Application Domains from About Us (feat/header-refinement-alignment)
+- [x] Remove Product Card Part Badges & Standardize to "View All Products" (feat/header-refinement-alignment)
 
 ## Decisions (confirmed by the owner)
 | Date | Decision | Why |
@@ -44,6 +47,8 @@ Stage 7 - Central CMS Supabase Persistence & SSG Integration (feat/admin-cms-sup
 | 2026-10 | Fail loudly instead of faking success | Stop fake ticket IDs and silent fallback; enforce required secrets and production authentication |
 | 2026-10 | Option 1 Architecture Repair | Complete existing Supabase + SSG static pipeline; do not rewrite or replace framework |
 | 2026-11 | Streamline Header, Remove Homepage Capabilities & Elevate Light Theme | Reduce header crowding (height 92px, nav gap 1.75rem), remove redundant Request Quote header CTA (preserving quote elsewhere), remove Core Capabilities from homepage, and elevate homepage light theme to clean white with darkened hero background video |
+| 2026-11 | Prune Catalog to 13 Canonical OEMs | Completely remove Spellman and AEE Israel from Products and Blogs pages (leaving 13 authentic OEMs and 167 verified products) |
+| 2026-11 | Streamline About Us & Standardize Product Cards | Removed Strategic Application Domains from About page with balanced layout spacing; removed "X Parts" number badges from top-right corner of product cards and standardized card button/link to "View All Products" without numbers |
 
 ## Proposed, not yet confirmed
 - Static site generation (Astro recommended) so every product is a real HTML page
@@ -56,7 +61,7 @@ Stage 7 - Central CMS Supabase Persistence & SSG Integration (feat/admin-cms-sup
 - Edge function validates ALLOWED_ORIGINS and fails with HTTP 500 if regional office emails or RESEND_API_KEY are missing (saves enquiry first)
 - Static SEO pages pre-rendered with dynamic CSS asset detection, valid Schema.org Product Offer, responsive image dimensions, and permanent 301 redirects for legacy prototype URLs
 - Dynamic catalog cards and rows now render direct crawlable links (/products/{oem}/{slug}) to static product pages
-- "4,000+ products" and "24+ categories" claims removed from index.html, Home.js, and ContentService.js and replaced with verified counts (160+ verified components, 15 OEM partners)
+- "4,000+ products" and "24+ categories" claims removed from index.html, Home.js, and ContentService.js and replaced with verified counts (160+ verified components, 13 OEM partners)
 - Admin CMS (/admin): always routable in production; runtime Supabase auth enforces access; VITE_ENABLE_DEMO_ADMIN retained for display-only badge on login screen (PR #7 for original gate, Step 6 for routing change)
 - Old fake product files (products.js, ProductDetail.js) removed in Phase 0 (PR #9)
 - Large files: 65 MB presentation, hero videos; main JS bundle is 399.46 kB (down from 645 kB baseline)
