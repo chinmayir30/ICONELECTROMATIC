@@ -1,5 +1,5 @@
 import { consumeContactRateLimit, getTrustedClientIp, hashClientIp } from "./rateLimit.ts";
-import { escapeHtml, isOriginAllowed, isValidHttpsUrl } from "./submissionSecurity.ts";
+import { escapeHtml, isOriginAllowed, isValidHttpsUrl, safeEmailHeader } from "./submissionSecurity.ts";
 
 function assert(condition: unknown, message: string): asserts condition {
   if (!condition) throw new Error(message);
@@ -102,4 +102,37 @@ Deno.test("resume URLs must use HTTPS and must not contain credentials", () => {
   assert(!isValidHttpsUrl("http://files.example.com/resume.pdf"), "HTTP URL must fail");
   assert(!isValidHttpsUrl("javascript:alert(1)"), "script URL must fail");
   assert(!isValidHttpsUrl("https://user:pass@files.example.com/resume.pdf"), "credential-bearing URL must fail");
+});
+
+Deno.test("trusted client IP uses only the single Cloudflare ingress header", () => {
+  const trusted = getTrustedClientIp(new Headers({
+    "cf-connecting-ip": " 203.0.113.10 ",
+    "x-forwarded-for": "198.51.100.99, 192.0.2.10",
+  }));
+  assert(trusted === "203.0.113.10", "must prefer the single trusted ingress value");
+
+  const forwardedOnly = getTrustedClientIp(new Headers({
+    "x-forwarded-for": "198.51.100.99",
+  }));
+  assert(forwardedOnly === null, "must not fall back to caller-controlled X-Forwarded-For");
+
+  const ambiguous = getTrustedClientIp(new Headers({
+    "cf-connecting-ip": "203.0.113.10, 198.51.100.99",
+  }));
+  assert(ambiguous === null, "must reject multi-value ingress header");
+
+  const malformed = getTrustedClientIp(new Headers({
+    "cf-connecting-ip": "not-an-ip",
+  }));
+  assert(malformed === null, "must reject malformed ingress values");
+
+  const ipv6 = getTrustedClientIp(new Headers({
+    "cf-connecting-ip": "2001:db8::1",
+  }));
+  assert(ipv6 === "2001:db8::1", "must accept valid IPv6 ingress values");
+});
+
+Deno.test("email header values remove CRLF and control characters", () => {
+  const safe = safeEmailHeader("RFQ\r\nBcc: attacker@example.com\u0000");
+  assert(safe === "RFQ Bcc: attacker@example.com", "header controls must be replaced with spaces");
 });
