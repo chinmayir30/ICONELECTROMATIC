@@ -38,6 +38,7 @@ jobs:
       - uses: denoland/setup-deno@v2
         with:
           deno-version: v2.x
+      - run: deno check supabase/functions/contact/index.ts
       - run: deno test supabase/functions/contact/rateLimit.test.ts
       - name: Install PostgreSQL client
         run: sudo apt-get update && sudo apt-get install --yes postgresql-client
