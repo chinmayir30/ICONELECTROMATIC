@@ -507,6 +507,28 @@ Open items that affect these phases: client decisions on category grouping, dupl
   - Live production deployment URL (checked after pull request merge).
 - **Undo:** Revert commit or branch.
 
+### Entry 25: Automated Supabase Free-Tier Keep-Alive Workflow & Handover Agreement
+- **Status:** In progress (open PR #21) (branch `feat/supabase-keepalive-workflow`, 04 Nov 2026)
+- **What was built:**
+  - GitHub Actions workflow `.github/workflows/supabase-keepalive.yml` scheduled every three days at 04:00 UTC, with a manual trigger.
+  - A REST GET ping to `/rest/v1/oems?select=id&limit=1`, a minimal public-read query that avoids reading CMS content.
+  - Client deployment responsibility and handover agreement documentation.
+- **Technology and role:** GitHub Actions schedule, Bash, curl, Supabase PostgREST, GitHub Secrets/Variables.
+- **How it works:** The workflow reads the Supabase URL and anon key from repository secrets or variables. The script selects only an OEM row ID from the public catalog; it does not read CMS content. Apply the complete database migration set, including the explicit Data API grant for public OEM reads, before enabling this workflow. The script exits with an error if either value is missing, if curl fails, or if the HTTP status is not 2xx. GitHub Actions scheduling is best-effort.
+- **Files and folders added or changed:**
+  - `.github/workflows/ci.yml`
+  - `.github/workflows/supabase-keepalive.yml`
+  - `docs/DEPLOYMENT-RESPONSIBILITY-HANDOVER.md`
+  - `docs/PROJECT-STATE.md`
+  - `docs/seo_backend_implementation.md`
+  - `scripts/supabase-keepalive.sh`
+  - `tests/supabase-keepalive.test.mjs`
+- **Data and security notes:** No credentials are committed; repository secrets or variables are injected at workflow runtime.
+- **Checked (and how):**
+  - CI runs `node --test tests/supabase-keepalive.test.mjs` and `npm run build`.
+  - Keep-alive tests substitute a mock `curl` and cover missing credentials, HTTP 503, transport failure, and HTTP 204 success. The endpoint's anon SELECT grant and row access were also checked with read-only SQL on the disposable `icon-electromatic-phase1-test` Supabase project after its current migrations, including the public catalog grant migration. This is not a request to the client's project.
+- **Undo:** Revert PR #21.
+
 ## 7. Entry template (copy for each new phase)
 ```
 ### Entry N: name

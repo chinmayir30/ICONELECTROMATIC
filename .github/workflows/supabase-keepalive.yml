@@ -1,0 +1,20 @@
+name: Supabase Database Keep-Alive
+
+on:
+  schedule:
+    # Runs at 04:00 UTC every 3 days; scheduling is best-effort.
+    - cron: '0 4 */3 * *'
+  workflow_dispatch:
+
+jobs:
+  ping-supabase:
+    name: Ping Supabase REST API
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Ping Supabase Database
+        env:
+          SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL || vars.VITE_SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY || vars.VITE_SUPABASE_ANON_KEY }}
+        shell: bash
+        run: bash scripts/supabase-keepalive.sh

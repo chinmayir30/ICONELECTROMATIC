@@ -1,6 +1,6 @@
 # PROJECT-STATE.md - Icon Electromatic website
 
-Last updated: 2026-11-03
+Last updated: 2026-11-04
 Rule: update this file at the end of every task. Never write passwords, keys or tokens here.
 Read docs/seo_backend_implementation.md for the implementation log, technology stack and phase status.
 
@@ -31,6 +31,7 @@ Stage 7 - Central CMS Supabase Persistence & SSG Integration (feat/admin-cms-sup
 - [x] Step 5 - Publishing Pipeline & Rebuild Webhook Integration (Admin.js, triggerPublishWebhook, SeoAuditModal.js - 5/5 verified)
 - [x] Phase 1.2 - Optimistic Concurrency Protection (supabaseClient.js, ContentService.js, Admin.js, migration 005 - 25/25 verified)
 - [x] Step 6 - Single-Domain Routing Alignment (/ vs /admin, src/main.js - locally verified)
+- [ ] Step 7 - Automated Supabase Keep-Alive Workflow & Handover Agreement (.github/workflows/supabase-keepalive.yml, docs/DEPLOYMENT-RESPONSIBILITY-HANDOVER.md)
 - [x] Header Refinement, Homepage Capabilities Removal & Light Theme Elevation (feat/header-refinement-alignment)
 - [x] Remove Spellman & AEE Israel from Products & Blogs (13 OEMs, 167 Products on feat/header-refinement-alignment)
 - [x] Remove Strategic Application Domains from About Us (feat/header-refinement-alignment)
