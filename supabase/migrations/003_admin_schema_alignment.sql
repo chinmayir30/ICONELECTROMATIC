@@ -52,7 +52,7 @@ CREATE OR REPLACE FUNCTION public.is_staff()
 RETURNS BOOLEAN
 LANGUAGE plpgsql
 SECURITY DEFINER
-SET search_path = public, pg_temp
+SET search_path = public, auth, pg_temp
 AS $$
 BEGIN
     RETURN EXISTS (
@@ -68,7 +68,7 @@ CREATE OR REPLACE FUNCTION public.is_admin()
 RETURNS BOOLEAN
 LANGUAGE plpgsql
 SECURITY DEFINER
-SET search_path = public, pg_temp
+SET search_path = public, auth, pg_temp
 AS $$
 BEGIN
     RETURN EXISTS (
@@ -80,10 +80,10 @@ END;
 $$;
 
 -- Restrict function execution to authenticated users and service_role (revoking from public/anon)
-REVOKE ALL ON FUNCTION public.is_staff() FROM PUBLIC;
+REVOKE ALL ON FUNCTION public.is_staff() FROM PUBLIC, anon;
 GRANT EXECUTE ON FUNCTION public.is_staff() TO authenticated, service_role;
 
-REVOKE ALL ON FUNCTION public.is_admin() FROM PUBLIC;
+REVOKE ALL ON FUNCTION public.is_admin() FROM PUBLIC, anon;
 GRANT EXECUTE ON FUNCTION public.is_admin() TO authenticated, service_role;
 
 -- ------------------------------------------------------------------------------
@@ -174,8 +174,20 @@ ON CONFLICT (id) DO UPDATE SET
 -- ------------------------------------------------------------------------------
 -- 7. Storage Row-Level Security Policies
 -- ------------------------------------------------------------------------------
--- Ensure RLS is active on storage objects
-ALTER TABLE storage.objects ENABLE ROW LEVEL SECURITY;
+-- Supabase Storage owns storage.objects (typically as supabase_storage_admin).
+-- Do not ALTER this managed table from the application migration role. Verify
+-- the platform prerequisite and fail with a clear message if it is absent.
+DO $storage$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1
+        FROM pg_class
+        WHERE oid = 'storage.objects'::regclass
+          AND relrowsecurity = true
+    ) THEN
+        RAISE EXCEPTION 'Supabase Storage prerequisite missing: RLS must be enabled on storage.objects';
+    END IF;
+END $storage$;
 
 DROP POLICY IF EXISTS "Public Access for catalog-images" ON storage.objects;
 CREATE POLICY "Public Access for catalog-images"

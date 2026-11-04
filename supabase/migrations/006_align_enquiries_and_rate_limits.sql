@@ -30,7 +30,7 @@ ALTER TABLE public.enquiries
 
 -- Dual-column auto-synchronization trigger
 CREATE OR REPLACE FUNCTION public.sync_enquiry_columns()
-RETURNS TRIGGER AS $$
+RETURNS TRIGGER AS $trigger$
 BEGIN
     -- Synchronize full_name <-> name
     IF NEW.full_name IS NOT NULL AND (NEW.name IS NULL OR NEW.name = '') THEN
@@ -58,7 +58,7 @@ BEGIN
 
     RETURN NEW;
 END;
-$$ LANGUAGE plpgsql;
+$trigger$ LANGUAGE plpgsql SET search_path = pg_catalog, public;
 
 DROP TRIGGER IF EXISTS trg_sync_enquiry_columns ON public.enquiries;
 CREATE TRIGGER trg_sync_enquiry_columns
