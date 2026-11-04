@@ -1,6 +1,6 @@
 # PROJECT-STATE.md - Icon Electromatic website
 
-Last updated: 2026-11-02
+Last updated: 2026-11-04
 Rule: update this file at the end of every task. Never write passwords, keys or tokens here.
 Read docs/seo_backend_implementation.md for the implementation log, technology stack and phase status.
 
@@ -33,6 +33,13 @@ Stage 7 - Central CMS Supabase Persistence, SSG Integration & Automated Free-Tie
 - [x] Step 6 - Single-Domain Routing Alignment (/ vs /admin, src/main.js - locally verified)
 - [x] Step 7 - Automated Supabase Keep-Alive Workflow & Handover Agreement (.github/workflows/supabase-keepalive.yml, docs/DEPLOYMENT-RESPONSIBILITY-HANDOVER.md)
 - [x] Step 8 - Complete Remediation of Audit Gaps, Schema Alignment & Hash Route Cleanup (006_align_enquiries_and_rate_limits.sql, index.ts, Contact.js, authService.js, 167 products / 13 OEMs - 9/9 test suites verified)
+
+## Current PR remediation status (2026-11-04)
+- PRs #21–#31 remain open; no deployment or merge has occurred. Treat all fixes below as proposed until merged and re-verified on `main`.
+- PR #22 removes Spellman and AEE Israel with the owner's approval; both source workbooks still list them, so preserve that discrepancy in handover records.
+- PR #29 now includes explicit Supabase Data API grants. Actions run 41815626128 passed the clean PostgreSQL 16 migration, privilege, and concurrency checks on head `8d5345a43cb4e54e10b5bb3a268955495ded1005`.
+- PRs #30 and #31 are synchronized with #29 at heads `d1229c14c98fc562cb47611ea27f67bd56068a47` and `962928de16dcdcd7b58e32f5bd6dc5029166f103`; their fresh CI and Vercel checks passed.
+- Remaining contact handover gaps include unconfirmed regional mailbox addresses, a generic email fallback, no durable email retry, no resume upload, and no Excel integration beyond retained Supabase data / CSV export work still to implement.
 
 ## Decisions (confirmed by the owner)
 | Date | Decision | Why |
@@ -79,3 +86,4 @@ Stage 7 - Central CMS Supabase Persistence, SSG Integration & Automated Free-Tie
 1. Read AGENTS.md, then this file.
 2. Pick the first unchecked item in the stage checklist.
 3. Make a plan, wait for approval, work on a branch, update this file when done.
+
