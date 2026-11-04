@@ -19,13 +19,6 @@ export function renderHomePage() {
     { value: '100%', label: 'ROHS & ISO 9001' }
   ];
 
-  const capList = data.capabilities || [
-    { title: 'RF & Microwave Active', desc: 'High-linearity power amplifiers, ultra-low noise LNAs, active frequency mixers, and voltage-controlled oscillators.', linkText: 'Explore Amplifiers →', linkUrl: '/products?category=amplifiers', icon: 'fa-solid fa-wave-square' },
-    { title: 'Passive & Waveguides', desc: 'High-Q cavity bandpass filters, low-loss waveguide transitions, directional couplers, and coaxial terminations.', linkText: 'Explore Filters →', linkUrl: '/products?category=filters', icon: 'fa-solid fa-filter' },
-    { title: 'Defense & Aerospace', desc: 'Mil-Spec screening, extreme-temperature reliability, and radiation-tolerant solutions for tactical EW and SATCOM.', linkText: 'Learn More →', linkUrl: '/about', icon: 'fa-solid fa-shield-halved' },
-    { title: 'Test & Measurement', desc: 'Precision calibration adapters, armored low-loss RF test cables, and laboratory attenuator modules up to 86 GHz.', linkText: 'Explore Solutions →', linkUrl: '/products?category=test-solutions', icon: 'fa-solid fa-flask-vial' },
-  ];
-
   let blogList = [];
   if (Array.isArray(blogs)) {
     blogList = blogs.slice(0, 3);
@@ -97,30 +90,6 @@ export function renderHomePage() {
       </div>
     </section>
 
-    <!-- CORE CAPABILITIES (Relay Dark Minimal Cards) -->
-    <section class="section-dark">
-      <div class="container">
-        <div class="section-head-minimal">
-          <h2 class="section-tag-mono red-section-title" style="font-size: 2.75rem; font-weight: 800; letter-spacing: 0.05em; margin: 0; line-height: 1.2;">${data.coreCapabilitiesTitle || 'Core Capabilities'}</h2>
-          <h3 class="section-h2" style="font-size: 2rem; font-weight: 600; line-height: 1.3; margin-top: 8px; margin-bottom: 16px;">${data.coreCapabilitiesSubtitle || 'Engineered for extreme performance.'}</h3>
-          <p class="section-lead" style="font-size: 1.25rem; max-width: 800px; margin: 0;">
-            ${data.coreCapabilitiesLead || 'From millimeter-wave defense radar to satellite ground infrastructure, we provide the verified hardware engineers depend on.'}
-          </p>
-        </div>
-
-        <div class="capabilities-grid-dark">
-          ${capList.map(cap => `
-            <div class="capability-card-dark">
-              <div class="capability-icon-box"><i class="${cap.icon || 'fa-solid fa-microchip'}"></i></div>
-              <h3>${cap.title}</h3>
-              <p>${cap.desc}</p>
-              <a data-route="${cap.linkUrl || '/products'}">${cap.linkText || 'Explore →'}</a>
-            </div>
-          `).join('')}
-        </div>
-      </div>
-    </section>
-
     <!-- POPULAR PRODUCTS SECTION -->
     <section class="products-dark-section">
       <div class="container">
@@ -129,7 +98,7 @@ export function renderHomePage() {
             <div class="popular-header" style="margin-bottom: 24px;">
               <h2 class="section-tag-mono red-section-title" style="font-size: 2.75rem; font-weight: 800; letter-spacing: 0.05em; margin: 0; line-height: 1.2;">${data.popularTitle || 'Popular Products &amp; Components'}</h2>
             </div>
-            <p class="section-lead" style="font-size: 1.25rem; max-width: 850px; color: #e2e8f0; margin: 0;">
+            <p class="section-lead" style="font-size: 1.25rem; max-width: 850px; margin: 0;">
               ${data.popularLead || 'High-frequency laminates, precision GaN semiconductors, 3D metamaterial optics, and microwave modules from our global OEM partners.'}
             </p>
           </div>
