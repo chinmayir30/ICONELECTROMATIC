@@ -2,12 +2,12 @@
 -- Keep grants aligned with the existing row-level security policies.
 GRANT USAGE ON SCHEMA public TO anon, authenticated, service_role;
 
--- Public catalog/CMS reads; staff writes remain constrained by RLS.
+-- Public catalog reads; CMS public reads go through a filtered RPC migration.
 REVOKE ALL ON TABLE public.oems, public.categories, public.products,
-  public.product_images, public.cms_content
+  public.product_images
   FROM PUBLIC, anon, authenticated;
 GRANT SELECT ON TABLE public.oems, public.categories, public.products,
-  public.product_images, public.cms_content
+  public.product_images
   TO anon;
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.oems, public.categories,
   public.products, public.product_images, public.cms_content
@@ -33,4 +33,5 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.rate_limits TO service_role
 -- Rate-limit events are accessed through the SECURITY DEFINER RPC.
 REVOKE ALL ON TABLE public.contact_rate_limit_events
   FROM PUBLIC, anon, authenticated, service_role;
+
 

@@ -121,6 +121,11 @@ function bindLoginForm() {
 
     try {
       await authService.signIn(email, pass);
+      const contentResult = await ContentService.refresh({ includeHidden: true });
+      if (!contentResult.success) {
+        await authService.signOut();
+        throw new Error(contentResult.error || 'CMS content is unavailable for this staff account.');
+      }
       isAuthenticated = true;
       rerender();
     } catch (err) {
@@ -218,6 +223,7 @@ function bindShell() {
   document.getElementById('a-logout-btn')?.addEventListener('click', async () => {
     await authService.signOut();
     isAuthenticated = false;
+    await ContentService.refresh();
     rerender();
   });
 
