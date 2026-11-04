@@ -3,8 +3,10 @@ import { createContactHandler } from "./index.ts";
 type HarnessOptions = {
   insertStatus?: number;
   insertBody?: unknown;
+  rejectInsert?: boolean;
   emailStatus?: number;
   rejectEmail?: boolean;
+  omitResendApiKey?: boolean;
 };
 
 const testEnv: Record<string, string> = {
@@ -20,7 +22,7 @@ const testEnv: Record<string, string> = {
 function createHarness(options: HarnessOptions = {}) {
   const requests: Array<{ url: string; method: string; body?: Record<string, unknown> }> = [];
   const handler = createContactHandler({
-    getEnv: (name) => testEnv[name],
+    getEnv: (name) => name === "RESEND_API_KEY" && options.omitResendApiKey ? undefined : testEnv[name],
     fetchImpl: async (input, init = {}) => {
       const url = String(input);
       const method = init.method || "GET";
@@ -32,6 +34,7 @@ function createHarness(options: HarnessOptions = {}) {
         return new Response("true", { status: 200, headers: { "Content-Type": "application/json" } });
       }
       if (url.endsWith("/rest/v1/enquiries") || url.endsWith("/rest/v1/career_applications")) {
+        if (options.rejectInsert) throw new Error("simulated database transport failure");
         const responseBody = options.insertBody === undefined
           ? url.endsWith("/rest/v1/enquiries")
             ? [{ id: "enquiry-db-id" }]
@@ -115,6 +118,25 @@ Deno.test("enquiry insert without a returned row ID fails closed", async () => {
   if (requests.filter((request) => request.url.endsWith("/rest/v1/enquiries")).length !== 1) {
     throw new Error("enquiry persistence should be attempted once");
   }
+  if (requests.some((request) => request.url === "https://api.resend.com/emails")) {
+    throw new Error("email must not be sent when the database returns no persisted enquiry ID");
+  }
+});
+
+Deno.test("enquiry database transport failure never claims persistence or sends email", async () => {
+  const { handler, requests } = createHarness({ rejectInsert: true });
+  const response = await handler(makeRequest("enquiry"));
+  const result = await readJson(response);
+
+  if (response.status !== 503 || result.saved_to_db === true || result.ticket_id) {
+    throw new Error(`database transport failure must fail closed: ${JSON.stringify(result)}`);
+  }
+  if (requests.filter((request) => request.url.endsWith("/rest/v1/enquiries")).length !== 1) {
+    throw new Error("enquiry persistence transport must be attempted once");
+  }
+  if (requests.some((request) => request.url === "https://api.resend.com/emails")) {
+    throw new Error("email must not be sent after a database transport failure");
+  }
 });
 
 Deno.test("persisted enquiry remains truthful when the email provider returns an error", async () => {
@@ -147,6 +169,25 @@ Deno.test("persisted enquiry remains truthful when email transport throws", asyn
   }
 });
 
+Deno.test("persisted enquiry reports provider acceptance and suppresses email when no key is configured", async () => {
+  const accepted = createHarness();
+  const acceptedResponse = await accepted.handler(makeRequest("enquiry"));
+  const acceptedResult = await readJson(acceptedResponse);
+  if (acceptedResponse.status !== 200 || acceptedResult.saved_to_db !== true || acceptedResult.email_dispatched !== true) {
+    throw new Error(`accepted enquiry notification was not reported truthfully: ${JSON.stringify(acceptedResult)}`);
+  }
+
+  const unconfigured = createHarness({ omitResendApiKey: true });
+  const unconfiguredResponse = await unconfigured.handler(makeRequest("enquiry"));
+  const unconfiguredResult = await readJson(unconfiguredResponse);
+  if (unconfiguredResponse.status !== 200 || unconfiguredResult.saved_to_db !== true || unconfiguredResult.email_dispatched !== false) {
+    throw new Error(`missing Resend key must preserve saved status and report no email: ${JSON.stringify(unconfiguredResult)}`);
+  }
+  if (unconfigured.requests.some((request) => request.url === "https://api.resend.com/emails")) {
+    throw new Error("email provider must not be called without its API key");
+  }
+});
+
 Deno.test("career persistence HTTP failure returns no application reference and sends no email", async () => {
   const { handler, requests } = createHarness({ insertStatus: 503 });
   const response = await handler(makeRequest("career_application"));
@@ -173,6 +214,22 @@ Deno.test("career insert without a persisted ID and reference fails closed", asy
   }
   if (requests.some((request) => request.url === "https://api.resend.com/emails")) {
     throw new Error("career email must not be sent when the insert response lacks its persisted reference");
+  }
+});
+
+Deno.test("career database transport failure never returns an application reference or sends email", async () => {
+  const { handler, requests } = createHarness({ rejectInsert: true });
+  const response = await handler(makeRequest("career_application"));
+  const result = await readJson(response);
+
+  if (response.status !== 503 || result.application_ref || result.saved_to_db === true) {
+    throw new Error(`career database transport failure must fail closed: ${JSON.stringify(result)}`);
+  }
+  if (requests.filter((request) => request.url.endsWith("/rest/v1/career_applications")).length !== 1) {
+    throw new Error("career persistence transport must be attempted once");
+  }
+  if (requests.some((request) => request.url === "https://api.resend.com/emails")) {
+    throw new Error("career email must not be sent after a database transport failure");
   }
 });
 
@@ -205,5 +262,24 @@ Deno.test("persisted career application remains truthful when email transport th
   }
   if (requests.filter((request) => request.url.endsWith("/rest/v1/career_applications")).length !== 1) {
     throw new Error("career application must be inserted exactly once despite email failure");
+  }
+});
+
+Deno.test("persisted career application reports provider acceptance and suppresses email when no key is configured", async () => {
+  const accepted = createHarness();
+  const acceptedResponse = await accepted.handler(makeRequest("career_application"));
+  const acceptedResult = await readJson(acceptedResponse);
+  if (acceptedResponse.status !== 200 || acceptedResult.saved_to_db !== true || acceptedResult.email_dispatched !== true) {
+    throw new Error(`accepted career notification was not reported truthfully: ${JSON.stringify(acceptedResult)}`);
+  }
+
+  const unconfigured = createHarness({ omitResendApiKey: true });
+  const unconfiguredResponse = await unconfigured.handler(makeRequest("career_application"));
+  const unconfiguredResult = await readJson(unconfiguredResponse);
+  if (unconfiguredResponse.status !== 200 || unconfiguredResult.saved_to_db !== true || unconfiguredResult.email_dispatched !== false) {
+    throw new Error(`missing Resend key must preserve saved status and report no email: ${JSON.stringify(unconfiguredResult)}`);
+  }
+  if (unconfigured.requests.some((request) => request.url === "https://api.resend.com/emails")) {
+    throw new Error("career email provider must not be called without its API key");
   }
 });
