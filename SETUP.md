@@ -93,7 +93,13 @@ In the Supabase Dashboard, open the **SQL Editor** (`>_`) and run the SQL migrat
 5. `supabase/migrations/005_cms_content_versioning.sql`: Adds CMS version tracking.
 6. `supabase/migrations/006_align_enquiries_and_rate_limits.sql`: Aligns enquiry fields and creates career application storage. The legacy `rate_limits` table is retained; do not manually alter its primary key.
 7. `supabase/migrations/007_atomic_contact_rate_limit.sql`: Creates the private HMAC-hash event table and atomic rate-limit RPC.
-8. `supabase/seed.sql`: Populates the complete catalog of 13 OEMs, 86 categories, and 167 products with specs and image relations.
+8. `supabase/migrations/008_restrict_career_application_writes.sql`: Restricts career application inserts to the service role; browser roles cannot insert candidate records.
+9. `supabase/migrations/009_restrict_legacy_rate_limit_access.sql`: Revokes direct Data API access to the retained legacy rate-limit table from browser roles.
+10. `supabase/migrations/010_restrict_career_application_select_grants.sql`: Allows authenticated staff reads under RLS and service-role inserts; denies anonymous access.
+11. `supabase/migrations/011_move_rls_helpers_to_private_schema.sql`: Moves SECURITY DEFINER authorization helpers into the non-exposed `private` schema and updates all dependent RLS policies.
+12. `supabase/migrations/20261104095115_explicit_data_api_grants.sql`: Grants the required catalog, CMS, admin, enquiry, career, and service-role table privileges explicitly.
+13. `supabase/migrations/20261104110220_public_cms_content_filter.sql`: Removes direct public CMS table reads and adds a filtered RPC that excludes nested unpublished content.
+14. `supabase/seed.sql`: Populates the complete catalog of 13 OEMs, 86 categories, and 167 products with specs and image relations.
 
 ### Migration backup, recovery and rollback requirements
 
@@ -111,6 +117,8 @@ Phase 1 migration-specific safeguards:
 - Migration 007 introduces `contact_rate_limit_events` and its service-role-only RPC. Retain the legacy `rate_limits` table until all older consumers are proven retired. Do not remove the new table or RPC during rollback while the contact Edge Function depends on them.
 - Migration 003's rollback notes are in the migration file. In particular, never delete the `catalog-images` bucket or its objects as a schema rollback, and do not restore the global category-slug uniqueness constraint unless duplicate slugs have been ruled out.
 - Migration 006 changes enquiry columns and adds a synchronization trigger. Preserve existing enquiry rows and validate them before any rollback; do not drop compatibility columns merely to restore the former schema.
+
+**Security note:** Keep the `private` schema created by migration 011 out of Supabase's exposed API schemas. RLS policies call its authorization helpers internally; browser clients should not call those helpers through PostgREST.
 
 ### Step 4: Deploy the Contact Edge Function
 Using the Supabase CLI:
@@ -212,3 +220,5 @@ When staff finishes updating products, clicking **Publish to Production** trigge
 | Preview production build locally | `npm run preview` |
 | Regenerate static HTML & sitemap | `node scripts/build-static-catalog.mjs` |
 | Verify Git status | `git status` |
+
+

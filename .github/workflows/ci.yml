@@ -30,17 +30,22 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
       - run: npm ci
       - name: Run admin-auth and keep-alive regression tests
         run: node --test tests/auth-service.test.mjs tests/supabase-keepalive.test.mjs
       - run: npm run build
+      - run: npm test
       - uses: denoland/setup-deno@v2
         with:
           deno-version: v2.x
-      - run: deno test supabase/functions/contact/rateLimit.test.ts
+      - run: deno check supabase/functions/contact/index.ts
+      - run: deno test supabase/functions/contact/rateLimit.test.ts supabase/functions/contact/handler.test.ts
       - name: Install PostgreSQL client
         run: sudo apt-get update && sudo apt-get install --yes postgresql-client
       - name: Verify clean database migrations and rate-limit concurrency
         run: bash scripts/test-db-migrations.sh
+      - name: Validate GitHub Actions workflow YAML
+        run: |
+          ruby -e 'require "yaml"; Dir.glob(".github/workflows/*.{yml,yaml}").each { |path| YAML.load_file(path, aliases: true); puts "Valid YAML: #{path}" }'

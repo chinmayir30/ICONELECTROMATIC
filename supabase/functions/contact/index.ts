@@ -15,10 +15,16 @@
 
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 import { consumeContactRateLimit, getTrustedClientIp, hashClientIp } from "./rateLimit.ts";
+import { escapeHtml, isOriginAllowed, isValidHttpsUrl, safeEmailHeader } from "./submissionSecurity.ts";
 
-function getCorsHeaders(req: Request): Record<string, string> {
+type ContactHandlerDependencies = {
+  getEnv?: (name: string) => string | undefined;
+  fetchImpl?: typeof fetch;
+};
+
+function getCorsHeaders(req: Request, getEnv: (name: string) => string | undefined): Record<string, string> {
   const origin = req.headers.get("origin") || "";
-  const rawAllowed = Deno.env.get("ALLOWED_ORIGINS") || "";
+  const rawAllowed = getEnv("ALLOWED_ORIGINS") || "";
   let allowed = rawAllowed
     .split(",")
     .map((o) => o.trim())
@@ -37,7 +43,7 @@ function getCorsHeaders(req: Request): Record<string, string> {
   }
 
   let allowOrigin = "";
-  if (allowed.includes(origin) || (origin && origin.endsWith(".vercel.app"))) {
+  if (isOriginAllowed(origin, allowed)) {
     allowOrigin = origin;
   }
 
@@ -54,8 +60,12 @@ function getCorsHeaders(req: Request): Record<string, string> {
   return headers;
 }
 
-serve(async (req: Request) => {
-  const corsHeaders = getCorsHeaders(req);
+export function createContactHandler(dependencies: ContactHandlerDependencies = {}) {
+  const getEnv = dependencies.getEnv || ((name: string) => Deno.env.get(name));
+  const fetchImpl = dependencies.fetchImpl || fetch;
+
+  return async (req: Request) => {
+  const corsHeaders = getCorsHeaders(req, getEnv);
 
   // 1. Handle CORS preflight
   if (req.method === "OPTIONS") {
@@ -95,9 +105,53 @@ serve(async (req: Request) => {
     }
 
     const action = String(body.action || "enquiry").trim().toLowerCase();
-    const supabaseUrl = Deno.env.get("SUPABASE_URL");
-    const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
-    const resendApiKey = Deno.env.get("RESEND_API_KEY");
+    if (!["enquiry", "career_application", "career"].includes(action)) {
+      return new Response(JSON.stringify({ error: "Unsupported submission type." }), {
+        status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+    const supabaseUrl = getEnv("SUPABASE_URL");
+    const supabaseServiceKey = getEnv("SUPABASE_SERVICE_ROLE_KEY");
+    const resendApiKey = getEnv("RESEND_API_KEY");
+
+    // Rate limiting is mandatory: fail closed if server-side dependencies
+    // or a client address supplied by the edge proxy are unavailable.
+    if (!supabaseUrl || !supabaseServiceKey) {
+      return new Response(JSON.stringify({ error: "Enquiry service is temporarily unavailable." }), {
+        status: 503, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    // Hosted Supabase Edge Functions are fronted by Cloudflare. Do not use
+    // the leftmost X-Forwarded-For value for security decisions: callers can
+    // prepend a forged address. Missing CF-Connecting-IP fails closed.
+    const clientIp = getTrustedClientIp(req.headers);
+    const hashSecret = getEnv("RATE_LIMIT_HASH_SECRET");
+
+    if (!clientIp || !hashSecret || new TextEncoder().encode(hashSecret).byteLength < 32) {
+      console.error("Contact rate limiting is not configured with a trusted client IP and strong HMAC secret.");
+      return new Response(JSON.stringify({ error: "Enquiry service is temporarily unavailable." }), {
+        status: 503, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    try {
+      const ipHash = await hashClientIp(clientIp, hashSecret);
+      const allowed = await consumeContactRateLimit(supabaseUrl, supabaseServiceKey, ipHash, fetchImpl);
+      if (!allowed) {
+        return new Response(
+          JSON.stringify({
+            error: "Rate limit reached. Maximum 5 inquiries allowed per hour. Please try again later or call our office.",
+          }),
+          { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+    } catch (rateLimitError) {
+      console.error("Contact rate-limit check failed:", rateLimitError);
+      return new Response(JSON.stringify({ error: "Enquiry service is temporarily unavailable." }), {
+        status: 503, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
 
     // ─── ROUTE A: CAREER APPLICATION ──────────────────────────────────────────
     if (action === "career_application" || action === "career") {
@@ -123,37 +177,53 @@ serve(async (req: Request) => {
         );
       }
 
-      const appRef = "ICON-CAREER-" + Math.floor(100000 + Math.random() * 900000);
-      let savedToDb = false;
-
-      if (supabaseUrl && supabaseServiceKey) {
-        const insertAppRes = await fetch(`${supabaseUrl}/rest/v1/career_applications`, {
-          method: "POST",
-          headers: {
-            apikey: supabaseServiceKey,
-            Authorization: `Bearer ${supabaseServiceKey}`,
-            "Content-Type": "application/json",
-            Prefer: "return=representation",
-          },
-          body: JSON.stringify({
-            application_ref: appRef,
-            full_name: fullName,
-            email,
-            phone: phone || null,
-            position,
-            message: message || null,
-            resume_url: resumeUrl || null,
-            status: "new",
-          }),
-        }).catch(() => null);
-
-        if (insertAppRes && insertAppRes.ok) {
-          savedToDb = true;
-        }
+      if (position.length < 2 || position.length > 100 || message.length > 5000 || phone.length > 50) {
+        return new Response(JSON.stringify({ error: "Position, phone, or application message exceeds the allowed length." }), {
+          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
       }
 
-      const careersEmail = Deno.env.get("CAREERS_EMAIL") || "careers@iconelectromatic.com";
-
+      if (resumeUrl && !isValidHttpsUrl(resumeUrl)) {
+        return new Response(JSON.stringify({ error: "Resume URL must be a valid HTTPS URL without embedded credentials." }), {
+          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      const appRef = `ICON-CAREER-${crypto.randomUUID()}`;
+      const insertAppRes = await fetchImpl(`${supabaseUrl}/rest/v1/career_applications`, {
+        method: "POST",
+        headers: {
+          apikey: supabaseServiceKey,
+          Authorization: `Bearer ${supabaseServiceKey}`,
+          "Content-Type": "application/json",
+          Prefer: "return=representation",
+        },
+        body: JSON.stringify({
+          application_ref: appRef,
+          full_name: fullName,
+          email,
+          phone: phone || null,
+          position,
+          message: message || null,
+          resume_url: resumeUrl || null,
+          status: "new",
+        }),
+      }).catch(() => null);
+      if (!insertAppRes || !insertAppRes.ok) {
+        console.error("Career application persistence failed:", insertAppRes?.status ?? "network error");
+        return new Response(JSON.stringify({ error: "Your application could not be saved. Please try again." }), {
+          status: 503, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      const insertedApplication = await insertAppRes.json().catch(() => []);
+      if (!Array.isArray(insertedApplication) || !insertedApplication[0]?.id || !insertedApplication[0]?.application_ref) {
+        console.error("Career application insert did not return a persisted record.");
+        return new Response(JSON.stringify({ error: "Your application could not be verified as saved. Please contact the careers team." }), {
+          status: 503, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      const persistedAppRef = insertedApplication[0].application_ref;
+      let emailDispatched = false;
+      const careersEmail = getEnv("CAREERS_EMAIL") || "careers@iconelectromatic.com";
       if (resendApiKey) {
         const careerEmailHtml = `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;">
@@ -163,40 +233,48 @@ serve(async (req: Request) => {
             </div>
             <div style="padding: 24px; background: #ffffff;">
               <div style="background: #ecfdf5; border-left: 4px solid #10b981; padding: 12px 16px; margin-bottom: 20px;">
-                <strong>Application Ref:</strong> #${appRef}<br/>
-                <strong>Position Applied:</strong> ${position}
+                <strong>Application Ref:</strong> #${escapeHtml(appRef)}<br/>
+                <strong>Position Applied:</strong> ${escapeHtml(position)}
               </div>
               <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem; margin-bottom: 20px;">
-                <tr><td style="padding: 8px 0; color: #64748b; width: 140px;"><strong>Candidate Name:</strong></td><td style="padding: 8px 0; color: #0f172a;">${fullName}</td></tr>
-                <tr><td style="padding: 8px 0; color: #64748b;"><strong>Email:</strong></td><td style="padding: 8px 0; color: #0f172a;"><a href="mailto:${email}">${email}</a></td></tr>
-                <tr><td style="padding: 8px 0; color: #64748b;"><strong>Phone:</strong></td><td style="padding: 8px 0; color: #0f172a;">${phone || "Not specified"}</td></tr>
-                ${resumeUrl ? `<tr><td style="padding: 8px 0; color: #64748b;"><strong>Resume Link:</strong></td><td style="padding: 8px 0; color: #2563eb;"><a href="${resumeUrl}" target="_blank">View Uploaded Resume</a></td></tr>` : ""}
+                <tr><td style="padding: 8px 0; color: #64748b; width: 140px;"><strong>Candidate Name:</strong></td><td style="padding: 8px 0; color: #0f172a;">${escapeHtml(fullName)}</td></tr>
+                <tr><td style="padding: 8px 0; color: #64748b;"><strong>Email:</strong></td><td style="padding: 8px 0; color: #0f172a;"><a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a></td></tr>
+                <tr><td style="padding: 8px 0; color: #64748b;"><strong>Phone:</strong></td><td style="padding: 8px 0; color: #0f172a;">${escapeHtml(phone || "Not specified")}</td></tr>
+                ${resumeUrl ? `<tr><td style="padding: 8px 0; color: #64748b;"><strong>Resume Link:</strong></td><td style="padding: 8px 0; color: #2563eb;"><a href="${escapeHtml(resumeUrl)}" target="_blank">View Uploaded Resume</a></td></tr>` : ""}
               </table>
               <h4 style="margin: 0 0 8px 0; color: #0f172a;">Candidate Cover Note:</h4>
-              <div style="background: #f1f5f9; padding: 16px; border-radius: 6px; font-size: 0.9rem; line-height: 1.5; color: #334155; white-space: pre-wrap;">${message || "No cover note provided."}</div>
+              <div style="background: #f1f5f9; padding: 16px; border-radius: 6px; font-size: 0.9rem; line-height: 1.5; color: #334155; white-space: pre-wrap;">${escapeHtml(message || "No cover note provided.")}</div>
             </div>
           </div>
         `;
 
-        await fetch("https://api.resend.com/emails", {
-          method: "POST",
-          headers: { Authorization: `Bearer ${resendApiKey}`, "Content-Type": "application/json" },
-          body: JSON.stringify({
-            from: "Icon Electromatic <notifications@iconelectromatic.com>",
-            to: [careersEmail],
-            reply_to: email,
-            subject: `[Career Application] ${position}: ${fullName}`,
-            html: careerEmailHtml,
-          }),
-        }).catch(() => {});
+        try {
+          const emailResponse = await fetchImpl("https://api.resend.com/emails", {
+            method: "POST",
+            headers: { Authorization: `Bearer ${resendApiKey}`, "Content-Type": "application/json" },
+            body: JSON.stringify({
+              from: "Icon Electromatic <notifications@iconelectromatic.com>",
+              to: [careersEmail],
+              reply_to: email,
+              subject: `[Career Application] ${safeEmailHeader(position)}: ${safeEmailHeader(fullName)}`,
+              html: careerEmailHtml,
+            }),
+          });
+          emailDispatched = emailResponse.ok;
+          if (!emailDispatched) console.error("Career notification provider returned HTTP", emailResponse.status);
+        } catch (emailError) {
+          console.error("Career notification dispatch failed:", emailError);
+        }
       }
-
       return new Response(
         JSON.stringify({
           success: true,
-          application_ref: appRef,
-          saved_to_db: savedToDb,
-          message: "Application submitted successfully to Technical Evaluation Committee.",
+          application_ref: persistedAppRef,
+          saved_to_db: true,
+          email_dispatched: emailDispatched,
+          message: emailDispatched
+            ? "Your application has been saved and the careers team notification was accepted by the email provider."
+            : "Your application has been saved, but email notification could not be confirmed. Please contact the careers team if urgent.",
         }),
         { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
@@ -211,6 +289,17 @@ serve(async (req: Request) => {
     const subject = String(body.subject || "rfq").trim();
     const productModel = String(body.productModel || "").trim();
     const message = String(body.message || "").trim();
+
+    if (!["india", "singapore", "usa"].includes(office)) {
+      return new Response(JSON.stringify({ error: "Select a valid regional office." }), {
+        status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+    if (!["rfq", "technical", "bespoke", "delivery", "general"].includes(subject)) {
+      return new Response(JSON.stringify({ error: "Select a valid enquiry type." }), {
+        status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
 
     if (!fullName || fullName.length < 2 || fullName.length > 100) {
       return new Response(
@@ -238,53 +327,14 @@ serve(async (req: Request) => {
     let enquiryId: string | number = "REQ-" + Math.floor(100000 + Math.random() * 900000);
 
     const officeEmails: Record<string, string | undefined> = {
-      india: Deno.env.get("OFFICE_EMAIL_INDIA"),
-      singapore: Deno.env.get("OFFICE_EMAIL_SINGAPORE"),
-      usa: Deno.env.get("OFFICE_EMAIL_USA"),
+      india: getEnv("OFFICE_EMAIL_INDIA"),
+      singapore: getEnv("OFFICE_EMAIL_SINGAPORE"),
+      usa: getEnv("OFFICE_EMAIL_USA"),
     };
     const targetOfficeEmail = officeEmails[office] || "sales@iconelectromatic.com";
 
-    // Rate limiting is mandatory: fail closed if server-side dependencies
-    // or a client address supplied by the edge proxy are unavailable.
-    if (!supabaseUrl || !supabaseServiceKey) {
-      return new Response(JSON.stringify({ error: "Enquiry service is temporarily unavailable." }), {
-        status: 503, headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-
-    // Hosted Supabase Edge Functions are fronted by Cloudflare. Do not use
-    // the leftmost X-Forwarded-For value for security decisions: callers can
-    // prepend a forged address. Missing CF-Connecting-IP fails closed.
-    const clientIp = getTrustedClientIp(req.headers);
-    const hashSecret = Deno.env.get("RATE_LIMIT_HASH_SECRET");
-
-    if (!clientIp || !hashSecret || new TextEncoder().encode(hashSecret).byteLength < 32) {
-      console.error("Contact rate limiting is not configured with a trusted client IP and strong HMAC secret.");
-      return new Response(JSON.stringify({ error: "Enquiry service is temporarily unavailable." }), {
-        status: 503, headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-
-    try {
-      const ipHash = await hashClientIp(clientIp, hashSecret);
-      const allowed = await consumeContactRateLimit(supabaseUrl, supabaseServiceKey, ipHash);
-      if (!allowed) {
-        return new Response(
-          JSON.stringify({
-            error: "Rate limit reached. Maximum 5 inquiries allowed per hour. Please try again later or call our office.",
-          }),
-          { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-        );
-      }
-    } catch (rateLimitError) {
-      console.error("Contact rate-limit check failed:", rateLimitError);
-      return new Response(JSON.stringify({ error: "Enquiry service is temporarily unavailable." }), {
-        status: 503, headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-
     // 2. Insert into enquiries table with dual-field compatibility
-    const insertRes = await fetch(`${supabaseUrl}/rest/v1/enquiries`, {
+    const insertRes = await fetchImpl(`${supabaseUrl}/rest/v1/enquiries`, {
       method: "POST",
       headers: {
         apikey: supabaseServiceKey,
@@ -336,48 +386,49 @@ serve(async (req: Request) => {
           </div>
           <div style="padding: 24px; background: #ffffff;">
             <div style="background: #f8fafc; border-left: 4px solid #2563eb; padding: 12px 16px; margin-bottom: 20px;">
-              <strong>Ticket ID:</strong> #${enquiryId}<br/>
-              <strong>Regional Desk:</strong> ${office.toUpperCase()} Office (${targetOfficeEmail})<br/>
-              <strong>Subject Type:</strong> ${subject.toUpperCase()}
+              <strong>Ticket ID:</strong> #${escapeHtml(String(enquiryId))}<br/>
+              <strong>Regional Desk:</strong> ${escapeHtml(office.toUpperCase())} Office (${escapeHtml(targetOfficeEmail)})<br/>
+              <strong>Subject Type:</strong> ${escapeHtml(subject.toUpperCase())}
             </div>
             
             <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem; margin-bottom: 20px;">
               <tr>
                 <td style="padding: 8px 0; color: #64748b; width: 140px;"><strong>Client Name:</strong></td>
-                <td style="padding: 8px 0; color: #0f172a;">${fullName}</td>
+                <td style="padding: 8px 0; color: #0f172a;">${escapeHtml(fullName)}</td>
               </tr>
               <tr>
                 <td style="padding: 8px 0; color: #64748b;"><strong>Email:</strong></td>
-                <td style="padding: 8px 0; color: #0f172a;"><a href="mailto:${email}">${email}</a></td>
+                <td style="padding: 8px 0; color: #0f172a;"><a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a></td>
               </tr>
               <tr>
                 <td style="padding: 8px 0; color: #64748b;"><strong>Phone:</strong></td>
-                <td style="padding: 8px 0; color: #0f172a;">${phone || "Not specified"}</td>
+                <td style="padding: 8px 0; color: #0f172a;">${escapeHtml(phone || "Not specified")}</td>
               </tr>
               <tr>
                 <td style="padding: 8px 0; color: #64748b;"><strong>Company / Lab:</strong></td>
-                <td style="padding: 8px 0; color: #0f172a;">${company || "Direct Individual"}</td>
+                <td style="padding: 8px 0; color: #0f172a;">${escapeHtml(company || "Direct Individual")}</td>
               </tr>
               ${
                 productModel
                   ? `<tr>
                 <td style="padding: 8px 0; color: #64748b;"><strong>Target Hardware:</strong></td>
-                <td style="padding: 8px 0; color: #2563eb; font-weight: bold;">${productModel}</td>
+                <td style="padding: 8px 0; color: #2563eb; font-weight: bold;">${escapeHtml(productModel)}</td>
               </tr>`
                   : ""
               }
             </table>
 
             <h4 style="margin: 0 0 8px 0; color: #0f172a;">Technical Requirements & Message:</h4>
-            <div style="background: #f1f5f9; padding: 16px; border-radius: 6px; font-size: 0.9rem; line-height: 1.5; color: #334155; white-space: pre-wrap;">${message}</div>
+            <div style="background: #f1f5f9; padding: 16px; border-radius: 6px; font-size: 0.9rem; line-height: 1.5; color: #334155; white-space: pre-wrap;">${escapeHtml(message)}</div>
           </div>
           <div style="background: #f8fafc; border-top: 1px solid #e2e8f0; padding: 12px 20px; font-size: 0.75rem; color: #94a3b8; text-align: center;">
-            Sent securely via Icon Electromatic Edge Service. IP: ${clientIp}
+            Sent securely via Icon Electromatic Edge Service. IP: ${escapeHtml(clientIp)}
           </div>
         </div>
       `;
 
-      const emailResponse = await fetch("https://api.resend.com/emails", {
+      try {
+      const emailResponse = await fetchImpl("https://api.resend.com/emails", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${resendApiKey}`,
@@ -387,12 +438,15 @@ serve(async (req: Request) => {
           from: "Icon Electromatic <notifications@iconelectromatic.com>",
           to: [targetOfficeEmail],
           reply_to: email,
-          subject: `[Icon Electromatic] ${subject.toUpperCase()} Enquiry: ${fullName} (${company || "Direct"})`,
+          subject: `[Icon Electromatic] ${subject.toUpperCase()} Enquiry`,
           html: emailHtml,
         }),
       });
-      emailDispatched = emailResponse.ok;
-      if (!emailDispatched) console.error("Enquiry notification provider returned HTTP", emailResponse.status);
+        emailDispatched = emailResponse.ok;
+        if (!emailDispatched) console.error("Enquiry notification provider returned HTTP", emailResponse.status);
+      } catch (emailError) {
+        console.error("Enquiry notification dispatch failed:", emailError);
+      }
     }
 
     return new Response(
@@ -416,4 +470,9 @@ serve(async (req: Request) => {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }
-});
+  };
+}
+
+if (import.meta.main) {
+  serve(createContactHandler());
+}

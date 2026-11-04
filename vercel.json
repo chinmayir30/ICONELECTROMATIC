@@ -16,6 +16,16 @@
       "source": "/products/rogers",
       "destination": "/products",
       "permanent": true
+    },
+    {
+      "source": "/products/spellman/spellman-hv-1",
+      "destination": "/products",
+      "permanent": true
+    },
+    {
+      "source": "/products/aee-isarael/aee-pids-1",
+      "destination": "/products",
+      "permanent": true
     }
   ],
   "rewrites": [

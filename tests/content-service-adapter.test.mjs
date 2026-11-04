@@ -145,4 +145,58 @@ test('ContentService Adapter Suite', async (t) => {
     const allContent = await supabaseClient.getAllCmsContent();
     assert.equal(allContent, null, 'getAllCmsContent must return null when unconfigured without throwing');
   });
+
+  await t.test('Configured cross-tab CMS storage events clear cache instead of importing drafts', async () => {
+    const previousConfigured = supabaseClient.isConfigured;
+    const draftCatalog = [{ id: 'cross-tab-draft-oem', visible: false, categories: [] }];
+    localStorage.setItem('cms_products', JSON.stringify(draftCatalog));
+    assert.equal(ContentService.getData('products')[0]?.id, 'cross-tab-draft-oem');
+
+    supabaseClient.isConfigured = true;
+    try {
+      window.dispatchEvent({
+        type: 'storage',
+        key: 'cms_products',
+        oldValue: null,
+        newValue: JSON.stringify(draftCatalog)
+      });
+      await new Promise(resolve => setImmediate(resolve));
+
+      assert.equal(localStorage.getItem('cms_products'), null, 'configured refresh must remove browser-cached remote CMS data');
+      assert.notEqual(ContentService.getData('products')[0]?.id, 'cross-tab-draft-oem', 'public cache must not accept a draft from a storage event');
+    } finally {
+      supabaseClient.isConfigured = previousConfigured;
+    }
+  });
+
+  await t.test('A late staff response cannot overwrite a newer public refresh', async () => {
+    const previousConfigured = supabaseClient.isConfigured;
+    const previousFetch = supabaseClient.getAllCmsContentWithMeta;
+    let resolveStaffResponse;
+    supabaseClient.isConfigured = true;
+    supabaseClient.getAllCmsContentWithMeta = ({ includeHidden } = {}) => includeHidden
+      ? new Promise(resolve => { resolveStaffResponse = resolve; })
+      : Promise.resolve({
+        contentMap: { products: [{ id: 'public-oem', visible: true }] },
+        metaMap: { products: { version: 2, updated_at: null, isRemote: true } }
+      });
+
+    try {
+      const staffRefresh = ContentService.refresh({ includeHidden: true });
+      await Promise.resolve();
+      const publicRefresh = ContentService.refresh();
+      await publicRefresh;
+      resolveStaffResponse({
+        contentMap: { products: [{ id: 'late-draft-oem', visible: false }] },
+        metaMap: { products: { version: 3, updated_at: null, isRemote: true } }
+      });
+      await staffRefresh;
+
+      assert.equal(ContentService.getData('products')[0]?.id, 'public-oem');
+    } finally {
+      supabaseClient.getAllCmsContentWithMeta = previousFetch;
+      supabaseClient.isConfigured = previousConfigured;
+    }
+  });
 });
+
