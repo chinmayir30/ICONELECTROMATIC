@@ -16,3 +16,6 @@ jobs:
       - name: Test Supabase keep-alive failure and success handling
         run: node --test tests/supabase-keepalive.test.mjs
       - run: npm run build
+      - name: Validate GitHub Actions workflow YAML
+        run: |
+          ruby -e 'require "yaml"; Dir.glob(".github/workflows/*.{yml,yaml}").each { |path| YAML.load_file(path, aliases: true); puts "Valid YAML: #{path}" }'
