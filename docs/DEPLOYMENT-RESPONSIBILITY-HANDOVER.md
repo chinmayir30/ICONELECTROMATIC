@@ -25,7 +25,7 @@ As agreed:
 | Area | Developer Delivers (Our Side) | Client IT Responsibility (Your Side) |
 |---|---|---|
 | **167 B2B Products** | Complete catalog representing 13 global OEM partners (Rogers, Mini-Circuits, Qorvo, Tecdia, Tri-TeQ, etc.) mapped with categories, descriptions, specs, and applications. | Review and approve product descriptions; supply any proprietary internal part numbers if needed. |
-| **Static HTML Pages** | 169 pre-rendered static HTML detail pages in `/products/` that load instantly and are 100% crawlable by Google without requiring JavaScript execution. | Host on a modern static-compatible edge network (Vercel, AWS Amplify, Cloudflare Pages, Netlify). |
+| **Static HTML Pages** | 167 pre-rendered static HTML detail pages in `/products/` that load instantly and are 100% crawlable by Google without requiring JavaScript execution. | Host on a modern static-compatible edge network (Vercel, AWS Amplify, Cloudflare Pages, Netlify). |
 | **"Publish Catalog" Webhook** | In-admin "Publish Catalog" trigger button wired to `VITE_REBUILD_WEBHOOK_URL` so staff edits can trigger a background static rebuild. | **Create a Deploy Hook** in your hosting dashboard (e.g. Vercel Settings $\rightarrow$ Git $\rightarrow$ Deploy Hooks) and paste the URL into `VITE_REBUILD_WEBHOOK_URL`. |
 
 ### 2.2 Product Images, Logos & Media Assets
