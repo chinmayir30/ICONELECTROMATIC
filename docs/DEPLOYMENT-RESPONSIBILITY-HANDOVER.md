@@ -3,7 +3,7 @@
 **To:** Taneesha & The IT / Infrastructure Team  
 **Organization:** Innovate Electronics / Icon Electromatic Private Limited  
 **Project:** ICON ELECTROMATIC Corporate B2B Catalog & CMS Platform  
-**Subject:** Operational Handover, Deployment Responsibility & Free-Tier Keep-Alive Architecture  
+**Subject:** Operational Handover, Deployment Responsibility & Supabase Project Activity  
 **Date:** November 2, 2026  
 **Document Reference:** IE-DEP-HANDOVER-2026-FINAL  
 
@@ -36,13 +36,13 @@ As agreed:
 | **Future Admin Uploads** | Dynamic cloud storage | The Admin CMS uses Supabase Storage bucket `catalog-images` for any *new* images uploaded by staff in the future. |
 | **Corporate Downloads & Media** | `public/downloads/`<br>• Corporate Presentation (68 MB)<br>• Company Flyer (3 MB)<br>`public/videos/`<br>• Hero Background Video (6.8 MB) | Bundled inside repository. Client team should note these media files when choosing a hosting plan to ensure adequate bandwidth limits. |
 
-### 2.3 The Database (Supabase PostgreSQL 15) & Free-Tier Keep-Alive
+### 2.3 The Database (Supabase PostgreSQL 15) & Scheduled Activity Check
 | Database Component | Developer Delivers (Our Side) | Client IT Responsibility (Your Side) |
 |---|---|---|
 | **6 SQL Migrations** | `001_initial_schema.sql` (Tables: `oems`, `categories`, `products`, `enquiries`, `rate_limits`, `user_roles`)<br>`002_rls_policies.sql` (Row-Level Security)<br>`003_admin_schema_alignment.sql` (Storage bucket `catalog-images` & alignment)<br>`004_cms_content.sql` (Key-value CMS store)<br>`005_cms_content_versioning.sql` (Optimistic concurrency control)<br>`006_align_enquiries_and_rate_limits.sql` (Enquiries, career applications & rate limits) | **Provision Supabase project** (recommended region: `ap-south-1` Mumbai or `ap-southeast-1` Singapore) under company email.<br>Run migrations sequentially in the Supabase SQL Editor. |
 | **3 Seed Datasets** | `seed.sql` (Base roles, OEMs, categories)<br>`seed_cms_content.sql` (Initial website copy, office info)<br>`seed_products_cms.sql` (All 167 products in CMS JSON store) | Run the 3 seed scripts in order after applying the migrations. Run `NOTIFY pgrst, 'reload schema';` once complete. |
 | **First Admin User Creation** | Role-Based Access Control logic (`admin`, `staff`, `viewer`). | **Mandatory Step**: After signing up the first staff email in Supabase Authentication, run: <br>`INSERT INTO public.user_roles (user_id, role) VALUES ('<USER_UUID>', 'admin');`<br>*(Without this, staff cannot log into `/admin`)*. |
-| **Automated Keep-Alive Workflow** | `.github/workflows/supabase-keepalive.yml` pings Supabase every 3 days via GitHub Actions. | Automatically keeps the Supabase Free Tier active 24/7/365, preventing the 7-day inactivity pause rule. |
+| **Scheduled Supabase Activity Check** | `.github/workflows/supabase-keepalive.yml` attempts a read-only REST request every 3 days and fails visibly if credentials are missing or the request fails. | Configure the repository URL/key variables or secrets, keep GitHub Actions enabled, and monitor workflow runs. GitHub scheduled runs are best-effort, so this workflow cannot guarantee that Supabase will avoid inactivity pausing. Verify the current Supabase plan behavior and choose a plan with suitable availability if uninterrupted service is required. |
 
 ### 2.4 Contact Form & Regional RFQ Routing
 | Component | Developer Delivers (Our Side) | Client IT Responsibility (Your Side) |
