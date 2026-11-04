@@ -1,6 +1,3 @@
-Warning: truncated output (original token count: 79973)
-Total output lines: 5786
-
 import './admin.css';
 import { ContentService } from '../data/ContentService.js';
 import { ImageStorage } from '../data/ImageStorage.js';
@@ -1113,7 +1110,3617 @@ function renderAboutPageEditor() {
             <div class="a-field span2"><label class="a-label">Description Paragraph 2</label><textarea class="a-textarea" name="companyDesc2">${d.companyDesc2 || ''}</textarea></div>
             <div class="a-field"><label class="a-label">Corporate Presentation Link</label><input class="a-input" name="presentationLink" value="${d.presentationLink || ''}"></div>
             <div class="a-field"><label class="a-label">Company Flyer Link</label><input class="a-input" name="flyerLink" value="${d.flyerLink || ''}"></div>
- …49973 tokens truncated…a-solid fa-trash"></i></button>
+          </div>
+        </div>
+
+        <div class="a-card">
+          <div class="a-card-header"><div><h3>Vision &amp; Mission</h3><p>Guiding organizational principles</p></div></div>
+          <div class="a-form-grid">
+            <div class="a-field"><label class="a-label">Vision Title</label><input class="a-input" name="visionTitle" value="${d.visionTitle || 'Our Vision'}"></div>
+            <div class="a-field"><label class="a-label">Mission Title</label><input class="a-input" name="missionTitle" value="${d.missionTitle || 'Our Mission'}"></div>
+            <div class="a-field span2"><label class="a-label">Vision Statement</label><textarea class="a-textarea" name="visionDesc">${d.visionDesc || ''}</textarea></div>
+            <div class="a-field span2"><label class="a-label">Mission Statement</label><textarea class="a-textarea" name="missionDesc">${d.missionDesc || ''}</textarea></div>
+          </div>
+        </div>
+
+        <div class="a-card">
+          <div class="a-card-header"><div><h3>Chronology / Journey Section</h3><p>Timeline lead and official presentation infographic slide</p></div></div>
+          <div class="a-form-grid">
+            <div class="a-field"><label class="a-label">Title</label><input class="a-input" name="journeyTitle" value="${d.journeyTitle || 'Chronology'}"></div>
+            <div class="a-field"><label class="a-label">Subtitle</label><input class="a-input" name="journeySubtitle" value="${d.journeySubtitle || 'Our Journey'}"></div>
+            <div class="a-field span2"><label class="a-label">Lead Paragraph</label><textarea class="a-textarea" name="journeyLead">${d.journeyLead || ''}</textarea></div>
+            ${renderImageUploadField('infographicImage', 'Chronology Infographic Slide Image', d.infographicImage || '', 'High-res image opened by View Slide Graphic modal')}
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; gap:10px;">
+          <button type="submit" class="a-btn a-btn-primary"><i class="fa-solid fa-floppy-disk"></i> Save About Us Content</button>
+        </div>
+      </form>
+    ` : ''}
+
+    ${currentSubTab === 'badges' ? renderCardsManagerTab('Trust Badges', badges, 'badge', ['text', 'icon', 'color']) : ''}
+    ${currentSubTab === 'highlights' ? renderCardsManagerTab('Feature Highlights', highlights, 'highlight', ['title', 'desc', 'icon', 'color']) : ''}
+    ${currentSubTab === 'stats' ? renderCardsManagerTab('Quick Facts Counters', stats, 'quickstat', ['target', 'suffix', 'label', 'icon', 'color']) : ''}
+    ${currentSubTab === 'milestones' ? renderCardsManagerTab('Timeline Milestones', milestones, 'milestone', ['year', 'title', 'desc', 'image', 'caption', 'color']) : ''}
+    ${currentSubTab === 'domains' ? renderCardsManagerTab('Strategic Application Domains', domains, 'domain', ['title', 'desc', 'image', 'tag']) : ''}
+    ${currentSubTab === 'pillars' ? renderCardsManagerTab('Strategic Pillars', pillars, 'pillar', ['eyebrow', 'title', 'subtitle', 'desc', 'image', 'color']) : ''}
+    ${currentSubTab === 'whyus' ? renderCardsManagerTab('Why Us Points', whyUs, 'whyus', ['number', 'title', 'desc', 'icon', 'color']) : ''}
+  `;
+}
+
+function bindAboutTabEvents() {
+  document.querySelectorAll('.a-subtab-btn[data-subtab]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      currentSubTab = btn.getAttribute('data-subtab');
+      rerender();
+    });
+  });
+
+  const d = ContentService.getData('about') || {};
+
+  // Badges
+  bindUniversalCardActions('about', d, 'badges', 'badge', () => `
+    <div class="a-field"><label class="a-label">Badge Text</label><input class="a-input" name="text" required /></div>
+    <div class="a-field" style="margin-top:12px;"><label class="a-label">Icon (e.g. fa-solid fa-award)</label><input class="a-input" name="icon" value="fa-solid fa-award" /></div>
+    <div class="a-field" style="margin-top:12px;"><label class="a-label">Text Color Hex (e.g. #FDA4AF)</label><input class="a-input" name="color" value="#FDA4AF" /></div>
+  `, (card) => `
+    <div class="a-field"><label class="a-label">Badge Text</label><input class="a-input" name="text" value="${card.text}" required /></div>
+    <div class="a-field" style="margin-top:12px;"><label class="a-label">Icon</label><input class="a-input" name="icon" value="${card.icon || ''}" /></div>
+    <div class="a-field" style="margin-top:12px;"><label class="a-label">Text Color Hex</label><input class="a-input" name="color" value="${card.color || ''}" /></div>
+  `);
+
+  // Highlights
+  bindUniversalCardActions('about', d, 'highlightCards', 'highlight', () => `
+    <div class="a-field"><label class="a-label">Card Title</label><input class="a-input" name="title" required /></div>
+    <div class="a-field" style="margin-top:12px;"><label class="a-label">Icon</label><input class="a-input" name="icon" value="fa-solid fa-tower-broadcast" /></div>
+    <div class="a-field" style="margin-top:12px;"><label class="a-label">Accent Color (blue / red)</label><input class="a-input" name="color" value="blue" /></div>
+    <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Description</label><textarea class="a-textarea" name="desc" required></textarea></div>
+  `, (card) => `
+    <div class="a-field"><label class="a-label">Card Title</label><input class="a-input" name="title" value="${card.title}" required /></div>
+    <div class="a-field" style="margin-top:12px;"><label class="a-label">Icon</label><input class="a-input" name="icon" value="${card.icon || ''}" /></div>
+    <div class="a-field" style="margin-top:12px;"><label class="a-label">Accent Color (blue / red)</label><input class="a-input" name="color" value="${card.color || 'blue'}" /></div>
+    <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Description</label><textarea class="a-textarea" name="desc" required>${card.desc || ''}</textarea></div>
+  `);
+
+  // Stats
+  bindUniversalCardActions('about', d, 'stats', 'quickstat', () => `
+    <div class="a-field"><label class="a-label">Target Number (e.g. 1500)</label><input class="a-input" name="target" required /></div>
+    <div class="a-field" style="margin-top:12px;"><label class="a-label">Suffix (e.g. +)</label><input class="a-input" name="suffix" value="+" /></div>
+    <div class="a-field" style="margin-top:12px;"><label class="a-label">Label (e.g. Products)</label><input class="a-input" name="label" required /></div>
+    <div class="a-field" style="margin-top:12px;"><label class="a-label">Icon</label><input class="a-input" name="icon" value="fa-solid fa-boxes-stacked" /></div>
+    <div class="a-field" style="margin-top:12px;"><label class="a-label">Color (red / blue)</label><input class="a-input" name="color" value="red" /></div>
+  `, (card) => `
+    <div class="a-field"><label class="a-label">Target Number</label><input class="a-input" name="target" value="${card.target}" required /></div>
+    <div class="a-field" style="margin-top:12px;"><label class="a-label">Suffix</label><input class="a-input" name="suffix" value="${card.suffix || '+'}" /></div>
+    <div class="a-field" style="margin-top:12px;"><label class="a-label">Label</label><input class="a-input" name="label" value="${card.label}" required /></div>
+    <div class="a-field" style="margin-top:12px;"><label class="a-label">Icon</label><input class="a-input" name="icon" value="${card.icon || ''}" /></div>
+    <div class="a-field" style="margin-top:12px;"><label class="a-label">Color (red / blue)</label><input class="a-input" name="color" value="${card.color || 'red'}" /></div>
+  `);
+
+  // Milestones
+  bindUniversalCardActions('about', d, 'milestones', 'milestone', () => `
+    <div class="a-field"><label class="a-label">Year / Milestone Date (e.g. 2009)</label><input class="a-input" name="year" required /></div>
+    <div class="a-field" style="margin-top:12px;"><label class="a-label">Headline Title</label><input class="a-input" name="title" required /></div>
+    <div class="a-field" style="margin-top:12px;"><label class="a-label">Theme Color (cyan / red / navy / amber)</label><input class="a-input" name="color" value="cyan" /></div>
+    <div class="a-field" style="margin-top:12px;"><label class="a-label">Photo Caption</label><input class="a-input" name="caption" /></div>
+    ${renderImageUploadField('image', 'Milestone Photo', '', 'Visual for this timeline step')}
+    <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Milestone Description</label><textarea class="a-textarea" name="desc" required></textarea></div>
+  `, (card) => `
+    <div class="a-field"><label class="a-label">Year / Milestone Date</label><input class="a-input" name="year" value="${card.year}" required /></div>
+    <div class="a-field" style="margin-top:12px;"><label class="a-label">Headline Title</label><input class="a-input" name="title" value="${card.title}" required /></div>
+    <div class="a-field" style="margin-top:12px;"><label class="a-label">Theme Color (cyan / red / navy / amber)</label><input class="a-input" name="color" value="${card.color || 'cyan'}" /></div>
+    <div class="a-field" style="margin-top:12px;"><label class="a-label">Photo Caption</label><input class="a-input" name="caption" value="${card.caption || ''}" /></div>
+    ${renderImageUploadField('image', 'Milestone Photo', card.image || '', 'Visual for this timeline step')}
+    <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Milestone Description</label><textarea class="a-textarea" name="desc" required>${card.desc || ''}</textarea></div>
+  `);
+
+  // Domains
+  bindUniversalCardActions('about', d, 'domains', 'domain', () => `
+    <div class="a-field"><label class="a-label">Domain Name (e.g. Aerospace & Defence)</label><input class="a-input" name="title" required /></div>
+    <div class="a-field" style="margin-top:12px;"><label class="a-label">Tag Pill (e.g. Radar & EW Systems)</label><input class="a-input" name="tag" /></div>
+    ${renderImageUploadField('image', 'Domain Photo', '', 'Image displayed on domain card')}
+    <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Description</label><textarea class="a-textarea" name="desc" required></textarea></div>
+  `, (card) => `
+    <div class="a-field"><label class="a-label">Domain Name</label><input class="a-input" name="title" value="${card.title}" required /></div>
+    <div class="a-field" style="margin-top:12px;"><label class="a-label">Tag Pill</label><input class="a-input" name="tag" value="${card.tag || ''}" /></div>
+    ${renderImageUploadField('image', 'Domain Photo', card.image || '', 'Image displayed on domain card')}
+    <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Description</label><textarea class="a-textarea" name="desc" required>${card.desc || ''}</textarea></div>
+  `);
+
+  // Pillars
+  bindUniversalCardActions('about', d, 'pillars', 'pillar', () => `
+    <div class="a-field"><label class="a-label">Eyebrow (e.g. GLOBAL ALLIANCES)</label><input class="a-input" name="eyebrow" value="FOUNDATIONAL PILLAR" /></div>
+    <div class="a-field" style="margin-top:12px;"><label class="a-label">Title</label><input class="a-input" name="title" required /></div>
+    <div class="a-field" style="margin-top:12px;"><label class="a-label">Subtitle</label><input class="a-input" name="subtitle" /></div>
+    <div class="a-field" style="margin-top:12px;"><label class="a-label">Color (blue / red)</label><input class="a-input" name="color" value="blue" /></div>
+    ${renderImageUploadField('image', 'Pillar Photo', '', 'Image displayed for this pillar')}
+    <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Description</label><textarea class="a-textarea" name="desc" required></textarea></div>
+  `, (card) => `
+    <div class="a-field"><label class="a-label">Eyebrow</label><input class="a-input" name="eyebrow" value="${card.eyebrow || ''}" /></div>
+    <div class="a-field" style="margin-top:12px;"><label class="a-label">Title</label><input class="a-input" name="title" value="${card.title}" required /></div>
+    <div class="a-field" style="margin-top:12px;"><label class="a-label">Subtitle</label><input class="a-input" name="subtitle" value="${card.subtitle || ''}" /></div>
+    <div class="a-field" style="margin-top:12px;"><label class="a-label">Color (blue / red)</label><input class="a-input" name="color" value="${card.color || 'blue'}" /></div>
+    ${renderImageUploadField('image', 'Pillar Photo', card.image || '', 'Image displayed for this pillar')}
+    <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Description</label><textarea class="a-textarea" name="desc" required>${card.desc || ''}</textarea></div>
+  `);
+
+  // Why Us
+  bindUniversalCardActions('about', d, 'whyUs', 'whyus', () => `
+    <div class="a-field"><label class="a-label">Number (e.g. 01)</label><input class="a-input" name="number" value="01" required /></div>
+    <div class="a-field" style="margin-top:12px;"><label class="a-label">Title</label><input class="a-input" name="title" required /></div>
+    <div class="a-field" style="margin-top:12px;"><label class="a-label">Icon</label><input class="a-input" name="icon" value="fa-solid fa-bullseye" /></div>
+    <div class="a-field" style="margin-top:12px;"><label class="a-label">Color (red / blue)</label><input class="a-input" name="color" value="red" /></div>
+    <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Description</label><textarea class="a-textarea" name="desc" required></textarea></div>
+  `, (card) => `
+    <div class="a-field"><label class="a-label">Number</label><input class="a-input" name="number" value="${card.number || '01'}" required /></div>
+    <div class="a-field" style="margin-top:12px;"><label class="a-label">Title</label><input class="a-input" name="title" value="${card.title}" required /></div>
+    <div class="a-field" style="margin-top:12px;"><label class="a-label">Icon</label><input class="a-input" name="icon" value="${card.icon || ''}" /></div>
+    <div class="a-field" style="margin-top:12px;"><label class="a-label">Color (red / blue)</label><input class="a-input" name="color" value="${card.color || 'red'}" /></div>
+    <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Description</label><textarea class="a-textarea" name="desc" required>${card.desc || ''}</textarea></div>
+  `);
+}
+
+// ─── SERVICES PAGE EDITOR ────────────────────────────────────────────────────
+function renderServicesPageEditor() {
+  const d = ContentService.getData('services') || {};
+  const items = d.items || [];
+  const badges = d.badges || [];
+
+  return `
+    <div class="a-subtabs-nav">
+      <button type="button" class="a-subtab-btn ${currentSubTab === 'fields' ? 'active' : ''}" data-subtab="fields"><i class="fa-solid fa-pen-to-square"></i> Hero &amp; Badges</button>
+      <button type="button" class="a-subtab-btn ${currentSubTab === 'services' ? 'active' : ''}" data-subtab="services"><i class="fa-solid fa-gears"></i> Service Pillars (${items.length})</button>
+    </div>
+
+    ${currentSubTab === 'fields' ? `
+      <form id="a-page-form">
+        <div class="a-card">
+          <div class="a-card-header"><div><h3>Services Hero Banner</h3><p>Page heading and introduction</p></div></div>
+          <div class="a-form-grid">
+            <div class="a-field"><label class="a-label">Eyebrow Tag</label><input class="a-input" name="heroEyebrow" value="${d.heroEyebrow || 'CAPABILITIES & SERVICES'}"></div>
+            <div class="a-field"><label class="a-label">Page Title</label><input class="a-input" name="heroTitle" value="${d.heroTitle || 'Engineering Services & Global Representation'}"></div>
+            <div class="a-field span2"><label class="a-label">Lead Paragraph</label><textarea class="a-textarea" name="heroLead">${d.heroLead || ''}</textarea></div>
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; gap:10px;">
+          <button type="submit" class="a-btn a-btn-primary"><i class="fa-solid fa-floppy-disk"></i> Save Services Hero</button>
+        </div>
+      </form>
+    ` : ''}
+
+    ${currentSubTab === 'services' ? `
+      <div class="a-cards-box">
+        <div class="a-cards-box-header">
+          <div>
+            <h3>Core Service Blocks &amp; Sliders</h3>
+            <p>Each service block has its own title, descriptions, tags, and multi-image slideshow</p>
+          </div>
+          <button type="button" class="a-btn a-btn-primary a-btn-sm" id="a-add-srv-btn"><i class="fa-solid fa-plus"></i> Add Service Pillar</button>
+        </div>
+        <div class="a-table-wrap">
+          <table class="a-table">
+            <thead><tr><th>Reorder</th><th>Service Title</th><th>Subtitle / Domain</th><th>Slideshow Images</th><th>Actions</th></tr></thead>
+            <tbody>
+              ${items.map((srv, idx) => {
+                const slidesCount = (srv.slides || []).length;
+                const firstImg = slidesCount ? ImageStorage.resolveImageUrl(srv.slides[0].image) : '';
+                return `
+                  <tr>
+                    <td style="width:90px;">
+                      <div class="a-reorder-group">
+                        <button class="a-btn-reorder btn-move-srv" data-dir="up" data-idx="${idx}" ${idx === 0 ? 'disabled' : ''}><i class="fa-solid fa-arrow-up"></i></button>
+                        <button class="a-btn-reorder btn-move-srv" data-dir="down" data-idx="${idx}" ${idx === items.length - 1 ? 'disabled' : ''}><i class="fa-solid fa-arrow-down"></i></button>
+                      </div>
+                    </td>
+                    <td>
+                      <div style="display:flex; align-items:center; gap:10px;">
+                        ${firstImg ? `<img src="${firstImg}" class="a-img-preview" alt="Thumb" style="width:50px; height:38px;" />` : ''}
+                        <div>
+                          <strong>${srv.title}</strong>
+                          <div style="font-size:0.75rem; color:var(--a-muted);">${srv.badge || ''}</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>${srv.subtitle || '—'}</td>
+                    <td><span class="a-badge a-badge-blue">${slidesCount} Slides</span></td>
+                    <td>
+                      <button class="a-btn a-btn-outline a-btn-sm btn-edit-srv" data-idx="${idx}"><i class="fa-solid fa-pen"></i> Edit</button>
+                      <button class="a-btn a-btn-danger a-btn-sm btn-del-srv" data-idx="${idx}" style="margin-left:6px;"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                  </tr>
+                `;
+              }).join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    ` : ''}
+  `;
+}
+
+function bindServicesTabEvents() {
+  document.querySelectorAll('.a-subtab-btn[data-subtab]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      currentSubTab = btn.getAttribute('data-subtab');
+      rerender();
+    });
+  });
+
+  const d = ContentService.getData('services') || {};
+
+  document.getElementById('a-add-srv-btn')?.addEventListener('click', () => {
+    openModal('Add Service Block', `
+      <div class="a-field"><label class="a-label">Service Title</label><input class="a-input" name="title" required /></div>
+      <div class="a-field" style="margin-top:12px;"><label class="a-label">Subtitle / Focus</label><input class="a-input" name="subtitle" /></div>
+      <div class="a-field" style="margin-top:12px;"><label class="a-label">Badge Pill Label</label><input class="a-input" name="badge" value="Core Capability" /></div>
+      <div class="a-field" style="margin-top:12px;"><label class="a-label">Badge Color (blue / red)</label><input class="a-input" name="badgeColor" value="blue" /></div>
+      <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Primary Description</label><textarea class="a-textarea" name="desc" required></textarea></div>
+      <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Secondary Description (Optional)</label><textarea class="a-textarea" name="desc2"></textarea></div>
+      <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Tags (comma separated)</label><input class="a-input" name="tags" placeholder="e.g. Mil-Spec, Direct Warranty, Stock Hub" /></div>
+      ${renderImageUploadField('slide1', 'Slide Image 1', '', 'First slideshow photo')}
+      <div class="a-field span2"><label class="a-label">Slide 1 Caption</label><input class="a-input" name="caption1" /></div>
+      ${renderImageUploadField('slide2', 'Slide Image 2 (Optional)', '', 'Second slideshow photo')}
+      <div class="a-field span2"><label class="a-label">Slide 2 Caption</label><input class="a-input" name="caption2" /></div>
+    `, (data) => {
+      const items = d.items || [];
+      const slides = [];
+      if (data.slide1) slides.push({ image: data.slide1, caption: data.caption1 || '' });
+      if (data.slide2) slides.push({ image: data.slide2, caption: data.caption2 || '' });
+      if (!slides.length) slides.push({ image: '/images/hero-amplifier.jpg', caption: data.title });
+
+      const tags = (data.tags || '').split(',').map(t => t.trim()).filter(Boolean);
+      items.push({
+        id: 'srv-' + Date.now(),
+        title: data.title,
+        subtitle: data.subtitle,
+        badge: data.badge,
+        badgeColor: data.badgeColor,
+        desc: data.desc,
+        desc2: data.desc2,
+        tags,
+        slides,
+        ctaText: 'Explore More',
+        ctaLink: '/products'
+      });
+      d.items = items;
+      ContentService.saveData('services', d);
+    });
+  });
+
+  document.querySelectorAll('.btn-edit-srv').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const srv = d.items[idx];
+      const s1 = srv.slides?.[0] || {};
+      const s2 = srv.slides?.[1] || {};
+
+      openModal('Edit Service Block', `
+        <div class="a-field"><label class="a-label">Service Title</label><input class="a-input" name="title" value="${srv.title}" required /></div>
+        <div class="a-field" style="margin-top:12px;"><label class="a-label">Subtitle / Focus</label><input class="a-input" name="subtitle" value="${srv.subtitle || ''}" /></div>
+        <div class="a-field" style="margin-top:12px;"><label class="a-label">Badge Pill Label</label><input class="a-input" name="badge" value="${srv.badge || ''}" /></div>
+        <div class="a-field" style="margin-top:12px;"><label class="a-label">Badge Color (blue / red)</label><input class="a-input" name="badgeColor" value="${srv.badgeColor || 'blue'}" /></div>
+        <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Primary Description</label><textarea class="a-textarea" name="desc" required>${srv.desc || ''}</textarea></div>
+        <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Secondary Description (Optional)</label><textarea class="a-textarea" name="desc2">${srv.desc2 || ''}</textarea></div>
+        <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Tags (comma separated)</label><input class="a-input" name="tags" value="${(srv.tags || []).join(', ')}" /></div>
+        ${renderImageUploadField('slide1', 'Slide Image 1', s1.image || '', 'First slideshow photo')}
+        <div class="a-field span2"><label class="a-label">Slide 1 Caption</label><input class="a-input" name="caption1" value="${s1.caption || ''}" /></div>
+        ${renderImageUploadField('slide2', 'Slide Image 2', s2.image || '', 'Second slideshow photo')}
+        <div class="a-field span2"><label class="a-label">Slide 2 Caption</label><input class="a-input" name="caption2" value="${s2.caption || ''}" /></div>
+      `, (data) => {
+        const slides = [];
+        if (data.slide1) slides.push({ image: data.slide1, caption: data.caption1 || '' });
+        if (data.slide2) slides.push({ image: data.slide2, caption: data.caption2 || '' });
+        // Preserve any remaining slides
+        if (srv.slides && srv.slides.length > 2) {
+          slides.push(...srv.slides.slice(2));
+        }
+
+        const tags = (data.tags || '').split(',').map(t => t.trim()).filter(Boolean);
+        d.items[idx] = {
+          ...srv,
+          title: data.title,
+          subtitle: data.subtitle,
+          badge: data.badge,
+          badgeColor: data.badgeColor,
+          desc: data.desc,
+          desc2: data.desc2,
+          tags,
+          slides: slides.length ? slides : srv.slides
+        };
+        ContentService.saveData('services', d);
+      });
+    });
+  });
+
+  document.querySelectorAll('.btn-del-srv').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      if (confirm('Delete this service block?')) {
+        d.items.splice(idx, 1);
+        ContentService.saveData('services', d);
+        rerender();
+        showToast('Service block deleted.', '');
+      }
+    });
+  });
+
+  document.querySelectorAll('.btn-move-srv').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const dir = btn.getAttribute('data-dir');
+      const targetIdx = dir === 'up' ? idx - 1 : idx + 1;
+      d.items = reorderArray(d.items, idx, targetIdx);
+      ContentService.saveData('services', d);
+      rerender();
+      showToast('Service blocks reordered!', 'success');
+    });
+  });
+}
+
+// ─── PROJECTS PAGE EDITOR ────────────────────────────────────────────────────
+function renderProjectsPageEditor() {
+  const d = ContentService.getData('projects') || {};
+  const items = d.items || [];
+
+  return `
+    <form id="a-page-form" style="margin-bottom:20px;">
+      <div class="a-card">
+        <div class="a-card-header"><div><h3>Projects Section Intro</h3><p>Section title and narrative lead</p></div></div>
+        <div class="a-form-grid">
+          <div class="a-field"><label class="a-label">Section Title</label><input class="a-input" name="heroTitle" value="${d.heroTitle || 'Featured Engineering Projects'}"></div>
+          <div class="a-field"><label class="a-label">Section Subtitle</label><input class="a-input" name="heroSubtitle" value="${d.heroSubtitle || 'Mission-Ready Hardware Deployments'}"></div>
+          <div class="a-field span2"><label class="a-label">Lead Paragraph</label><textarea class="a-textarea" name="heroLead">${d.heroLead || ''}</textarea></div>
+        </div>
+        <div style="display:flex; justify-content:flex-end; margin-top:14px;">
+          <button type="submit" class="a-btn a-btn-primary a-btn-sm"><i class="fa-solid fa-floppy-disk"></i> Save Header</button>
+        </div>
+      </div>
+    </form>
+
+    <div class="a-cards-box">
+      <div class="a-cards-box-header">
+        <div>
+          <h3>Engineering Project Cards (${items.length})</h3>
+          <p>Add, edit, delete, and reorder defense, space &amp; microwave projects</p>
+        </div>
+        <button type="button" class="a-btn a-btn-primary a-btn-sm" id="a-add-proj-btn"><i class="fa-solid fa-plus"></i> Add New Project</button>
+      </div>
+      <div class="a-table-wrap">
+        <table class="a-table">
+          <thead><tr><th>Reorder</th><th>Cover</th><th>Project Title</th><th>Client / Sector</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody>
+            ${items.map((proj, idx) => {
+              const img = ImageStorage.resolveImageUrl(proj.image);
+              return `
+                <tr>
+                  <td style="width:90px;">
+                    <div class="a-reorder-group">
+                      <button class="a-btn-reorder btn-move-proj" data-dir="up" data-idx="${idx}" ${idx === 0 ? 'disabled' : ''}><i class="fa-solid fa-arrow-up"></i></button>
+                      <button class="a-btn-reorder btn-move-proj" data-dir="down" data-idx="${idx}" ${idx === items.length - 1 ? 'disabled' : ''}><i class="fa-solid fa-arrow-down"></i></button>
+                    </div>
+                  </td>
+                  <td>${img ? `<img src="${img}" class="a-img-preview" alt="Thumb" />` : '<span style="color:#94a3b8; font-size:0.75rem;">No image</span>'}</td>
+                  <td><strong>${proj.title}</strong><div style="font-size:0.75rem; color:var(--a-muted);">${proj.category || ''}</div></td>
+                  <td style="font-size:0.82rem;">${proj.clientSector || '—'}</td>
+                  <td><span class="a-badge a-badge-green">${proj.status || 'Active'}</span></td>
+                  <td>
+                    <button class="a-btn a-btn-outline a-btn-sm btn-edit-proj" data-idx="${idx}"><i class="fa-solid fa-pen"></i> Edit</button>
+                    <button class="a-btn a-btn-danger a-btn-sm btn-del-proj" data-idx="${idx}" style="margin-left:6px;"><i class="fa-solid fa-trash"></i></button>
+                  </td>
+                </tr>
+              `;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+}
+
+function bindProjectsTabEvents() {
+  const d = ContentService.getData('projects') || {};
+
+  document.getElementById('a-add-proj-btn')?.addEventListener('click', () => {
+    openModal('Add Project Card', `
+      <div class="a-field"><label class="a-label">Project Title</label><input class="a-input" name="title" required /></div>
+      <div class="a-field" style="margin-top:12px;"><label class="a-label">Category (e.g. Defense & Radar)</label><input class="a-input" name="category" value="Defense & Radar" /></div>
+      <div class="a-field" style="margin-top:12px;"><label class="a-label">Client / Sector</label><input class="a-input" name="clientSector" value="Aerospace & Defense" /></div>
+      <div class="a-field" style="margin-top:12px;"><label class="a-label">Date / Timeline</label><input class="a-input" name="date" value="2026" /></div>
+      <div class="a-field" style="margin-top:12px;"><label class="a-label">Status (e.g. Deployed, Flight Qualified)</label><input class="a-input" name="status" value="Deployed" /></div>
+      <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Tags (comma separated)</label><input class="a-input" name="tags" placeholder="GaN SSPA, Cavity Filters, AESA" /></div>
+      ${renderImageUploadField('image', 'Project Cover Photo', '', 'Hero hardware photo')}
+      <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Description</label><textarea class="a-textarea" name="desc" required></textarea></div>
+    `, (data) => {
+      const items = d.items || [];
+      const tags = (data.tags || '').split(',').map(t => t.trim()).filter(Boolean);
+      items.push({ id: 'proj-' + Date.now(), ...data, tags });
+      d.items = items;
+      ContentService.saveData('projects', d);
+    });
+  });
+
+  document.querySelectorAll('.btn-edit-proj').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const proj = d.items[idx];
+      openModal('Edit Project Card', `
+        <div class="a-field"><label class="a-label">Project Title</label><input class="a-input" name="title" value="${proj.title}" required /></div>
+        <div class="a-field" style="margin-top:12px;"><label class="a-label">Category</label><input class="a-input" name="category" value="${proj.category || ''}" /></div>
+        <div class="a-field" style="margin-top:12px;"><label class="a-label">Client / Sector</label><input class="a-input" name="clientSector" value="${proj.clientSector || ''}" /></div>
+        <div class="a-field" style="margin-top:12px;"><label class="a-label">Date / Timeline</label><input class="a-input" name="date" value="${proj.date || ''}" /></div>
+        <div class="a-field" style="margin-top:12px;"><label class="a-label">Status</label><input class="a-input" name="status" value="${proj.status || ''}" /></div>
+        <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Tags (comma separated)</label><input class="a-input" name="tags" value="${(proj.tags || []).join(', ')}" /></div>
+        ${renderImageUploadField('image', 'Project Cover Photo', proj.image || '', 'Hero hardware photo')}
+        <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Description</label><textarea class="a-textarea" name="desc" required>${proj.desc || ''}</textarea></div>
+      `, (data) => {
+        const tags = (data.tags || '').split(',').map(t => t.trim()).filter(Boolean);
+        d.items[idx] = { ...proj, ...data, tags };
+        ContentService.saveData('projects', d);
+      });
+    });
+  });
+
+  document.querySelectorAll('.btn-del-proj').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      if (confirm('Delete this project card?')) {
+        d.items.splice(idx, 1);
+        ContentService.saveData('projects', d);
+        rerender();
+        showToast('Project deleted.', '');
+      }
+    });
+  });
+
+  document.querySelectorAll('.btn-move-proj').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const dir = btn.getAttribute('data-dir');
+      const targetIdx = dir === 'up' ? idx - 1 : idx + 1;
+      d.items = reorderArray(d.items, idx, targetIdx);
+      ContentService.saveData('projects', d);
+      rerender();
+      showToast('Projects reordered!', 'success');
+    });
+  });
+}
+
+// ─── GALLERY PAGE EDITOR ─────────────────────────────────────────────────────
+function renderGalleryPageEditor() {
+  const d = ContentService.getData('gallery') || {};
+  const items = d.items || [];
+
+  return `
+    <form id="a-page-form" style="margin-bottom:20px;">
+      <div class="a-card">
+        <div class="a-card-header"><div><h3>Gallery Section Intro</h3><p>Page heading and gallery lead</p></div></div>
+        <div class="a-form-grid">
+          <div class="a-field"><label class="a-label">Section Title</label><input class="a-input" name="heroTitle" value="${d.heroTitle || 'Hardware & Facility Gallery'}"></div>
+          <div class="a-field"><label class="a-label">Section Subtitle</label><input class="a-input" name="heroSubtitle" value="${d.heroSubtitle || 'High-Reliability Components & Systems'}"></div>
+          <div class="a-field span2"><label class="a-label">Lead Paragraph</label><textarea class="a-textarea" name="heroLead">${d.heroLead || ''}</textarea></div>
+        </div>
+        <div style="display:flex; justify-content:flex-end; margin-top:14px;">
+          <button type="submit" class="a-btn a-btn-primary a-btn-sm"><i class="fa-solid fa-floppy-disk"></i> Save Header</button>
+        </div>
+      </div>
+    </form>
+
+    <div class="a-cards-box">
+      <div class="a-cards-box-header">
+        <div>
+          <h3>Hardware Gallery Items (${items.length})</h3>
+          <p>Add, edit, delete, and reorder hardware photos and captions</p>
+        </div>
+        <button type="button" class="a-btn a-btn-primary a-btn-sm" id="a-add-gal-btn"><i class="fa-solid fa-plus"></i> Add Gallery Photo</button>
+      </div>
+      <div class="a-table-wrap">
+        <table class="a-table">
+          <thead><tr><th>Reorder</th><th>Photo</th><th>Item Title</th><th>Category</th><th>Caption</th><th>Actions</th></tr></thead>
+          <tbody>
+            ${items.map((gal, idx) => {
+              const img = ImageStorage.resolveImageUrl(gal.image);
+              return `
+                <tr>
+                  <td style="width:90px;">
+                    <div class="a-reorder-group">
+                      <button class="a-btn-reorder btn-move-gal" data-dir="up" data-idx="${idx}" ${idx === 0 ? 'disabled' : ''}><i class="fa-solid fa-arrow-up"></i></button>
+                      <button class="a-btn-reorder btn-move-gal" data-dir="down" data-idx="${idx}" ${idx === items.length - 1 ? 'disabled' : ''}><i class="fa-solid fa-arrow-down"></i></button>
+                    </div>
+                  </td>
+                  <td>${img ? `<img src="${img}" class="a-img-preview" alt="Thumb" />` : '<span style="color:#94a3b8; font-size:0.75rem;">No image</span>'}</td>
+                  <td><strong>${gal.title}</strong></td>
+                  <td><span class="a-badge a-badge-blue">${gal.category || 'Component'}</span></td>
+                  <td style="font-size:0.82rem; color:var(--a-muted); max-width:260px;">${gal.caption || '—'}</td>
+                  <td>
+                    <button class="a-btn a-btn-outline a-btn-sm btn-edit-gal" data-idx="${idx}"><i class="fa-solid fa-pen"></i> Edit</button>
+                    <button class="a-btn a-btn-danger a-btn-sm btn-del-gal" data-idx="${idx}" style="margin-left:6px;"><i class="fa-solid fa-trash"></i></button>
+                  </td>
+                </tr>
+              `;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+}
+
+function bindGalleryTabEvents() {
+  const d = ContentService.getData('gallery') || {};
+
+  document.getElementById('a-add-gal-btn')?.addEventListener('click', () => {
+    openModal('Add Gallery Photo', `
+      <div class="a-field"><label class="a-label">Item Title</label><input class="a-input" name="title" required /></div>
+      <div class="a-field" style="margin-top:12px;"><label class="a-label">Category (e.g. Semiconductors, Passives, Systems)</label><input class="a-input" name="category" value="Semiconductors" /></div>
+      ${renderImageUploadField('image', 'Hardware Photo', '', 'Upload or select image')}
+      <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Caption / Description</label><input class="a-input" name="caption" /></div>
+    `, (data) => {
+      const items = d.items || [];
+      items.push({ id: 'gal-' + Date.now(), ...data });
+      d.items = items;
+      ContentService.saveData('gallery', d);
+    });
+  });
+
+  document.querySelectorAll('.btn-edit-gal').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const gal = d.items[idx];
+      openModal('Edit Gallery Photo', `
+        <div class="a-field"><label class="a-label">Item Title</label><input class="a-input" name="title" value="${gal.title}" required /></div>
+        <div class="a-field" style="margin-top:12px;"><label class="a-label">Category</label><input class="a-input" name="category" value="${gal.category || ''}" /></div>
+        ${renderImageUploadField('image', 'Hardware Photo', gal.image || '', 'Upload or select image')}
+        <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Caption / Description</label><input class="a-input" name="caption" value="${gal.caption || ''}" /></div>
+      `, (data) => {
+        d.items[idx] = { ...gal, ...data };
+        ContentService.saveData('gallery', d);
+      });
+    });
+  });
+
+  document.querySelectorAll('.btn-del-gal').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      if (confirm('Delete this gallery photo?')) {
+        d.items.splice(idx, 1);
+        ContentService.saveData('gallery', d);
+        rerender();
+        showToast('Gallery photo deleted.', '');
+      }
+    });
+  });
+
+  document.querySelectorAll('.btn-move-gal').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const dir = btn.getAttribute('data-dir');
+      const targetIdx = dir === 'up' ? idx - 1 : idx + 1;
+      d.items = reorderArray(d.items, idx, targetIdx);
+      ContentService.saveData('gallery', d);
+      rerender();
+      showToast('Gallery reordered!', 'success');
+    });
+  });
+}
+
+// ─── TESTIMONIALS PAGE EDITOR ────────────────────────────────────────────────
+function renderTestimonialsPageEditor() {
+  const d = ContentService.getData('testimonials') || {};
+  const items = d.items || [];
+
+  return `
+    <form id="a-page-form" style="margin-bottom:20px;">
+      <div class="a-card">
+        <div class="a-card-header"><div><h3>Testimonials Section Header</h3><p>Section title and endorsement lead</p></div></div>
+        <div class="a-form-grid">
+          <div class="a-field"><label class="a-label">Section Title</label><input class="a-input" name="heroTitle" value="${d.heroTitle || 'Trusted by Industry Leaders'}"></div>
+          <div class="a-field"><label class="a-label">Section Subtitle</label><input class="a-input" name="heroSubtitle" value="${d.heroSubtitle || 'Client & Engineer Endorsements'}"></div>
+          <div class="a-field span2"><label class="a-label">Lead Paragraph</label><textarea class="a-textarea" name="heroLead">${d.heroLead || ''}</textarea></div>
+        </div>
+        <div style="display:flex; justify-content:flex-end; margin-top:14px;">
+          <button type="submit" class="a-btn a-btn-primary a-btn-sm"><i class="fa-solid fa-floppy-disk"></i> Save Header</button>
+        </div>
+      </div>
+    </form>
+
+    <div class="a-cards-box">
+      <div class="a-cards-box-header">
+        <div>
+          <h3>Client Testimonial Cards (${items.length})</h3>
+          <p>Add, edit, delete, and reorder scientist &amp; engineering endorsements</p>
+        </div>
+        <button type="button" class="a-btn a-btn-primary a-btn-sm" id="a-add-test-btn"><i class="fa-solid fa-plus"></i> Add Testimonial</button>
+      </div>
+      <div class="a-table-wrap">
+        <table class="a-table">
+          <thead><tr><th>Reorder</th><th>Avatar</th><th>Client Name</th><th>Role &amp; Company</th><th>Stars</th><th>Industry Tag</th><th>Actions</th></tr></thead>
+          <tbody>
+            ${items.map((t, idx) => {
+              const avatar = ImageStorage.resolveImageUrl(t.avatar);
+              return `
+                <tr>
+                  <td style="width:90px;">
+                    <div class="a-reorder-group">
+                      <button class="a-btn-reorder btn-move-test" data-dir="up" data-idx="${idx}" ${idx === 0 ? 'disabled' : ''}><i class="fa-solid fa-arrow-up"></i></button>
+                      <button class="a-btn-reorder btn-move-test" data-dir="down" data-idx="${idx}" ${idx === items.length - 1 ? 'disabled' : ''}><i class="fa-solid fa-arrow-down"></i></button>
+                    </div>
+                  </td>
+                  <td>${avatar ? `<img src="${avatar}" class="a-img-preview" alt="Avatar" style="width:40px; height:40px; border-radius:50%;" />` : '<div style="width:36px; height:36px; border-radius:50%; background:#e2e8f0; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.8rem;">' + (t.name ? t.name.substring(0,2).toUpperCase() : 'CL') + '</div>'}</td>
+                  <td><strong>${t.name}</strong></td>
+                  <td style="font-size:0.82rem; color:var(--a-muted);">${t.role} · ${t.company}</td>
+                  <td><span style="color:#f59e0b;">${'★'.repeat(t.stars || 5)}</span></td>
+                  <td><span class="a-badge a-badge-blue">${t.industry || 'Defense'}</span></td>
+                  <td>
+                    <button class="a-btn a-btn-outline a-btn-sm btn-edit-test" data-idx="${idx}"><i class="fa-solid fa-pen"></i> Edit</button>
+                    <button class="a-btn a-btn-danger a-btn-sm btn-del-test" data-idx="${idx}" style="margin-left:6px;"><i class="fa-solid fa-trash"></i></button>
+                  </td>
+                </tr>
+              `;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+}
+
+function bindTestimonialsTabEvents() {
+  const d = ContentService.getData('testimonials') || {};
+
+  document.getElementById('a-add-test-btn')?.addEventListener('click', () => {
+    openModal('Add Testimonial Card', `
+      <div class="a-field"><label class="a-label">Client Name</label><input class="a-input" name="name" required /></div>
+      <div class="a-field" style="margin-top:12px;"><label class="a-label">Role / Title</label><input class="a-input" name="role" required /></div>
+      <div class="a-field" style="margin-top:12px;"><label class="a-label">Organization / Company</label><input class="a-input" name="company" required /></div>
+      <div class="a-field" style="margin-top:12px;"><label class="a-label">Industry Tag (e.g. Radar & Defense EW)</label><input class="a-input" name="industry" value="Defense & Space" /></div>
+      <div class="a-field" style="margin-top:12px;"><label class="a-label">Rating Stars (1-5)</label><input class="a-input" type="number" min="1" max="5" name="stars" value="5" /></div>
+      ${renderImageUploadField('avatar', 'Client / OEM Avatar Photo', '', 'Upload avatar or logo')}
+      <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Quote Endorsement</label><textarea class="a-textarea" name="quote" required></textarea></div>
+    `, (data) => {
+      const items = d.items || [];
+      items.push({ id: 'test-' + Date.now(), ...data, stars: parseInt(data.stars, 10) || 5 });
+      d.items = items;
+      ContentService.saveData('testimonials', d);
+    });
+  });
+
+  document.querySelectorAll('.btn-edit-test').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const t = d.items[idx];
+      openModal('Edit Testimonial Card', `
+        <div class="a-field"><label class="a-label">Client Name</label><input class="a-input" name="name" value="${t.name}" required /></div>
+        <div class="a-field" style="margin-top:12px;"><label class="a-label">Role / Title</label><input class="a-input" name="role" value="${t.role || ''}" required /></div>
+        <div class="a-field" style="margin-top:12px;"><label class="a-label">Organization / Company</label><input class="a-input" name="company" value="${t.company || ''}" required /></div>
+        <div class="a-field" style="margin-top:12px;"><label class="a-label">Industry Tag</label><input class="a-input" name="industry" value="${t.industry || ''}" /></div>
+        <div class="a-field" style="margin-top:12px;"><label class="a-label">Rating Stars (1-5)</label><input class="a-input" type="number" min="1" max="5" name="stars" value="${t.stars || 5}" /></div>
+        ${renderImageUploadField('avatar', 'Client / OEM Avatar Photo', t.avatar || '', 'Upload avatar or logo')}
+        <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Quote Endorsement</label><textarea class="a-textarea" name="quote" required>${t.quote || ''}</textarea></div>
+      `, (data) => {
+        d.items[idx] = { ...t, ...data, stars: parseInt(data.stars, 10) || 5 };
+        ContentService.saveData('testimonials', d);
+      });
+    });
+  });
+
+  document.querySelectorAll('.btn-del-test').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      if (confirm('Delete this testimonial?')) {
+        d.items.splice(idx, 1);
+        ContentService.saveData('testimonials', d);
+        rerender();
+        showToast('Testimonial deleted.', '');
+      }
+    });
+  });
+
+  document.querySelectorAll('.btn-move-test').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const dir = btn.getAttribute('data-dir');
+      const targetIdx = dir === 'up' ? idx - 1 : idx + 1;
+      d.items = reorderArray(d.items, idx, targetIdx);
+      ContentService.saveData('testimonials', d);
+      rerender();
+      showToast('Testimonials reordered!', 'success');
+    });
+  });
+}
+
+// ─── CONTACT PAGE EDITOR ─────────────────────────────────────────────────────
+function renderContactPageEditor() {
+  const c = ContentService.getData('contact') || {};
+  const presets = c.presets || [];
+  const careers = c.careers || {};
+  const benefits = careers.benefits || [];
+  const positions = careers.positions || [];
+  const experienceLevels = careers.experienceLevels || [];
+  const noticeOptions = careers.noticeOptions || [];
+
+  return `
+    <div class="a-subtabs-nav">
+      <button type="button" class="a-subtab-btn ${currentSubTab === 'fields' ? 'active' : ''}" data-subtab="fields"><i class="fa-solid fa-building"></i> Offices &amp; Contact Info</button>
+      <button type="button" class="a-subtab-btn ${currentSubTab === 'presets' ? 'active' : ''}" data-subtab="presets"><i class="fa-solid fa-bolt"></i> Requirement Presets (${presets.length})</button>
+      <button type="button" class="a-subtab-btn ${currentSubTab === 'careers' ? 'active' : ''}" data-subtab="careers"><i class="fa-solid fa-briefcase"></i> Careers &amp; Recruiting Management</button>
+    </div>
+
+    ${currentSubTab === 'fields' ? `
+      <form id="a-page-form">
+        <div class="a-card">
+          <div class="a-card-header"><div><h3>Contact Page Headers</h3><p>RFQ and career tab headings</p></div></div>
+          <div class="a-form-grid">
+            <div class="a-field"><label class="a-label">Inquiry Hero Title</label><input class="a-input" name="heroTitle" value="${c.heroTitle || ''}"></div>
+            <div class="a-field"><label class="a-label">Careers Hero Title</label><input class="a-input" name="careersTitle" value="${c.careersTitle || ''}"></div>
+            <div class="a-field span2"><label class="a-label">Inquiry Lead</label><textarea class="a-textarea" name="heroLead">${c.heroLead || ''}</textarea></div>
+            <div class="a-field span2"><label class="a-label">Careers Lead</label><textarea class="a-textarea" name="careersLead">${c.careersLead || ''}</textarea></div>
+          </div>
+        </div>
+
+        <div class="a-card">
+          <div class="a-card-header"><div><h3>Global Office Locations</h3><p>Displayed in contact page and site footer</p></div></div>
+          <div class="a-form-grid">
+            <div class="a-section-divider span2">India Office (Headquarters)</div>
+            <div class="a-field"><label class="a-label">Office Name</label><input class="a-input" name="indiaOfficeName" value="${c.indiaOfficeName || ''}"></div>
+            <div class="a-field"><label class="a-label">Telephone</label><input class="a-input" name="indiaPhone" value="${c.indiaPhone || ''}"></div>
+            <div class="a-field span2"><label class="a-label">Address</label><textarea class="a-textarea" name="indiaAddress">${c.indiaAddress || ''}</textarea></div>
+            <div class="a-field span2"><label class="a-label">Email</label><input class="a-input" name="indiaEmail" value="${c.indiaEmail || ''}"></div>
+
+            <div class="a-section-divider span2">Singapore Office</div>
+            <div class="a-field"><label class="a-label">Office Name</label><input class="a-input" name="singaporeOfficeName" value="${c.singaporeOfficeName || ''}"></div>
+            <div class="a-field"><label class="a-label">Email</label><input class="a-input" name="singaporeEmail" value="${c.singaporeEmail || ''}"></div>
+            <div class="a-field span2"><label class="a-label">Address</label><textarea class="a-textarea" name="singaporeAddress">${c.singaporeAddress || ''}</textarea></div>
+
+            <div class="a-section-divider span2">USA Office</div>
+            <div class="a-field"><label class="a-label">Office Name</label><input class="a-input" name="usaOfficeName" value="${c.usaOfficeName || ''}"></div>
+            <div class="a-field"><label class="a-label">Telephone</label><input class="a-input" name="usaPhone" value="${c.usaPhone || ''}"></div>
+            <div class="a-field span2"><label class="a-label">Address</label><textarea class="a-textarea" name="usaAddress">${c.usaAddress || ''}</textarea></div>
+            <div class="a-field span2"><label class="a-label">Email</label><input class="a-input" name="usaEmail" value="${c.usaEmail || ''}"></div>
+
+            <div class="a-section-divider span2">Operating Hours</div>
+            <div class="a-field"><label class="a-label">Weekday Hours</label><input class="a-input" name="hoursWeekday" value="${c.hoursWeekday || ''}"></div>
+            <div class="a-field"><label class="a-label">Weekend Hours</label><input class="a-input" name="hoursWeekend" value="${c.hoursWeekend || ''}"></div>
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; gap:10px;">
+          <button type="submit" class="a-btn a-btn-primary"><i class="fa-solid fa-floppy-disk"></i> Save Contact Info</button>
+        </div>
+      </form>
+    ` : ''}
+
+    ${currentSubTab === 'presets' ? `
+      <div class="a-cards-box">
+        <div class="a-cards-box-header">
+          <div>
+            <h3>Quick Requirement Presets (${presets.length})</h3>
+            <p>One-click inquiry messages displayed on Home and Contact forms</p>
+          </div>
+          <button type="button" class="a-btn a-btn-primary a-btn-sm" id="a-add-preset-btn"><i class="fa-solid fa-plus"></i> Add Preset</button>
+        </div>
+        <div class="a-table-wrap">
+          <table class="a-table">
+            <thead><tr><th>Reorder</th><th>Preset Message</th><th>Actions</th></tr></thead>
+            <tbody>
+              ${presets.map((p, idx) => `
+                <tr>
+                  <td style="width:90px;">
+                    <div class="a-reorder-group">
+                      <button class="a-btn-reorder btn-move-preset" data-dir="up" data-idx="${idx}" ${idx === 0 ? 'disabled' : ''}><i class="fa-solid fa-arrow-up"></i></button>
+                      <button class="a-btn-reorder btn-move-preset" data-dir="down" data-idx="${idx}" ${idx === presets.length - 1 ? 'disabled' : ''}><i class="fa-solid fa-arrow-down"></i></button>
+                    </div>
+                  </td>
+                  <td><strong>${p}</strong></td>
+                  <td>
+                    <button class="a-btn a-btn-outline a-btn-sm btn-edit-preset" data-idx="${idx}"><i class="fa-solid fa-pen"></i> Edit</button>
+                    <button class="a-btn a-btn-danger a-btn-sm btn-del-preset" data-idx="${idx}" style="margin-left:6px;"><i class="fa-solid fa-trash"></i></button>
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    ` : ''}
+
+    ${currentSubTab === 'careers' ? `
+      <!-- Card 1: Tab Navigation, Hero & Badges -->
+      <form id="a-careers-hero-form">
+        <div class="a-card">
+          <div class="a-card-header">
+            <div>
+              <h3>Hero, Header Tabs &amp; Hiring Badges</h3>
+              <p>Customize tab buttons, navigation badges, and hero titles on Contact &amp; Careers page</p>
+            </div>
+            <button type="submit" class="a-btn a-btn-primary a-btn-sm"><i class="fa-solid fa-floppy-disk"></i> Save Header &amp; Hero</button>
+          </div>
+          <div class="a-form-grid">
+            <div class="a-field">
+              <label class="a-label">Careers Tab Button Label</label>
+              <input class="a-input" name="tabLabelCareers" value="${careers.tabLabelCareers || 'Careers &amp; Recruiting'}" required>
+            </div>
+            <div class="a-field">
+              <label class="a-label">Sales Tab Button Label</label>
+              <input class="a-input" name="tabLabelSales" value="${careers.tabLabelSales || 'Sales &amp; RFQ Inquiry'}" required>
+            </div>
+            <div class="a-field">
+              <label class="a-label">Breadcrumb Text</label>
+              <input class="a-input" name="breadcrumbCareers" value="${careers.breadcrumbCareers || 'Careers &amp; Recruiting'}" required>
+            </div>
+            <div class="a-field">
+              <label class="a-label">Hero Eyebrow Text</label>
+              <input class="a-input" name="eyebrowCareers" value="${careers.eyebrowCareers || 'ICON TALENT ACQUISITION'}">
+            </div>
+            <div class="a-field span2">
+              <label class="a-label">Hero Main Title</label>
+              <input class="a-input" name="careersTitle" value="${careers.careersTitle || ''}" required>
+            </div>
+            <div class="a-field span2">
+              <label class="a-label">Hero Lead Paragraph / Subtitle</label>
+              <textarea class="a-textarea" name="careersLead" rows="2" required>${careers.careersLead || ''}</textarea>
+            </div>
+            <div class="a-field">
+              <label class="a-checkbox-row" style="margin-top:6px;">
+                <input type="checkbox" name="showHiringBadge" ${careers.showHiringBadge !== false ? 'checked' : ''}>
+                <span>Display "We're Hiring" Badge on Tab</span>
+              </label>
+            </div>
+            <div class="a-field">
+              <label class="a-label">Hiring Badge Text</label>
+              <input class="a-input" name="hiringBadgeText" value="${careers.hiringBadgeText || "We're Hiring"}">
+            </div>
+            ${renderImageUploadField('careersHeroImage', 'Careers Hero / Team Photo (Optional)', careers.careersHeroImage || '', 'Upload photo of engineering team, lab, or office')}
+          </div>
+        </div>
+      </form>
+
+      <!-- Card 2: Company Intro & Benefits -->
+      <form id="a-careers-intro-form" style="margin-top:20px;">
+        <div class="a-card">
+          <div class="a-card-header">
+            <div>
+              <h3>"Why Build Your Career at ICON?" Introduction</h3>
+              <p>Introductory copy displayed in the left column on the Careers tab</p>
+            </div>
+            <button type="submit" class="a-btn a-btn-primary a-btn-sm"><i class="fa-solid fa-floppy-disk"></i> Save Intro Copy</button>
+          </div>
+          <div class="a-form-grid">
+            <div class="a-field">
+              <label class="a-label">Intro Heading</label>
+              <input class="a-input" name="introTitle" value="${careers.introTitle || 'Why Build Your Career at ICON?'}" required>
+            </div>
+            <div class="a-field">
+              <label class="a-label">Intro Subtitle / Tagline</label>
+              <input class="a-input" name="introSubtitle" value="${careers.introSubtitle || 'RF &amp; MICROWAVE EXCELLENCE'}">
+            </div>
+            <div class="a-field">
+              <label class="a-label">Header Icon (FontAwesome class)</label>
+              <input class="a-input" name="introIcon" value="${careers.introIcon || 'fa-solid fa-users'}">
+            </div>
+            <div class="a-field span2">
+              <label class="a-label">Intro Description Paragraph</label>
+              <textarea class="a-textarea" name="introDescription" rows="3" required>${careers.introDescription || ''}</textarea>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <!-- Benefits Table -->
+      <div class="a-cards-box" style="margin-top:20px;">
+        <div class="a-cards-box-header">
+          <div>
+            <h3>Why Join Us Benefits &amp; Perks (${benefits.length})</h3>
+            <p>Reorderable highlight cards showcasing engineering culture, labs, and OEM access</p>
+          </div>
+          <button type="button" class="a-btn a-btn-primary a-btn-sm" id="a-add-benefit-btn"><i class="fa-solid fa-plus"></i> Add Benefit</button>
+        </div>
+        <div class="a-table-wrap">
+          <table class="a-table">
+            <thead><tr><th>Reorder</th><th>Icon</th><th>Title</th><th>Description</th><th>Actions</th></tr></thead>
+            <tbody>
+              ${benefits.map((b, idx) => `
+                <tr>
+                  <td style="width:90px;">
+                    <div class="a-reorder-group">
+                      <button class="a-btn-reorder btn-move-benefit" data-dir="up" data-idx="${idx}" ${idx === 0 ? 'disabled' : ''}><i class="fa-solid fa-arrow-up"></i></button>
+                      <button class="a-btn-reorder btn-move-benefit" data-dir="down" data-idx="${idx}" ${idx === benefits.length - 1 ? 'disabled' : ''}><i class="fa-solid fa-arrow-down"></i></button>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="a-icon-preview-badge" style="color:${b.iconColor || '#3b82f6'};">
+                      <i class="${b.icon || 'fa-solid fa-star'}"></i>
+                    </div>
+                  </td>
+                  <td><strong>${b.title}</strong></td>
+                  <td style="font-size:0.8rem;color:var(--a-muted);max-width:320px;">${b.description || ''}</td>
+                  <td>
+                    <button class="a-btn a-btn-outline a-btn-sm btn-edit-benefit" data-idx="${idx}"><i class="fa-solid fa-pen"></i> Edit</button>
+                    <button class="a-btn a-btn-danger a-btn-sm btn-del-benefit" data-idx="${idx}" style="margin-left:6px;"><i class="fa-solid fa-trash"></i></button>
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Card 3: Application Form Fields, Validation & Upload Rules -->
+      <form id="a-careers-form-config" style="margin-top:20px;">
+        <div class="a-card">
+          <div class="a-card-header">
+            <div>
+              <h3>Application Form Header &amp; Fields Configuration</h3>
+              <p>Customize form title, badges, labels, placeholders, and required validation rules</p>
+            </div>
+            <button type="submit" class="a-btn a-btn-primary a-btn-sm"><i class="fa-solid fa-floppy-disk"></i> Save Form Settings</button>
+          </div>
+          
+          <div class="a-form-grid">
+            <div class="a-section-divider span2">Top Form Banner &amp; Heading</div>
+            <div class="a-field">
+              <label class="a-checkbox-row" style="margin-top:6px;">
+                <input type="checkbox" name="showFormBadge" ${careers.showFormBadge !== false ? 'checked' : ''}>
+                <span>Display Talent Acquisition Badge</span>
+              </label>
+            </div>
+            <div class="a-field">
+              <label class="a-label">Form Badge Text</label>
+              <input class="a-input" name="formBadgeText" value="${careers.formBadgeText || 'Talent Acquisition · Bengaluru &amp; Pan-India'}">
+            </div>
+            <div class="a-field">
+              <label class="a-label">Form Badge Icon (FontAwesome class)</label>
+              <input class="a-input" name="formBadgeIcon" value="${careers.formBadgeIcon || 'fa-solid fa-briefcase'}">
+            </div>
+            <div class="a-field">
+              <label class="a-label">Form Main Heading</label>
+              <input class="a-input" name="formTitle" value="${careers.formTitle || 'Apply for an Engineering Career'}" required>
+            </div>
+            <div class="a-field span2">
+              <label class="a-label">Form Subtitle / Instructions</label>
+              <textarea class="a-textarea" name="formSubtitle" rows="2" required>${careers.formSubtitle || ''}</textarea>
+            </div>
+
+            <div class="a-section-divider span2">Field Labels, Placeholders &amp; Required Toggles</div>
+            
+            <!-- Full Name -->
+            <div class="a-field">
+              <label class="a-label">Full Name Field Label</label>
+              <input class="a-input" name="nameLabel" value="${careers.nameLabel || 'Full Name *'}" required>
+            </div>
+            <div class="a-field">
+              <label class="a-label">Full Name Placeholder</label>
+              <input class="a-input" name="namePlaceholder" value="${careers.namePlaceholder || 'e.g. Vikram Sharma'}">
+            </div>
+            <div class="a-field span2">
+              <label class="a-checkbox-row">
+                <input type="checkbox" name="nameRequired" ${careers.nameRequired !== false ? 'checked' : ''}>
+                <span>Full Name is Required</span>
+              </label>
+            </div>
+
+            <!-- Email Address -->
+            <div class="a-field">
+              <label class="a-label">Email Field Label</label>
+              <input class="a-input" name="emailLabel" value="${careers.emailLabel || 'Email Address *'}" required>
+            </div>
+            <div class="a-field">
+              <label class="a-label">Email Placeholder</label>
+              <input class="a-input" name="emailPlaceholder" value="${careers.emailPlaceholder || 'vikram.sharma@example.com'}">
+            </div>
+            <div class="a-field span2">
+              <label class="a-checkbox-row">
+                <input type="checkbox" name="emailRequired" ${careers.emailRequired !== false ? 'checked' : ''}>
+                <span>Email Address is Required</span>
+              </label>
+            </div>
+
+            <!-- Position -->
+            <div class="a-field">
+              <label class="a-label">Position Dropdown Label</label>
+              <input class="a-input" name="positionLabel" value="${careers.positionLabel || 'Position *'}" required>
+            </div>
+            <div class="a-field">
+              <label class="a-label">Position Default Option Text</label>
+              <input class="a-input" name="positionPlaceholder" value="${careers.positionPlaceholder || 'Select Position...'}">
+            </div>
+            <div class="a-field span2">
+              <label class="a-checkbox-row">
+                <input type="checkbox" name="positionRequired" ${careers.positionRequired !== false ? 'checked' : ''}>
+                <span>Position Selection is Required</span>
+              </label>
+            </div>
+
+            <!-- Phone -->
+            <div class="a-field">
+              <label class="a-label">Phone Field Label</label>
+              <input class="a-input" name="phoneLabel" value="${careers.phoneLabel || 'Phone / Mobile Number *'}" required>
+            </div>
+            <div class="a-field">
+              <label class="a-label">Phone Placeholder</label>
+              <input class="a-input" name="phonePlaceholder" value="${careers.phonePlaceholder || '+91 98765 43210'}">
+            </div>
+            <div class="a-field span2">
+              <label class="a-checkbox-row">
+                <input type="checkbox" name="phoneRequired" ${careers.phoneRequired !== false ? 'checked' : ''}>
+                <span>Phone / Mobile Number is Required</span>
+              </label>
+            </div>
+
+            <!-- Location / City -->
+            <div class="a-field">
+              <label class="a-label">Location Field Label</label>
+              <input class="a-input" name="cityLabel" value="${careers.cityLabel || 'Current Location / City *'}" required>
+            </div>
+            <div class="a-field">
+              <label class="a-label">Location Placeholder</label>
+              <input class="a-input" name="cityPlaceholder" value="${careers.cityPlaceholder || 'e.g. Bengaluru, Hyderabad, Pune, Chennai'}">
+            </div>
+            <div class="a-field span2">
+              <label class="a-checkbox-row">
+                <input type="checkbox" name="cityRequired" ${careers.cityRequired !== false ? 'checked' : ''}>
+                <span>Location / City is Required</span>
+              </label>
+            </div>
+
+            <!-- Experience Level -->
+            <div class="a-field">
+              <label class="a-label">Experience Dropdown Label</label>
+              <input class="a-input" name="experienceLabel" value="${careers.experienceLabel || 'Total Experience *'}" required>
+            </div>
+            <div class="a-field">
+              <label class="a-label">Experience Default Option Text</label>
+              <input class="a-input" name="experiencePlaceholder" value="${careers.experiencePlaceholder || 'Select experience level...'}">
+            </div>
+            <div class="a-field span2">
+              <label class="a-checkbox-row">
+                <input type="checkbox" name="experienceRequired" ${careers.experienceRequired !== false ? 'checked' : ''}>
+                <span>Experience Level is Required</span>
+              </label>
+            </div>
+
+            <!-- Current Company -->
+            <div class="a-field">
+              <label class="a-label">Company / University Label</label>
+              <input class="a-input" name="organizationLabel" value="${careers.organizationLabel || 'Current Company or University *'}" required>
+            </div>
+            <div class="a-field">
+              <label class="a-label">Company / University Placeholder</label>
+              <input class="a-input" name="organizationPlaceholder" value="${careers.organizationPlaceholder || 'e.g. BEL, DRDO, Astra Microwave, IISc, IIT'}">
+            </div>
+            <div class="a-field span2">
+              <label class="a-checkbox-row">
+                <input type="checkbox" name="organizationRequired" ${careers.organizationRequired !== false ? 'checked' : ''}>
+                <span>Current Company or University is Required</span>
+              </label>
+            </div>
+
+            <!-- Notice Period -->
+            <div class="a-field">
+              <label class="a-label">Notice Period Field Label</label>
+              <input class="a-input" name="noticeLabel" value="${careers.noticeLabel || 'Notice Period / Earliest Availability *'}" required>
+            </div>
+            <div class="a-field">
+              <label class="a-checkbox-row" style="margin-top:24px;">
+                <input type="checkbox" name="noticeRequired" ${careers.noticeRequired !== false ? 'checked' : ''}>
+                <span>Notice Period is Required</span>
+              </label>
+            </div>
+
+            <!-- Technical Skills -->
+            <div class="a-field">
+              <label class="a-label">Skills Field Label</label>
+              <input class="a-input" name="skillsLabel" value="${careers.skillsLabel || 'Key Technical Skills &amp; RF EDA Tools *'}" required>
+            </div>
+            <div class="a-field">
+              <label class="a-label">Skills Field Placeholder</label>
+              <input class="a-input" name="skillsPlaceholder" value="${careers.skillsPlaceholder || 'e.g. Keysight ADS, Ansys HFSS, CST Microwave Studio...'}">
+            </div>
+            <div class="a-field span2">
+              <label class="a-checkbox-row">
+                <input type="checkbox" name="skillsRequired" ${careers.skillsRequired !== false ? 'checked' : ''}>
+                <span>Technical Skills Field is Required</span>
+              </label>
+            </div>
+
+            <!-- LinkedIn -->
+            <div class="a-field">
+              <label class="a-label">LinkedIn Field Label</label>
+              <input class="a-input" name="linkedinLabel" value="${careers.linkedinLabel || 'LinkedIn Profile or Online Portfolio'}">
+            </div>
+            <div class="a-field">
+              <label class="a-label">LinkedIn Placeholder</label>
+              <input class="a-input" name="linkedinPlaceholder" value="${careers.linkedinPlaceholder || 'https://linkedin.com/in/username'}">
+            </div>
+            <div class="a-field">
+              <label class="a-checkbox-row">
+                <input type="checkbox" name="showLinkedin" ${careers.showLinkedin !== false ? 'checked' : ''}>
+                <span>Display LinkedIn / Portfolio Field</span>
+              </label>
+            </div>
+            <div class="a-field">
+              <label class="a-checkbox-row">
+                <input type="checkbox" name="linkedinRequired" ${careers.linkedinRequired ? 'checked' : ''}>
+                <span>LinkedIn URL is Required</span>
+              </label>
+            </div>
+
+            <!-- Statement -->
+            <div class="a-field span2">
+              <label class="a-label">Candidate Statement Field Label</label>
+              <input class="a-input" name="statementLabel" value="${careers.statementLabel || 'Candidate Statement / Why ICON Electromatic? *'}" required>
+            </div>
+            <div class="a-field span2">
+              <label class="a-label">Statement Placeholder</label>
+              <textarea class="a-textarea" name="statementPlaceholder" rows="2">${careers.statementPlaceholder || ''}</textarea>
+            </div>
+            <div class="a-field span2">
+              <label class="a-checkbox-row">
+                <input type="checkbox" name="statementRequired" ${careers.statementRequired !== false ? 'checked' : ''}>
+                <span>Candidate Statement is Required</span>
+              </label>
+            </div>
+
+            <div class="a-section-divider span2">Resume Upload Controls &amp; Settings</div>
+            <div class="a-field">
+              <label class="a-label">Resume Upload Label</label>
+              <input class="a-input" name="resumeLabel" value="${careers.resumeLabel || 'Resume / Curriculum Vitae (PDF / DOCX) *'}" required>
+            </div>
+            <div class="a-field">
+              <label class="a-label">Dropzone Help / Instruction Text</label>
+              <input class="a-input" name="resumeHelpText" value="${careers.resumeHelpText || 'Click or drop resume file (PDF/DOCX, max 10MB)'}">
+            </div>
+            <div class="a-field">
+              <label class="a-label">Accepted File Types (Comma separated)</label>
+              <input class="a-input" name="resumeAcceptedExtensions" value="${careers.resumeAcceptedExtensions || '.pdf,.doc,.docx'}" required>
+            </div>
+            <div class="a-field">
+              <label class="a-label">Max Allowed File Size (Megabytes)</label>
+              <input class="a-input" type="number" min="1" max="100" name="resumeMaxSizeMb" value="${careers.resumeMaxSizeMb || 10}" required>
+            </div>
+            <div class="a-field">
+              <label class="a-label">Resume Format Error Message (Use {types})</label>
+              <input class="a-input" name="resumeFormatErrorMessage" value="${careers.resumeFormatErrorMessage || 'Invalid file format. Please upload an accepted file type: {types}'}">
+            </div>
+            <div class="a-field">
+              <label class="a-label">Resume Size Limit Error Message (Use {size} and {max})</label>
+              <input class="a-input" name="resumeSizeErrorMessage" value="${careers.resumeSizeErrorMessage || 'File size ({size} MB) exceeds the maximum allowed limit of {max} MB.'}">
+            </div>
+            <div class="a-field span2">
+              <label class="a-checkbox-row">
+                <input type="checkbox" name="resumeRequired" ${careers.resumeRequired !== false ? 'checked' : ''}>
+                <span>Resume File Attachment is Required</span>
+              </label>
+            </div>
+
+            <div class="a-section-divider span2">Submit Button Configuration</div>
+            <div class="a-field">
+              <label class="a-label">Submit Button Text</label>
+              <input class="a-input" name="submitButtonText" value="${careers.submitButtonText || 'Submit Engineering Application'}" required>
+            </div>
+            <div class="a-field">
+              <label class="a-label">Submit Button Icon (FontAwesome class)</label>
+              <input class="a-input" name="submitButtonIcon" value="${careers.submitButtonIcon || 'fa-solid fa-briefcase'}">
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <!-- Card 4: Open Job Positions -->
+      <div class="a-cards-box" style="margin-top:20px;">
+        <div class="a-cards-box-header">
+          <div>
+            <h3>Open Engineering Positions (${positions.length})</h3>
+            <p>Manage job titles in the Position dropdown on the public application form</p>
+          </div>
+          <button type="button" class="a-btn a-btn-primary a-btn-sm" id="a-add-position-btn"><i class="fa-solid fa-plus"></i> Add Position</button>
+        </div>
+        <div class="a-table-wrap">
+          <table class="a-table">
+            <thead><tr><th>Reorder</th><th>Position Title</th><th>Actions</th></tr></thead>
+            <tbody>
+              ${positions.map((pos, idx) => `
+                <tr>
+                  <td style="width:90px;">
+                    <div class="a-reorder-group">
+                      <button class="a-btn-reorder btn-move-pos" data-dir="up" data-idx="${idx}" ${idx === 0 ? 'disabled' : ''}><i class="fa-solid fa-arrow-up"></i></button>
+                      <button class="a-btn-reorder btn-move-pos" data-dir="down" data-idx="${idx}" ${idx === positions.length - 1 ? 'disabled' : ''}><i class="fa-solid fa-arrow-down"></i></button>
+                    </div>
+                  </td>
+                  <td><strong>${pos}</strong></td>
+                  <td>
+                    <button class="a-btn a-btn-outline a-btn-sm btn-edit-pos" data-idx="${idx}"><i class="fa-solid fa-pen"></i> Edit</button>
+                    <button class="a-btn a-btn-danger a-btn-sm btn-del-pos" data-idx="${idx}" style="margin-left:6px;"><i class="fa-solid fa-trash"></i></button>
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Card 5: Experience Levels & Notice Periods -->
+      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 20px; margin-top:20px;">
+        <!-- Experience Levels -->
+        <div class="a-cards-box">
+          <div class="a-cards-box-header">
+            <div>
+              <h3>Experience Levels (${experienceLevels.length})</h3>
+              <p>Seniority options in application dropdown</p>
+            </div>
+            <button type="button" class="a-btn a-btn-primary a-btn-sm" id="a-add-exp-btn"><i class="fa-solid fa-plus"></i> Add Level</button>
+          </div>
+          <div class="a-table-wrap">
+            <table class="a-table">
+              <thead><tr><th>Reorder</th><th>Experience Bracket</th><th>Actions</th></tr></thead>
+              <tbody>
+                ${experienceLevels.map((exp, idx) => `
+                  <tr>
+                    <td style="width:90px;">
+                      <div class="a-reorder-group">
+                        <button class="a-btn-reorder btn-move-exp" data-dir="up" data-idx="${idx}" ${idx === 0 ? 'disabled' : ''}><i class="fa-solid fa-arrow-up"></i></button>
+                        <button class="a-btn-reorder btn-move-exp" data-dir="down" data-idx="${idx}" ${idx === experienceLevels.length - 1 ? 'disabled' : ''}><i class="fa-solid fa-arrow-down"></i></button>
+                      </div>
+                    </td>
+                    <td><strong>${exp}</strong></td>
+                    <td>
+                      <button class="a-btn a-btn-outline a-btn-sm btn-edit-exp" data-idx="${idx}"><i class="fa-solid fa-pen"></i></button>
+                      <button class="a-btn a-btn-danger a-btn-sm btn-del-exp" data-idx="${idx}" style="margin-left:4px;"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Notice Periods -->
+        <div class="a-cards-box">
+          <div class="a-cards-box-header">
+            <div>
+              <h3>Notice Period Options (${noticeOptions.length})</h3>
+              <p>Candidate availability window options</p>
+            </div>
+            <button type="button" class="a-btn a-btn-primary a-btn-sm" id="a-add-notice-btn"><i class="fa-solid fa-plus"></i> Add Option</button>
+          </div>
+          <div class="a-table-wrap">
+            <table class="a-table">
+              <thead><tr><th>Reorder</th><th>Availability Window</th><th>Actions</th></tr></thead>
+              <tbody>
+                ${noticeOptions.map((notc, idx) => `
+                  <tr>
+                    <td style="width:90px;">
+                      <div class="a-reorder-group">
+                        <button class="a-btn-reorder btn-move-notice" data-dir="up" data-idx="${idx}" ${idx === 0 ? 'disabled' : ''}><i class="fa-solid fa-arrow-up"></i></button>
+                        <button class="a-btn-reorder btn-move-notice" data-dir="down" data-idx="${idx}" ${idx === noticeOptions.length - 1 ? 'disabled' : ''}><i class="fa-solid fa-arrow-down"></i></button>
+                      </div>
+                    </td>
+                    <td><strong>${notc}</strong></td>
+                    <td>
+                      <button class="a-btn a-btn-outline a-btn-sm btn-edit-notice" data-idx="${idx}"><i class="fa-solid fa-pen"></i></button>
+                      <button class="a-btn a-btn-danger a-btn-sm btn-del-notice" data-idx="${idx}" style="margin-left:4px;"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 6: Application Confirmation & Success Message -->
+      <form id="a-careers-success-form" style="margin-top:20px;">
+        <div class="a-card">
+          <div class="a-card-header">
+            <div>
+              <h3>Submission Success Screen &amp; Candidate Messages</h3>
+              <p>Customize confirmation modal, candidate reference prefix, and next steps contact instructions</p>
+            </div>
+            <button type="submit" class="a-btn a-btn-primary a-btn-sm"><i class="fa-solid fa-floppy-disk"></i> Save Confirmation Settings</button>
+          </div>
+          <div class="a-form-grid">
+            <div class="a-field">
+              <label class="a-label">Success Screen Main Title</label>
+              <input class="a-input" name="successTitle" value="${careers.successTitle || 'Application Received!'}" required>
+            </div>
+            <div class="a-field">
+              <label class="a-label">Greeting Template (Use {name})</label>
+              <input class="a-input" name="successSubtitle" value="${careers.successSubtitle || 'Thank you, {name}.'}" required>
+            </div>
+            <div class="a-field span2">
+              <label class="a-label">Confirmation Body Message (Use {name} and {position})</label>
+              <textarea class="a-textarea" name="successMessage" rows="2" required>${careers.successMessage || ''}</textarea>
+            </div>
+            <div class="a-field">
+              <label class="a-label">Candidate Application ID Prefix</label>
+              <input class="a-input" name="candidateIdPrefix" value="${careers.candidateIdPrefix || 'ICON-CAREER-'}" required>
+            </div>
+            <div class="a-field">
+              <label class="a-label">Talent Acquisition Email</label>
+              <input class="a-input" name="careersEmail" value="${careers.careersEmail || 'careers@iconelectromatic.com'}" required>
+            </div>
+            <div class="a-field">
+              <label class="a-label">Next Steps Section Title</label>
+              <input class="a-input" name="nextStepsTitle" value="${careers.nextStepsTitle || 'Next Steps:'}" required>
+            </div>
+            <div class="a-field">
+              <label class="a-label">Submit Another Button Text</label>
+              <input class="a-input" name="resetButtonText" value="${careers.resetButtonText || 'Submit Another Application'}" required>
+            </div>
+            <div class="a-field span2">
+              <label class="a-label">Next Steps Guidance Text</label>
+              <textarea class="a-textarea" name="nextStepsText" rows="3" required>${careers.nextStepsText || ''}</textarea>
+            </div>
+            <div class="a-field span2">
+              <label class="a-label">Form Validation Error Message (Shown if required fields are missing)</label>
+              <input class="a-input" name="validationErrorMessage" value="${careers.validationErrorMessage || 'Please complete all required fields and attach your resume before submitting.'}">
+            </div>
+            <div class="a-field span2">
+              <label class="a-label">General Submission Error Message</label>
+              <input class="a-input" name="errorMessage" value="${careers.errorMessage || 'An error occurred while submitting your application. Please check your connection and try again.'}">
+            </div>
+          </div>
+        </div>
+      </form>
+    ` : ''}
+  `;
+}
+
+function bindContactTabEvents() {
+  document.querySelectorAll('.a-subtab-btn[data-subtab]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      currentSubTab = btn.getAttribute('data-subtab');
+      rerender();
+    });
+  });
+
+  const c = ContentService.getData('contact') || {};
+  const careers = c.careers || {};
+
+  // Presets Handlers
+  document.getElementById('a-add-preset-btn')?.addEventListener('click', () => {
+    openModal('Add Quick Requirement Preset', `
+      <div class="a-field"><label class="a-label">Preset Message Text</label><input class="a-input" name="text" placeholder="e.g. Inquiring about High Power GaN Device and Beamforming IC." required /></div>
+    `, (data) => {
+      const presets = c.presets || [];
+      presets.push(data.text);
+      c.presets = presets;
+      ContentService.saveData('contact', c);
+    });
+  });
+
+  document.querySelectorAll('.btn-edit-preset').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const text = c.presets[idx];
+      openModal('Edit Requirement Preset', `
+        <div class="a-field"><label class="a-label">Preset Message Text</label><input class="a-input" name="text" value="${text}" required /></div>
+      `, (data) => {
+        c.presets[idx] = data.text;
+        ContentService.saveData('contact', c);
+      });
+    });
+  });
+
+  document.querySelectorAll('.btn-del-preset').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      if (confirm('Delete this preset?')) {
+        c.presets.splice(idx, 1);
+        ContentService.saveData('contact', c);
+        rerender();
+        showToast('Preset deleted.', '');
+      }
+    });
+  });
+
+  document.querySelectorAll('.btn-move-preset').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const dir = btn.getAttribute('data-dir');
+      const targetIdx = dir === 'up' ? idx - 1 : idx + 1;
+      c.presets = reorderArray(c.presets, idx, targetIdx);
+      ContentService.saveData('contact', c);
+      rerender();
+      showToast('Presets reordered!', 'success');
+    });
+  });
+
+  // ─── Careers Forms & Action Handlers ───
+  function handleCareersFormSave(formId, processFormData) {
+    const form = document.getElementById(formId);
+    if (!form) return;
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const currentContact = ContentService.getData('contact') || {};
+      const currentCareers = currentContact.careers || {};
+      const fd = new FormData(form);
+      const updated = { ...currentCareers };
+      fd.forEach((v, k) => { updated[k] = v; });
+      if (processFormData) processFormData(form, updated);
+      currentContact.careers = updated;
+      if (updated.careersTitle) currentContact.careersTitle = updated.careersTitle;
+      if (updated.careersLead) currentContact.careersLead = updated.careersLead;
+      ContentService.saveData('contact', currentContact);
+      rerender();
+      showToast('Careers settings saved successfully!', 'success');
+    });
+  }
+
+  handleCareersFormSave('a-careers-hero-form', (form, updated) => {
+    updated.showHiringBadge = form.querySelector('[name="showHiringBadge"]')?.checked || false;
+  });
+
+  handleCareersFormSave('a-careers-intro-form');
+
+  handleCareersFormSave('a-careers-form-config', (form, updated) => {
+    updated.showFormBadge = form.querySelector('[name="showFormBadge"]')?.checked || false;
+    updated.nameRequired = form.querySelector('[name="nameRequired"]')?.checked || false;
+    updated.emailRequired = form.querySelector('[name="emailRequired"]')?.checked || false;
+    updated.positionRequired = form.querySelector('[name="positionRequired"]')?.checked || false;
+    updated.phoneRequired = form.querySelector('[name="phoneRequired"]')?.checked || false;
+    updated.cityRequired = form.querySelector('[name="cityRequired"]')?.checked || false;
+    updated.experienceRequired = form.querySelector('[name="experienceRequired"]')?.checked || false;
+    updated.organizationRequired = form.querySelector('[name="organizationRequired"]')?.checked || false;
+    updated.noticeRequired = form.querySelector('[name="noticeRequired"]')?.checked || false;
+    updated.skillsRequired = form.querySelector('[name="skillsRequired"]')?.checked || false;
+    updated.showLinkedin = form.querySelector('[name="showLinkedin"]')?.checked || false;
+    updated.linkedinRequired = form.querySelector('[name="linkedinRequired"]')?.checked || false;
+    updated.statementRequired = form.querySelector('[name="statementRequired"]')?.checked || false;
+    updated.resumeRequired = form.querySelector('[name="resumeRequired"]')?.checked || false;
+    updated.resumeMaxSizeMb = Number(updated.resumeMaxSizeMb) || 10;
+  });
+
+  handleCareersFormSave('a-careers-success-form');
+
+  // Benefits CRUD
+  document.getElementById('a-add-benefit-btn')?.addEventListener('click', () => {
+    openModal('Add Why Join Benefit Card', `
+      <div class="a-field"><label class="a-label">Benefit Title</label><input class="a-input" name="title" placeholder="e.g. Cutting-Edge mmWave Lab" required /></div>
+      <div class="a-field" style="margin-top:12px;"><label class="a-label">Icon Class (FontAwesome)</label><input class="a-input" name="icon" value="fa-solid fa-microchip" required /></div>
+      <div class="a-field" style="margin-top:12px;"><label class="a-label">Icon Color (Hex / CSS)</label><input class="a-input" name="iconColor" value="#3b82f6" /></div>
+      <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Benefit Description</label><textarea class="a-textarea" name="description" rows="3" required></textarea></div>
+    `, (data) => {
+      const currentContact = ContentService.getData('contact') || {};
+      const currentCareers = currentContact.careers || {};
+      const list = currentCareers.benefits || [];
+      list.push({ id: 'ben-' + Date.now(), ...data });
+      currentCareers.benefits = list;
+      currentContact.careers = currentCareers;
+      ContentService.saveData('contact', currentContact);
+    });
+  });
+
+  document.querySelectorAll('.btn-edit-benefit').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const currentContact = ContentService.getData('contact') || {};
+      const currentCareers = currentContact.careers || {};
+      const b = (currentCareers.benefits || [])[idx];
+      if (!b) return;
+
+      openModal('Edit Why Join Benefit Card', `
+        <div class="a-field"><label class="a-label">Benefit Title</label><input class="a-input" name="title" value="${b.title || ''}" required /></div>
+        <div class="a-field" style="margin-top:12px;"><label class="a-label">Icon Class (FontAwesome)</label><input class="a-input" name="icon" value="${b.icon || 'fa-solid fa-microchip'}" required /></div>
+        <div class="a-field" style="margin-top:12px;"><label class="a-label">Icon Color (Hex / CSS)</label><input class="a-input" name="iconColor" value="${b.iconColor || '#3b82f6'}" /></div>
+        <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Benefit Description</label><textarea class="a-textarea" name="description" rows="3" required>${b.description || ''}</textarea></div>
+      `, (data) => {
+        currentCareers.benefits[idx] = { ...b, ...data };
+        currentContact.careers = currentCareers;
+        ContentService.saveData('contact', currentContact);
+      });
+    });
+  });
+
+  document.querySelectorAll('.btn-del-benefit').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const currentContact = ContentService.getData('contact') || {};
+      const currentCareers = currentContact.careers || {};
+      if (confirm('Delete this benefit card?')) {
+        (currentCareers.benefits || []).splice(idx, 1);
+        currentContact.careers = currentCareers;
+        ContentService.saveData('contact', currentContact);
+        rerender();
+        showToast('Benefit card deleted.', '');
+      }
+    });
+  });
+
+  document.querySelectorAll('.btn-move-benefit').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const dir = btn.getAttribute('data-dir');
+      const targetIdx = dir === 'up' ? idx - 1 : idx + 1;
+      const currentContact = ContentService.getData('contact') || {};
+      const currentCareers = currentContact.careers || {};
+      currentCareers.benefits = reorderArray(currentCareers.benefits || [], idx, targetIdx);
+      currentContact.careers = currentCareers;
+      ContentService.saveData('contact', currentContact);
+      rerender();
+      showToast('Benefits reordered!', 'success');
+    });
+  });
+
+  // Positions CRUD
+  document.getElementById('a-add-position-btn')?.addEventListener('click', () => {
+    openModal('Add Open Engineering Position', `
+      <div class="a-field"><label class="a-label">Position Title</label><input class="a-input" name="title" placeholder="e.g. Senior mmWave Antenna Engineer" required /></div>
+    `, (data) => {
+      const currentContact = ContentService.getData('contact') || {};
+      const currentCareers = currentContact.careers || {};
+      const list = currentCareers.positions || [];
+      list.push(data.title.trim());
+      currentCareers.positions = list;
+      currentContact.careers = currentCareers;
+      ContentService.saveData('contact', currentContact);
+    });
+  });
+
+  document.querySelectorAll('.btn-edit-pos').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const currentContact = ContentService.getData('contact') || {};
+      const currentCareers = currentContact.careers || {};
+      const currentPos = (currentCareers.positions || [])[idx];
+
+      openModal('Edit Engineering Position', `
+        <div class="a-field"><label class="a-label">Position Title</label><input class="a-input" name="title" value="${currentPos || ''}" required /></div>
+      `, (data) => {
+        currentCareers.positions[idx] = data.title.trim();
+        currentContact.careers = currentCareers;
+        ContentService.saveData('contact', currentContact);
+      });
+    });
+  });
+
+  document.querySelectorAll('.btn-del-pos').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const currentContact = ContentService.getData('contact') || {};
+      const currentCareers = currentContact.careers || {};
+      if (confirm('Delete this position?')) {
+        (currentCareers.positions || []).splice(idx, 1);
+        currentContact.careers = currentCareers;
+        ContentService.saveData('contact', currentContact);
+        rerender();
+        showToast('Position deleted.', '');
+      }
+    });
+  });
+
+  document.querySelectorAll('.btn-move-pos').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const dir = btn.getAttribute('data-dir');
+      const targetIdx = dir === 'up' ? idx - 1 : idx + 1;
+      const currentContact = ContentService.getData('contact') || {};
+      const currentCareers = currentContact.careers || {};
+      currentCareers.positions = reorderArray(currentCareers.positions || [], idx, targetIdx);
+      currentContact.careers = currentCareers;
+      ContentService.saveData('contact', currentContact);
+      rerender();
+      showToast('Positions reordered!', 'success');
+    });
+  });
+
+  // Experience Levels CRUD
+  document.getElementById('a-add-exp-btn')?.addEventListener('click', () => {
+    openModal('Add Experience Level Option', `
+      <div class="a-field"><label class="a-label">Experience Bracket Text</label><input class="a-input" name="level" placeholder="e.g. 10+ Years (Chief Technical Officer)" required /></div>
+    `, (data) => {
+      const currentContact = ContentService.getData('contact') || {};
+      const currentCareers = currentContact.careers || {};
+      const list = currentCareers.experienceLevels || [];
+      list.push(data.level.trim());
+      currentCareers.experienceLevels = list;
+      currentContact.careers = currentCareers;
+      ContentService.saveData('contact', currentContact);
+    });
+  });
+
+  document.querySelectorAll('.btn-edit-exp').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const currentContact = ContentService.getData('contact') || {};
+      const currentCareers = currentContact.careers || {};
+      const currentExp = (currentCareers.experienceLevels || [])[idx];
+
+      openModal('Edit Experience Level Option', `
+        <div class="a-field"><label class="a-label">Experience Bracket Text</label><input class="a-input" name="level" value="${currentExp || ''}" required /></div>
+      `, (data) => {
+        currentCareers.experienceLevels[idx] = data.level.trim();
+        currentContact.careers = currentCareers;
+        ContentService.saveData('contact', currentContact);
+      });
+    });
+  });
+
+  document.querySelectorAll('.btn-del-exp').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const currentContact = ContentService.getData('contact') || {};
+      const currentCareers = currentContact.careers || {};
+      if (confirm('Delete this experience level?')) {
+        (currentCareers.experienceLevels || []).splice(idx, 1);
+        currentContact.careers = currentCareers;
+        ContentService.saveData('contact', currentContact);
+        rerender();
+        showToast('Experience level deleted.', '');
+      }
+    });
+  });
+
+  document.querySelectorAll('.btn-move-exp').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const dir = btn.getAttribute('data-dir');
+      const targetIdx = dir === 'up' ? idx - 1 : idx + 1;
+      const currentContact = ContentService.getData('contact') || {};
+      const currentCareers = currentContact.careers || {};
+      currentCareers.experienceLevels = reorderArray(currentCareers.experienceLevels || [], idx, targetIdx);
+      currentContact.careers = currentCareers;
+      ContentService.saveData('contact', currentContact);
+      rerender();
+      showToast('Experience levels reordered!', 'success');
+    });
+  });
+
+  // Notice Period CRUD
+  document.getElementById('a-add-notice-btn')?.addEventListener('click', () => {
+    openModal('Add Notice Period Option', `
+      <div class="a-field"><label class="a-label">Notice Period Text</label><input class="a-input" name="notice" placeholder="e.g. 45 Days" required /></div>
+    `, (data) => {
+      const currentContact = ContentService.getData('contact') || {};
+      const currentCareers = currentContact.careers || {};
+      const list = currentCareers.noticeOptions || [];
+      list.push(data.notice.trim());
+      currentCareers.noticeOptions = list;
+      currentContact.careers = currentCareers;
+      ContentService.saveData('contact', currentContact);
+    });
+  });
+
+  document.querySelectorAll('.btn-edit-notice').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const currentContact = ContentService.getData('contact') || {};
+      const currentCareers = currentContact.careers || {};
+      const currentNotc = (currentCareers.noticeOptions || [])[idx];
+
+      openModal('Edit Notice Period Option', `
+        <div class="a-field"><label class="a-label">Notice Period Text</label><input class="a-input" name="notice" value="${currentNotc || ''}" required /></div>
+      `, (data) => {
+        currentCareers.noticeOptions[idx] = data.notice.trim();
+        currentContact.careers = currentCareers;
+        ContentService.saveData('contact', currentContact);
+      });
+    });
+  });
+
+  document.querySelectorAll('.btn-del-notice').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const currentContact = ContentService.getData('contact') || {};
+      const currentCareers = currentContact.careers || {};
+      if (confirm('Delete this notice period option?')) {
+        (currentCareers.noticeOptions || []).splice(idx, 1);
+        currentContact.careers = currentCareers;
+        ContentService.saveData('contact', currentContact);
+        rerender();
+        showToast('Notice option deleted.', '');
+      }
+    });
+  });
+
+  document.querySelectorAll('.btn-move-notice').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const dir = btn.getAttribute('data-dir');
+      const targetIdx = dir === 'up' ? idx - 1 : idx + 1;
+      const currentContact = ContentService.getData('contact') || {};
+      const currentCareers = currentContact.careers || {};
+      currentCareers.noticeOptions = reorderArray(currentCareers.noticeOptions || [], idx, targetIdx);
+      currentContact.careers = currentCareers;
+      ContentService.saveData('contact', currentContact);
+      rerender();
+      showToast('Notice options reordered!', 'success');
+    });
+  });
+}
+
+// ─── PRODUCTS / OEMS TAB ─────────────────────────────────────────────────────
+const expandedOemIds = new Set();
+const expandedCategoryKeys = new Set();
+let catalogSearchQuery = '';
+
+/**
+ * 3-Way Catalog Reconciler
+ * @param {Array} baseCatalog - Initial catalog when administrator opened the form/action
+ * @param {Array} localCatalog - Catalog containing the administrator's local modifications
+ * @param {Array} serverCatalog - Freshly fetched catalog from central server
+ * @param {Object} context - { type: 'product-edit'|'product-add'|'product-delete', entityId: string, oemId?: string, catId?: string, newProduct?: Object }
+ * @returns {{ canAutoMerge: boolean, mergedCatalog?: Array, collision?: boolean, serverProduct?: Object, localProduct?: Object, reason?: string }}
+ */
+function reconcileCatalog3Way(baseCatalog, localCatalog, serverCatalog, context = {}) {
+  const { type, entityId, newProduct } = context;
+
+  if (!Array.isArray(baseCatalog) || !Array.isArray(localCatalog) || !Array.isArray(serverCatalog)) {
+    return { canAutoMerge: false, reason: 'Invalid catalog structure' };
+  }
+
+  const findInTree = (catArray, id) => {
+    for (const oem of catArray) {
+      for (const cat of (oem.categories || [])) {
+        const p = (cat.products || []).find(prod => prod.id === id);
+        if (p) return { oem, cat, product: p };
+      }
+    }
+    return null;
+  };
+
+  if (type === 'product-edit') {
+    const bMatch = findInTree(baseCatalog, entityId);
+    const lMatch = findInTree(localCatalog, entityId);
+    const sMatch = findInTree(serverCatalog, entityId);
+
+    if (!sMatch) {
+      return {
+        canAutoMerge: false,
+        reason: 'Product was removed from the server by another administrator.'
+      };
+    }
+
+    // Check if the server's product is identical to the baseline
+    const isServerProductSameAsBase = bMatch && JSON.stringify(bMatch.product) === JSON.stringify(sMatch.product);
+    if (isServerProductSameAsBase) {
+      // Safe Auto-Merge: concurrent changes were to OTHER products or categories!
+      const merged = JSON.parse(JSON.stringify(serverCatalog));
+      const mMatch = findInTree(merged, entityId);
+      if (mMatch && lMatch) {
+        if (lMatch.cat.name.toLowerCase() !== mMatch.cat.name.toLowerCase()) {
+          mMatch.cat.products = mMatch.cat.products.filter(p => p.id !== entityId);
+          let destCat = mMatch.oem.categories.find(c => c.name.toLowerCase() === lMatch.cat.name.toLowerCase());
+          if (!destCat) {
+            destCat = {
+              id: lMatch.cat.id || ('cat-' + Date.now()),
+              name: lMatch.cat.name,
+              label: '',
+              description: '',
+              visible: true,
+              products: []
+            };
+            mMatch.oem.categories.push(destCat);
+          }
+          destCat.products.push(JSON.parse(JSON.stringify(lMatch.product)));
+        } else {
+          const pIdx = mMatch.cat.products.findIndex(p => p.id === entityId);
+          if (pIdx !== -1) {
+            mMatch.cat.products[pIdx] = JSON.parse(JSON.stringify(lMatch.product));
+          }
+        }
+        return {
+          canAutoMerge: true,
+          mergedCatalog: merged,
+          reason: 'Your changes were merged into the latest server catalogue without conflict.'
+        };
+      }
+    }
+
+    // Collision on the exact same product
+    return {
+      canAutoMerge: false,
+      collision: true,
+      serverProduct: sMatch.product,
+      localProduct: lMatch?.product,
+      reason: `Product "${lMatch?.product?.name || entityId}" was modified concurrently on the server.`
+    };
+  }
+
+  if (type === 'product-add') {
+    const merged = JSON.parse(JSON.stringify(serverCatalog));
+    const targetOem = merged.find(o => o.id === context.oemId || o.name?.toLowerCase() === context.oemId?.toLowerCase());
+    if (targetOem) {
+      let targetCat = (targetOem.categories || []).find(c => c.id === context.catId || c.name?.toLowerCase() === context.catName?.toLowerCase());
+      if (!targetCat) {
+        targetCat = {
+          id: context.catId || ('cat-' + Date.now()),
+          name: context.catName || 'Products',
+          label: '',
+          description: '',
+          visible: true,
+          products: []
+        };
+        targetOem.categories.push(targetCat);
+      }
+      const duplicate = targetCat.products.some(p => p.id === newProduct.id || p.name.toLowerCase() === newProduct.name.toLowerCase());
+      if (duplicate) {
+        return { canAutoMerge: false, collision: true, reason: `A product with name "${newProduct.name}" already exists on the server.` };
+      }
+      targetCat.products.push(JSON.parse(JSON.stringify(newProduct)));
+      return {
+        canAutoMerge: true,
+        mergedCatalog: merged,
+        reason: 'New product merged into updated server catalogue.'
+      };
+    }
+    return { canAutoMerge: false, reason: `Target OEM "${context.oemId}" was not found on server.` };
+  }
+
+  return { canAutoMerge: false, reason: 'Concurrent changes require administrator review.' };
+}
+
+function renderProductsTab() {
+  const oems = ContentService.getData('products') || [];
+
+  const totalOems = oems.length;
+  const visibleOemsCount = oems.filter(o => o.visible !== false).length;
+  let totalCategoriesCount = 0;
+  let totalProductsCount = 0;
+  oems.forEach(o => {
+    (o.categories || []).forEach(cat => {
+      totalCategoriesCount++;
+      totalProductsCount += (cat.products || []).length;
+    });
+  });
+
+  const q = (catalogSearchQuery || '').trim().toLowerCase();
+  const filteredOems = oems.filter(o => {
+    if (!q) return true;
+    if ((o.name || '').toLowerCase().includes(q)) return true;
+    if ((o.specialty || '').toLowerCase().includes(q)) return true;
+    if ((o.description || '').toLowerCase().includes(q)) return true;
+    return (o.categories || []).some(cat => {
+      if ((cat.name || '').toLowerCase().includes(q)) return true;
+      if ((cat.description || '').toLowerCase().includes(q)) return true;
+      if ((cat.label || '').toLowerCase().includes(q)) return true;
+      return (cat.products || []).some(p => {
+        return (p.name || '').toLowerCase().includes(q) ||
+               (p.id || '').toLowerCase().includes(q) ||
+               (p.description || '').toLowerCase().includes(q) ||
+               (p.applications || '').toLowerCase().includes(q);
+      });
+    });
+  });
+
+  const oemCardsHtml = filteredOems.map(oem => {
+    const origIdx = oems.indexOf(oem);
+    const resolvedLogo = ImageStorage.resolveImageUrl(oem.logoImg);
+
+    let oemProdTotal = 0;
+    (oem.categories || []).forEach(c => {
+      oemProdTotal += (c.products || []).length;
+    });
+
+    const catCount = (oem.categories || []).length;
+    const isExpanded = expandedOemIds.has(oem.id) || (q.length > 0);
+    const isHidden = oem.visible === false;
+
+    let oemPanelHtml = '';
+    if (isExpanded) {
+      const categories = oem.categories || [];
+
+      const categoriesCardsHtml = categories.map((cat, catIdx) => {
+        const catKey = `${oem.id}__${cat.id || catIdx}`;
+        const catProds = cat.products || [];
+        const isCatExpanded = expandedCategoryKeys.has(catKey) || (q.length > 0 && (
+          (cat.name || '').toLowerCase().includes(q) ||
+          (cat.description || '').toLowerCase().includes(q) ||
+          (cat.label || '').toLowerCase().includes(q) ||
+          catProds.some(p =>
+            (p.name || '').toLowerCase().includes(q) ||
+            (p.id || '').toLowerCase().includes(q) ||
+            (p.description || '').toLowerCase().includes(q) ||
+            (p.applications || '').toLowerCase().includes(q)
+          )
+        ));
+        const isCatHidden = cat.visible === false;
+
+        let catalogPanelHtml = '';
+        if (isCatExpanded) {
+          const productRows = catProds.map((p, prodIdx) => {
+            const prodImg = ImageStorage.resolveImageUrl(p.image || oem.defaultImage);
+            const isProdHidden = p.visible === false;
+
+            return `
+              <tr class="${isProdHidden ? 'a-row-hidden' : ''}">
+                <td style="width: 80px;">
+                  <div class="a-reorder-group">
+                    <button type="button" class="a-btn-reorder btn-move-prod" data-oem-idx="${origIdx}" data-cat-idx="${catIdx}" data-prod-idx="${prodIdx}" data-dir="up" ${prodIdx === 0 ? 'disabled' : ''} title="Move Product Up"><i class="fa-solid fa-arrow-up"></i></button>
+                    <button type="button" class="a-btn-reorder btn-move-prod" data-oem-idx="${origIdx}" data-cat-idx="${catIdx}" data-prod-idx="${prodIdx}" data-dir="down" ${prodIdx === catProds.length - 1 ? 'disabled' : ''} title="Move Product Down"><i class="fa-solid fa-arrow-down"></i></button>
+                  </div>
+                </td>
+                <td style="width: 60px;">
+                  <div class="a-prod-thumb-box">
+                    ${prodImg ? `<img src="${prodImg}" alt="${p.name}" />` : '<i class="fa-solid fa-microchip" style="color:#64748b;"></i>'}
+                  </div>
+                </td>
+                <td>
+                  <div class="a-prod-name-box">
+                    <strong>${p.name || 'Unnamed Product'}</strong>
+                    <span>ID: ${p.id || '—'}</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="a-prod-text-snippet" title="${p.description || ''}">
+                    ${p.description || '<span style="color:#94a3b8;font-style:italic;">No description</span>'}
+                  </div>
+                  ${p.applications ? `<div class="a-prod-text-snippet" style="color:#2563eb;font-size:0.7rem;margin-top:2px;" title="${p.applications}"><i class="fa-solid fa-bullseye"></i> ${p.applications}</div>` : ''}
+                </td>
+                <td>
+                  ${p.link ? `<a href="${p.link}" target="_blank" rel="noopener" class="a-btn a-btn-outline a-btn-sm" style="padding:3px 8px;font-size:0.72rem;"><i class="fa-solid fa-arrow-up-right-from-square"></i> Datasheet</a>` : '<span style="color:#94a3b8;font-size:0.72rem;">None</span>'}
+                </td>
+                <td>
+                  <button type="button" class="a-btn a-btn-sm btn-toggle-prod-vis" data-oem-idx="${origIdx}" data-cat-idx="${catIdx}" data-prod-idx="${prodIdx}" title="Click to toggle visibility" style="${isProdHidden ? 'opacity:0.6;background:#f1f5f9;color:#64748b;' : 'background:#ecfdf5;color:#059669;border-color:#a7f3d0;'}">
+                    <i class="fa-solid ${isProdHidden ? 'fa-eye-slash' : 'fa-eye'}"></i> ${isProdHidden ? 'Hidden' : 'Visible'}
+                  </button>
+                </td>
+                <td style="white-space: nowrap;">
+                  <button type="button" class="a-btn a-btn-outline a-btn-sm btn-edit-product" data-oem-idx="${origIdx}" data-cat-idx="${catIdx}" data-prod-idx="${prodIdx}"><i class="fa-solid fa-pen"></i> Edit</button>
+                  <button type="button" class="a-btn a-btn-danger a-btn-sm btn-del-product" data-oem-idx="${origIdx}" data-cat-idx="${catIdx}" data-prod-idx="${prodIdx}" style="margin-left:4px;"><i class="fa-solid fa-trash"></i></button>
+                </td>
+              </tr>
+            `;
+          }).join('');
+
+          catalogPanelHtml = `
+            <div class="a-cat-products-panel">
+              <div class="a-cat-products-top">
+                <div>
+                  <strong style="color:#0f172a; font-size:0.86rem;">
+                    <i class="fa-solid fa-microchip" style="color:var(--a-blue);margin-right:5px;"></i>
+                    Product Portfolio &amp; Component Catalog — ${cat.name} (${catProds.length})
+                  </strong>
+                  <div style="font-size:0.74rem; color:var(--a-muted); margin-top:2px;">
+                    Edit hardware models, upload component photos, update technical specifications, applications, and datasheets for ${cat.name}
+                  </div>
+                </div>
+                <button type="button" class="a-btn a-btn-primary a-btn-sm btn-add-prod-to-cat" data-oem-idx="${origIdx}" data-cat-idx="${catIdx}">
+                  <i class="fa-solid fa-plus"></i> Add Product to ${cat.name}
+                </button>
+              </div>
+              <div class="a-table-wrap">
+                <table class="a-sub-table">
+                  <thead>
+                    <tr>
+                      <th>Order</th>
+                      <th>Image</th>
+                      <th>Model / Part No.</th>
+                      <th>Description &amp; Applications</th>
+                      <th>Datasheet</th>
+                      <th>Visibility</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${productRows || `<tr><td colspan="7" style="text-align:center;padding:22px;color:var(--a-muted);">No products registered under <strong>${cat.name}</strong> yet. Click "+ Add Product to ${cat.name}" above to add one.</td></tr>`}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          `;
+        }
+
+        return `
+          <div class="a-cat-card ${isCatHidden ? 'cat-hidden' : ''}" id="cat-card-${catKey.replace(/[^a-zA-Z0-9_-]/g, '_')}">
+            <div class="a-cat-header">
+              <div class="a-cat-header-left">
+                <div class="a-reorder-group">
+                  <button type="button" class="a-btn-reorder btn-move-cat" data-oem-idx="${origIdx}" data-cat-idx="${catIdx}" data-dir="up" ${catIdx === 0 ? 'disabled' : ''} title="Move Category Up"><i class="fa-solid fa-arrow-up"></i></button>
+                  <button type="button" class="a-btn-reorder btn-move-cat" data-oem-idx="${origIdx}" data-cat-idx="${catIdx}" data-dir="down" ${catIdx === categories.length - 1 ? 'disabled' : ''} title="Move Category Down"><i class="fa-solid fa-arrow-down"></i></button>
+                </div>
+                <div class="a-cat-icon-badge">
+                  <i class="fa-solid fa-layer-group"></i>
+                </div>
+                <div class="a-cat-info">
+                  <div class="a-cat-title-row">
+                    <span class="a-cat-title">${cat.name || 'Unnamed Category'}</span>
+                    <span class="a-badge a-badge-blue"><i class="fa-solid fa-microchip"></i> ${catProds.length} ${catProds.length === 1 ? 'Product' : 'Products'}</span>
+                    ${cat.label ? `<span class="a-badge" style="background:#fef3c7;color:#92400e;border:1px solid #fde68a;">${cat.label}</span>` : ''}
+                    ${isCatHidden ? '<span class="a-badge" style="background:#64748b;color:#fff;"><i class="fa-solid fa-eye-slash"></i> Hidden</span>' : '<span class="a-badge a-badge-green"><i class="fa-solid fa-eye"></i> Visible</span>'}
+                  </div>
+                  <div class="a-cat-desc" title="${cat.description || ''}">
+                    ${cat.description || '<span style="font-style:italic;color:#94a3b8;">No category description provided</span>'}
+                  </div>
+                </div>
+              </div>
+
+              <div class="a-cat-header-actions">
+                <button type="button" class="a-btn a-btn-outline a-btn-sm btn-toggle-cat-vis" data-oem-idx="${origIdx}" data-cat-idx="${catIdx}" title="${isCatHidden ? 'Show category on public site' : 'Hide category from public site'}">
+                  <i class="fa-solid ${isCatHidden ? 'fa-eye' : 'fa-eye-slash'}"></i> ${isCatHidden ? 'Show' : 'Hide'}
+                </button>
+                <button type="button" class="a-btn a-btn-primary a-btn-sm btn-toggle-cat-expand" data-cat-key="${catKey}">
+                  <i class="fa-solid ${isCatExpanded ? 'fa-chevron-up' : 'fa-chevron-down'}"></i>
+                  <span>${isCatExpanded ? 'Collapse' : 'Expand'} Portfolio &amp; Catalog (${catProds.length})</span>
+                </button>
+                <button type="button" class="a-btn a-btn-outline a-btn-sm btn-edit-category" data-oem-idx="${origIdx}" data-cat-idx="${catIdx}">
+                  <i class="fa-solid fa-pen"></i> Edit Category
+                </button>
+                <button type="button" class="a-btn a-btn-danger a-btn-sm btn-del-category" data-oem-idx="${origIdx}" data-cat-idx="${catIdx}" title="Delete Category and its products">
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+              </div>
+            </div>
+
+            ${catalogPanelHtml}
+          </div>
+        `;
+      }).join('');
+
+      oemPanelHtml = `
+        <div class="a-oem-panel">
+          <div class="a-oem-panel-top">
+            <div>
+              <strong style="color:#0f172a; font-size:0.9rem;">
+                <i class="fa-solid fa-folder-tree" style="color:var(--a-blue);margin-right:6px;"></i>
+                Product Categories under ${oem.name} (${catCount})
+              </strong>
+              <div style="font-size:0.75rem; color:var(--a-muted); margin-top:2px;">
+                Edit all category content, titles, and labels. Click "Expand Portfolio &amp; Catalog" to edit hardware models.
+              </div>
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <button type="button" class="a-btn a-btn-outline a-btn-sm btn-expand-oem-cats" data-oem-id="${oem.id}">
+                <i class="fa-solid fa-angles-down"></i> Expand All Categories
+              </button>
+              <button type="button" class="a-btn a-btn-primary a-btn-sm btn-add-cat-to-oem" data-oem-idx="${origIdx}">
+                <i class="fa-solid fa-plus"></i> Add Category to ${oem.shortName || oem.name}
+              </button>
+            </div>
+          </div>
+
+          <div class="a-cat-list">
+            ${categoriesCardsHtml || `<div class="a-empty-state" style="padding:24px;text-align:center;background:#fff;border-radius:8px;border:1px dashed var(--a-border);">No product categories registered yet. Click "+ Add Category to ${oem.shortName || oem.name}" above.</div>`}
+          </div>
+        </div>
+      `;
+    }
+
+    return `
+      <div class="a-oem-card ${isHidden ? 'oem-hidden' : ''}" id="oem-card-${oem.id}">
+        <div class="a-oem-header">
+          <div class="a-oem-header-left">
+            <div class="a-reorder-group">
+              <button type="button" class="a-btn-reorder btn-move-oem" data-dir="up" data-idx="${origIdx}" ${origIdx === 0 ? 'disabled' : ''} title="Move OEM Up"><i class="fa-solid fa-arrow-up"></i></button>
+              <button type="button" class="a-btn-reorder btn-move-oem" data-dir="down" data-idx="${origIdx}" ${origIdx === oems.length - 1 ? 'disabled' : ''} title="Move OEM Down"><i class="fa-solid fa-arrow-down"></i></button>
+            </div>
+            <div class="a-oem-logo-thumb">
+              ${resolvedLogo ? `<img src="${resolvedLogo}" alt="${oem.name}" />` : (oem.logoSvg || '<i class="fa-solid fa-industry" style="color:#94a3b8;"></i>')}
+            </div>
+            <div class="a-oem-info">
+              <div class="a-oem-name-row">
+                <span class="a-oem-title">${oem.name}</span>
+                <span class="a-badge a-badge-blue">${oem.specialty || oem.category || 'RF & Microwave'}</span>
+                ${isHidden ? '<span class="a-badge" style="background:#64748b;color:#fff;"><i class="fa-solid fa-eye-slash"></i> Hidden</span>' : '<span class="a-badge a-badge-green"><i class="fa-solid fa-eye"></i> Visible</span>'}
+              </div>
+              <div class="a-oem-meta-row">
+                <span><i class="fa-solid fa-folder-tree"></i> <strong>${catCount}</strong> ${catCount === 1 ? 'Category' : 'Categories'}</span>
+                <span>&bull;</span>
+                <span><i class="fa-solid fa-microchip"></i> <strong>${oemProdTotal}</strong> ${oemProdTotal === 1 ? 'Product' : 'Products & Lines'}</span>
+                ${oem.website ? `<span>&bull;</span> <a href="${oem.website}" target="_blank" rel="noopener" style="color:var(--a-blue);text-decoration:none;"><i class="fa-solid fa-globe"></i> Website</a>` : ''}
+              </div>
+            </div>
+          </div>
+
+          <div class="a-oem-header-actions">
+            <button type="button" class="a-btn a-btn-outline a-btn-sm btn-toggle-oem-vis" data-idx="${origIdx}" title="${isHidden ? 'Show on public site' : 'Hide from public site'}">
+              <i class="fa-solid ${isHidden ? 'fa-eye' : 'fa-eye-slash'}"></i> ${isHidden ? 'Show' : 'Hide'}
+            </button>
+            <button type="button" class="a-btn a-btn-primary a-btn-sm btn-toggle-oem-expand" data-oem-id="${oem.id}">
+              <i class="fa-solid ${isExpanded ? 'fa-chevron-up' : 'fa-chevron-down'}"></i>
+              <span>${isExpanded ? 'Collapse' : 'Manage'} Categories (${catCount})</span>
+            </button>
+            <button type="button" class="a-btn a-btn-outline a-btn-sm btn-edit-oem" data-idx="${origIdx}">
+              <i class="fa-solid fa-pen"></i> Edit OEM
+            </button>
+            <button type="button" class="a-btn a-btn-danger a-btn-sm btn-del-oem" data-idx="${origIdx}" title="Delete OEM and its categories">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </div>
+        </div>
+
+        ${oemPanelHtml}
+      </div>
+    `;
+  }).join('');
+
+  return `
+    <div class="a-cards-box">
+      <div class="a-cards-box-header" style="align-items:flex-start;">
+        <div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;flex-wrap:wrap;">
+            <h3 style="margin:0;">OEM Principals, Product Categories &amp; Component Catalogs</h3>
+            ${supabaseClient.isConfigured 
+              ? '<span class="a-badge a-badge-green" style="font-size:0.75rem;padding:3px 8px;"><i class="fa-solid fa-cloud-arrow-up"></i> Central Supabase DB</span>' 
+              : '<span class="a-badge a-badge-blue" style="font-size:0.75rem;padding:3px 8px;"><i class="fa-solid fa-laptop"></i> Local Storage Mode</span>'}
+          </div>
+          <p>Full two-tier management: select any of the 15 authorized OEM principals to edit its product categories and labels, then expand any category to edit its Product Portfolio &amp; Component Catalog.</p>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button type="button" class="a-btn a-btn-outline a-btn-sm" id="btn-expand-all"><i class="fa-solid fa-angles-down"></i> Expand All</button>
+          <button type="button" class="a-btn a-btn-outline a-btn-sm" id="btn-collapse-all"><i class="fa-solid fa-angles-up"></i> Collapse All</button>
+          <button type="button" class="a-btn a-btn-primary a-btn-sm" id="btn-add-new-oem"><i class="fa-solid fa-plus"></i> Add New OEM</button>
+        </div>
+      </div>
+
+      <div class="a-catalog-toolbar">
+        <div class="a-catalog-stats-strip">
+          <div class="a-catalog-stat-badge">
+            <span>Visible OEMs:</span>
+            <strong>${visibleOemsCount}</strong>
+            <span style="color:var(--a-muted);">/ ${totalOems}</span>
+          </div>
+          <div class="a-catalog-stat-badge">
+            <span>Product Categories:</span>
+            <strong>${totalCategoriesCount}</strong>
+          </div>
+          <div class="a-catalog-stat-badge">
+            <span>Total Catalog Products:</span>
+            <strong>${totalProductsCount}</strong>
+          </div>
+        </div>
+
+        <div style="flex:1;max-width:420px;position:relative;">
+          <input type="text" id="admin-catalog-search-input" class="a-input" placeholder="Search OEMs, categories, products, or keywords..." value="${catalogSearchQuery || ''}" style="padding-left:36px;" />
+          <i class="fa-solid fa-magnifying-glass" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--a-muted);font-size:0.85rem;"></i>
+          ${catalogSearchQuery ? '<button type="button" id="admin-catalog-search-clear" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--a-muted);cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>' : ''}
+        </div>
+      </div>
+
+      <div class="a-oem-accordions-list">
+        ${oemCardsHtml || '<div class="a-empty-state" style="padding:40px;text-align:center;background:#fff;border-radius:12px;border:1px dashed var(--a-border);">No OEMs found matching your search.</div>'}
+      </div>
+    </div>
+  `;
+}
+
+function bindProductsTabEvents() {
+  const oems = ContentService.getData('products') || [];
+
+  // Search input
+  const searchInput = document.getElementById('admin-catalog-search-input');
+  searchInput?.addEventListener('input', (e) => {
+    catalogSearchQuery = e.target.value;
+    rerender();
+    const newInp = document.getElementById('admin-catalog-search-input');
+    if (newInp) {
+      newInp.focus();
+      newInp.selectionStart = newInp.selectionEnd = newInp.value.length;
+    }
+  });
+
+  document.getElementById('admin-catalog-search-clear')?.addEventListener('click', () => {
+    catalogSearchQuery = '';
+    rerender();
+  });
+
+  // Expand / Collapse All
+  document.getElementById('btn-expand-all')?.addEventListener('click', () => {
+    oems.forEach(o => {
+      expandedOemIds.add(o.id);
+      (o.categories || []).forEach((c, cIdx) => {
+        expandedCategoryKeys.add(`${o.id}__${c.id || cIdx}`);
+      });
+    });
+    rerender();
+  });
+
+  document.getElementById('btn-collapse-all')?.addEventListener('click', () => {
+    expandedOemIds.clear();
+    expandedCategoryKeys.clear();
+    rerender();
+  });
+
+  // Toggle individual OEM expand
+  document.querySelectorAll('.btn-toggle-oem-expand').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const oemId = btn.getAttribute('data-oem-id');
+      if (expandedOemIds.has(oemId)) {
+        expandedOemIds.delete(oemId);
+      } else {
+        expandedOemIds.add(oemId);
+      }
+      rerender();
+    });
+  });
+
+  // Expand all categories under a specific OEM
+  document.querySelectorAll('.btn-expand-oem-cats').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const oemId = btn.getAttribute('data-oem-id');
+      const oem = oems.find(o => o.id === oemId);
+      if (oem) {
+        (oem.categories || []).forEach((c, cIdx) => {
+          expandedCategoryKeys.add(`${oem.id}__${c.id || cIdx}`);
+        });
+        rerender();
+      }
+    });
+  });
+
+  // Toggle Category Expand / Collapse
+  document.querySelectorAll('.btn-toggle-cat-expand').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const catKey = btn.getAttribute('data-cat-key');
+      if (expandedCategoryKeys.has(catKey)) {
+        expandedCategoryKeys.delete(catKey);
+      } else {
+        expandedCategoryKeys.add(catKey);
+      }
+      rerender();
+    });
+  });
+
+  // Toggle OEM visibility
+  document.querySelectorAll('.btn-toggle-oem-vis').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const o = oems[idx];
+      o.visible = o.visible === false ? true : false;
+      ContentService.saveData('products', oems);
+      rerender();
+      showToast(`OEM "${o.name}" is now ${o.visible ? 'visible' : 'hidden'}.`, 'success');
+    });
+  });
+
+  // Move OEM up / down
+  document.querySelectorAll('.btn-move-oem').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const dir = btn.getAttribute('data-dir');
+      const targetIdx = dir === 'up' ? idx - 1 : idx + 1;
+      const reordered = reorderArray(oems, idx, targetIdx);
+      ContentService.saveData('products', reordered);
+      rerender();
+      showToast('OEMs reordered!', 'success');
+    });
+  });
+
+  // Add New OEM
+  document.getElementById('btn-add-new-oem')?.addEventListener('click', () => {
+    openModal('Add New Manufacturing Partner / OEM', `
+      <div class="a-field"><label class="a-label">OEM / Principal Name *</label><input class="a-input" name="name" required placeholder="e.g. Rogers Corporation" /></div>
+      <div class="a-field" style="margin-top:12px;"><label class="a-label">Short Display Name *</label><input class="a-input" name="shortName" required placeholder="e.g. Rogers" /></div>
+      <div class="a-field" style="margin-top:12px;"><label class="a-label">Specialty / Domain *</label><input class="a-input" name="specialty" required placeholder="e.g. High Frequency Laminates & Prepregs" /></div>
+      <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Tagline</label><input class="a-input" name="tagline" placeholder="High Performance Materials for RF/Microwave" /></div>
+      <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Description</label><textarea class="a-textarea" name="description" rows="3"></textarea></div>
+      <div class="a-field" style="margin-top:12px;"><label class="a-label">Official Website URL</label><input class="a-input" name="website" placeholder="https://..." /></div>
+      <div class="a-field" style="margin-top:12px;"><label class="a-label">Accent Theme Color</label><input class="a-input" name="accentColor" value="#2563EB" placeholder="#2563EB" /></div>
+      <div class="a-field" style="margin-top:12px;">
+        <label class="a-label">Visibility Status</label>
+        <select class="a-input" name="visible">
+          <option value="true" selected>Visible in Public Catalog</option>
+          <option value="false">Hidden (Draft / Archive)</option>
+        </select>
+      </div>
+      ${renderImageUploadField('logoImg', 'Principal Logo Image', '', 'Upload WebP, PNG, or JPG with transparent background (SVG disallowed)', { folder: 'logos' })}
+    `, (data) => {
+      const slug = (data.shortName || data.name).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+      const newOem = {
+        id: slug + '-' + Date.now(),
+        name: data.name,
+        shortName: data.shortName || data.name,
+        specialty: data.specialty,
+        category: data.specialty,
+        tagline: data.tagline || '',
+        description: data.description || '',
+        website: data.website || '',
+        accentColor: data.accentColor || '#2563EB',
+        glowColor: (data.accentColor || '#2563EB') + '40',
+        logoImg: data.logoImg || '',
+        visible: data.visible === 'true',
+        categories: [
+          {
+            id: 'general',
+            name: 'General Products',
+            label: '',
+            description: 'Core product line and components',
+            visible: true,
+            products: []
+          }
+        ]
+      };
+      oems.push(newOem);
+      expandedOemIds.add(newOem.id);
+      ContentService.saveData('products', oems);
+      rerender();
+      showToast(`Added OEM "${newOem.name}"!`, 'success');
+    });
+  });
+
+  // Edit OEM
+  document.querySelectorAll('.btn-edit-oem').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const o = oems[idx];
+
+      openModal('Edit OEM: ' + o.name, `
+        <div class="a-field"><label class="a-label">OEM / Principal Name *</label><input class="a-input" name="name" value="${o.name}" required /></div>
+        <div class="a-field" style="margin-top:12px;"><label class="a-label">Short Display Name *</label><input class="a-input" name="shortName" value="${o.shortName || o.name}" required /></div>
+        <div class="a-field" style="margin-top:12px;"><label class="a-label">Specialty / Domain *</label><input class="a-input" name="specialty" value="${o.specialty || o.category || ''}" required /></div>
+        <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Tagline</label><input class="a-input" name="tagline" value="${o.tagline || ''}" /></div>
+        <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Description</label><textarea class="a-textarea" name="description" rows="3">${o.description || ''}</textarea></div>
+        <div class="a-field" style="margin-top:12px;"><label class="a-label">Official Website URL</label><input class="a-input" name="website" value="${o.website || ''}" /></div>
+        <div class="a-field" style="margin-top:12px;"><label class="a-label">Accent Theme Color</label><input class="a-input" name="accentColor" value="${o.accentColor || '#2563EB'}" /></div>
+        <div class="a-field" style="margin-top:12px;">
+          <label class="a-label">Visibility Status</label>
+          <select class="a-input" name="visible">
+            <option value="true" ${o.visible !== false ? 'selected' : ''}>Visible in Public Catalog</option>
+            <option value="false" ${o.visible === false ? 'selected' : ''}>Hidden (Draft / Archive)</option>
+          </select>
+        </div>
+        ${renderImageUploadField('logoImg', 'Principal Logo Image', o.logoImg || '', 'Upload WebP, PNG, or JPG with transparent background (SVG disallowed)', { folder: 'logos', oemSlug: resolveStorageSlug(o) })}
+      `, (data) => {
+        oems[idx] = {
+          ...o,
+          name: data.name,
+          shortName: data.shortName || data.name,
+          specialty: data.specialty,
+          category: data.specialty,
+          tagline: data.tagline || '',
+          description: data.description || '',
+          website: data.website || '',
+          accentColor: data.accentColor || '#2563EB',
+          glowColor: (data.accentColor || '#2563EB') + '40',
+          logoImg: data.logoImg,
+          visible: data.visible === 'true',
+        };
+        ContentService.saveData('products', oems);
+        rerender();
+        showToast(`OEM "${data.name}" updated successfully!`, 'success');
+      });
+    });
+  });
+
+  // Delete OEM
+  document.querySelectorAll('.btn-del-oem').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const o = oems[idx];
+      let pCount = 0;
+      (o.categories || []).forEach(c => pCount += (c.products || []).length);
+
+      if (confirm(`Are you sure you want to delete OEM "${o.name}" and all of its ${pCount} products?\n\nThis cannot be undone.`)) {
+        expandedOemIds.delete(o.id);
+        oems.splice(idx, 1);
+        ContentService.saveData('products', oems);
+        rerender();
+        showToast(`Deleted OEM "${o.name}".`, '');
+      }
+    });
+  });
+
+  // ─── CATEGORY MANAGEMENT EVENTS ───
+
+  // Toggle Category Visibility
+  document.querySelectorAll('.btn-toggle-cat-vis').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const oemIdx = parseInt(btn.getAttribute('data-oem-idx'), 10);
+      const catIdx = parseInt(btn.getAttribute('data-cat-idx'), 10);
+      const cat = oems[oemIdx]?.categories?.[catIdx];
+      if (!cat) return;
+
+      cat.visible = cat.visible === false ? true : false;
+      ContentService.saveData('products', oems);
+      rerender();
+      showToast(`Category "${cat.name}" is now ${cat.visible ? 'visible' : 'hidden'}.`, 'success');
+    });
+  });
+
+  // Move Category Up / Down
+  document.querySelectorAll('.btn-move-cat').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const oemIdx = parseInt(btn.getAttribute('data-oem-idx'), 10);
+      const catIdx = parseInt(btn.getAttribute('data-cat-idx'), 10);
+      const dir = btn.getAttribute('data-dir');
+      const oem = oems[oemIdx];
+      if (!oem || !oem.categories) return;
+
+      const targetIdx = dir === 'up' ? catIdx - 1 : catIdx + 1;
+      oem.categories = reorderArray(oem.categories, catIdx, targetIdx);
+      ContentService.saveData('products', oems);
+      rerender();
+      showToast('Categories reordered!', 'success');
+    });
+  });
+
+  // Add Category to OEM
+  document.querySelectorAll('.btn-add-cat-to-oem').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const oemIdx = parseInt(btn.getAttribute('data-oem-idx'), 10);
+      const oem = oems[oemIdx];
+      if (!oem) return;
+
+      openModal(`Add Product Category to ${oem.name}`, `
+        <div class="a-field">
+          <label class="a-label">Category Title / Name *</label>
+          <input class="a-input" name="name" required placeholder="e.g. RT/Duroid or RO4000 Series" />
+        </div>
+        <div class="a-field" style="margin-top:12px;">
+          <label class="a-label">Category ID / Slug (Optional)</label>
+          <input class="a-input" name="id" placeholder="e.g. rt-duroid (auto-generated if left blank)" />
+        </div>
+        <div class="a-field" style="margin-top:12px;">
+          <label class="a-label">Category Tag / Label (Optional)</label>
+          <input class="a-input" name="label" placeholder="e.g. Flagship Line, Low Loss, Mil-Spec" />
+        </div>
+        <div class="a-field" style="margin-top:12px;">
+          <label class="a-label">Visibility Status</label>
+          <select class="a-input" name="visible">
+            <option value="true" selected>Visible in Public Catalog</option>
+            <option value="false">Hidden (Draft / Archive)</option>
+          </select>
+        </div>
+        <div class="a-field span2" style="margin-top:12px;">
+          <label class="a-label">Category Description &amp; Overview</label>
+          <textarea class="a-textarea" name="description" rows="3" placeholder="Overview of what this category covers, typical materials, frequency domains..."></textarea>
+        </div>
+      `, (data) => {
+        if (!oem.categories) oem.categories = [];
+        const slug = (data.id || data.name).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+        const newCat = {
+          id: slug || ('cat-' + Date.now()),
+          name: data.name.trim(),
+          label: (data.label || '').trim(),
+          description: (data.description || '').trim(),
+          visible: data.visible === 'true',
+          products: []
+        };
+
+        oem.categories.push(newCat);
+        expandedOemIds.add(oem.id);
+        expandedCategoryKeys.add(`${oem.id}__${newCat.id}`);
+        ContentService.saveData('products', oems);
+        rerender();
+        showToast(`Category "${newCat.name}" added to ${oem.shortName || oem.name}!`, 'success');
+      });
+    });
+  });
+
+  // Edit Category
+  document.querySelectorAll('.btn-edit-category').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const oemIdx = parseInt(btn.getAttribute('data-oem-idx'), 10);
+      const catIdx = parseInt(btn.getAttribute('data-cat-idx'), 10);
+      const oem = oems[oemIdx];
+      const cat = oem?.categories?.[catIdx];
+      if (!oem || !cat) return;
+
+      openModal(`Edit Category: ${cat.name}`, `
+        <div class="a-field">
+          <label class="a-label">Category Title / Name *</label>
+          <input class="a-input" name="name" value="${cat.name || ''}" required />
+        </div>
+        <div class="a-field" style="margin-top:12px;">
+          <label class="a-label">Category ID / Slug</label>
+          <input class="a-input" name="id" value="${cat.id || ''}" required />
+        </div>
+        <div class="a-field" style="margin-top:12px;">
+          <label class="a-label">Category Tag / Label (Optional)</label>
+          <input class="a-input" name="label" value="${cat.label || ''}" placeholder="e.g. Flagship Line, Low Loss, Mil-Spec" />
+        </div>
+        <div class="a-field" style="margin-top:12px;">
+          <label class="a-label">Visibility Status</label>
+          <select class="a-input" name="visible">
+            <option value="true" ${cat.visible !== false ? 'selected' : ''}>Visible in Public Catalog</option>
+            <option value="false" ${cat.visible === false ? 'selected' : ''}>Hidden (Draft / Archive)</option>
+          </select>
+        </div>
+        <div class="a-field span2" style="margin-top:12px;">
+          <label class="a-label">Category Description &amp; Overview</label>
+          <textarea class="a-textarea" name="description" rows="3">${cat.description || ''}</textarea>
+        </div>
+      `, (data) => {
+        const oldCatName = cat.name;
+        const newCatName = data.name.trim();
+
+        cat.name = newCatName;
+        cat.id = (data.id || cat.id).trim();
+        cat.label = (data.label || '').trim();
+        cat.description = (data.description || '').trim();
+        cat.visible = data.visible === 'true';
+
+        // Cascade category name to all contained products
+        if (oldCatName !== newCatName && Array.isArray(cat.products)) {
+          cat.products.forEach(p => {
+            p.category = newCatName;
+          });
+        }
+
+        expandedOemIds.add(oem.id);
+        ContentService.saveData('products', oems);
+        rerender();
+        showToast(`Category "${newCatName}" updated successfully!`, 'success');
+      });
+    });
+  });
+
+  // Delete Category
+  document.querySelectorAll('.btn-del-category').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const oemIdx = parseInt(btn.getAttribute('data-oem-idx'), 10);
+      const catIdx = parseInt(btn.getAttribute('data-cat-idx'), 10);
+      const oem = oems[oemIdx];
+      const cat = oem?.categories?.[catIdx];
+      if (!oem || !cat) return;
+
+      const prodCount = (cat.products || []).length;
+      if (confirm(`Are you sure you want to delete category "${cat.name}" and all ${prodCount} products inside it?\n\nThis action cannot be undone.`)) {
+        expandedCategoryKeys.delete(`${oem.id}__${cat.id || catIdx}`);
+        oem.categories.splice(catIdx, 1);
+        ContentService.saveData('products', oems);
+        rerender();
+        showToast(`Deleted category "${cat.name}".`, '');
+      }
+    });
+  });
+
+  // ─── PRODUCT PORTFOLIO & CATALOG MANAGEMENT EVENTS ───
+
+  // Add Product to Category
+  document.querySelectorAll('.btn-add-prod-to-cat').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const oemIdx = parseInt(btn.getAttribute('data-oem-idx'), 10);
+      const catIdx = parseInt(btn.getAttribute('data-cat-idx'), 10);
+      const oem = oems[oemIdx];
+      const cat = oem?.categories?.[catIdx];
+      if (!oem || !cat) return;
+
+      openModal(`Add Product to ${cat.name} (${oem.name})`, `
+        <div class="a-field">
+          <label class="a-label">Product Model / Part No. *</label>
+          <input class="a-input" name="name" required placeholder="e.g. RT/duroid 5880 or QPA2211" />
+        </div>
+        <div class="a-field" style="margin-top:12px;">
+          <label class="a-label">Product ID / Part Identifier (Optional)</label>
+          <input class="a-input" name="id" placeholder="e.g. 5880-laminate (auto-generated if left blank)" />
+        </div>
+        <div class="a-field" style="margin-top:12px;">
+          <label class="a-label">Visibility Status</label>
+          <select class="a-input" name="visible">
+            <option value="true" selected>Visible in Public Catalog</option>
+            <option value="false">Hidden (Draft / Archive)</option>
+          </select>
+        </div>
+        ${renderImageUploadField('image', 'Product Image / Hardware Photo', '', 'Upload high-resolution component photo or diagram', { folder: 'products', oemSlug: resolveStorageSlug(oem) })}
+        <div class="a-field span2" style="margin-top:12px;">
+          <label class="a-label">Technical Description</label>
+          <textarea class="a-textarea" name="description" rows="3" placeholder="Key electrical characteristics, frequency range, packaging, etc."></textarea>
+        </div>
+        <div class="a-field span2" style="margin-top:12px;">
+          <label class="a-label">Specifications &amp; Target Applications</label>
+          <textarea class="a-textarea" name="applications" rows="3" placeholder="e.g. Military Radar, Satellite Communications, 5G/6G mmWave..."></textarea>
+        </div>
+        <div class="a-field span2" style="margin-top:12px;">
+          <label class="a-label">Datasheet / Official Product URL</label>
+          <input class="a-input" name="link" placeholder="https://..." />
+        </div>
+      `, async (data) => {
+        if (!cat.products) cat.products = [];
+
+        const prodSlug = (data.name.toLowerCase().replace(/[^a-z0-9]+/g, '-') || 'prod') + '-' + Date.now().toString().slice(-4);
+        const newProd = {
+          id: (data.id ? data.id.trim() : prodSlug),
+          name: data.name.trim(),
+          category: cat.name,
+          image: data.image || oem.defaultImage || '',
+          description: data.description || '',
+          applications: data.applications || '',
+          link: data.link || '',
+          visible: data.visible === 'true',
+        };
+
+        const prevProducts = [...cat.products];
+        cat.products.push(newProd);
+
+        try {
+          let expectedVersion = ContentService.getSectionMeta('products').version;
+          const baseSnapshot = ContentService.getData('products');
+          let res = await ContentService.saveData('products', oems, { expectedVersion });
+
+          if (res && !res.success && res.conflict) {
+            // Attempt 3-way reconciliation
+            try {
+              const freshMeta = await supabaseClient.getAuthoritativeCatalogWithMeta();
+              const rec = reconcileCatalog3Way(baseSnapshot, oems, freshMeta.catalog, {
+                type: 'product-add',
+                oemId: oem.id,
+                catId: cat.id,
+                catName: cat.name,
+                newProduct: newProd
+              });
+              if (rec.canAutoMerge) {
+                expectedVersion = freshMeta.version;
+                res = await ContentService.saveData('products', rec.mergedCatalog, { expectedVersion });
+              }
+            } catch {}
+          }
+
+          if (res && !res.success) {
+            cat.products = prevProducts;
+            return {
+              success: false,
+              error: res.error || 'Failed to save product to central database. Your inputs remain in the form.'
+            };
+          }
+          expandedOemIds.add(oem.id);
+          expandedCategoryKeys.add(`${oem.id}__${cat.id || catIdx}`);
+          return {
+            success: true,
+            localOnly: res?.localOnly,
+            message: res?.localOnly 
+              ? `Added product "${newProd.name}" to ${cat.name} (local demo storage).`
+              : `Added product "${newProd.name}" to ${cat.name} and saved to central database!`
+          };
+        } catch (err) {
+          cat.products = prevProducts;
+          return {
+            success: false,
+            error: `${err.message}. Your inputs remain in the form.`
+          };
+        }
+      });
+    });
+  });
+
+  // Edit Product
+  document.querySelectorAll('.btn-edit-product').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const oemIdx = parseInt(btn.getAttribute('data-oem-idx'), 10);
+      const catIdx = parseInt(btn.getAttribute('data-cat-idx'), 10);
+      const prodIdx = parseInt(btn.getAttribute('data-prod-idx'), 10);
+
+      const oem = oems[oemIdx];
+      const cat = oem?.categories?.[catIdx];
+      const prod = cat?.products?.[prodIdx];
+      if (!oem || !cat || !prod) return;
+
+      const existingCats = (oem.categories || []).map(c => c.name);
+      const catOptions = existingCats.map(c => `<option value="${c}">${c}</option>`).join('');
+
+      const defaultTitle = prod.meta_title || `${prod.name} | ${oem.name} | Icon Electromatic`;
+      const defaultDesc = prod.meta_description || (prod.description ? prod.description.slice(0, 155) : '');
+      const defaultCanonical = prod.canonical_url || `https://iconelectromatic.com/products/${oem.id || 'oem'}/${prod.id || 'product'}`;
+
+      let currentImages = [];
+      if (Array.isArray(prod.gallery) && prod.gallery.length > 0) {
+        currentImages = prod.gallery.map(img => ({ ...img }));
+      } else if (prod.image) {
+        currentImages.push({
+          id: 1,
+          image_url: prod.image,
+          alt_text: `${prod.name} - ${oem.name}`,
+          display_order: 1,
+          is_primary: true
+        });
+      }
+
+      const modalHtml = `
+        <div class="a-tabs-pill-row" style="display:flex;gap:8px;margin-bottom:14px;">
+          <button type="button" class="a-btn a-btn-sm a-btn-primary tab-prod-switch active" data-target="tab-core-fields"><i class="fa-solid fa-pen-to-square"></i> Product Details</button>
+          <button type="button" class="a-btn a-btn-sm a-btn-outline tab-prod-switch" data-target="tab-seo-fields"><i class="fa-solid fa-magnifying-glass"></i> SEO & Google Snippet</button>
+          <button type="button" class="a-btn a-btn-sm a-btn-outline tab-prod-switch" data-target="tab-gallery-fields"><i class="fa-regular fa-images"></i> Image Gallery (<span id="gallery-tab-count">${currentImages.length}</span>)</button>
+        </div>
+
+        <div id="tab-core-fields" class="prod-modal-tab-pane">
+          <div class="a-field">
+            <label class="a-label">Product Model / Part No. *</label>
+            <input class="a-input" name="name" id="input-prod-name" value="${prod.name || ''}" required />
+          </div>
+          <div class="a-field" style="margin-top:12px;">
+            <label class="a-label">Product Slug / Part Identifier</label>
+            <input class="a-input" name="id" value="${prod.id || ''}" />
+          </div>
+          <div class="a-field" style="margin-top:12px;">
+            <label class="a-label">Category Name *</label>
+            <input class="a-input" name="category" list="cat-suggestions" value="${cat.name}" required />
+            <datalist id="cat-suggestions">${catOptions}</datalist>
+          </div>
+          <div class="a-field" style="margin-top:12px;">
+            <label class="a-label">Visibility Status</label>
+            <select class="a-input" name="visible" id="select-prod-visible">
+              <option value="true" ${prod.visible !== false ? 'selected' : ''}>Published (Visible in Catalog)</option>
+              <option value="false" ${prod.visible === false ? 'selected' : ''}>Draft / Unpublished</option>
+            </select>
+          </div>
+          ${renderImageUploadField('image', 'Primary Product Hardware Image', prod.image || '', 'Upload or select hero component image', { folder: 'products', oemSlug: resolveStorageSlug(oem), productSlug: resolveStorageSlug(prod) })}
+          <div class="a-field span2" style="margin-top:12px;">
+            <label class="a-label">Technical Description</label>
+            <textarea class="a-textarea" name="description" id="input-prod-desc" rows="3">${prod.description || ''}</textarea>
+          </div>
+          <div class="a-field span2" style="margin-top:12px;">
+            <label class="a-label">Specifications &amp; Target Applications</label>
+            <textarea class="a-textarea" name="applications" rows="3">${prod.applications || ''}</textarea>
+          </div>
+          <div class="a-field span2" style="margin-top:12px;">
+            <label class="a-label">Datasheet / Official Product URL</label>
+            <input class="a-input" name="link" value="${prod.link || ''}" />
+          </div>
+        </div>
+
+        <div id="tab-seo-fields" class="prod-modal-tab-pane" style="display:none;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <div>
+              <strong style="color:#0f172a;font-size:0.92rem;"><i class="fa-solid fa-chart-line" style="color:#2563eb;"></i> On-Record SEO Configuration</strong>
+              <div style="font-size:0.75rem;color:#64748b;">Directly controls HTML &lt;title&gt;, meta description, and Google rich snippet indexation.</div>
+            </div>
+            <button type="button" class="a-btn a-btn-outline a-btn-sm" id="btn-run-audit-now">
+              <i class="fa-solid fa-clipboard-check"></i> Run Quality Gate Audit
+            </button>
+          </div>
+
+          ${renderSeoPreviewCard({ ...prod, meta_title: defaultTitle, meta_description: defaultDesc, canonical_url: defaultCanonical, oem_slug: oem.id, slug: prod.id })}
+
+          <div class="a-field" style="margin-top:12px;">
+            <label class="a-label">SEO Meta Title (Ideal: 50–60 characters)</label>
+            <input class="a-input" name="meta_title" id="input-meta-title" value="${defaultTitle}" placeholder="Product Name | OEM | Icon Electromatic" />
+          </div>
+          <div class="a-field span2" style="margin-top:12px;">
+            <label class="a-label">SEO Meta Description (Ideal: 140–160 characters)</label>
+            <textarea class="a-textarea" name="meta_description" id="input-meta-desc" rows="3" placeholder="Summary of RF performance, electrical parameters, and key applications for search engines...">${defaultDesc}</textarea>
+          </div>
+          <div class="a-field span2" style="margin-top:12px;">
+            <label class="a-label">Canonical Web Address</label>
+            <input class="a-input" name="canonical_url" value="${defaultCanonical}" readonly style="background:#f1f5f9;color:#64748b;" />
+          </div>
+        </div>
+
+        <div id="tab-gallery-fields" class="prod-modal-tab-pane" style="display:none;">
+          ${renderImageGalleryManager(currentImages)}
+        </div>
+      `;
+
+      openModal(`Edit Product: ${prod.name}`, modalHtml, async (data) => {
+        const newCatName = (data.category || cat.name).trim();
+        const heroImg = currentImages.find(i => i.is_primary) || currentImages[0];
+        const finalImgUrl = data.image || (heroImg?.image_url || '');
+        const hasImg = Boolean(finalImgUrl || currentImages.length > 0);
+        const hasDesc = Boolean((data.description || '').trim().length >= 20);
+
+        // Option B Quality Gate Check
+        let finalVisibility = data.visible === 'true';
+        if (finalVisibility && (!hasImg || !hasDesc)) {
+          alert('Option B Quality Gate Enforced: A product cannot be published without both an image and description. Product saved as Draft instead.');
+          finalVisibility = false;
+        }
+
+        const updatedProd = {
+          ...prod,
+          name: data.name.trim(),
+          id: (data.id || prod.id).trim(),
+          category: newCatName,
+          image: finalImgUrl,
+          gallery: currentImages.map(img => ({ ...img })),
+          description: data.description || '',
+          applications: data.applications || '',
+          link: data.link || '',
+          visible: finalVisibility,
+          meta_title: (data.meta_title || '').trim() || defaultTitle,
+          meta_description: (data.meta_description || '').trim() || defaultDesc,
+          canonical_url: defaultCanonical
+        };
+
+        // Re-resolve active references from live oems array
+        const activeOem = oems[oemIdx] || oem;
+        const activeCat = activeOem?.categories?.[catIdx] || cat;
+        const originalProd = activeCat?.products?.[prodIdx];
+
+        const isSameCategory = newCatName.toLowerCase() === activeCat.name.toLowerCase();
+        let targetCat = null;
+        let isNewTargetCategory = false;
+
+        if (isSameCategory) {
+          activeCat.products[prodIdx] = updatedProd;
+        } else {
+          activeCat.products.splice(prodIdx, 1);
+          targetCat = activeOem.categories.find(c => c.name.toLowerCase() === newCatName.toLowerCase());
+          if (!targetCat) {
+            const catSlug = newCatName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+            targetCat = {
+              id: catSlug || ('cat-' + Date.now()),
+              name: newCatName,
+              label: '',
+              description: '',
+              visible: true,
+              products: []
+            };
+            activeOem.categories.push(targetCat);
+            isNewTargetCategory = true;
+          }
+          targetCat.products.push(updatedProd);
+        }
+
+        const rollbackChanges = () => {
+          if (isSameCategory) {
+            if (originalProd) {
+              activeCat.products[prodIdx] = originalProd;
+            }
+          } else {
+            // Remove updatedProd from targetCat
+            if (targetCat) {
+              const idxInTarget = targetCat.products.indexOf(updatedProd);
+              if (idxInTarget !== -1) {
+                targetCat.products.splice(idxInTarget, 1);
+              }
+              if (isNewTargetCategory) {
+                const catIdxInOem = activeOem.categories.indexOf(targetCat);
+                if (catIdxInOem !== -1) {
+                  activeOem.categories.splice(catIdxInOem, 1);
+                }
+              }
+            }
+            // Put originalProd back into activeCat
+            if (originalProd) {
+              activeCat.products.splice(prodIdx, 0, originalProd);
+            }
+          }
+        };
+
+        try {
+          let expectedVersion = ContentService.getSectionMeta('products').version;
+          const baseSnapshot = ContentService.getData('products');
+          let res = await ContentService.saveData('products', oems, { expectedVersion });
+
+          if (res && !res.success && res.conflict) {
+            // Attempt 3-way auto-reconciliation
+            try {
+              const freshMeta = await supabaseClient.getAuthoritativeCatalogWithMeta();
+              const rec = reconcileCatalog3Way(baseSnapshot, oems, freshMeta.catalog, {
+                type: 'product-edit',
+                entityId: prod.id
+              });
+
+              if (rec.canAutoMerge) {
+                expectedVersion = freshMeta.version;
+                res = await ContentService.saveData('products', rec.mergedCatalog, { expectedVersion });
+                if (res && res.success) {
+                  expandedOemIds.add(activeOem.id);
+                  return {
+                    success: true,
+                    localOnly: res?.localOnly,
+                    message: `Conflict auto-reconciled: your changes were merged into catalogue (v${freshMeta.version}) and saved!`
+                  };
+                }
+              }
+
+              // Same-product collision: rollback in-memory array so live oems is not corrupted,
+              // but preserve form input in the open modal!
+              rollbackChanges();
+              return {
+                success: false,
+                conflict: true,
+                error: `Concurrency Conflict: ${rec.reason || 'Catalogue modified by another administrator'}. Your form edits are preserved intact. Please click Save again to overwrite with your version, or close to discard.`
+              };
+            } catch (reconErr) {
+              rollbackChanges();
+              return {
+                success: false,
+                conflict: true,
+                error: `Concurrency Conflict: ${res.error || 'Conflict detected'}. Your form edits remain intact.`
+              };
+            }
+          }
+
+          if (res && !res.success) {
+            rollbackChanges();
+            return {
+              success: false,
+              error: res.error || 'Failed to save product to central database. Your edits remain in the form.'
+            };
+          }
+
+          expandedOemIds.add(activeOem.id);
+          return {
+            success: true,
+            localOnly: res?.localOnly,
+            message: res?.localOnly 
+              ? `Product "${updatedProd.name}" saved (local demo storage).`
+              : `Product "${updatedProd.name}" saved to central database!`
+          };
+        } catch (err) {
+          rollbackChanges();
+          return {
+            success: false,
+            error: `${err.message}. Your edits remain in the form.`
+          };
+        }
+      }, (modalContainer) => {
+        let galleryHandle = null;
+
+        function syncTab1ToGallery() {
+          const hiddenImg = modalContainer.querySelector('input[name="image"]');
+          const tab1Val = hiddenImg ? hiddenImg.value.trim() : '';
+          const currentHero = currentImages.find(i => i.is_primary) || currentImages[0];
+
+          if (tab1Val) {
+            if (!currentHero) {
+              currentImages = [{
+                id: Date.now(),
+                image_url: tab1Val,
+                alt_text: `${prod.name} - ${oem.name}`,
+                display_order: 1,
+                is_primary: true
+              }];
+              galleryHandle?.setImages(currentImages);
+            } else if (currentHero.image_url !== tab1Val) {
+              currentHero.image_url = tab1Val;
+              galleryHandle?.setImages(currentImages);
+            }
+          } else {
+            // Tab 1 image cleared
+            if (currentHero) {
+              if (currentImages.length <= 1) {
+                currentImages = [];
+              } else {
+                currentImages = currentImages.filter(i => !i.is_primary);
+                if (currentImages.length > 0) {
+                  currentImages[0].is_primary = true;
+                  currentImages.forEach((item, idx) => { item.display_order = idx + 1; });
+                  // Sync new primary hero to Tab 1
+                  const newHero = currentImages[0];
+                  if (hiddenImg) hiddenImg.value = newHero.image_url;
+                  const urlInput = modalContainer.querySelector('.a-img-url-input[data-target="image"]');
+                  if (urlInput) urlInput.value = newHero.image_url;
+                  const thumbBox = modalContainer.querySelector('#thumb-box-image');
+                  if (thumbBox) {
+                    const resolved = ImageStorage.resolveImageUrl(newHero.image_url);
+                    thumbBox.innerHTML = `<img src="${escapeAttr(resolved)}" class="a-thumb-img" id="thumb-img-image" alt="Preview" />`;
+                  }
+                }
+              }
+              galleryHandle?.setImages(currentImages);
+            }
+          }
+          const galleryCount = modalContainer.querySelector('#gallery-tab-count');
+          if (galleryCount) galleryCount.textContent = currentImages.length;
+        }
+
+        // Tab switching
+        modalContainer.querySelectorAll('.tab-prod-switch').forEach(tabBtn => {
+          tabBtn.addEventListener('click', () => {
+            modalContainer.querySelectorAll('.tab-prod-switch').forEach(b => {
+              b.classList.remove('a-btn-primary', 'active');
+              b.classList.add('a-btn-outline');
+            });
+            tabBtn.classList.remove('a-btn-outline');
+            tabBtn.classList.add('a-btn-primary', 'active');
+
+            const targetId = tabBtn.dataset.target;
+            if (targetId === 'tab-gallery-fields') {
+              syncTab1ToGallery();
+            }
+
+            modalContainer.querySelectorAll('.prod-modal-tab-pane').forEach(p => p.style.display = 'none');
+            const targetPane = modalContainer.querySelector('#' + targetId);
+            if (targetPane) targetPane.style.display = 'block';
+          });
+        });
+
+        // Initialize SEO card desktop/mobile toggle
+        initSeoPreviewCard();
+
+        // Live input bindings for SERP snippet
+        const titleInput = modalContainer.querySelector('#input-meta-title');
+        const descInput = modalContainer.querySelector('#input-meta-desc');
+        const nameInput = modalContainer.querySelector('#input-prod-name');
+        const bodyDescInput = modalContainer.querySelector('#input-prod-desc');
+
+        function syncLiveSeo() {
+          const t = titleInput?.value || (nameInput?.value ? `${nameInput.value} | ${oem.name} | Icon Electromatic` : defaultTitle);
+          const d = descInput?.value || bodyDescInput?.value || defaultDesc;
+          updateSeoPreviewLive(t, d);
+        }
+
+        titleInput?.addEventListener('input', syncLiveSeo);
+        descInput?.addEventListener('input', syncLiveSeo);
+        nameInput?.addEventListener('input', syncLiveSeo);
+        bodyDescInput?.addEventListener('input', syncLiveSeo);
+
+        // Bind image gallery manager
+        galleryHandle = bindGalleryEvents(currentImages, (updatedImgs) => {
+          currentImages = updatedImgs;
+          const hero = currentImages.find(i => i.is_primary) || currentImages[0];
+          const hiddenImg = modalContainer.querySelector('input[name="image"]');
+          const urlInput = modalContainer.querySelector('.a-img-url-input[data-target="image"]');
+          const thumbBox = modalContainer.querySelector('#thumb-box-image');
+          const delBtn = modalContainer.querySelector('#del-btn-image');
+          const uploadTxt = modalContainer.querySelector('#upload-txt-image');
+          const galleryCount = modalContainer.querySelector('#gallery-tab-count');
+
+          if (galleryCount) galleryCount.textContent = currentImages.length;
+
+          if (hero && hero.image_url) {
+            const heroUrl = hero.image_url;
+            if (hiddenImg) hiddenImg.value = heroUrl;
+            if (urlInput) urlInput.value = heroUrl;
+            if (delBtn) delBtn.style.display = 'inline-flex';
+            if (uploadTxt) uploadTxt.textContent = 'Replace Image';
+            if (thumbBox) {
+              const resolvedHero = ImageStorage.resolveImageUrl(heroUrl);
+              thumbBox.innerHTML = `<img src="${escapeAttr(resolvedHero)}" class="a-thumb-img" id="thumb-img-image" alt="Preview" />`;
+            }
+          } else {
+            if (hiddenImg) hiddenImg.value = '';
+            if (urlInput) urlInput.value = '';
+            if (delBtn) delBtn.style.display = 'none';
+            if (uploadTxt) uploadTxt.textContent = 'Upload Image';
+            if (thumbBox) {
+              thumbBox.innerHTML = `<div class="a-thumb-empty" id="thumb-empty-image"><i class="fa-solid fa-image"></i><span>No image</span></div>`;
+            }
+          }
+        }, {
+          folder: 'products',
+          oemSlug: resolveStorageSlug(oem),
+          productSlug: resolveStorageSlug(prod),
+          productName: prod.name
+        });
+
+        // Run Audit Button
+        modalContainer.querySelector('#btn-run-audit-now')?.addEventListener('click', () => {
+          const auditResult = runProductQualityAudit({
+            ...prod,
+            name: nameInput?.value || prod.name,
+            description: bodyDescInput?.value || prod.description,
+            meta_title: titleInput?.value || defaultTitle,
+            meta_description: descInput?.value || defaultDesc
+          }, currentImages);
+
+          const modalHtml = renderAuditModal(auditResult);
+          document.body.insertAdjacentHTML('beforeend', modalHtml);
+          bindAuditModalEvents(() => {
+            const visSelect = modalContainer.querySelector('#select-prod-visible');
+            if (visSelect) visSelect.value = 'true';
+            showToast('Quality Gate passed! Product marked for publication.', 'success');
+          });
+        });
+      });
+    });
+  });
+
+  // Delete Product
+  document.querySelectorAll('.btn-del-product').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const oemIdx = parseInt(btn.getAttribute('data-oem-idx'), 10);
+      const catIdx = parseInt(btn.getAttribute('data-cat-idx'), 10);
+      const prodIdx = parseInt(btn.getAttribute('data-prod-idx'), 10);
+
+      const oem = oems[oemIdx];
+      const cat = oem?.categories?.[catIdx];
+      const prod = cat?.products?.[prodIdx];
+      if (!oem || !cat || !prod) return;
+
+      if (!confirm(`Delete product "${prod.name}" from ${cat.name}?`)) return;
+
+      if (btn.disabled) return;
+      btn.disabled = true;
+      const originalHtml = btn.innerHTML;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+
+      const prevProducts = [...cat.products];
+      cat.products.splice(prodIdx, 1);
+
+      try {
+        const res = await ContentService.saveData('products', oems);
+        if (res && !res.success) {
+          cat.products = prevProducts;
+          btn.disabled = false;
+          btn.innerHTML = originalHtml;
+          showToast(`Delete failed: ${res.error || 'Database save failed'}. Product restored.`, 'error');
+          return;
+        }
+
+        rerender();
+        const msg = res?.localOnly 
+          ? `Deleted product "${prod.name}" (local demo storage).` 
+          : `Deleted product "${prod.name}" from central database.`;
+        showToast(msg, res?.localOnly ? 'info' : 'success');
+      } catch (err) {
+        cat.products = prevProducts;
+        btn.disabled = false;
+        btn.innerHTML = originalHtml;
+        showToast(`Delete failed: ${err.message}. Product restored.`, 'error');
+      }
+    });
+  });
+
+  // Move Product Up / Down within Category
+  document.querySelectorAll('.btn-move-prod').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const oemIdx = parseInt(btn.getAttribute('data-oem-idx'), 10);
+      const catIdx = parseInt(btn.getAttribute('data-cat-idx'), 10);
+      const prodIdx = parseInt(btn.getAttribute('data-prod-idx'), 10);
+      const dir = btn.getAttribute('data-dir');
+
+      const oem = oems[oemIdx];
+      const cat = oem?.categories?.[catIdx];
+      if (!cat || !cat.products) return;
+
+      if (btn.disabled) return;
+      btn.disabled = true;
+      const originalHtml = btn.innerHTML;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+
+      const prevProducts = [...cat.products];
+      const targetIdx = dir === 'up' ? prodIdx - 1 : prodIdx + 1;
+      cat.products = reorderArray(cat.products, prodIdx, targetIdx);
+
+      try {
+        const res = await ContentService.saveData('products', oems);
+        if (res && !res.success) {
+          cat.products = prevProducts;
+          btn.disabled = false;
+          btn.innerHTML = originalHtml;
+          showToast(`Reorder failed: ${res.error || 'Database save failed'}.`, 'error');
+          return;
+        }
+
+        rerender();
+        showToast(res?.localOnly ? 'Products reordered (local demo storage).' : 'Products reordered in central database!', res?.localOnly ? 'info' : 'success');
+      } catch (err) {
+        cat.products = prevProducts;
+        btn.disabled = false;
+        btn.innerHTML = originalHtml;
+        showToast(`Reorder failed: ${err.message}.`, 'error');
+      }
+    });
+  });
+
+  // Toggle Product Visibility
+  document.querySelectorAll('.btn-toggle-prod-vis').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const oemIdx = parseInt(btn.getAttribute('data-oem-idx'), 10);
+      const catIdx = parseInt(btn.getAttribute('data-cat-idx'), 10);
+      const prodIdx = parseInt(btn.getAttribute('data-prod-idx'), 10);
+
+      const oem = oems[oemIdx];
+      const cat = oem?.categories?.[catIdx];
+      const prod = cat?.products?.[prodIdx];
+      if (!prod) return;
+
+      if (btn.disabled) return;
+      btn.disabled = true;
+      const originalHtml = btn.innerHTML;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+
+      const prevVisible = prod.visible;
+      prod.visible = prod.visible === false ? true : false;
+
+      try {
+        const res = await ContentService.saveData('products', oems);
+        if (res && !res.success) {
+          prod.visible = prevVisible;
+          btn.disabled = false;
+          btn.innerHTML = originalHtml;
+          showToast(`Visibility update failed: ${res.error || 'Database save failed'}.`, 'error');
+          return;
+        }
+
+        rerender();
+        const dest = res?.localOnly ? '(local demo storage)' : 'in central database';
+        showToast(`Product "${prod.name}" is now ${prod.visible ? 'visible' : 'hidden'} ${dest}.`, res?.localOnly ? 'info' : 'success');
+      } catch (err) {
+        prod.visible = prevVisible;
+        btn.disabled = false;
+        btn.innerHTML = originalHtml;
+        showToast(`Visibility update failed: ${err.message}.`, 'error');
+      }
+    });
+  });
+}
+
+// ─── PARTNERS TAB ────────────────────────────────────────────────────────────
+function renderPartnersTab() {
+  const d = ContentService.getData('partners') || {};
+  const partners = Array.isArray(d) ? d : (d.partners || []);
+  const heroTitle = d.heroTitle || 'Authorized Technology Partners';
+  const heroLead = d.heroLead || 'We represent a diverse portfolio of OEMs across sectors, industries and application.<br />To know more about their products, make an enquiry or request samples just get in touch with us.';
+  const trustBadge1 = d.trustBadge1 || '<strong>10+</strong> Global Technology Partners';
+  const trustBadge2 = d.trustBadge2 || 'Space &amp; Mil-Spec Screening Support';
+
+  const rows = partners.map((p, idx) => {
+    const logo = ImageStorage.resolveImageUrl(p.logoImg);
+    return `
+      <tr>
+        <td style="width:90px;">
+          <div class="a-reorder-group">
+            <button class="a-btn-reorder btn-move-partner" data-dir="up" data-idx="${idx}" ${idx === 0 ? 'disabled' : ''}><i class="fa-solid fa-arrow-up"></i></button>
+            <button class="a-btn-reorder btn-move-partner" data-dir="down" data-idx="${idx}" ${idx === partners.length - 1 ? 'disabled' : ''}><i class="fa-solid fa-arrow-down"></i></button>
+          </div>
+        </td>
+        <td>${logo ? `<img src="${logo}" class="a-img-preview" alt="${p.name}">` : '<span style="color:#94a3b8;font-size:0.75rem;">No logo</span>'}</td>
+        <td><strong>${p.name}</strong></td>
+        <td style="color:var(--a-muted);font-size:0.8rem;">${p.domain || '—'}</td>
+        <td>
+          <button class="a-btn a-btn-outline a-btn-sm partner-edit-btn" data-idx="${idx}"><i class="fa-solid fa-pen"></i> Edit</button>
+          <button class="a-btn a-btn-danger a-btn-sm partner-del-btn" data-idx="${idx}" style="margin-left:6px;"><i class="fa-solid fa-trash"></i></button>
+        </td>
+      </tr>
+    `;
+  }).join('');
+
+  return `
+    <!-- Partners Page Header & Trust Badges Editor -->
+    <div class="a-cards-box" style="margin-bottom:24px;">
+      <div class="a-cards-box-header">
+        <div>
+          <h3>Partners Page Hero &amp; Badges</h3>
+          <p>Customize banner title, introductory lead, and trust counters (supports lowercase/capital edits)</p>
+        </div>
+      </div>
+      <form id="a-partners-hero-form" style="padding:16px 20px;">
+        <div class="a-field">
+          <label class="a-label">Page Title</label>
+          <input class="a-input" name="heroTitle" value="${heroTitle}" required />
+        </div>
+        <div class="a-field" style="margin-top:12px;">
+          <label class="a-label">Introductory Lead Text</label>
+          <textarea class="a-textarea" name="heroLead" rows="2" required>${heroLead}</textarea>
+        </div>
+        <div class="a-field-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;">
+          <div class="a-field">
+            <label class="a-label">Trust Badge 1</label>
+            <input class="a-input" name="trustBadge1" value="${trustBadge1}" required />
+          </div>
+          <div class="a-field">
+            <label class="a-label">Trust Badge 2</label>
+            <input class="a-input" name="trustBadge2" value="${trustBadge2}" required />
+          </div>
+        </div>
+        <div style="margin-top:16px;text-align:right;">
+          <button type="submit" class="a-btn a-btn-primary a-btn-sm"><i class="fa-solid fa-floppy-disk"></i> Save Hero &amp; Badges</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="a-cards-box">
+      <div class="a-cards-box-header">
+        <div>
+          <h3>All Technology Partners (${partners.length})</h3>
+          <p>Add, edit, delete, and reorder partners with live logo upload</p>
+        </div>
+        <button type="button" class="a-btn a-btn-primary a-btn-sm" id="partner-add-btn"><i class="fa-solid fa-plus"></i> Add Partner</button>
+      </div>
+      <div class="a-table-wrap">
+        <table class="a-table">
+          <thead><tr><th>Reorder</th><th>Logo</th><th>Partner Name</th><th>Domain / Specialty</th><th>Actions</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+    </div>
+  `;
+}
+
+function bindPartnersTabEvents() {
+  const d = ContentService.getData('partners') || {};
+  const partners = Array.isArray(d) ? d : (d.partners || []);
+
+  const saveAll = (newPartners) => {
+    if (Array.isArray(d)) {
+      ContentService.saveData('partners', newPartners);
+    } else {
+      d.partners = newPartners;
+      ContentService.saveData('partners', d);
+    }
+    rerender();
+  };
+
+  document.getElementById('a-partners-hero-form')?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    const existing = ContentService.getData('partners') || {};
+    const updated = Array.isArray(existing) ? { partners: existing } : { ...existing };
+    fd.forEach((v, k) => { updated[k] = v; });
+    ContentService.saveData('partners', updated);
+    rerender();
+    showToast('Partners hero banner updated!', 'success');
+  });
+
+  document.getElementById('partner-add-btn')?.addEventListener('click', () => {
+    openModal('Add New Technology Partner', `
+      <div class="a-field"><label class="a-label">Partner Name</label><input class="a-input" name="name" required /></div>
+      <div class="a-field" style="margin-top:12px;"><label class="a-label">Domain / Specialty</label><input class="a-input" name="domain" placeholder="e.g. High-Frequency Laminates" /></div>
+      <div class="a-field" style="margin-top:12px;"><label class="a-label">Accent Color (red / blue)</label><input class="a-input" name="accentColor" value="blue" /></div>
+      ${renderImageUploadField('logoImg', 'Partner Brand Logo', '', 'Transparent WebP, PNG, or JPG (SVG disallowed)', { folder: 'partners' })}
+      <div class="a-field" style="margin-top:12px;"><label class="a-label">Official Website URL</label><input class="a-input" name="website" placeholder="https://..." /></div>
+      <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Description</label><textarea class="a-textarea" name="description"></textarea></div>
+    `, (data) => {
+      partners.push({
+        id: 'partner-' + Date.now(),
+        ...data,
+      });
+      saveAll(partners);
+      showToast('Partner added.', 'success');
+    });
+  });
+
+  document.querySelectorAll('.partner-edit-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const p = partners[idx];
+      openModal('Edit Partner: ' + p.name, `
+        <div class="a-field"><label class="a-label">Partner Name</label><input class="a-input" name="name" value="${p.name}" required /></div>
+        <div class="a-field" style="margin-top:12px;"><label class="a-label">Domain / Specialty</label><input class="a-input" name="domain" value="${p.domain || ''}" /></div>
+        <div class="a-field" style="margin-top:12px;"><label class="a-label">Accent Color (red / blue)</label><input class="a-input" name="accentColor" value="${p.accentColor || 'blue'}" /></div>
+        ${renderImageUploadField('logoImg', 'Partner Brand Logo', p.logoImg || '', 'Transparent WebP, PNG, or JPG (SVG disallowed)', { folder: 'partners', oemSlug: resolveStorageSlug(p) })}
+        <div class="a-field" style="margin-top:12px;"><label class="a-label">Official Website URL</label><input class="a-input" name="website" value="${p.website || ''}" /></div>
+        <div class="a-field span2" style="margin-top:12px;"><label class="a-label">Description</label><textarea class="a-textarea" name="description">${p.description || ''}</textarea></div>
+      `, (data) => {
+        partners[idx] = { ...p, ...data };
+        saveAll(partners);
+        showToast('Partner updated.', 'success');
+      });
+    });
+  });
+
+  document.querySelectorAll('.partner-del-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      if (confirm('Delete this partner?')) {
+        partners.splice(idx, 1);
+        saveAll(partners);
+        showToast('Partner deleted.', '');
+      }
+    });
+  });
+
+  document.querySelectorAll('.btn-move-partner').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx'), 10);
+      const dir = btn.getAttribute('data-dir');
+      const targetIdx = dir === 'up' ? idx - 1 : idx + 1;
+      const reordered = reorderArray(partners, idx, targetIdx);
+      saveAll(reordered);
+      showToast('Partners reordered!', 'success');
+    });
+  });
+}
+
+// ─── BLOGS & OEM TECH HUBS TAB ──────────────────────────────────────────────
+const expandedBlogOemIds = new Set();
+let blogSearchQuery = '';
+
+function getCmsBlogsPayload() {
+  const data = ContentService.getData('blogs');
+  if (data && Array.isArray(data.oemBlogs)) {
+    return data;
+  }
+  return {
+    heroTitle: 'OEM Technical News, Video Demos & Insights',
+    heroSubtitle: 'Direct technical bulletins, video demonstrations, application whitepapers, and product release updates from ICON Electromatic\'s 13 global manufacturing partners.',
+    trustBadge1: 'Application Whitepapers & Notes',
+    trustBadge2: 'Video Demos & Technical Webinars',
+    trustBadge3: 'Direct Manufacturer Bulletins',
+    oemBlogs: []
+  };
+}
+
+function renderBlogsTab() {
+  const cmsBlogs = getCmsBlogsPayload();
+  const oemBlogs = cmsBlogs.oemBlogs || [];
+
+  // Ensure all 13 OEMs from CATALOG exist in oemBlogs
+  CATALOG.forEach(oem => {
+    let b = oemBlogs.find(x => x.oemId === oem.id);
+    if (!b) {
+      b = {
+        oemId: oem.id,
+        officialWebsite: oem.website || '',
+        portalName: `${oem.name} Technology Hub`,
+        headline: oem.tagline || oem.description || '',
+        visible: true,
+        articles: [],
+        videos: [],
+        whitepapers: [],
+        officialLinks: []
+      };
+      oemBlogs.push(b);
+    }
+  });
+
+  const totalOems = CATALOG.length;
+  let totalArticles = 0;
+  let totalVideos = 0;
+  let totalWhitepapers = 0;
+
+  oemBlogs.forEach(b => {
+    totalArticles += (b.articles || []).length;
+    totalVideos += (b.videos || []).length;
+    totalWhitepapers += (b.whitepapers || []).length;
+  });
+
+  const q = (blogSearchQuery || '').trim().toLowerCase();
+
+  const oemCardsHtml = CATALOG.map(oem => {
+    const b = oemBlogs.find(x => x.oemId === oem.id) || {
+      oemId: oem.id,
+      officialWebsite: oem.website || '',
+      portalName: `${oem.name} Technology Hub`,
+      headline: '',
+      visible: true,
+      articles: [],
+      videos: [],
+      whitepapers: [],
+      officialLinks: []
+    };
+
+    const articles = b.articles || [];
+    const videos = b.videos || [];
+    const whitepapers = b.whitepapers || [];
+    const links = b.officialLinks || [];
+    const totalUpdates = articles.length + videos.length + whitepapers.length + links.length;
+
+    // Search filter
+    if (q) {
+      const matchOem = (oem.name || '').toLowerCase().includes(q) ||
+                       (oem.shortName || '').toLowerCase().includes(q) ||
+                       (b.portalName || '').toLowerCase().includes(q) ||
+                       (b.headline || '').toLowerCase().includes(q);
+      const matchArt = articles.some(a => (a.title || '').toLowerCase().includes(q) || (a.summary || '').toLowerCase().includes(q) || (a.category || '').toLowerCase().includes(q));
+      const matchVid = videos.some(v => (v.title || '').toLowerCase().includes(q) || (v.speaker || '').toLowerCase().includes(q) || (v.summary || '').toLowerCase().includes(q));
+      const matchWp = whitepapers.some(w => (w.title || '').toLowerCase().includes(q) || (w.author || '').toLowerCase().includes(q) || (w.summary || '').toLowerCase().includes(q));
+      if (!matchOem && !matchArt && !matchVid && !matchWp) {
+        return '';
+      }
+    }
+
+    const isExpanded = expandedBlogOemIds.has(oem.id) || (q.length > 0);
+    const isHidden = b.visible === false;
+    const resolvedLogo = ImageStorage.resolveImageUrl(oem.logoImg);
+
+    let oemHubPanelHtml = '';
+    if (isExpanded) {
+      // 1. Articles Rows
+      const articleRows = articles.map((art, aIdx) => {
+        const artImg = ImageStorage.resolveImageUrl(art.image);
+        const isArtHidden = art.visible === false;
+        return `
+          <tr class="${isArtHidden ? 'a-row-hidden' : ''}">
+            <td style="width: 70px;">
+              <div class="a-reorder-group">
+                <button type="button" class="a-btn-reorder btn-move-oem-art" data-oem-id="${oem.id}" data-idx="${aIdx}" data-dir="up" ${aIdx === 0 ? 'disabled' : ''} title="Move Up"><i class="fa-solid fa-arrow-up"></i></button>
+                <button type="button" class="a-btn-reorder btn-move-oem-art" data-oem-id="${oem.id}" data-idx="${aIdx}" data-dir="down" ${aIdx === articles.length - 1 ? 'disabled' : ''} title="Move Down"><i class="fa-solid fa-arrow-down"></i></button>
+              </div>
+            </td>
+            <td style="width: 60px;">
+              <div class="a-prod-thumb-box">
+                ${artImg ? `<img src="${artImg}" alt="${art.title}" />` : '<i class="fa-solid fa-newspaper" style="color:#64748b;"></i>'}
+              </div>
+            </td>
+            <td>
+              <div class="a-prod-name-box">
+                <strong>${art.title || 'Untitled Article'}</strong>
+                <span>${art.date || 'No date'} · ${art.readTime || '5 min'}</span>
+              </div>
+            </td>
+            <td><span class="a-badge a-badge-blue">${art.category || 'Technical News'}</span></td>
+            <td>
+              <div class="a-prod-text-snippet" title="${art.summary || ''}">
+                ${art.summary || '<span style="color:#94a3b8;font-style:italic;">No excerpt</span>'}
+              </div>
+              <div style="margin-top:4px;display:flex;gap:4px;flex-wrap:wrap;">
+                ${(art.tags || []).slice(0, 3).map(t => `<span style="font-size:0.68rem;background:#f1f5f9;color:#475569;padding:1px 6px;border-radius:4px;">#${t}</span>`).join('')}
+              </div>
+            </td>
+            <td>
+              <button type="button" class="a-btn a-btn-sm btn-toggle-art-vis" data-oem-id="${oem.id}" data-idx="${aIdx}" style="${isArtHidden ? 'opacity:0.6;background:#f1f5f9;color:#64748b;' : 'background:#ecfdf5;color:#059669;border-color:#a7f3d0;'}">
+                <i class="fa-solid ${isArtHidden ? 'fa-eye-slash' : 'fa-eye'}"></i> ${isArtHidden ? 'Hidden' : 'Visible'}
+              </button>
+            </td>
+            <td style="white-space:nowrap;">
+              <button type="button" class="a-btn a-btn-outline a-btn-sm btn-edit-oem-art" data-oem-id="${oem.id}" data-idx="${aIdx}"><i class="fa-solid fa-pen"></i> Edit</button>
+              <button type="button" class="a-btn a-btn-danger a-btn-sm btn-del-oem-art" data-oem-id="${oem.id}" data-idx="${aIdx}" style="margin-left:4px;"><i class="fa-solid fa-trash"></i></button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      // 2. Videos Rows
+      const videoRows = videos.map((vid, vIdx) => {
+        const vidThumb = ImageStorage.resolveImageUrl(vid.thumbnail);
+        const isVidHidden = vid.visible === false;
+        return `
+          <tr class="${isVidHidden ? 'a-row-hidden' : ''}">
+            <td style="width: 70px;">
+              <div class="a-reorder-group">
+                <button type="button" class="a-btn-reorder btn-move-oem-vid" data-oem-id="${oem.id}" data-idx="${vIdx}" data-dir="up" ${vIdx === 0 ? 'disabled' : ''} title="Move Up"><i class="fa-solid fa-arrow-up"></i></button>
+                <button type="button" class="a-btn-reorder btn-move-oem-vid" data-oem-id="${oem.id}" data-idx="${vIdx}" data-dir="down" ${vIdx === videos.length - 1 ? 'disabled' : ''} title="Move Down"><i class="fa-solid fa-arrow-down"></i></button>
+              </div>
+            </td>
+            <td style="width: 60px;">
+              <div class="a-prod-thumb-box" style="position:relative;">
+                ${vidThumb ? `<img src="${vidThumb}" alt="${vid.title}" />` : '<i class="fa-solid fa-video" style="color:#64748b;"></i>'}
+                <i class="fa-solid fa-play" style="position:absolute;font-size:0.6rem;color:#fff;background:rgba(225,29,72,0.85);padding:3px;border-radius:50%;"></i>
+              </div>
+            </td>
+            <td>
+              <div class="a-prod-name-box">
+                <strong>${vid.title || 'Untitled Video'}</strong>
+                <span><i class="fa-solid fa-user-tie"></i> ${vid.speaker || 'Presenter'} · ${vid.duration || '0:00'}</span>
+              </div>
+            </td>
+            <td>
+              <div class="a-prod-text-snippet" title="${vid.summary || ''}">
+                ${vid.summary || '<span style="color:#94a3b8;font-style:italic;">No description</span>'}
+              </div>
+              <div style="margin-top:4px;display:flex;gap:4px;flex-wrap:wrap;">
+                ${(vid.topics || []).slice(0, 3).map(tp => `<span style="font-size:0.68rem;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:4px;">${tp}</span>`).join('')}
+              </div>
+            </td>
+            <td>
+              <button type="button" class="a-btn a-btn-sm btn-toggle-vid-vis" data-oem-id="${oem.id}" data-idx="${vIdx}" style="${isVidHidden ? 'opacity:0.6;background:#f1f5f9;color:#64748b;' : 'background:#ecfdf5;color:#059669;border-color:#a7f3d0;'}">
+                <i class="fa-solid ${isVidHidden ? 'fa-eye-slash' : 'fa-eye'}"></i> ${isVidHidden ? 'Hidden' : 'Visible'}
+              </button>
+            </td>
+            <td style="white-space:nowrap;">
+              <button type="button" class="a-btn a-btn-outline a-btn-sm btn-edit-oem-vid" data-oem-id="${oem.id}" data-idx="${vIdx}"><i class="fa-solid fa-pen"></i> Edit</button>
+              <button type="button" class="a-btn a-btn-danger a-btn-sm btn-del-oem-vid" data-oem-id="${oem.id}" data-idx="${vIdx}" style="margin-left:4px;"><i class="fa-solid fa-trash"></i></button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      // 3. Whitepapers Rows
+      const whitepaperRows = whitepapers.map((wp, wIdx) => {
+        const isWpHidden = wp.visible === false;
+        return `
+          <tr class="${isWpHidden ? 'a-row-hidden' : ''}">
+            <td style="width: 70px;">
+              <div class="a-reorder-group">
+                <button type="button" class="a-btn-reorder btn-move-oem-wp" data-oem-id="${oem.id}" data-idx="${wIdx}" data-dir="up" ${wIdx === 0 ? 'disabled' : ''} title="Move Up"><i class="fa-solid fa-arrow-up"></i></button>
+                <button type="button" class="a-btn-reorder btn-move-oem-wp" data-oem-id="${oem.id}" data-idx="${wIdx}" data-dir="down" ${wIdx === whitepapers.length - 1 ? 'disabled' : ''} title="Move Down"><i class="fa-solid fa-arrow-down"></i></button>
+              </div>
+            </td>
+            <td>
+              <div class="a-prod-name-box">
+                <strong>${wp.title || 'Untitled Whitepaper'}</strong>
+                <span><i class="fa-solid fa-building"></i> ${wp.author || oem.name} · ${wp.date || ''}</span>
+              </div>
+            </td>
+            <td>
+              <span class="a-badge" style="background:#fee2e2;color:#991b1b;border:1px solid #fecaca;"><i class="fa-regular fa-file-pdf"></i> ${wp.pages || 'PDF'}</span>
+              <span class="a-badge a-badge-blue" style="margin-left:4px;">${wp.frequencyBand || 'Broadband'}</span>
+            </td>
+            <td>
+              <div class="a-prod-text-snippet" title="${wp.summary || ''}">
+                ${wp.summary || '<span style="color:#94a3b8;font-style:italic;">No summary</span>'}
+              </div>
+              <div style="font-size:0.72rem;color:var(--a-muted);margin-top:2px;">
+                ${(wp.keyFindings || []).length} key findings documented
+              </div>
+            </td>
+            <td>
+              <button type="button" class="a-btn a-btn-sm btn-toggle-wp-vis" data-oem-id="${oem.id}" data-idx="${wIdx}" style="${isWpHidden ? 'opacity:0.6;background:#f1f5f9;color:#64748b;' : 'background:#ecfdf5;color:#059669;border-color:#a7f3d0;'}">
+                <i class="fa-solid ${isWpHidden ? 'fa-eye-slash' : 'fa-eye'}"></i> ${isWpHidden ? 'Hidden' : 'Visible'}
+              </button>
+            </td>
+            <td style="white-space:nowrap;">
+              <button type="button" class="a-btn a-btn-outline a-btn-sm btn-edit-oem-wp" data-oem-id="${oem.id}" data-idx="${wIdx}"><i class="fa-solid fa-pen"></i> Edit</button>
+              <button type="button" class="a-btn a-btn-danger a-btn-sm btn-del-oem-wp" data-oem-id="${oem.id}" data-idx="${wIdx}" style="margin-left:4px;"><i class="fa-solid fa-trash"></i></button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      // 4. Official Links Rows
+      const linkRows = links.map((l, lIdx) => {
+        return `
+          <tr>
+            <td style="width: 70px;">
+              <div class="a-reorder-group">
+                <button type="button" class="a-btn-reorder btn-move-oem-link" data-oem-id="${oem.id}" data-idx="${lIdx}" data-dir="up" ${lIdx === 0 ? 'disabled' : ''} title="Move Up"><i class="fa-solid fa-arrow-up"></i></button>
+                <button type="button" class="a-btn-reorder btn-move-oem-link" data-oem-id="${oem.id}" data-idx="${lIdx}" data-dir="down" ${lIdx === links.length - 1 ? 'disabled' : ''} title="Move Down"><i class="fa-solid fa-arrow-down"></i></button>
+              </div>
+            </td>
+            <td style="width:40px;text-align:center;"><i class="fa-solid ${l.icon || 'fa-globe'}" style="color:var(--a-blue);font-size:1.1rem;"></i></td>
+            <td>
+              <strong>${l.title || 'Official Resource'}</strong>
+              <div style="font-size:0.75rem;"><a href="${l.url}" target="_blank" rel="noopener" style="color:var(--a-blue);text-decoration:none;">${l.url} <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.65rem;"></i></a></div>
+            </td>
+            <td style="font-size:0.76rem;color:#475569;">${l.description || '—'}</td>
+            <td style="white-space:nowrap;">
+              <button type="button" class="a-btn a-btn-outline a-btn-sm btn-edit-oem-link" data-oem-id="${oem.id}" data-idx="${lIdx}"><i class="fa-solid fa-pen"></i> Edit</button>
+              <button type="button" class="a-btn a-btn-danger a-btn-sm btn-del-oem-link" data-oem-id="${oem.id}" data-idx="${lIdx}" style="margin-left:4px;"><i class="fa-solid fa-trash"></i></button>
             </td>
           </tr>
         `;
@@ -2176,4 +5783,3 @@ function bindUniversalCardActions(pageKey, parentData, arrayPropName, cardType, 
     });
   });
 }
-
