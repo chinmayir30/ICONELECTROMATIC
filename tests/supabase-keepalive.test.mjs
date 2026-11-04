@@ -53,7 +53,7 @@ test('fails when Supabase returns a non-2xx status', async () => {
   const result = await runKeepAlive({ url: 'https://example.supabase.co/', key: 'test-key', httpStatus: '503' });
   assert.notEqual(result.status, 0);
   assert.match(result.stderr, /HTTP 503/);
-  assert.match(result.curlArgs, /https:\/\/example\.supabase\.co\/rest\/v1\/cms_content\?select=key&limit=1/);
+  assert.match(result.curlArgs, /https:\/\/example\.supabase\.co\/rest\/v1\/oems\?select=id&limit=1/);
 });
 
 test('fails when curl reports a transport error', async () => {

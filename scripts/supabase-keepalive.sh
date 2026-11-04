@@ -7,7 +7,7 @@ if [[ -z "${SUPABASE_URL:-}" || -z "${SUPABASE_KEY:-}" ]]; then
 fi
 
 CLEAN_URL="${SUPABASE_URL%/}"
-ENDPOINT="${CLEAN_URL}/rest/v1/cms_content?select=key&limit=1"
+ENDPOINT="${CLEAN_URL}/rest/v1/oems?select=id&limit=1"
 
 echo "Sending keep-alive ping to configured Supabase REST endpoint."
 HTTP_STATUS="$(curl --silent --show-error --output /dev/null --write-out "%{http_code}" \
