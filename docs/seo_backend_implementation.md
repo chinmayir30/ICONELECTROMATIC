@@ -514,7 +514,7 @@ Open items that affect these phases: client decisions on category grouping, dupl
   - A REST GET ping to `/rest/v1/oems?select=id&limit=1`, a minimal public-read query that avoids reading CMS content.
   - Client deployment responsibility and handover agreement documentation.
 - **Technology and role:** GitHub Actions schedule, Bash, curl, Supabase PostgREST, GitHub Secrets/Variables.
-- **How it works:** The workflow reads the Supabase URL and anon key from repository secrets or variables. The script selects only an OEM row ID from the public catalog; it does not read CMS content. The script exits with an error if either value is missing, if curl fails, or if the HTTP status is not 2xx. GitHub Actions scheduling is best-effort.
+- **How it works:** The workflow reads the Supabase URL and anon key from repository secrets or variables. The script selects only an OEM row ID from the public catalog; it does not read CMS content. Apply the complete database migration set, including the explicit Data API grant for public OEM reads, before enabling this workflow. The script exits with an error if either value is missing, if curl fails, or if the HTTP status is not 2xx. GitHub Actions scheduling is best-effort.
 - **Files and folders added or changed:**
   - `.github/workflows/ci.yml`
   - `.github/workflows/supabase-keepalive.yml`
