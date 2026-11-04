@@ -10,10 +10,10 @@ BEGIN
 END
 $$;
 
--- Simulate Supabase's existing-project default table grants. The migrations
--- must explicitly revoke client privileges for private tables.
+-- Supabase grants client roles access to public tables by default; model that here
+-- so later REVOKE statements are tested against a realistic baseline.
 ALTER DEFAULT PRIVILEGES FOR ROLE postgres IN SCHEMA public
-  GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO anon, authenticated, service_role;
+  GRANT ALL ON TABLES TO anon, authenticated, service_role;
 
 CREATE SCHEMA IF NOT EXISTS auth;
 CREATE SCHEMA IF NOT EXISTS storage;
