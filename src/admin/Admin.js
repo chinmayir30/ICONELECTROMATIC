@@ -756,7 +756,7 @@ function renderDashboard() {
             <tr><td><strong>Projects</strong></td><td><i class="fa-solid fa-check" style="color:var(--a-success);"></i> Project covers</td><td>Defense &amp; Space engineering project cards</td><td><span class="a-badge a-badge-green">Full CRUD</span></td></tr>
             <tr><td><strong>Gallery</strong></td><td><i class="fa-solid fa-check" style="color:var(--a-success);"></i> Hardware photos</td><td>Component &amp; hardware gallery cards</td><td><span class="a-badge a-badge-green">Full CRUD</span></td></tr>
             <tr><td><strong>Testimonials</strong></td><td><i class="fa-solid fa-check" style="color:var(--a-success);"></i> Client avatars</td><td>Scientist &amp; Engineer testimonial cards</td><td><span class="a-badge a-badge-green">Full CRUD</span></td></tr>
-            <tr><td><strong>Products / OEMs</strong></td><td><i class="fa-solid fa-check" style="color:var(--a-success);"></i> OEM Logos</td><td>All 15 global manufacturers with logo upload</td><td><span class="a-badge a-badge-green">Full CRUD</span></td></tr>
+            <tr><td><strong>Products / OEMs</strong></td><td><i class="fa-solid fa-check" style="color:var(--a-success);"></i> OEM Logos</td><td>All 13 global manufacturers with logo upload</td><td><span class="a-badge a-badge-green">Full CRUD</span></td></tr>
             <tr><td><strong>Partners</strong></td><td><i class="fa-solid fa-check" style="color:var(--a-success);"></i> Partner Logos</td><td>All 13 partners in running ticker &amp; static grid</td><td><span class="a-badge a-badge-green">Full CRUD</span></td></tr>
             <tr><td><strong>Blogs</strong></td><td><i class="fa-solid fa-check" style="color:var(--a-success);"></i> Article covers</td><td>Technical news, notes, and bulletins</td><td><span class="a-badge a-badge-green">Full CRUD</span></td></tr>
             <tr><td><strong>Contact &amp; Offices</strong></td><td><i class="fa-solid fa-minus" style="color:#94a3b8;"></i> Text based</td><td>Offices (India, Singapore, USA) &amp; Requirement presets</td><td><span class="a-badge a-badge-green">Connected</span></td></tr>
@@ -3226,7 +3226,7 @@ function renderProductsTab() {
               ? '<span class="a-badge a-badge-green" style="font-size:0.75rem;padding:3px 8px;"><i class="fa-solid fa-cloud-arrow-up"></i> Central Supabase DB</span>' 
               : '<span class="a-badge a-badge-blue" style="font-size:0.75rem;padding:3px 8px;"><i class="fa-solid fa-laptop"></i> Local Storage Mode</span>'}
           </div>
-          <p>Full two-tier management: select any of the 15 authorized OEM principals to edit its product categories and labels, then expand any category to edit its Product Portfolio &amp; Component Catalog.</p>
+          <p>Full two-tier management: select any of the 13 authorized OEM principals to edit its product categories and labels, then expand any category to edit its Product Portfolio &amp; Component Catalog.</p>
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
           <button type="button" class="a-btn a-btn-outline a-btn-sm" id="btn-expand-all"><i class="fa-solid fa-angles-down"></i> Expand All</button>
@@ -4478,7 +4478,7 @@ function getCmsBlogsPayload() {
   }
   return {
     heroTitle: 'OEM Technical News, Video Demos & Insights',
-    heroSubtitle: 'Direct technical bulletins, video demonstrations, application whitepapers, and product release updates from ICON Electromatic\'s 15 global manufacturing partners.',
+    heroSubtitle: 'Direct technical bulletins, video demonstrations, application whitepapers, and product release updates from ICON Electromatic\'s 13 global manufacturing partners.',
     trustBadge1: 'Application Whitepapers & Notes',
     trustBadge2: 'Video Demos & Technical Webinars',
     trustBadge3: 'Direct Manufacturer Bulletins',
@@ -4490,7 +4490,7 @@ function renderBlogsTab() {
   const cmsBlogs = getCmsBlogsPayload();
   const oemBlogs = cmsBlogs.oemBlogs || [];
 
-  // Ensure all 15 OEMs from CATALOG exist in oemBlogs
+  // Ensure all 13 OEMs from CATALOG exist in oemBlogs
   CATALOG.forEach(oem => {
     let b = oemBlogs.find(x => x.oemId === oem.id);
     if (!b) {
@@ -4912,7 +4912,7 @@ function renderBlogsTab() {
       <div class="a-cards-box-header" style="align-items:flex-start;">
         <div>
           <h3>OEM Technical Blogs, Video Demos &amp; Whitepapers Catalog</h3>
-          <p>Full pin-to-pin CMS management for all 15 global manufacturing partners. Edit technical articles, full dispatch text, video webinars, whitepapers, and official links.</p>
+          <p>Full pin-to-pin CMS management for all 13 global manufacturing partners. Edit technical articles, full dispatch text, video webinars, whitepapers, and official links.</p>
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
           <button type="button" class="a-btn a-btn-outline a-btn-sm" id="btn-edit-blog-hero"><i class="fa-solid fa-heading"></i> Edit Page Hero &amp; Badges</button>

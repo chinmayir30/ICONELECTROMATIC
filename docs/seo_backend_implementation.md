@@ -400,7 +400,7 @@ Open items that affect these phases: client decisions on category grouping, dupl
 - **Undo:** Revert PR #19.
 
 ### Entry 21: Restore Employee Zone Navigation and Enable Demo Admin Fallback
-- **Status:** Implemented (PR #20, merge commit 3a6c446, 30 Oct 2026)
+- **Status:** Implemented (PR #20, merge commit `3a6c446`, 30 Oct 2026)
 - **What was built:**
   - Restored the "Employee Zone" drawer navigation link in `src/components/Header.js` so staff can open the admin panel directly from the hamburger drawer menu.
   - Enabled demo login fallback in `src/services/authService.js` when Supabase is unconfigured, allowing staff to sign in with `admin@iconelectromatic.com` / `admin123`.
@@ -417,28 +417,117 @@ Open items that affect these phases: client decisions on category grouping, dupl
 - **Checked (and how):**
   - `npm run build` passes with 0 errors.
   - Test suites pass 100% (60/60 tests).
-- **Undo:** Revert this branch or PR.
+- **Undo:** Revert PR #20.
 
-
-### Entry 22: Automated Supabase Free-Tier Keep-Alive Workflow & Handover Agreement
-- **Status:** In progress (branch `feat/supabase-keepalive-workflow`, 02 Nov 2026)
+### Entry 22: Header Refinement, Homepage Capabilities Removal & Light Theme Elevation
+- **Status:** In progress (branch `feat/header-refinement-alignment`, 03 Nov 2026)
 - **What was built:**
-  - Automated GitHub Actions keep-alive workflow (`.github/workflows/supabase-keepalive.yml`) running every 3 days via cron schedule (`0 4 */3 * *`) and manual trigger.
-  - Lightweight HTTP keep-alive ping to Supabase PostgREST endpoint (`/rest/v1/cms_content?select=key&limit=1`) to reset Supabase's 7-day inactivity pause counter automatically.
-  - Formal client deployment responsibility and handover agreement document (`docs/DEPLOYMENT-RESPONSIBILITY-HANDOVER.md`).
-- **Technology and role:** GitHub Actions workflow, cron scheduler, curl HTTP REST client, handover documentation.
-- **How it works:** Every 3 days at 04:00 UTC, the workflow checks for repository secrets/variables `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`. When present, it issues an HTTP GET to PostgREST. Supabase registers incoming traffic and resets the 7-day pause timer back to zero. If secrets are not yet configured, it skips gracefully without failing.
+  - Scaled down the Icon Electromatic logo proportionally in the header (desktop height 52px, laptop to 46px, tablet to 42px, mobile to 36px) while preserving exact aspect ratio (`width: auto`, `object-fit: contain`).
+  - Removed the "Request Quote" button from the header action area, eliminating header crowding while keeping full quote request functionality everywhere else on the site (Contact page, sidebar drawer, product cards, blogs, etc.).
+  - Perfectly aligned the logo cluster, 7 navigation links, and theme toggle button in a single balanced row; increased header height to 92px (laptop 86px, tablet 76px) and expanded nav gap (`1.75rem`) and container padding (`var(--space-8)`) so the header feels spacious, open, and uncrowded across all screen widths.
+  - Removed the entire Core Capabilities section from the homepage (`src/pages/Home.js`), including heading, subtitle, lead text, and all four capability cards, keeping other homepage sections in their original sequence and preserving Core Capabilities intact on the About page.
+  - Modernized the homepage light theme with a clean white palette (`#ffffff` / `#f8fafc`) across all sections (Hero, Popular Products, Latest Blogs, Connect with Engineering), matching the professional White, Deep Navy Blue (`#0f1d3d`), and Signature Red (`#e32726`) brand aesthetic.
+  - Fine-tuned the homepage background video in light mode to be slightly darker with enhanced contrast (`brightness(0.80)`, `contrast(115%)`, `opacity: 0.65`) and a directional vignette for crisp text contrast without washing out the video details.
+- **Technology and role:** Header UI component, CSS responsive layout styles, Home page template.
+- **How it works:** The header inner container uses flexbox (`justify-content: space-between; align-items: center;`) with adjusted logo height, streamlined nav link spacing, and only the theme toggle on the right. The homepage renders directly from Hero into Popular Products with clean light mode CSS scoped specifically to `[data-theme="light"]` on homepage section classes.
 - **Files and folders added or changed:**
+  - `src/components/Header.js`
+  - `src/styles/index.css`
+  - `src/pages/Home.js`
+  - `docs/PROJECT-STATE.md`
+  - `docs/seo_backend_implementation.md`
+- **Data and security notes:** Pure frontend layout and component adjustments. No new dependencies, no secrets, no backend changes.
+- **Checked (and how):**
+  - `npm run build` passed with 0 errors.
+  - Full automated test suite (60/60 tests passed).
+  - Dev server active and serving cleanly on localhost:3000.
+  - Core capabilities section confirmed preserved in `src/pages/About.js`.
+- **Not checked:**
+  - Production deployment URL (will be checked when merged and deployed).
+- **Undo:** Revert this branch or pull request.
+
+### Entry 23: Complete Removal of Spellman & AEE Israel from Products and Blogs
+- **Status:** In progress (branch `feat/header-refinement-alignment`, 03 Nov 2026)
+- **What was built:**
+  - Completely removed Spellman and AEE Israel from `src/data/catalogData.js`, reducing total OEMs from 15 to 13 and total verified products from 169 to 167 (categories from 88 to 86).
+  - Completely removed Spellman High Voltage Technical Center and AEE Israel Perimeter Defense Systems Center channels (articles, lab videos, whitepapers, official links) from `src/data/blogData.js`, leaving exactly 13 OEM blog hubs.
+  - Updated `src/pages/Blogs.js`, `src/pages/Products.js`, `src/data/ContentService.js`, and `src/components/Chatbot.js` to reference the 13 authorized OEMs and reflect accurate grounded partner counts.
+  - Deleted obsolete pre-rendered static HTML directories `public/products/spellman/` and `public/products/aee-isarael/` and regenerated `public/sitemap.xml` with 174 indexable URLs (down from 176).
+  - Regenerated `supabase/seed_products_cms.sql` and `supabase/seed_cms_content.sql` and updated automated tests (`admin-product-persistence.test.mjs`, `publish-webhook-pipeline.test.mjs`, `static-catalog-builder.test.mjs`).
+- **Technology and role:** Data models, static catalog generator, CMS seeds, Chatbot dispatch, and test suites.
+- **How it works:** Products and Blogs dynamically consume the canonical arrays `CATALOG` and `OEM_BLOGS`. Removing the two objects eliminates all associated cards, category pills, search matches, and detail modals across both pages without altering styling or layout.
+- **Files and folders added or changed:**
+  - `src/data/catalogData.js`
+  - `src/data/blogData.js`
+  - `src/pages/Blogs.js`
+  - `src/pages/Products.js`
+  - `src/data/ContentService.js`
+  - `src/components/Chatbot.js`
+  - `src/admin/Admin.js`
+  - `supabase/seed_products_cms.sql`
+  - `supabase/seed_cms_content.sql`
+  - `tests/admin-product-persistence.test.mjs`
+  - `tests/publish-webhook-pipeline.test.mjs`
+  - `tests/static-catalog-builder.test.mjs`
+  - `docs/PROJECT-STATE.md`
+  - `docs/seo_backend_implementation.md`
+- **Data and security notes:** Pure catalog pruning. No invented data; grounded strictly in verified dataset. No secrets, no new dependencies.
+- **Checked (and how):**
+  - `npm run build`: Exit code 0, 167 static product pages generated, 174 sitemap URLs.
+  - Automated tests: `node --test tests/*.test.mjs` — all 60 tests passing (60 passed, 0 failed).
+  - Local dev server active and hot-reloading smoothly.
+- **Not checked:**
+  - Live production deployment URL (checked after pull request merge).
+- **Undo:** Revert commit or branch.
+
+### Entry 24: Streamline About Us Page & Standardize Product Card Actions
+- **Status:** In progress (branch `feat/header-refinement-alignment`, 03 Nov 2026)
+- **What was built:**
+  - Removed the entire "Strategic Application Domains" section from the About Us page (`src/pages/About.js`), including its header, subtitle, description, satellite dish orb junction connector, and all four application domain cards.
+  - Cleaned up the unused `domains` array definition from `src/pages/About.js`.
+  - Added balanced top spacing (`margin-top: 10px;`) to `.journey-pillars-grid` in `src/styles/index.css` to ensure smooth visual spacing between the 4 milestone cards and the 2 foundation pillars without any dead gaps.
+  - Removed the "4 Parts", "7 Parts", and similar number badges (`.category-count-badge`) from the top-right corner of all product cards in `src/pages/Products.js`.
+  - Standardized product card action button and link text to display only "View All Products" without any number counts.
+  - Added `display: none !important;` to `.category-count-badge` in `src/styles/index.css` as a defensive safeguard.
+  - Preserved all existing product details, images, layout styling, and navigation functionality across the site.
+- **Technology and role:** Vanilla JavaScript page templates, CSS layout styles.
+- **How it works:** In `renderCategoryCard()`, the badge overlay is eliminated and the CTA string is simplified to a static "View All Products" label. In `About.js`, the timeline wrapper flows directly into the foundational pillars with balanced margin.
+- **Files and folders added or changed:**
+  - `src/pages/About.js`
+  - `src/pages/Products.js`
+  - `src/styles/index.css`
+  - `docs/PROJECT-STATE.md`
+  - `docs/seo_backend_implementation.md`
+- **Data and security notes:** Pure UI layout and card styling adjustments. Zero hardcoded or invented data, no secrets, no new dependencies.
+- **Checked (and how):**
+  - `npm run build`: Exit code 0, 167 static product pages generated.
+  - Automated tests: `node --test tests/*.test.mjs` — 60/60 tests passing.
+  - Scripted assertions verifying removal of number badges and presence of "View All Products".
+- **Not checked:**
+  - Live production deployment URL (checked after pull request merge).
+- **Undo:** Revert commit or branch.
+
+### Entry 25: Automated Supabase Free-Tier Keep-Alive Workflow & Handover Agreement
+- **Status:** Implemented in open PR #21 (branch `feat/supabase-keepalive-workflow`, 04 Nov 2026)
+- **What was built:**
+  - GitHub Actions workflow `.github/workflows/supabase-keepalive.yml` scheduled every three days at 04:00 UTC, with a manual trigger.
+  - A REST GET ping to `/rest/v1/cms_content?select=key&limit=1`.
+  - Client deployment responsibility and handover agreement documentation.
+- **Technology and role:** GitHub Actions schedule, Bash, curl, Supabase PostgREST, GitHub Secrets/Variables.
+- **How it works:** The workflow reads the Supabase URL and anon key from repository secrets or variables. The script exits with an error if either value is missing, if curl fails, or if the HTTP status is not 2xx. GitHub Actions scheduling is best-effort.
+- **Files and folders added or changed:**
+  - `.github/workflows/ci.yml`
   - `.github/workflows/supabase-keepalive.yml`
   - `docs/DEPLOYMENT-RESPONSIBILITY-HANDOVER.md`
   - `docs/PROJECT-STATE.md`
   - `docs/seo_backend_implementation.md`
-- **Data and security notes:** No secrets committed to repository. Secrets are injected at runtime via GitHub Secrets/Variables.
+  - `scripts/supabase-keepalive.sh`
+  - `tests/supabase-keepalive.test.mjs`
+- **Data and security notes:** No credentials are committed; repository secrets or variables are injected at workflow runtime.
 - **Checked (and how):**
-  - Workflow YAML syntax verified.
-  - `npm run build` passed cleanly.
-  - All test suites pass (60/60 tests).
-- **Undo:** Delete `.github/workflows/supabase-keepalive.yml` or revert this branch.
+  - CI runs `node --test tests/supabase-keepalive.test.mjs` and `npm run build`.
+  - Keep-alive tests substitute a mock `curl` and cover missing credentials, HTTP 503, transport failure, and HTTP 204 success. These verify script handling; they do not establish a live request to the client's Supabase project.
+- **Undo:** Revert PR #21.
 
 ## 7. Entry template (copy for each new phase)
 ```

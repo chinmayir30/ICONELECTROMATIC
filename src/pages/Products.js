@@ -1,6 +1,6 @@
 /**
  * Products Catalog Page — ICON ELECTROMATIC
- * Hierarchical Navigation: Companies (15 OEMs) → Categories → Products
+ * Hierarchical Navigation: Companies (13 OEMs) → Categories → Products
  * Direct source: 'Icon Website Product Info - Mrora.v2.xlsx'
  */
 import {
@@ -17,12 +17,17 @@ import {
 } from '../data/catalogData.js';
 import { ContentService } from '../data/ContentService.js';
 
+const EXCLUDED_OEM_IDS = new Set(['spellman', 'aee-isarael']);
+
+function sanitizeOemList(list) {
+  if (!Array.isArray(list)) return [];
+  return list.filter(o => o && !EXCLUDED_OEM_IDS.has(o.id));
+}
+
 function getAllOEMs() {
   const cmsProds = ContentService.getData('products');
-  if (Array.isArray(cmsProds) && cmsProds.length > 0) {
-    return cmsProds;
-  }
-  return getOEMs();
+  const oems = (Array.isArray(cmsProds) && cmsProds.length > 0) ? cmsProds : getOEMs();
+  return sanitizeOemList(oems);
 }
 
 function getActiveOEMs() {
@@ -30,6 +35,7 @@ function getActiveOEMs() {
 }
 
 function getActiveOEM(oemId) {
+  if (EXCLUDED_OEM_IDS.has(oemId)) return null;
   return getAllOEMs().find(o => o.id === oemId) || null;
 }
 
@@ -211,7 +217,7 @@ function renderCurrentLevel() {
 }
 
 // ═════════════════════════════════════════════════════════════════════════════
-// LEVEL 1: ALL COMPANIES (15 OEMs)
+// LEVEL 1: ALL COMPANIES (13 OEMs)
 // ═════════════════════════════════════════════════════════════════════════════
 function renderOEMsLevel() {
   const oems = getActiveOEMs();
@@ -321,6 +327,7 @@ function renderOEMsLevel() {
 }
 
 function renderOEMCard(oem) {
+  if (!oem || EXCLUDED_OEM_IDS.has(oem.id)) return '';
   const visibleCategories = (oem.categories || []).filter(c => c.visible !== false);
   const totalProducts = visibleCategories.reduce((acc, cat) => acc + (cat.products ? cat.products.filter(p => p.visible !== false).length : 0), 0);
   const totalCategories = visibleCategories.length;
@@ -451,6 +458,7 @@ function renderCategoriesLevel() {
 }
 
 function renderCategoryCard(oem, cat) {
+  if (!oem || EXCLUDED_OEM_IDS.has(oem.id)) return '';
   const params = buildNavParams('products', oem.id, cat.id);
   const sampleProd = cat.products[0] || {};
   const image = ContentService.resolveImg(sampleProd.image || oem.defaultImage || '/images/rf-filter.jpg');
@@ -466,9 +474,6 @@ function renderCategoryCard(oem, cat) {
           loading="lazy" 
           onerror="this.onerror=null; this.src='/images/rf-filter.jpg';" 
         />
-        <div class="category-count-badge" style="background: ${oem.accentColor}; color: #ffffff;">
-          ${cat.products.length} ${cat.products.length === 1 ? 'Part' : 'Parts'}
-        </div>
       </div>
 
       <div class="category-card-content">
@@ -496,7 +501,7 @@ function renderCategoryCard(oem, cat) {
       </div>
 
       <div class="category-cta" style="color: ${oem.accentColor};">
-        <span>View All ${cat.products.length} Products</span>
+        <span>View All Products</span>
         <i class="fa-solid fa-arrow-right"></i>
       </div>
     </div>
@@ -670,6 +675,7 @@ function renderProductCard(product, index, oem, cat) {
 }
 
 function renderProductRow(product, index, oem) {
+  if (!oem || EXCLUDED_OEM_IDS.has(oem.id)) return '';
   const isValidLink = product.link && product.link.startsWith('http');
   const image = ContentService.resolveImg(product.image || oem.defaultImage || '/images/rf-filter.jpg');
 

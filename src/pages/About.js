@@ -33,13 +33,6 @@ export function renderAboutPage() {
     { year: 'Nov 2020', title: 'Incorporation in India', desc: 'Transitioned and formally incorporated as Icon Electromatic Private Limited, scaling nationwide operations and advancing “Make in India” initiatives.', image: '/images/timeline/timeline-2020-india.jpg', caption: 'Incorporation in India', color: 'amber' },
   ];
 
-  const domains = d.domains || [
-    { title: 'Aerospace & Defence', desc: 'High-power GaN amplifiers, RF filters, waveguides, and radar subsystems for tactical airborne, naval, and ground-based defense platforms.', image: '/images/timeline/domain-aerospace-defence.jpg', tag: 'Radar & EW Systems' },
-    { title: 'Hi-Rel Space', desc: 'Spaceflight-qualified, radiation-tolerant microwave components and low-loss substrates engineered for orbital payloads and satellites.', image: '/images/timeline/domain-hirel-space.jpg', tag: 'Space-Grade Qualified' },
-    { title: '6G & SATCOM', desc: 'Ultra-wideband mmWave components, parabolic antenna feed networks, beamformers, and ground station transceivers.', image: '/images/timeline/domain-5g-satcom.jpg', tag: 'Next-Gen Telecom' },
-    { title: 'Homeland Security & Smart City', desc: 'Perimeter intrusion detection systems (PIDS), tactical perimeter radar sensors, and smart city surveillance electronics.', image: '/images/timeline/domain-homeland-security.jpg', tag: 'Intrusion & Radar' },
-  ];
-
   const pillars = d.pillars || [
     { eyebrow: 'GLOBAL ALLIANCES', title: 'Global Partnerships', subtitle: 'Advanced Technologies', desc: 'Direct OEM partnerships with premier global innovators (Qorvo, Rogers, Tecdia, Mini-Circuits, and more), delivering verified authentic high-performance components to Indian industries.', image: '/images/timeline/pillar-global-partnerships.jpg', color: 'blue' },
     { eyebrow: 'ENGINEERING EXPERTISE', title: 'Bespoke Solutions', subtitle: 'RF & Design Services', desc: 'End-to-end design-in consultancy, specialized microwave simulation, prototyping, and custom RF assembly integration tailored precisely to mission specifications.', image: '/images/timeline/pillar-bespoke-solutions.jpg', color: 'red' },
@@ -377,47 +370,6 @@ export function renderAboutPage() {
               }).join('')}
             </div>
           </div>
-
-            <!-- Central Junction Connector to Strategic Sectors -->
-            <div class="timeline-central-junction about-animate-fadeup">
-              <div class="timeline-junction-divider">
-                <div class="timeline-junction-orb">
-                  <i class="fa-solid fa-satellite-dish"></i>
-                </div>
-              </div>
-              <h3 style="font-family:var(--font-display);font-size:clamp(1.65rem, 2.4vw, 2.05rem);font-weight:800;letter-spacing:-0.01em;margin-bottom:8px;">
-                ${d.strategicDomainsTitle || 'Strategic Application Domains'}
-              </h3>
-              <div class="about-section-sub-title" style="font-family:var(--font-display);font-size:clamp(1.1rem, 1.5vw, 1.3rem);font-weight:700;color:var(--logo-red-light);line-height:1.35;margin-bottom:14px;">
-                ${d.strategicDomainsSubtitle || 'Where Our Technology Operates'}
-              </div>
-              <p style="font-size:0.9rem;line-height:1.6;color:var(--text-muted);max-width:620px;margin:0 auto 28px;">
-                ${d.strategicDomainsLead || 'Delivering mission-critical electronic components, high-reliability assemblies, and custom microwave engineering across four strategic arenas.'}
-              </p>
-            </div>
-
-            <!-- 4 Domain Sector Cards -->
-            <div class="journey-domains-grid">
-              ${domains.map(dom => {
-                const img = ContentService.resolveImg(dom.image);
-                return `
-                  <div class="domain-sector-card about-interactive-card blue-glow about-animate-fadeup">
-                    <div class="domain-photo-frame">
-                      <img src="${img}" alt="${dom.title}" loading="lazy" />
-                      <div class="domain-photo-badge">
-                        ${dom.title}
-                      </div>
-                    </div>
-                    <p class="domain-sector-desc">
-                      ${dom.desc}
-                    </p>
-                    <span class="domain-tag-pill">
-                      <i class="fa-solid fa-shield-halved" style="margin-right:4px;"></i>${dom.tag || ''}
-                    </span>
-                  </div>
-                `;
-              }).join('')}
-            </div>
 
             <!-- Foundational Strategic Pillars -->
             <div class="journey-pillars-grid">

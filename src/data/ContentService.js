@@ -53,7 +53,7 @@ if (typeof window !== 'undefined') {
 }
 
 // ─── Version key: bump this to ensure fresh schema sync with existing localStorage ───
-const CMS_VERSION = 'v7';
+const CMS_VERSION = 'v8';
 
 const INITIAL_CONTENT = {
   header: {
@@ -105,7 +105,7 @@ const INITIAL_CONTENT = {
     ctaQuoteLink: '/contact',
     stats: [
       { id: 'stat-1', value: '160+', label: 'VERIFIED COMPONENTS' },
-      { id: 'stat-2', value: '15', label: 'OEM PARTNERS' },
+      { id: 'stat-2', value: '13', label: 'OEM PARTNERS' },
       { id: 'stat-3', value: '100%', label: 'ROHS & ISO 9001' },
     ],
     coreCapabilitiesTitle: 'Core Capabilities',
@@ -581,7 +581,7 @@ const INITIAL_CONTENT = {
           icon: 'fa-solid fa-microchip',
           iconColor: '#60A5FA',
           title: 'Global OEM Partnerships',
-          description: 'Direct technical engagement with leaders like Rogers Corporation, Qorvo, Spellman, Fortify, and YTTEK.'
+          description: 'Direct technical engagement with leaders like Rogers Corporation, Qorvo, Fortify, and YTTEK.'
         },
         {
           id: 'ben-2',
@@ -789,12 +789,14 @@ export const ContentService = {
         if (pageKey === 'products') {
           // If cached products don't have categories (stale schema), ignore and reseed
           if (Array.isArray(parsed) && parsed.length > 0 && Array.isArray(parsed[0].categories)) {
-            memoryCache.set(pageKey, parsed);
-            return parsed;
+            const cleaned = parsed.filter(o => o && o.id !== 'spellman' && o.id !== 'aee-isarael');
+            memoryCache.set(pageKey, cleaned);
+            return cleaned;
           }
         } else if (pageKey === 'blogs') {
           // If cached blogs has structured oemBlogs, return it
           if (parsed && Array.isArray(parsed.oemBlogs)) {
+            parsed.oemBlogs = parsed.oemBlogs.filter(b => b && b.oemId !== 'spellman' && b.oemId !== 'aee-isarael');
             memoryCache.set(pageKey, parsed);
             return parsed;
           }
@@ -802,7 +804,7 @@ export const ContentService = {
           if (Array.isArray(parsed) && parsed.length > 0 && parsed[0].oemId) {
             const wrapped = {
               heroTitle: 'OEM Technical News, Video Demos & Insights',
-              heroSubtitle: 'Direct technical bulletins, video demonstrations, application whitepapers, and product release updates from ICON Electromatic\'s 15 global manufacturing partners.',
+              heroSubtitle: 'Direct technical bulletins, video demonstrations, application whitepapers, and product release updates from ICON Electromatic\'s 13 global manufacturing partners.',
               trustBadge1: 'Application Whitepapers & Notes',
               trustBadge2: 'Video Demos & Technical Webinars',
               trustBadge3: 'Direct Manufacturer Bulletins',
@@ -938,7 +940,7 @@ export const ContentService = {
     if (pageKey === 'blogs') {
       const initial = {
         heroTitle: 'OEM Technical News, Video Demos & Insights',
-        heroSubtitle: 'Direct technical bulletins, video demonstrations, application whitepapers, and product release updates from ICON Electromatic\'s 15 global manufacturing partners.',
+        heroSubtitle: 'Direct technical bulletins, video demonstrations, application whitepapers, and product release updates from ICON Electromatic\'s 13 global manufacturing partners.',
         trustBadge1: 'Application Whitepapers & Notes',
         trustBadge2: 'Video Demos & Technical Webinars',
         trustBadge3: 'Direct Manufacturer Bulletins',

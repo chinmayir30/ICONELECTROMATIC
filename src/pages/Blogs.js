@@ -8,18 +8,23 @@ import { CATALOG } from '../data/catalogData.js';
 import { OEM_BLOGS } from '../data/blogData.js';
 import { ContentService } from '../data/ContentService.js';
 
+const EXCLUDED_OEM_IDS = new Set(['spellman', 'aee-isarael']);
+
 function getBlogCmsData() {
   const cms = ContentService.getData('blogs');
   if (cms && Array.isArray(cms.oemBlogs)) {
-    return cms;
+    return {
+      ...cms,
+      oemBlogs: cms.oemBlogs.filter(b => b && !EXCLUDED_OEM_IDS.has(b.oemId))
+    };
   }
   return {
     heroTitle: 'OEM Technical News, Video Demos & Insights',
-    heroSubtitle: 'Direct technical bulletins, video demonstrations, application whitepapers, and product release updates from ICON Electromatic\'s 15 global manufacturing partners.',
+    heroSubtitle: `Direct technical bulletins, video demonstrations, application whitepapers, and product release updates from ICON Electromatic's ${CATALOG.length} global manufacturing partners.`,
     trustBadge1: 'Application Whitepapers & Notes',
     trustBadge2: 'Video Demos & Technical Webinars',
     trustBadge3: 'Direct Manufacturer Bulletins',
-    oemBlogs: (OEM_BLOGS || [])
+    oemBlogs: (OEM_BLOGS || []).filter(b => b && !EXCLUDED_OEM_IDS.has(b.oemId))
   };
 }
 
@@ -29,6 +34,7 @@ function getActiveOemBlogs() {
 }
 
 function getActiveBlogDataForOem(oemId) {
+  if (!oemId || EXCLUDED_OEM_IDS.has(oemId)) return null;
   const cms = getBlogCmsData();
   const oemBlogs = cms.oemBlogs || [];
   const oem = CATALOG.find(o => o.id === oemId);
@@ -123,7 +129,7 @@ function renderAllOemsBlogView() {
               ${cmsData.heroTitle || 'OEM Technical News, Video Demos &amp; Insights'}
             </h1>
             <p class="page-lead-unified">
-              ${cmsData.heroSubtitle || 'Direct technical bulletins, video demonstrations, application whitepapers, and product release updates from ICON Electromatic\'s 15 global manufacturing partners.'}
+              ${cmsData.heroSubtitle || `Direct technical bulletins, video demonstrations, application whitepapers, and product release updates from ICON Electromatic's ${CATALOG.length} global manufacturing partners.`}
             </p>
           </div>
 
@@ -151,7 +157,7 @@ function renderAllOemsBlogView() {
           <!-- Quick Filter Chips by OEM -->
           <div class="blogs-oem-selector-bar">
             <button class="blogs-oem-chip active" data-filter="all">
-              <i class="fa-solid fa-layer-group"></i> All 15 OEMs
+              <i class="fa-solid fa-layer-group"></i> All ${CATALOG.length} OEMs
             </button>
           ${CATALOG.map(oem => `
             <button class="blogs-oem-chip" data-oem-select="${oem.id}">
