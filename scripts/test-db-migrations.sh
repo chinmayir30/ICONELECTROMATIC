@@ -39,7 +39,7 @@ INSERT INTO public.rate_limits (ip_hash, request_count)
 VALUES ('legacy-rate-limit-hash', 3);
 SQL
 
-for migration in supabase/migrations/[0-9][0-9][0-9]_*.sql; do
+for migration in supabase/migrations/*.sql; do
   [[ "${migration}" == "${first_migration}" ]] && continue
   echo "Applying ${migration}"
   psql -v ON_ERROR_STOP=1 -f "${migration}"
@@ -103,6 +103,56 @@ BEGIN
 
   IF NOT has_table_privilege('service_role', 'public.career_applications', 'INSERT')
   THEN RAISE EXCEPTION 'service_role cannot insert career applications'; END IF;
+
+  IF NOT has_schema_privilege('anon', 'public', 'USAGE')
+     OR NOT has_schema_privilege('authenticated', 'public', 'USAGE')
+     OR NOT has_schema_privilege('service_role', 'public', 'USAGE')
+  THEN RAISE EXCEPTION 'API roles lack public schema usage'; END IF;
+
+  IF NOT has_table_privilege('anon', 'public.oems', 'SELECT')
+     OR NOT has_table_privilege('anon', 'public.categories', 'SELECT')
+     OR NOT has_table_privilege('anon', 'public.products', 'SELECT')
+     OR NOT has_table_privilege('anon', 'public.product_images', 'SELECT')
+     OR NOT has_table_privilege('anon', 'public.cms_content', 'SELECT')
+  THEN RAISE EXCEPTION 'anonymous catalog/CMS reads are not granted'; END IF;
+
+  IF has_table_privilege('anon', 'public.products', 'INSERT')
+     OR NOT has_table_privilege('authenticated', 'public.oems', 'INSERT')
+     OR NOT has_table_privilege('authenticated', 'public.oems', 'UPDATE')
+     OR NOT has_table_privilege('authenticated', 'public.oems', 'DELETE')
+     OR NOT has_table_privilege('authenticated', 'public.categories', 'INSERT')
+     OR NOT has_table_privilege('authenticated', 'public.categories', 'UPDATE')
+     OR NOT has_table_privilege('authenticated', 'public.categories', 'DELETE')
+     OR NOT has_table_privilege('authenticated', 'public.products', 'INSERT')
+     OR NOT has_table_privilege('authenticated', 'public.products', 'UPDATE')
+     OR NOT has_table_privilege('authenticated', 'public.products', 'DELETE')
+     OR NOT has_table_privilege('authenticated', 'public.product_images', 'INSERT')
+     OR NOT has_table_privilege('authenticated', 'public.product_images', 'UPDATE')
+     OR NOT has_table_privilege('authenticated', 'public.product_images', 'DELETE')
+     OR NOT has_table_privilege('authenticated', 'public.cms_content', 'INSERT')
+     OR NOT has_table_privilege('authenticated', 'public.cms_content', 'UPDATE')
+     OR NOT has_table_privilege('authenticated', 'public.cms_content', 'DELETE')
+     OR NOT has_table_privilege('authenticated', 'public.user_roles', 'SELECT')
+     OR NOT has_table_privilege('authenticated', 'public.user_roles', 'INSERT')
+     OR NOT has_table_privilege('authenticated', 'public.user_roles', 'UPDATE')
+     OR NOT has_table_privilege('authenticated', 'public.user_roles', 'DELETE')
+  THEN RAISE EXCEPTION 'authenticated catalog/admin grants are incomplete'; END IF;
+
+  IF has_table_privilege('anon', 'public.enquiries', 'SELECT')
+     OR has_table_privilege('anon', 'public.enquiries', 'INSERT')
+     OR NOT has_table_privilege('authenticated', 'public.enquiries', 'SELECT')
+     OR NOT has_table_privilege('authenticated', 'public.enquiries', 'DELETE')
+     OR NOT has_table_privilege('service_role', 'public.enquiries', 'SELECT')
+     OR NOT has_table_privilege('service_role', 'public.enquiries', 'INSERT')
+  THEN RAISE EXCEPTION 'enquiry table grants do not match app access'; END IF;
+
+  IF NOT has_table_privilege('service_role', 'public.career_applications', 'SELECT')
+     OR NOT has_table_privilege('service_role', 'public.career_applications', 'INSERT')
+  THEN RAISE EXCEPTION 'career insert representation grants are incomplete'; END IF;
+
+  IF has_table_privilege('service_role', 'public.contact_rate_limit_events', 'SELECT')
+     OR has_table_privilege('service_role', 'public.contact_rate_limit_events', 'INSERT')
+  THEN RAISE EXCEPTION 'service_role has direct rate-limit event-table access'; END IF;
 
   IF has_table_privilege('anon', 'public.rate_limits', 'SELECT')
      OR has_table_privilege('authenticated', 'public.rate_limits', 'SELECT')
@@ -186,3 +236,4 @@ if [[ "$expired" != "t" ]]; then
 fi
 
 echo "Database migration and rate-limit integration tests passed."
+
