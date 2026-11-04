@@ -17,10 +17,14 @@ import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 import { consumeContactRateLimit, getTrustedClientIp, hashClientIp } from "./rateLimit.ts";
 import { escapeHtml, isOriginAllowed, isValidHttpsUrl, safeEmailHeader } from "./submissionSecurity.ts";
 
+type ContactHandlerDependencies = {
+  getEnv?: (name: string) => string | undefined;
+  fetchImpl?: typeof fetch;
+};
 
-function getCorsHeaders(req: Request): Record<string, string> {
+function getCorsHeaders(req: Request, getEnv: (name: string) => string | undefined): Record<string, string> {
   const origin = req.headers.get("origin") || "";
-  const rawAllowed = Deno.env.get("ALLOWED_ORIGINS") || "";
+  const rawAllowed = getEnv("ALLOWED_ORIGINS") || "";
   let allowed = rawAllowed
     .split(",")
     .map((o) => o.trim())
@@ -56,8 +60,12 @@ function getCorsHeaders(req: Request): Record<string, string> {
   return headers;
 }
 
-serve(async (req: Request) => {
-  const corsHeaders = getCorsHeaders(req);
+export function createContactHandler(dependencies: ContactHandlerDependencies = {}) {
+  const getEnv = dependencies.getEnv || ((name: string) => Deno.env.get(name));
+  const fetchImpl = dependencies.fetchImpl || fetch;
+
+  return async (req: Request) => {
+  const corsHeaders = getCorsHeaders(req, getEnv);
 
   // 1. Handle CORS preflight
   if (req.method === "OPTIONS") {
@@ -102,9 +110,9 @@ serve(async (req: Request) => {
         status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
-    const supabaseUrl = Deno.env.get("SUPABASE_URL");
-    const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
-    const resendApiKey = Deno.env.get("RESEND_API_KEY");
+    const supabaseUrl = getEnv("SUPABASE_URL");
+    const supabaseServiceKey = getEnv("SUPABASE_SERVICE_ROLE_KEY");
+    const resendApiKey = getEnv("RESEND_API_KEY");
 
     // Rate limiting is mandatory: fail closed if server-side dependencies
     // or a client address supplied by the edge proxy are unavailable.
@@ -118,7 +126,7 @@ serve(async (req: Request) => {
     // the leftmost X-Forwarded-For value for security decisions: callers can
     // prepend a forged address. Missing CF-Connecting-IP fails closed.
     const clientIp = getTrustedClientIp(req.headers);
-    const hashSecret = Deno.env.get("RATE_LIMIT_HASH_SECRET");
+    const hashSecret = getEnv("RATE_LIMIT_HASH_SECRET");
 
     if (!clientIp || !hashSecret || new TextEncoder().encode(hashSecret).byteLength < 32) {
       console.error("Contact rate limiting is not configured with a trusted client IP and strong HMAC secret.");
@@ -129,7 +137,7 @@ serve(async (req: Request) => {
 
     try {
       const ipHash = await hashClientIp(clientIp, hashSecret);
-      const allowed = await consumeContactRateLimit(supabaseUrl, supabaseServiceKey, ipHash);
+      const allowed = await consumeContactRateLimit(supabaseUrl, supabaseServiceKey, ipHash, fetchImpl);
       if (!allowed) {
         return new Response(
           JSON.stringify({
@@ -181,7 +189,7 @@ serve(async (req: Request) => {
         });
       }
       const appRef = `ICON-CAREER-${crypto.randomUUID()}`;
-      const insertAppRes = await fetch(`${supabaseUrl}/rest/v1/career_applications`, {
+      const insertAppRes = await fetchImpl(`${supabaseUrl}/rest/v1/career_applications`, {
         method: "POST",
         headers: {
           apikey: supabaseServiceKey,
@@ -215,7 +223,7 @@ serve(async (req: Request) => {
       }
       const persistedAppRef = insertedApplication[0].application_ref;
       let emailDispatched = false;
-      const careersEmail = Deno.env.get("CAREERS_EMAIL") || "careers@iconelectromatic.com";
+      const careersEmail = getEnv("CAREERS_EMAIL") || "careers@iconelectromatic.com";
       if (resendApiKey) {
         const careerEmailHtml = `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;">
@@ -241,7 +249,7 @@ serve(async (req: Request) => {
         `;
 
         try {
-          const emailResponse = await fetch("https://api.resend.com/emails", {
+          const emailResponse = await fetchImpl("https://api.resend.com/emails", {
             method: "POST",
             headers: { Authorization: `Bearer ${resendApiKey}`, "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -319,14 +327,14 @@ serve(async (req: Request) => {
     let enquiryId: string | number = "REQ-" + Math.floor(100000 + Math.random() * 900000);
 
     const officeEmails: Record<string, string | undefined> = {
-      india: Deno.env.get("OFFICE_EMAIL_INDIA"),
-      singapore: Deno.env.get("OFFICE_EMAIL_SINGAPORE"),
-      usa: Deno.env.get("OFFICE_EMAIL_USA"),
+      india: getEnv("OFFICE_EMAIL_INDIA"),
+      singapore: getEnv("OFFICE_EMAIL_SINGAPORE"),
+      usa: getEnv("OFFICE_EMAIL_USA"),
     };
     const targetOfficeEmail = officeEmails[office] || "sales@iconelectromatic.com";
 
     // 2. Insert into enquiries table with dual-field compatibility
-    const insertRes = await fetch(`${supabaseUrl}/rest/v1/enquiries`, {
+    const insertRes = await fetchImpl(`${supabaseUrl}/rest/v1/enquiries`, {
       method: "POST",
       headers: {
         apikey: supabaseServiceKey,
@@ -420,7 +428,7 @@ serve(async (req: Request) => {
       `;
 
       try {
-      const emailResponse = await fetch("https://api.resend.com/emails", {
+      const emailResponse = await fetchImpl("https://api.resend.com/emails", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${resendApiKey}`,
@@ -462,4 +470,9 @@ serve(async (req: Request) => {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }
-});
+  };
+}
+
+if (import.meta.main) {
+  serve(createContactHandler());
+}
