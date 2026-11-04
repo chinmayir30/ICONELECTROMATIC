@@ -13,6 +13,11 @@ Deno.test("trusted client IP comes only from the single-value CF-Connecting-IP h
   assert(getTrustedClientIp(headers) === "203.0.113.10", "CF-Connecting-IP must be preferred");
 });
 
+Deno.test("valid IPv6 address is accepted from CF-Connecting-IP", () => {
+  const headers = new Headers({ "cf-connecting-ip": "2001:db8::1" });
+  assert(getTrustedClientIp(headers) === "2001:db8::1", "valid IPv6 address should be accepted");
+});
+
 Deno.test("spoofed X-Forwarded-For is never used when CF-Connecting-IP is missing", () => {
   const headers = new Headers({ "x-forwarded-for": "198.51.100.77" });
   assert(getTrustedClientIp(headers) === null, "must fail closed without trusted ingress header");
@@ -21,6 +26,13 @@ Deno.test("spoofed X-Forwarded-For is never used when CF-Connecting-IP is missin
 Deno.test("malformed multi-value CF-Connecting-IP is rejected", () => {
   const headers = new Headers({ "cf-connecting-ip": "203.0.113.10, 198.51.100.77" });
   assert(getTrustedClientIp(headers) === null, "single-value header required");
+});
+
+Deno.test("malformed single-value CF-Connecting-IP values are rejected", () => {
+  for (const value of ["not-an-ip", "256.0.0.1", "192.0.2", "2001:db8:::1", "01.2.3.4"]) {
+    const headers = new Headers({ "cf-connecting-ip": value });
+    assert(getTrustedClientIp(headers) === null, `invalid IP address must be rejected: ${value}`);
+  }
 });
 
 Deno.test("HMAC IP hashes are deterministic and do not expose the IP", async () => {
