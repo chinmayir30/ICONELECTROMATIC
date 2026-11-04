@@ -1,5 +1,39 @@
 const encoder = new TextEncoder();
 
+function isValidIpv4(value: string): boolean {
+  const octets = value.split(".");
+  return octets.length === 4 && octets.every((octet) => {
+    if (!/^(0|[1-9][0-9]{0,2})$/.test(octet)) return false;
+    return Number(octet) <= 255;
+  });
+}
+
+function isValidIpv6(value: string): boolean {
+  if (!value.includes(":")) return false;
+  try {
+    // The URL parser validates IPv6 syntax, including compressed and IPv4-mapped forms.
+    return new URL(`http://[${value}]/`).hostname.startsWith("[");
+  } catch {
+    return false;
+  }
+}
+
+function isValidIpAddress(value: string): boolean {
+  return isValidIpv4(value) || isValidIpv6(value);
+}
+
+/**
+ * Hosted Supabase Edge Functions are fronted by Cloudflare. Use only the
+ * single-value CF-Connecting-IP header for the hosted ingress path.
+ * Do not trust the leftmost X-Forwarded-For value: callers can prepend it.
+ * If this header is absent or is not a valid IP address, fail closed.
+ */
+export function getTrustedClientIp(headers: Headers): string | null {
+  const value = headers.get("cf-connecting-ip")?.trim();
+  if (!value || value.includes(",") || !isValidIpAddress(value)) return null;
+  return value;
+}
+
 export async function hashClientIp(ipAddress: string, secret: string): Promise<string> {
   if (!ipAddress || !secret || encoder.encode(secret).byteLength < 32) {
     throw new Error("RATE_LIMIT_HASH_SECRET must be configured with at least 32 bytes.");

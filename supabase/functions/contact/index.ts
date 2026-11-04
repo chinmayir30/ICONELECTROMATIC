@@ -14,7 +14,7 @@
  */
 
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
-import { consumeContactRateLimit, hashClientIp } from "./rateLimit.ts";
+import { consumeContactRateLimit, getTrustedClientIp, hashClientIp } from "./rateLimit.ts";
 
 function getCorsHeaders(req: Request): Record<string, string> {
   const origin = req.headers.get("origin") || "";
@@ -252,10 +252,10 @@ serve(async (req: Request) => {
       });
     }
 
-    const forwardedFor = req.headers.get("x-forwarded-for");
-    const clientIp = forwardedFor?.split(",")[0]?.trim()
-      || req.headers.get("cf-connecting-ip")?.trim()
-      || req.headers.get("x-real-ip")?.trim();
+    // Hosted Supabase Edge Functions are fronted by Cloudflare. Do not use
+    // the leftmost X-Forwarded-For value for security decisions: callers can
+    // prepend a forged address. Missing CF-Connecting-IP fails closed.
+    const clientIp = getTrustedClientIp(req.headers);
     const hashSecret = Deno.env.get("RATE_LIMIT_HASH_SECRET");
 
     if (!clientIp || !hashSecret || new TextEncoder().encode(hashSecret).byteLength < 32) {
