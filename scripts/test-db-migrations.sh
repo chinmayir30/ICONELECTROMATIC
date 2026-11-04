@@ -47,6 +47,27 @@ done
 
 echo "Checking migration contracts and permissions"
 psql -v ON_ERROR_STOP=1 <<'SQL'
+INSERT INTO public.cms_content (key, content)
+VALUES
+  ('public_filter_products_test', '[
+    {"id":"visible-oem","visible":true,"categories":[
+      {"id":"visible-category","visible":true,"products":[
+        {"id":"visible-product","visible":true},
+        {"id":"draft-product","visible":false}
+      ]},
+      {"id":"draft-category","visible":false,"products":[{"id":"hidden-product","visible":true}]}
+    ]},
+    {"id":"draft-oem","visible":false,"categories":[]}
+  ]'::jsonb),
+  ('public_filter_blogs_test', '{"oemBlogs":[
+    {"id":"visible-oem","visible":true,"articles":[
+      {"id":"visible-article","visible":true},
+      {"id":"draft-article","visible":false}
+    ]},
+    {"id":"draft-oem","visible":false,"articles":[{"id":"hidden-article","visible":true}]}
+  ]}'::jsonb),
+  ('public_filter_root_test', '{"visible":false,"secret":"draft-root"}'::jsonb);
+
 DO $$
 BEGIN
   IF NOT EXISTS (
@@ -113,8 +134,18 @@ BEGIN
      OR NOT has_table_privilege('anon', 'public.categories', 'SELECT')
      OR NOT has_table_privilege('anon', 'public.products', 'SELECT')
      OR NOT has_table_privilege('anon', 'public.product_images', 'SELECT')
-     OR NOT has_table_privilege('anon', 'public.cms_content', 'SELECT')
-  THEN RAISE EXCEPTION 'anonymous catalog/CMS reads are not granted'; END IF;
+  THEN RAISE EXCEPTION 'anonymous catalog table reads are not granted'; END IF;
+
+  IF has_table_privilege('anon', 'public.cms_content', 'SELECT')
+     OR NOT has_table_privilege('authenticated', 'public.cms_content', 'SELECT')
+  THEN RAISE EXCEPTION 'unfiltered CMS table access is not restricted to staff RLS'; END IF;
+
+  IF NOT has_function_privilege('anon', 'public.get_public_cms_content()', 'EXECUTE')
+     OR NOT has_function_privilege('authenticated', 'public.get_public_cms_content()', 'EXECUTE')
+     OR has_function_privilege('anon', 'public.has_staff_cms_access()', 'EXECUTE')
+     OR NOT has_function_privilege('authenticated', 'public.has_staff_cms_access()', 'EXECUTE')
+     OR has_function_privilege('anon', 'private.filter_public_cms_json(jsonb)', 'EXECUTE')
+  THEN RAISE EXCEPTION 'public CMS RPC/helper execution grants are incorrect'; END IF;
 
   IF has_table_privilege('anon', 'public.products', 'INSERT')
      OR NOT has_table_privilege('authenticated', 'public.oems', 'INSERT')
@@ -202,6 +233,54 @@ BEGIN
       AND policyname='Staff Manage catalog-images'
   ) THEN RAISE EXCEPTION 'catalog-images Storage policies missing'; END IF;
 END $$;
+
+SET ROLE authenticated;
+DO $$
+DECLARE
+  visible_rows INTEGER;
+BEGIN
+  SELECT count(*) INTO visible_rows FROM public.cms_content;
+  IF visible_rows <> 0 THEN
+    RAISE EXCEPTION 'non-staff authenticated role can read unfiltered CMS rows';
+  END IF;
+END $$;
+RESET ROLE;
+
+SET ROLE anon;
+DO $$
+DECLARE
+  product_content JSONB;
+  blog_content JSONB;
+BEGIN
+  SELECT content INTO product_content
+    FROM public.get_public_cms_content()
+   WHERE key = 'public_filter_products_test';
+  IF product_content IS DISTINCT FROM '[
+    {"id":"visible-oem","visible":true,"categories":[
+      {"id":"visible-category","visible":true,"products":[{"id":"visible-product","visible":true}]}
+    ]}
+  ]'::jsonb THEN
+    RAISE EXCEPTION 'public product response did not remove hidden OEMs, categories, and products: %', product_content;
+  END IF;
+
+  SELECT content INTO blog_content
+    FROM public.get_public_cms_content()
+   WHERE key = 'public_filter_blogs_test';
+  IF blog_content IS DISTINCT FROM '{"oemBlogs":[
+    {"id":"visible-oem","visible":true,"articles":[{"id":"visible-article","visible":true}]}
+  ]}'::jsonb THEN
+    RAISE EXCEPTION 'public blog response did not remove hidden entries: %', blog_content;
+  END IF;
+
+  SELECT content INTO blog_content
+    FROM public.get_public_cms_content()
+   WHERE key = 'public_filter_root_test';
+  IF blog_content IS DISTINCT FROM 'null'::jsonb THEN
+    RAISE EXCEPTION 'public response exposed a hidden root object: %', blog_content;
+  END IF;
+
+END $$;
+RESET ROLE;
 SQL
 
 echo "Checking atomic concurrency limit (six simultaneous calls)"
@@ -236,4 +315,5 @@ if [[ "$expired" != "t" ]]; then
 fi
 
 echo "Database migration and rate-limit integration tests passed."
+
 

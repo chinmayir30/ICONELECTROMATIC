@@ -315,12 +315,26 @@ export const supabaseClient = {
    * Fetch all CMS content sections with OCC metadata from public.cms_content.
    * @returns {Promise<{contentMap: Record<string, any>, metaMap: Record<string, {version: number, updated_at: string, isRemote: boolean}}>}
    */
-  async getAllCmsContentWithMeta() {
+  async getAllCmsContentWithMeta({ includeHidden = false } = {}) {
     const configured = (this && typeof this.isConfigured === 'boolean') ? this.isConfigured : isConfigured;
     if (!configured) {
       return { contentMap: {}, metaMap: {} };
     }
-    const rows = await restRequest('cms_content?select=key,content,version,updated_at');
+    let isStaff = false;
+    const user = typeof authService !== 'undefined' ? authService.getUser() : null;
+    if (user?.id) {
+      try {
+        isStaff = await restRequest('rpc/has_staff_cms_access', { method: 'POST', body: {} }) === true;
+      } catch {
+        isStaff = false;
+      }
+    }
+    if (includeHidden && !isStaff) {
+      throw new Error('The signed-in account does not have staff CMS access.');
+    }
+    const rows = isStaff
+      ? await restRequest('cms_content?select=key,content,version,updated_at')
+      : await restRequest('rpc/get_public_cms_content', { method: 'POST', body: {} });
     if (!Array.isArray(rows)) {
       throw new Error('Invalid response from cms_content: expected array');
     }
@@ -378,8 +392,20 @@ export const supabaseClient = {
       };
     }
 
-    const rows = await restRequest(`cms_content?key=eq.${encodeURIComponent(key)}&select=key,content,version,updated_at`);
-    if (!Array.isArray(rows) || rows.length === 0) {
+    const user = typeof authService !== 'undefined' ? authService.getUser() : null;
+    let isStaff = false;
+    if (user?.id) {
+      try {
+        isStaff = await restRequest('rpc/has_staff_cms_access', { method: 'POST', body: {} }) === true;
+      } catch {
+        isStaff = false;
+      }
+    }
+    const rows = isStaff
+      ? await restRequest(`cms_content?key=eq.${encodeURIComponent(key)}&select=key,content,version,updated_at`)
+      : await restRequest('rpc/get_public_cms_content', { method: 'POST', body: {} });
+    const selectedRows = Array.isArray(rows) ? rows.filter(row => row.key === key) : rows;
+    if (!Array.isArray(selectedRows) || selectedRows.length === 0) {
       return {
         content: null,
         version: 0,
@@ -388,7 +414,7 @@ export const supabaseClient = {
         isRemote: true
       };
     }
-    const row = rows[0];
+    const row = selectedRows[0];
     return {
       content: row.content,
       version: typeof row.version === 'number' ? row.version : 1,
@@ -618,8 +644,8 @@ export const supabaseClient = {
       return result;
     }
 
-    // 2. Only upon confirmed remote success (or valid demo mode): mirror to localStorage
-    if (typeof localStorage !== 'undefined') {
+    // 2. Only mirror local demo data. Remote catalogs may contain drafts.
+    if (!isConfigured && typeof localStorage !== 'undefined') {
       try {
         localStorage.setItem('cms_products', JSON.stringify(oems));
       } catch (e) {
@@ -1103,3 +1129,4 @@ export const supabaseClient = {
     return { success: true };
   }
 };
+

@@ -6,6 +6,7 @@ import { supabaseClient } from '../services/supabaseClient.js';
 // In-memory cache for ultra-fast, synchronous access
 const memoryCache = new Map();
 let isInitialized = false;
+let cacheGeneration = 0;
 
 // Optimistic Concurrency Control (OCC) metadata tracking (pageKey -> { version, updated_at, isRemote })
 const sectionMetadata = new Map();
@@ -21,6 +22,18 @@ function cloneData(val) {
     } catch {}
   }
   return JSON.parse(JSON.stringify(val));
+}
+
+function clearRemoteCmsStorage() {
+  if (typeof localStorage === 'undefined') return;
+  const keys = [];
+  for (let index = 0; index < localStorage.length; index += 1) {
+    const key = localStorage.key(index);
+    if (key) keys.push(key);
+  }
+  for (const key of keys) {
+    if (key.startsWith('cms_') && key !== 'cms_version') localStorage.removeItem(key);
+  }
 }
 
 // Cross-component cache sync listener (e.g. ImageMigrationService or cross-tab events)
@@ -41,13 +54,32 @@ if (typeof window !== 'undefined') {
 
   // Cross-tab synchronization via browser storage events
   window.addEventListener('storage', (e) => {
-    if (e.key && e.key.startsWith('cms_') && e.newValue) {
+    if (supabaseClient.isConfigured && (
+      (e.key && e.key.startsWith('cms_'))
+      || e.key === 'icon_staff_session'
+      || e.key === 'icon_staff_token'
+    )) {
+      // Remote CMS data is role-filtered by the server; never hydrate it from browser storage.
+      // Refresh on removals and auth changes too, so an open tab drops a stale staff cache.
+      ContentService.refresh().catch(err => {
+        console.warn('Failed to refresh CMS after a cross-tab change:', err.message);
+      });
+      return;
+    }
+
+    if (e.key && e.key.startsWith('cms_') && e.key !== 'cms_version' && e.newValue) {
       const pageKey = e.key.replace(/^cms_/, '');
       try {
         const parsed = JSON.parse(e.newValue);
         memoryCache.set(pageKey, cloneData(parsed));
         window.dispatchEvent(new CustomEvent('cms-data-updated', { detail: { pageKey, data: parsed } }));
       } catch {}
+    }
+
+    if (e.key && e.key.startsWith('cms_') && !e.newValue) {
+      const pageKey = e.key.replace(/^cms_/, '');
+      memoryCache.delete(pageKey);
+      sectionMetadata.delete(pageKey);
     }
   });
 }
@@ -715,25 +747,21 @@ export const ContentService = {
    * Pre-loads content from Supabase into memoryCache before routing begins.
    * Called during main.js bootstrap.
    */
-  async init() {
+  async init({ includeHidden = false, generation = cacheGeneration } = {}) {
     if (isInitialized) return;
 
     // 1. Central database hydration if Supabase is configured
     if (typeof supabaseClient !== 'undefined' && supabaseClient.isConfigured) {
+      // Never reuse a browser copy of remote CMS data: it may contain staff-only drafts.
+      clearRemoteCmsStorage();
       try {
-        const { contentMap, metaMap } = await supabaseClient.getAllCmsContentWithMeta();
+        const { contentMap, metaMap } = await supabaseClient.getAllCmsContentWithMeta({ includeHidden });
+        if (generation !== cacheGeneration) return;
         if (contentMap && typeof contentMap === 'object' && Object.keys(contentMap).length > 0) {
           for (const [k, val] of Object.entries(contentMap)) {
             memoryCache.set(k, cloneData(val));
             if (metaMap && metaMap[k]) {
               sectionMetadata.set(k, { ...metaMap[k] });
-            }
-            if (typeof localStorage !== 'undefined') {
-              try {
-                localStorage.setItem(`cms_${k}`, JSON.stringify(val));
-              } catch {
-                // Ignore quota error in mirror
-              }
             }
           }
           isRemotePersistAvailable = true;
@@ -743,6 +771,7 @@ export const ContentService = {
         }
         throw new Error('Configured Supabase database returned empty cms_content.');
       } catch (err) {
+        if (generation !== cacheGeneration) return;
         console.warn('ContentService.init() network error; central persistence will fail closed:', err.message);
         isRemotePersistAvailable = false;
         remotePersistError = err.message;
@@ -761,6 +790,23 @@ export const ContentService = {
     }
 
     isInitialized = true;
+  },
+
+  async refresh(options = {}) {
+    const generation = ++cacheGeneration;
+    memoryCache.clear();
+    sectionMetadata.clear();
+    isInitialized = false;
+    if (supabaseClient.isConfigured && typeof localStorage !== 'undefined') {
+      clearRemoteCmsStorage();
+      isRemotePersistAvailable = true;
+      remotePersistError = null;
+    }
+    await this.init({ ...options, generation });
+    if (generation !== cacheGeneration) {
+      return { success: false, error: 'CMS refresh was superseded by a newer authentication or content refresh.' };
+    }
+    return { success: isRemotePersistAvailable, error: remotePersistError };
   },
 
   /**
@@ -1075,13 +1121,6 @@ export const ContentService = {
       });
 
       memoryCache.set(pageKey, cloneData(data));
-      if (typeof localStorage !== 'undefined') {
-        try {
-          localStorage.setItem(`cms_${pageKey}`, JSON.stringify(data));
-        } catch (e) {
-          console.warn('localStorage quota exceeded in saveData mirror:', e.message);
-        }
-      }
       if (typeof window !== 'undefined') {
         window.dispatchEvent(new CustomEvent('cms-data-updated', { detail: { pageKey, data, version: newVersion } }));
       }
@@ -1167,4 +1206,5 @@ export const ContentService = {
     return ImageStorage.resolveImageUrl(url);
   }
 };
+
 
