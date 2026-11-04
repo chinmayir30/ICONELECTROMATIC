@@ -98,7 +98,8 @@ In the Supabase Dashboard, open the **SQL Editor** (`>_`) and run the SQL migrat
 10. `supabase/migrations/010_restrict_career_application_select_grants.sql`: Allows authenticated staff reads under RLS and service-role inserts; denies anonymous access.
 11. `supabase/migrations/011_move_rls_helpers_to_private_schema.sql`: Moves SECURITY DEFINER authorization helpers into the non-exposed `private` schema and updates all dependent RLS policies.
 12. `supabase/migrations/20261104095115_explicit_data_api_grants.sql`: Grants the required catalog, CMS, admin, enquiry, career, and service-role table privileges explicitly.
-13. `supabase/seed.sql`: Populates the complete catalog of 13 OEMs, 86 categories, and 167 products with specs and image relations.
+13. `supabase/migrations/20261104110220_public_cms_content_filter.sql`: Removes direct public CMS table reads and adds a filtered RPC that excludes nested unpublished content.
+14. `supabase/seed.sql`: Populates the complete catalog of 13 OEMs, 86 categories, and 167 products with specs and image relations.
 
 ### Migration backup, recovery and rollback requirements
 
@@ -219,4 +220,5 @@ When staff finishes updating products, clicking **Publish to Production** trigge
 | Preview production build locally | `npm run preview` |
 | Regenerate static HTML & sitemap | `node scripts/build-static-catalog.mjs` |
 | Verify Git status | `git status` |
+
 
