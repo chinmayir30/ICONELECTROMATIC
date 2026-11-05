@@ -432,7 +432,7 @@ export function renderContactPage() {
               <i class="fa-solid fa-bolt" style="color:var(--logo-red);"></i> Quick Requirement Presets
             </h4>
             <p style="font-size:0.85rem;color:var(--text-gray-400);margin-bottom:var(--space-3);">Click any preset to prefill your inquiry message:</p>
-            <div class="contact-presets-grid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 8px;">
+            <div class="contact-presets-grid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 8px; align-items: stretch;">
               ${((c.presets || [
                 'Inquiring about High Frequency Laminates & Prepregs.',
                 'Inquiring about Embedded Resistive Film.',
