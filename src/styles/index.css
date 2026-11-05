@@ -1254,7 +1254,18 @@ body[data-page="blog"] .logo-container img,
 }
 
 .contact-presets-card .quick-preset,
-.contact-relay-card .quick-preset {
+.contact-relay-card .quick-preset,
+.contact-presets-grid .quick-preset {
+  white-space: normal !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  min-height: 46px;
+  height: 100%;
+  line-height: 1.35;
+  padding: 8px 14px !important;
+  box-sizing: border-box;
   transition: all 0.2s ease;
 }
 
