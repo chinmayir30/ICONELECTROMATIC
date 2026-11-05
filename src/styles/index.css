@@ -13561,3 +13561,50 @@ img, video, iframe {
 [data-theme="light"] .domain-sector-card {
   border-radius: 18px !important;
 }
+
+/* Transline: Display complete logo without white background across Partners, Products & Blogs in Dark Mode */
+.oem-card[data-oem-id="transline-technology"] .oem-card-logo-container,
+.blogs-oem-card[data-oem-id="transline-technology"] .oem-logo-badge-pod,
+.partner-static-card[data-partner-id="transline"] .partner-stream-card-logo-box,
+.partner-static-card[data-partner-id="transline-technology"] .partner-stream-card-logo-box,
+.oem-running-logo-item[data-partner-id="transline"] .oem-running-logo-box,
+.oem-running-logo-item[data-partner-id="transline-technology"] .oem-running-logo-box,
+.oem-card-logo-container:has(img[src*="Transline"]),
+.oem-logo-badge-pod:has(img[src*="Transline"]),
+.partner-stream-card-logo-box:has(img[src*="Transline"]),
+.oem-running-logo-box:has(img[src*="Transline"]),
+.catalog-oem-banner-logo-box:has(img[src*="Transline"]),
+.blogs-selected-logo-wrap:has(img[src*="Transline"]) {
+  background: transparent !important;
+}
+
+.oem-card-logo-container img[src*="Transline"],
+.oem-logo-badge-pod img[src*="Transline"],
+.partner-stream-card-logo-box img[src*="Transline"],
+.oem-running-logo-box img[src*="Transline"],
+.catalog-oem-banner-logo-box img[src*="Transline"],
+.blogs-selected-logo-wrap img[src*="Transline"],
+.cpl-inline-logo-img[src*="Transline"],
+.partner-logo-img[src*="Transline"],
+.oem-logo-img[src*="Transline"],
+.oem-running-logo-img[src*="Transline"] {
+  max-height: 44px !important;
+  width: auto !important;
+  max-width: 90% !important;
+  object-fit: contain !important;
+  display: block;
+  margin: 0 auto;
+}
+
+[data-theme="light"] .oem-card-logo-container img[src*="Transline"],
+[data-theme="light"] .oem-logo-badge-pod img[src*="Transline"],
+[data-theme="light"] .partner-stream-card-logo-box img[src*="Transline"],
+[data-theme="light"] .oem-running-logo-box img[src*="Transline"],
+[data-theme="light"] .catalog-oem-banner-logo-box img[src*="Transline"],
+[data-theme="light"] .blogs-selected-logo-wrap img[src*="Transline"],
+[data-theme="light"] .cpl-inline-logo-img[src*="Transline"],
+[data-theme="light"] .partner-logo-img[src*="Transline"],
+[data-theme="light"] .oem-logo-img[src*="Transline"],
+[data-theme="light"] .oem-running-logo-img[src*="Transline"] {
+  filter: invert(1) brightness(0.1) !important;
+}

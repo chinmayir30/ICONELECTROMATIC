@@ -53,7 +53,7 @@ if (typeof window !== 'undefined') {
 }
 
 // ─── Version key: bump this to ensure fresh schema sync with existing localStorage ───
-const CMS_VERSION = 'v12';
+const CMS_VERSION = 'v13';
 
 const INITIAL_CONTENT = {
   header: {
@@ -168,6 +168,7 @@ const INITIAL_CONTENT = {
       { id: 'b-1', icon: 'fa-solid fa-award', text: 'Multi-Decade Pedigree', color: '#FDA4AF', bg: 'rgba(225,29,72,0.08)', border: 'rgba(225,29,72,0.25)' },
       { id: 'b-2', icon: 'fa-solid fa-satellite', text: 'Defense & Telecom Solutions', color: '#FCD34D', bg: 'rgba(245,158,11,0.08)', border: 'rgba(245,158,11,0.25)' },
       { id: 'b-3', icon: 'fa-solid fa-globe', text: 'Global OEM Representation', color: '#6EE7B7', bg: 'rgba(16,185,129,0.08)', border: 'rgba(16,185,129,0.25)' },
+      { id: 'b-4', icon: 'fa-solid fa-leaf', text: 'DHL GoGreen Plus Certified (IESPL)', color: '#4ADE80', bg: 'rgba(34,197,94,0.08)', border: 'rgba(34,197,94,0.25)' },
     ],
     coreCapabilitiesTitle: 'Core Capabilities',
     coreCapabilitiesSubtitle: 'Fulfillment partners for your electronic ambitions',
@@ -535,7 +536,6 @@ const INITIAL_CONTENT = {
       'Enquiring about Thin Film Capacitors.',
       'Enquiring about Ceramic Capacitors.',
       'Enquiring about PCB Fabrication.',
-      'Enquiring about Perimeter Intrusion Detection System (PIDS).',
     ],
     careers: {
       // Tab & Breadcrumbs
@@ -897,11 +897,12 @@ export const ContentService = {
         { id: 'rfuw', name: 'RFuW Engineering', domain: 'High-Performance RF Switches & Modules', category: 'components', accentColor: 'red', logoImg: '/images/oem-logos/RFuW_Logo.png', description: 'RFuW Engineering specialises in rugged RF switches, limiters, and integrated microwave modules designed for high-power, wideband, and mission-critical aerospace and defence applications.', website: 'https://www.rfuw.com' },
         { id: 'yttek', name: 'YTTEK', domain: 'Software-Defined Radio (SDR) Platforms', category: 'semiconductors', accentColor: 'blue', logoImg: '/images/oem-logos/YTTEK_Logo_wb.png', description: 'YTTEK builds flexible and reconfigurable software-defined radio platforms supporting research, defence, and advanced wireless communication applications.', website: 'https://www.yttek.com' },
         { id: 'quantic-eulex', name: 'Quantic Eulex / Evans', domain: 'Advanced Ceramic Microwave & Hybrid Capacitors', category: 'components', accentColor: 'blue', logoImg: '/images/oem-logos/Evans_logo.png', description: 'Quantic Eulex & Evans Hybrid Capacitors engineer high-energy, high-frequency ceramic capacitors and hybrid capacitor banks supporting radar, SATCOM, aerospace, and space platforms.', website: 'https://www.quanticdevices.com' },
-        { id: 'quantic-ohmega', name: 'Quantic Ohmega-Ticer', domain: 'Embedded Thin-Film Resistive Materials', category: 'materials', accentColor: 'blue', logoImg: '/images/oem-logos/OhmegaTicer_Black.png', description: 'Ohmega-Ticer provides embedded thin-film resistive copper foils that enable compact, high-performance digital and RF PCB designs for defence, aerospace, and advanced electronics.', website: 'https://www.ohmega.com' },
+        { id: 'quantic-ohmega', name: 'Ohmega-Ticer', domain: 'Embedded Thin-Film Resistive Materials', category: 'materials', accentColor: 'blue', logoImg: '/images/oem-logos/OhmegaTicer_Black.png', description: 'Ohmega-Ticer provides embedded thin-film resistive copper foils that enable compact, high-performance digital and RF PCB designs for defence, aerospace, and advanced electronics.', website: 'https://www.ohmega.com' },
         { id: 'thermosen', name: 'Thermosen Technologies', domain: 'Temperature Sensors for Hi-Rel Applications', category: 'sensors', accentColor: 'blue', logoImg: '/images/oem-logos/Thermosen_logo.png', description: 'Thermosen develops temperature sensing solutions focused on Hi-Rel, aerospace, and defence sectors, ensuring accurate thermal monitoring in extreme environments.', website: 'https://www.thermosen.com' },
         { id: 'fortify', name: 'Fortify', domain: 'Dielectric 3D Printing for RF & Microwave Devices', category: 'materials', accentColor: 'blue', logoImg: '/images/oem-logos/Fortify_Logo_Transparent.png', description: 'Fortify enables advanced dielectric 3D printing materials for RF and microwave components, supporting complex geometries, rapid prototyping, and next-generation device development.', website: 'https://www.fortify3d.com' },
         { id: 'powerfactor', name: 'PowerFactor Electronics (PowerRF)', domain: 'Power Electronics & RF Microwave Domains', category: 'components', accentColor: 'blue', logoImg: '/images/oem-logos/powerrf-logo.png', description: 'Specialized in R&D, design, testing, consultancy, and product development in Power Electronics and RF Microwave domains under the Make in India initiative.', website: 'https://powerrf.in' },
         { id: 'nee', name: 'NEE International (New Era Electronics)', domain: 'Application PCBs for Microwave & Satellite Communication', category: 'sensors', accentColor: 'red', logoImg: '/images/oem-logos/NEE_Logo_wb.png', description: 'NEE International is a leading fabricator of microwave and satellite communication PCBs, supporting high-frequency and space-grade electronic applications.', website: 'https://neeinternational.com' },
+        { id: 'transline', name: 'Transline Technology', domain: 'High Frequency, Microwave & mmWave PCB Fabrication', category: 'materials', accentColor: 'blue', logoImg: '/images/oem-logos/Transline_Logo_Transparent.png', description: 'Transline Technology is an elite fabricator of advanced RF, microwave, and millimeter-wave printed circuit boards utilizing Rogers, PTFE, and hybrid dielectric stackups for aerospace and defense electronics.', website: 'https://translinetech.com' },
       ];
       const initial = {
         heroTitle: 'Authorized Technology Partners',

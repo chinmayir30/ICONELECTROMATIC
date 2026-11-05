@@ -41,6 +41,8 @@ Stage 7 - Central CMS Supabase Persistence & SSG Integration (feat/admin-cms-sup
 - [x] Equal Height & Proper Alignment for Office Addresses & Send Us a Message on Contact (feat/header-refinement-alignment)
 - [x] Separate Mini-Circuits & RFuW Homepage Filter Buttons (feat/header-refinement-alignment)
 - [x] Refine "Our Journey" Heading & Remove Bespoke Solutions Card on About Us (feat/header-refinement-alignment)
+- [x] Display Complete Transline Logo across Products, Blogs & Partners (PR #34)
+- [x] Remove Quantic from Ohmega-Ticer, Add DHL GoGreen Badge to About Us, Remove PIDS Contact Preset (PR #34)
 
 ## Decisions (confirmed by the owner)
 | Date | Decision | Why |

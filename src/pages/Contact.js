@@ -433,7 +433,7 @@ export function renderContactPage() {
             </h4>
             <p style="font-size:0.85rem;color:var(--text-gray-400);margin-bottom:var(--space-3);">Click any preset to prefill your inquiry message:</p>
             <div class="contact-presets-grid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 8px;">
-              ${(c.presets || [
+              ${((c.presets || [
                 'Inquiring about High Frequency Laminates & Prepregs.',
                 'Inquiring about Embedded Resistive Film.',
                 'Inquiring about 3D Printed Dielectric Parts.',
@@ -447,9 +447,8 @@ export function renderContactPage() {
                 'Inquiring about Thin Film Capacitors.',
                 'Inquiring about Ceramic Capacitors.',
                 'Inquiring about PCB Fabrication.',
-                'Inquiring about Perimeter Intrusion Detection System (PIDS).'
-              ]).map(p => `
-                <button class="filter-chip-dark quick-preset" data-preset="${p}">${p.replace(/^Inquiring about /, '').replace(/\.$/, '')}</button>
+              ]).filter(p => !p.toLowerCase().includes('perimeter intrusion'))).map(p => `
+                <button class="filter-chip-dark quick-preset" data-preset="${p}">${p.replace(/^(Inquiring|Enquiring) about /, '').replace(/\.$/, '')}</button>
               `).join('')}
             </div>
           </div>
