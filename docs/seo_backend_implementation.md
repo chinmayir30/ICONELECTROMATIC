@@ -567,7 +567,7 @@ Open items that affect these phases: client decisions on category grouping, dupl
 - **Undo:** Revert commit or branch.
 
 ### Entry 27: Equal Height & Field Alignment on Contact Page
-- **Status:** In progress (branch `feat/header-refinement-alignment`, 05 Nov 2026)
+- **Status:** Implemented (PR #33, merge commit `7ba6aaa29d3c587fa2c168fac67338f6cd09e8a6`, 05 Nov 2026)
 - **What was built:**
   - Standardized `.contact-relay-grid` to a balanced two-column layout (`grid-template-columns: 1fr 1fr; gap: var(--space-8); align-items: stretch;`).
   - Set both the left "Office Addresses" card (`.contact-relay-card.contact-office-card`) and the right "Send Us a Message" form card (`.contact-relay-form`) to `height: 100%; display: flex; flex-direction: column;` with identical `padding: var(--space-8)` (32px), matching rounded corners (`border-radius: var(--radius-xl)` / 20px), and matching subtle box shadows.
@@ -593,7 +593,7 @@ Open items that affect these phases: client decisions on category grouping, dupl
 - **Undo:** Revert commit or branch.
 
 ### Entry 28: Separate Mini-Circuits and RFuW Filter Buttons on Homepage
-- **Status:** In progress (branch `feat/header-refinement-alignment`, 05 Nov 2026)
+- **Status:** Implemented (PR #33, merge commit `7ba6aaa29d3c587fa2c168fac67338f6cd09e8a6`, 05 Nov 2026)
 - **What was built:**
   - Separated the combined "Mini-Circuits & RFuW" filter chip in the homepage Popular Products & Components section into two independent buttons: `<button class="filter-chip-dark" data-filter="minicircuits">Mini-Circuits</button>` and `<button class="filter-chip-dark" data-filter="rfuw">RFuW</button>`.
   - Updated the event filter routing in `initHomePage()` so selecting "Mini-Circuits" filters strictly by `p.oemId === 'minicircuits'`, and selecting "RFuW" filters strictly by `p.oemId === 'rfuw-engineering'`.
@@ -615,7 +615,7 @@ Open items that affect these phases: client decisions on category grouping, dupl
 - **Undo:** Revert commit or branch.
 
 ### Entry 29: Refine "Our Journey" Heading & Remove Bespoke Solutions Card on About Us
-- **Status:** In progress (branch `feat/header-refinement-alignment`, 05 Nov 2026)
+- **Status:** Implemented (PR #33, merge commit `7ba6aaa29d3c587fa2c168fac67338f6cd09e8a6`, 05 Nov 2026)
 - **What was built:**
   - Removed the "Chronology" `<h2>` heading on the About Us page and promoted "Our Journey" to be the prominent primary `<h2>` section title (`font-size: clamp(2.1rem, 3.2vw, 2.75rem); font-weight: 800; line-height: 1.2; margin-bottom: 14px;`).
   - Removed the entire "Bespoke Solutions" card (including its image, eyebrow, heading, subtitle, description, and `.journey-pillars-grid` container).
@@ -638,7 +638,7 @@ Open items that affect these phases: client decisions on category grouping, dupl
 - **Undo:** Revert commit or branch.
 
 ### Entry 30: Replace PowerRF Brand Logo on Partners Page & Running Ticker
-- **Status:** In progress (branch `feat/header-refinement-alignment`, 05 Nov 2026)
+- **Status:** Implemented (PR #33, merge commit `7ba6aaa29d3c587fa2c168fac67338f6cd09e8a6`, 05 Nov 2026)
 - **What was built:**
   - Replaced the legacy vertical PowerRF logo asset with the official horizontal company brand logo provided by the client (`media_1793840139530_efcaf9d1.png`).
   - Generated a clean, Retina-ready 2x RGBA asset at [`public/images/oem-logos/powerrf-logo.png`](file:///c:/Users/User/ICONELECTROMATIC/public/images/oem-logos/powerrf-logo.png) (552 × 228 px, ~2.42:1 aspect ratio) with transparent background and boosted faint Smith chart curves, eliminating any rectangular background seam inside the white logo cards.
@@ -663,7 +663,7 @@ Open items that affect these phases: client decisions on category grouping, dupl
 - **Undo:** Revert commit or branch.
 
 ### Entry 31: Display Complete Fortify Logo Without White Background Across Partners, Products & Blogs
-- **Status:** In progress (branch `feat/header-refinement-alignment`, 05 Nov 2026)
+- **Status:** Implemented (PR #33, merge commit `7ba6aaa29d3c587fa2c168fac67338f6cd09e8a6`, 05 Nov 2026)
 - **What was built:**
   - Enhanced the official Fortify brand logo to a complete, uncropped 2x Retina transparent PNG asset saved at [`public/images/oem-logos/Fortify_Logo_Transparent.png`](file:///c:/Users/User/ICONELECTROMATIC/public/images/oem-logos/Fortify_Logo_Transparent.png) (and mirrored to `Fortify_Logo_Black_Bg.png` for complete backwards compatibility) with smooth subpixel antialiasing and full geometric chevron + "FORTIFY" logotype (652 × 126 px).
   - Eliminated the jarring solid white container background on Fortify cards across all three key pages:
@@ -688,6 +688,32 @@ Open items that affect these phases: client decisions on category grouping, dupl
 - **Checked (and how):**
   - Automated tests: `node --test tests/*.test.mjs` — 60/60 tests passing.
   - Production build: `npm run build` — 167 static product pages generated, exit code 0.
+- **Not checked:**
+  - Live production deployment URL (checked after pull request merge).
+- **Undo:** Revert commit or branch.
+
+### Entry 32: Display Complete Transline Technology Logo Across Partners, Products & Blogs
+- **Status:** In progress (branch `feat/transline-logo-frontend`, 05 Nov 2026)
+- **What was built:**
+  - Added official Transline Technology brand logo asset with transparent alpha background to `public/images/oem-logos/Transline_Logo_Transparent.png` (294 × 73 px), smoothly anti-aliased to render cleanly on both dark and light surfaces.
+  - Linked `logoImg: "/images/oem-logos/Transline_Logo_Transparent.png"` to OEM `transline-technology` in `src/data/catalogData.js`.
+  - Added Transline Technology to `initialPartners` in `src/data/ContentService.js` to ensure representation in the Partners page running logo ticker and static partner card grid.
+  - Added dedicated styling rules in `src/styles/index.css` for Transline logo across `.oem-logo-img`, `.partner-logo-img`, `.blogs-selected-logo-wrap`, and `.oem-running-logo-box` with `max-height: 44px !important` and light theme contrast adaptation.
+  - Re-rendered static HTML product pages and sitemap via `npm run build`.
+- **Technology and role:** Image alpha extraction, CSS layout rules and theme adaptation, static site generation.
+- **How it works:** Transline Technology now supplies a primary `logoImg` so `Products.js`, `Blogs.js`, and `Partners.js` render the real brand logo instead of falling back to text or SVG placeholders.
+- **Files and folders added or changed:**
+  - `public/images/oem-logos/Transline_Logo_Transparent.png`
+  - `public/images/oem-logos/Transline_Logo_Dark_Bg.png`
+  - `src/data/catalogData.js`
+  - `src/data/ContentService.js`
+  - `src/styles/index.css`
+  - `public/products/...`
+  - `docs/seo_backend_implementation.md`
+- **Data and security notes:** Exact client-provided OEM asset. No invented data, no secrets, no new dependencies.
+- **Checked (and how):**
+  - Unit tests: all tests passing (100%).
+  - Production build: `npm run build` generates 167 static product pages cleanly (exit code 0).
 - **Not checked:**
   - Live production deployment URL (checked after pull request merge).
 - **Undo:** Revert commit or branch.

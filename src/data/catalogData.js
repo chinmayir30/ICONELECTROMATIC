@@ -2297,6 +2297,7 @@ export const CATALOG = [
     accentColor: "#F59E0B",
     glowColor: "rgba(245, 158, 11, 0.4)",
     defaultImage: "/images/rf-microwave-pcb.jpg",
+    logoImg: "/images/oem-logos/Transline_Logo_Transparent.png",
     logoSvg: "<svg viewBox=\"0 0 220 42\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"2\" y=\"2\" width=\"38\" height=\"38\" rx=\"9\" fill=\"rgba(245,158,11,0.2)\" stroke=\"#F59E0B\" stroke-width=\"1.8\"/><path d=\"M12 21h8l4-9 4 18 4-9h8\" stroke=\"#FBBF24\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><text x=\"48\" y=\"21\" fill=\"#FFFFFF\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"900\" font-size=\"14.5\" letter-spacing=\"0.5\">TRANSLINE</text><text x=\"48\" y=\"34\" fill=\"#FBBF24\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"800\" font-size=\"7.5\" letter-spacing=\"1.5\">RF/MW PCB TECH</text></svg>",
     categories: [
       {
