@@ -507,6 +507,191 @@ Open items that affect these phases: client decisions on category grouping, dupl
   - Live production deployment URL (checked after pull request merge).
 - **Undo:** Revert commit or branch.
 
+### Entry 25: Remove Global Partnerships Pillar & Increase Logo on Catalog Pages
+- **Status:** In progress (branch `feat/header-refinement-alignment`, 04 Nov 2026)
+- **What was built:**
+  - Removed the "Global Partnerships" pillar card (including image, heading, eyebrow, subtitle, and description) from `src/pages/About.js` and `src/data/ContentService.js`.
+  - Added `.journey-pillars-grid.single-pillar` styling in `src/styles/index.css` to center the remaining "Bespoke Solutions" pillar card (`max-width: 840px; margin: 16px auto 0;`).
+  - Added dynamic `data-page` routing attributes to `document.body`, `#site-header`, and `.header-inner` in `src/main.js` and `src/components/Header.js`.
+  - Slightly increased the header logo size to 58px height on the Products, Partners, and Blogs pages (laptop 50px, tablet 44px, mobile 38px) while maintaining its proportions (`width: auto`, `object-fit: contain`).
+  - Preserved the 92px header height, vertical alignment, and navigation link spacing across all pages with zero impact on dark theme or other sections.
+  - Bumped `CMS_VERSION` to `'v9'` in `ContentService.js` to ensure fresh schema cache invalidation.
+- **Technology and role:** Vanilla JavaScript page templates, CSS responsive layout styles.
+- **How it works:** When navigating to `/products`, `/partners`, or `/blogs`, the body and header inner elements receive matching `data-page` attributes, triggering targeted responsive logo CSS rules. On About Us, the pillars array renders only the single Bespoke Solutions card with centered grid styling.
+- **Files and folders added or changed:**
+  - `src/pages/About.js`
+  - `src/data/ContentService.js`
+  - `src/components/Header.js`
+  - `src/main.js`
+  - `src/styles/index.css`
+  - `docs/PROJECT-STATE.md`
+  - `docs/seo_backend_implementation.md`
+- **Data and security notes:** Pure frontend layout adjustments. Zero hardcoded claims or invented data, no secrets, no new dependencies.
+- **Checked (and how):**
+  - `npm run build`: Exit code 0, 167 static product pages generated.
+  - Automated tests: `node --test tests/*.test.mjs` — 60/60 tests passing.
+  - Local dev server active and hot-reloading smoothly.
+- **Not checked:**
+  - Live production deployment URL (checked after pull request merge).
+- **Undo:** Revert commit or branch.
+
+### Entry 26: Milestone Image Cropping & Positioning on About Us Timeline
+- **Status:** In progress (branch `feat/header-refinement-alignment`, 04 Nov 2026)
+- **What was built:**
+  - Identified root cause of visual flaws on the About Us timeline milestone cards: the original cropped assets suffered progressive horizontal offset shifts (+14px to +122px), causing Card 4 (India incorporation) to display a large empty blue background strip on the right, and clipping key landmark subjects in Cards 2 and 3.
+  - Re-sliced all 4 milestone photos directly from the uncompressed master infographic asset (`public/images/timeline/icon-journey-infographic-full.png`) using pixel-accurate bounding boxes (each 322x200 px, 16:10 aspect ratio):
+    - Photo 1 (2009 Bengaluru): `(83, 308, 405, 508)` — perfectly framing the RF engineering team.
+    - Photo 2 (2018 Singapore): `(419, 308, 741, 508)` — centering Marina Bay Sands and the Merlion fountain.
+    - Photo 3 (May 2020 USA): `(754, 308, 1076, 508)` — centering the US flag and Statue of Liberty.
+    - Photo 4 (Nov 2020 India): `(1090, 308, 1412, 508)` — centering the Taj Mahal with zero background border or side void bleed.
+  - Exported 2x Retina-quality JPEGs at 644x400 px with Lanczos resampling and 95% quality.
+  - Explicitly configured `.journey-photo-frame img` with `object-fit: cover` and `object-position: center center` in `src/styles/index.css`.
+  - Maintained all existing timeline styles, badge colors, typography, hover HUD crosshairs, and mobile responsiveness intact.
+- **Technology and role:** Image asset optimization, CSS layout rules.
+- **How it works:** Each milestone card renders a `.journey-photo-frame` with `aspect-ratio: 16 / 10`. The newly sliced 644x400 (16:10) images load at native proportion, preventing any distortion or letterboxing, and `object-position: center center` keeps the landmark focal point centered on all viewport sizes.
+- **Files and folders added or changed:**
+  - `public/images/timeline/timeline-2009-bengaluru.jpg`
+  - `public/images/timeline/timeline-2018-singapore.jpg`
+  - `public/images/timeline/timeline-2020-usa.jpg`
+  - `public/images/timeline/timeline-2020-india.jpg`
+  - `src/styles/index.css`
+  - `docs/PROJECT-STATE.md`
+  - `docs/seo_backend_implementation.md`
+- **Data and security notes:** Pure image asset replacement and CSS styling. Zero hardcoded claims or invented data, no secrets, no new dependencies.
+- **Checked (and how):**
+  - Image geometry verified via Pillow: all 4 images are 644x400 px (1.61 aspect ratio).
+  - Automated tests: `node --test tests/*.test.mjs` — 60/60 tests passing.
+  - Production build: `npm run build` — 167 static product pages generated, exit code 0.
+- **Not checked:**
+  - Live production deployment URL (checked after pull request merge).
+- **Undo:** Revert commit or branch.
+
+### Entry 27: Equal Height & Field Alignment on Contact Page
+- **Status:** In progress (branch `feat/header-refinement-alignment`, 05 Nov 2026)
+- **What was built:**
+  - Standardized `.contact-relay-grid` to a balanced two-column layout (`grid-template-columns: 1fr 1fr; gap: var(--space-8); align-items: stretch;`).
+  - Set both the left "Office Addresses" card (`.contact-relay-card.contact-office-card`) and the right "Send Us a Message" form card (`.contact-relay-form`) to `height: 100%; display: flex; flex-direction: column;` with identical `padding: var(--space-8)` (32px), matching rounded corners (`border-radius: var(--radius-xl)` / 20px), and matching subtle box shadows.
+  - Aligned header typography and spacing: matched `<h3>` margins (6px), line-heights, and standardized subtitles with `.subtitle` (`font-size: 0.9rem; line-height: 1.5; margin-bottom: var(--space-6)`).
+  - Configured `.contact-meta-list` to `display: flex; flex-direction: column; justify-content: space-between; flex: 1;`, evenly and elegantly distributing the four office rows (India, Singapore, USA, and Business Hours) across the full height of the card.
+  - Configured `#contact-full-form` to `display: flex; flex-direction: column; flex: 1; justify-content: space-between;`, allowing `.relay-field-message` to flex harmoniously and locking the submit button cleanly to the bottom line of the form card.
+  - Fixed form field overflow and awkward wrapping by setting `.relay-form-row` to `grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);`, adding `text-overflow: ellipsis; white-space: nowrap; overflow: hidden;` on `<select>` elements, and removing double bottom margins on nested `.relay-field` elements.
+  - Relocated "Quick Requirement Presets" into a dedicated, responsive row (`.contact-presets-row`) directly below the two-column grid, keeping one-click presets fully functional on the Inquiry tab and properly toggled on the Careers tab.
+  - Preserved full dark/light theme consistency and responsive mobile behavior (`max-width: 1024px`).
+- **Technology and role:** CSS Grid / Flexbox layout alignment, semantic markup structure.
+- **How it works:** CSS Grid stretches both primary cards to equal vertical height. Inside the cards, flexbox distributes the address list and form elements proportionately so both bottom edges align seamlessly without any empty voids.
+- **Files and folders added or changed:**
+  - `src/pages/Contact.js`
+  - `src/styles/index.css`
+  - `docs/PROJECT-STATE.md`
+  - `docs/seo_backend_implementation.md`
+- **Data and security notes:** Pure CSS layout and HTML structure alignment. Zero hardcoded claims or invented data, no secrets, no new dependencies.
+- **Checked (and how):**
+  - Automated tests: `node --test tests/*.test.mjs` — 60/60 tests passing.
+  - Production build: `npm run build` — 167 static product pages generated, exit code 0.
+- **Not checked:**
+  - Live production deployment URL (checked after pull request merge).
+- **Undo:** Revert commit or branch.
+
+### Entry 28: Separate Mini-Circuits and RFuW Filter Buttons on Homepage
+- **Status:** In progress (branch `feat/header-refinement-alignment`, 05 Nov 2026)
+- **What was built:**
+  - Separated the combined "Mini-Circuits & RFuW" filter chip in the homepage Popular Products & Components section into two independent buttons: `<button class="filter-chip-dark" data-filter="minicircuits">Mini-Circuits</button>` and `<button class="filter-chip-dark" data-filter="rfuw">RFuW</button>`.
+  - Updated the event filter routing in `initHomePage()` so selecting "Mini-Circuits" filters strictly by `p.oemId === 'minicircuits'`, and selecting "RFuW" filters strictly by `p.oemId === 'rfuw-engineering'`.
+  - Maintained all existing button styling, spacing, colors, hover and active states, and dark/light theme overrides.
+  - Kept all other product categories ("All Popular", "Rogers Laminates", "Qorvo GaN & ICs", "Ohmega-Ticer", "Fortify 3D Optics", "Sensors & PCB") and sections completely unchanged.
+- **Technology and role:** Client-side component filtering, UI state management.
+- **How it works:** When a filter chip is clicked, `initHomePage()` reads its `data-filter` attribute and filters the `allPopular` array based on the OEM ID, rendering the corresponding product cards into `#home-products-grid`.
+- **Files and folders added or changed:**
+  - `src/pages/Home.js`
+  - `docs/PROJECT-STATE.md`
+  - `docs/seo_backend_implementation.md`
+- **Data and security notes:** Pure frontend event handler and button separation. Zero hardcoded claims or invented data, no secrets, no new dependencies.
+- **Checked (and how):**
+  - Verification test: confirmed Mini-Circuits returns 1 item (`RF/MW Amplifiers`) and RFuW returns 1 item (`RF Limiters`).
+  - Automated tests: `node --test tests/*.test.mjs` — 60/60 tests passing.
+  - Production build: `npm run build` — 167 static product pages generated, exit code 0.
+- **Not checked:**
+  - Live production deployment URL (checked after pull request merge).
+- **Undo:** Revert commit or branch.
+
+### Entry 29: Refine "Our Journey" Heading & Remove Bespoke Solutions Card on About Us
+- **Status:** In progress (branch `feat/header-refinement-alignment`, 05 Nov 2026)
+- **What was built:**
+  - Removed the "Chronology" `<h2>` heading on the About Us page and promoted "Our Journey" to be the prominent primary `<h2>` section title (`font-size: clamp(2.1rem, 3.2vw, 2.75rem); font-weight: 800; line-height: 1.2; margin-bottom: 14px;`).
+  - Removed the entire "Bespoke Solutions" card (including its image, eyebrow, heading, subtitle, description, and `.journey-pillars-grid` container).
+  - Maintained all 4 milestone cards (2009 Bengaluru, 2018 Singapore, May 2020 USA, Nov 2020 India) and the "View Slide Graphic" modal functionality intact.
+  - Preserved clean spacing (`margin-bottom: var(--space-16);`) between the Section 5 timeline and Section 6 ("Why Us / Our Advantage").
+  - Updated `about.journeyTitle` in `ContentService.js`, emptied `about.pillars`, and bumped `CMS_VERSION` to `'v10'` to ensure fresh local cache invalidation.
+- **Technology and role:** Component layout refinement, semantic typography alignment.
+- **How it works:** Section 5 renders a single cohesive `<h2>` for "Our Journey" with the lead description and slide graphic trigger, followed by the 4-milestone chronological rail, seamlessly transitioning into the "Why Us" section without any leftover pillar cards.
+- **Files and folders added or changed:**
+  - `src/pages/About.js`
+  - `src/data/ContentService.js`
+  - `docs/PROJECT-STATE.md`
+  - `docs/seo_backend_implementation.md`
+- **Data and security notes:** Pure frontend layout adjustments. Zero hardcoded claims or invented data, no secrets, no new dependencies.
+- **Checked (and how):**
+  - Automated tests: `node --test tests/*.test.mjs` — 60/60 tests passing.
+  - Production build: `npm run build` — 167 static product pages generated, exit code 0.
+- **Not checked:**
+  - Live production deployment URL (checked after pull request merge).
+- **Undo:** Revert commit or branch.
+
+### Entry 30: Replace PowerRF Brand Logo on Partners Page & Running Ticker
+- **Status:** In progress (branch `feat/header-refinement-alignment`, 05 Nov 2026)
+- **What was built:**
+  - Replaced the legacy vertical PowerRF logo asset with the official horizontal company brand logo provided by the client (`media_1793840139530_efcaf9d1.png`).
+  - Generated a clean, Retina-ready 2x RGBA asset at [`public/images/oem-logos/powerrf-logo.png`](file:///c:/Users/User/ICONELECTROMATIC/public/images/oem-logos/powerrf-logo.png) (552 × 228 px, ~2.42:1 aspect ratio) with transparent background and boosted faint Smith chart curves, eliminating any rectangular background seam inside the white logo cards.
+  - Symmetrically centered the emblem, orange Greek letter $\Phi$, "POWERF" logotype, "Powerfully Innovative" tagline, and "PoweRFactor Electronics Private Limited" footer text.
+  - Updated `DEFAULT_PARTNERS` entry for `id: 'powerfactor'` in [`src/data/ContentService.js`](file:///c:/Users/User/ICONELECTROMATIC/src/data/ContentService.js) to reference `/images/oem-logos/powerrf-logo.png`.
+  - Bumped `CMS_VERSION` to `'v11'` to ensure instant cache invalidation and schema synchronization across active browser sessions.
+  - Verified crisp rendering and optical centering across both the `.partner-stream-card-logo-box` grid and `.oem-running-logo-box` ticker without distortion, stretching, or cropping in both dark and light modes.
+- **Technology and role:** Digital image processing (Pillow Lanczos supersampling, alpha extraction), component data binding, responsive asset optimization.
+- **How it works:** The Partners page queries `ContentService.getData('partners')`. The resolved path `/images/oem-logos/powerrf-logo.png` is passed into both the running marquee ticker and partner cards. With `.partner-logo-img` (`max-height: 58px; max-width: 215px; object-fit: contain;`), the horizontal logo renders naturally at 140.4 × 58 px, seamlessly centered inside the 86px-tall white container.
+- **Files and folders added or changed:**
+  - `public/images/oem-logos/powerrf-logo.png`
+  - `src/data/ContentService.js`
+  - `docs/PROJECT-STATE.md`
+  - `docs/seo_backend_implementation.md`
+- **Data and security notes:** Exact client-provided brand asset used. Zero hardcoded claims or invented data, no secrets, no new dependencies.
+- **Checked (and how):**
+  - Automated tests: `node --test tests/*.test.mjs` — 60/60 tests passing.
+  - Production build: `npm run build` — 167 static product pages generated, exit code 0.
+  - Verified in runtime data model and responsive dimensions.
+- **Not checked:**
+  - Live production deployment URL (checked after pull request merge).
+- **Undo:** Revert commit or branch.
+
+### Entry 31: Display Complete Fortify Logo Without White Background Across Partners, Products & Blogs
+- **Status:** In progress (branch `feat/header-refinement-alignment`, 05 Nov 2026)
+- **What was built:**
+  - Enhanced the official Fortify brand logo to a complete, uncropped 2x Retina transparent PNG asset saved at [`public/images/oem-logos/Fortify_Logo_Transparent.png`](file:///c:/Users/User/ICONELECTROMATIC/public/images/oem-logos/Fortify_Logo_Transparent.png) (and mirrored to `Fortify_Logo_Black_Bg.png` for complete backwards compatibility) with smooth subpixel antialiasing and full geometric chevron + "FORTIFY" logotype (652 × 126 px).
+  - Eliminated the jarring solid white container background on Fortify cards across all three key pages:
+    1. *Partners page*: `.partner-stream-card-logo-box` and `.oem-running-logo-box` ticker.
+    2. *Products page*: `.oem-card-logo-container` and `.catalog-oem-banner-logo-box`.
+    3. *Blogs page*: `.oem-logo-badge-pod` and `.blogs-selected-logo-wrap`.
+  - In Dark Theme, set Fortify container background to transparent (`background: transparent !important;`) with a subtle dark border (`border: 1px solid rgba(255, 255, 255, 0.12);`), allowing the pure white lettering and chevron to blend naturally into the dark card surface.
+  - Centered the logo with `max-height: 44px !important; width: auto !important; max-width: 90% !important; object-fit: contain !important; margin: 0 auto;`, preventing any clipping or stretching.
+  - In Light Theme, applied `filter: invert(1) brightness(0.1) !important;` over the clean white pod, ensuring sharp contrast and legibility.
+  - Updated `src/data/catalogData.js` and `src/data/ContentService.js` to reference `/images/oem-logos/Fortify_Logo_Transparent.png` and bumped `CMS_VERSION` to `'v12'`.
+- **Technology and role:** Image alpha extraction, CSS layout rules and theme adaptation, OCC schema synchronization.
+- **How it works:** Fortify's card containers dynamically match via `:has(img[src*="Fortify"])` and OEM IDs, overriding the generic `#ffffff` pod in dark theme so the white lettering sits directly on the dark card, while preserving the card's rounded borders, padding, and hover elevation.
+- **Files and folders added or changed:**
+  - `public/images/oem-logos/Fortify_Logo_Transparent.png`
+  - `public/images/oem-logos/Fortify_Logo_Black_Bg.png`
+  - `src/data/catalogData.js`
+  - `src/data/ContentService.js`
+  - `src/styles/index.css`
+  - `docs/PROJECT-STATE.md`
+  - `docs/seo_backend_implementation.md`
+- **Data and security notes:** Exact OEM brand assets used. Zero hardcoded claims or invented data, no secrets, no new dependencies.
+- **Checked (and how):**
+  - Automated tests: `node --test tests/*.test.mjs` — 60/60 tests passing.
+  - Production build: `npm run build` — 167 static product pages generated, exit code 0.
+- **Not checked:**
+  - Live production deployment URL (checked after pull request merge).
+- **Undo:** Revert commit or branch.
+
 ## 7. Entry template (copy for each new phase)
 ```
 ### Entry N: name

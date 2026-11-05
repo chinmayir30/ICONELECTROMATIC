@@ -222,6 +222,79 @@ h1, h2, h3, h4, h5, h6 {
   transition: transform 0.25s ease;
 }
 
+/* Slightly increased logo size on Products, Partners, and Blogs pages */
+body[data-page="products"] .logo-container img,
+body[data-page="partners"] .logo-container img,
+body[data-page="blogs"] .logo-container img,
+body[data-page="blog"] .logo-container img,
+.site-header[data-page="products"] .logo-container img,
+.site-header[data-page="partners"] .logo-container img,
+.site-header[data-page="blogs"] .logo-container img,
+.site-header[data-page="blog"] .logo-container img,
+.header-inner[data-page="products"] .logo-container img,
+.header-inner[data-page="partners"] .logo-container img,
+.header-inner[data-page="blogs"] .logo-container img,
+.header-inner[data-page="blog"] .logo-container img {
+  height: 58px !important;
+  max-height: 58px !important;
+  width: auto !important;
+  object-fit: contain !important;
+}
+
+@media (max-width: 1200px) {
+  body[data-page="products"] .logo-container img,
+  body[data-page="partners"] .logo-container img,
+  body[data-page="blogs"] .logo-container img,
+  body[data-page="blog"] .logo-container img,
+  .site-header[data-page="products"] .logo-container img,
+  .site-header[data-page="partners"] .logo-container img,
+  .site-header[data-page="blogs"] .logo-container img,
+  .site-header[data-page="blog"] .logo-container img,
+  .header-inner[data-page="products"] .logo-container img,
+  .header-inner[data-page="partners"] .logo-container img,
+  .header-inner[data-page="blogs"] .logo-container img,
+  .header-inner[data-page="blog"] .logo-container img {
+    height: 50px !important;
+    max-height: 50px !important;
+  }
+}
+
+@media (max-width: 992px) {
+  body[data-page="products"] .logo-container img,
+  body[data-page="partners"] .logo-container img,
+  body[data-page="blogs"] .logo-container img,
+  body[data-page="blog"] .logo-container img,
+  .site-header[data-page="products"] .logo-container img,
+  .site-header[data-page="partners"] .logo-container img,
+  .site-header[data-page="blogs"] .logo-container img,
+  .site-header[data-page="blog"] .logo-container img,
+  .header-inner[data-page="products"] .logo-container img,
+  .header-inner[data-page="partners"] .logo-container img,
+  .header-inner[data-page="blogs"] .logo-container img,
+  .header-inner[data-page="blog"] .logo-container img {
+    height: 44px !important;
+    max-height: 44px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  body[data-page="products"] .logo-container img,
+  body[data-page="partners"] .logo-container img,
+  body[data-page="blogs"] .logo-container img,
+  body[data-page="blog"] .logo-container img,
+  .site-header[data-page="products"] .logo-container img,
+  .site-header[data-page="partners"] .logo-container img,
+  .site-header[data-page="blogs"] .logo-container img,
+  .site-header[data-page="blog"] .logo-container img,
+  .header-inner[data-page="products"] .logo-container img,
+  .header-inner[data-page="partners"] .logo-container img,
+  .header-inner[data-page="blogs"] .logo-container img,
+  .header-inner[data-page="blog"] .logo-container img {
+    height: 38px !important;
+    max-height: 38px !important;
+  }
+}
+
 /* Relay-style clean nav links */
 .main-nav {
   display: flex;
@@ -936,15 +1009,24 @@ h1, h2, h3, h4, h5, h6 {
 
 .contact-relay-grid {
   display: grid;
-  grid-template-columns: 0.9fr 1.1fr;
+  grid-template-columns: 1fr 1fr;
   gap: var(--space-8);
-  align-items: start;
+  align-items: stretch;
 }
 
 .contact-relay-info {
   display: flex;
   flex-direction: column;
-  gap: var(--space-6);
+  height: 100%;
+}
+
+.contact-info-panel,
+#inquiry-info-column,
+#recruiting-info-column {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  flex: 1;
 }
 
 .contact-relay-card {
@@ -954,6 +1036,13 @@ h1, h2, h3, h4, h5, h6 {
   padding: var(--space-8);
   box-shadow: 0 10px 32px rgba(0, 0, 0, 0.45);
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
+}
+
+.contact-relay-card.contact-office-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .contact-relay-card:hover {
@@ -966,7 +1055,15 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 1.5rem;
   font-weight: 800;
   color: var(--text-white);
-  margin-bottom: var(--space-3);
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+
+.contact-relay-card p.subtitle {
+  font-size: 0.9rem;
+  color: var(--text-gray-400);
+  line-height: 1.5;
+  margin-bottom: var(--space-6);
 }
 
 .contact-relay-card p {
@@ -979,7 +1076,10 @@ h1, h2, h3, h4, h5, h6 {
 .contact-meta-list {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
   gap: var(--space-4);
+  margin-top: 4px;
 }
 
 .contact-meta-row {
@@ -1036,6 +1136,26 @@ h1, h2, h3, h4, h5, h6 {
   padding: var(--space-8);
   box-shadow: 0 10px 32px rgba(0, 0, 0, 0.45);
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.contact-form-panel,
+#inquiry-form-panel,
+#recruiting-form-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  flex: 1;
+}
+
+#contact-full-form {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: space-between;
 }
 
 .contact-relay-form:hover {
@@ -1044,36 +1164,32 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 0 22px 50px rgba(0, 0, 0, 0.75), 0 0 26px rgba(37, 99, 235, 0.2);
 }
 
-.contact-relay-card .quick-preset {
-  transition: all 0.2s ease;
-}
-
-.contact-relay-card .quick-preset:hover {
-  background: rgba(227, 39, 38, 0.2) !important;
-  border-color: #e32726 !important;
-  color: #ffffff !important;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(227, 39, 38, 0.3);
-}
-
 .contact-relay-form h3 {
   font-size: 1.5rem;
   font-weight: 800;
   color: var(--text-white);
   margin-bottom: 6px;
+  line-height: 1.3;
 }
 
 .contact-relay-form p.subtitle {
   font-size: 0.9rem;
   color: var(--text-gray-400);
+  line-height: 1.5;
   margin-bottom: var(--space-6);
 }
 
 .relay-form-row {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: var(--space-4);
   margin-bottom: var(--space-4);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.relay-form-row .relay-field {
+  margin-bottom: 0;
 }
 
 .relay-field {
@@ -1084,6 +1200,17 @@ h1, h2, h3, h4, h5, h6 {
   width: 100%;
   min-width: 0;
   box-sizing: border-box;
+}
+
+.relay-field.relay-field-message {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.relay-field.relay-field-message textarea {
+  flex: 1;
+  min-height: 95px;
 }
 
 .relay-field label {
@@ -1107,6 +1234,37 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 0.9rem;
   color: var(--text-white);
   transition: all var(--transition-fast);
+}
+
+.relay-field select {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+/* Dedicated Quick Requirement Presets Section Below Grid */
+.contact-presets-row {
+  margin-top: var(--space-8);
+  width: 100%;
+}
+
+.contact-presets-card {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.contact-presets-card .quick-preset,
+.contact-relay-card .quick-preset {
+  transition: all 0.2s ease;
+}
+
+.contact-presets-card .quick-preset:hover,
+.contact-relay-card .quick-preset:hover {
+  background: rgba(227, 39, 38, 0.2) !important;
+  border-color: #e32726 !important;
+  color: #ffffff !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(227, 39, 38, 0.3);
 }
 
 
@@ -2950,6 +3108,7 @@ h1, h2, h3, h4, h5, h6 {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center center;
   display: block;
   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -3610,12 +3769,19 @@ h1, h2, h3, h4, h5, h6 {
   align-self: flex-start;
 }
 
-/* 2 Strategic Foundation Pillars */
+/* Strategic Foundation Pillars */
 .journey-pillars-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 22px;
   margin-top: 10px;
+}
+
+.journey-pillars-grid.single-pillar,
+.journey-pillars-grid:has(:only-child) {
+  grid-template-columns: 1fr;
+  max-width: 840px;
+  margin: 16px auto 0;
 }
 
 @media (max-width: 768px) {
@@ -10570,13 +10736,81 @@ html[data-theme="light"],
   fill: #0F172A !important;
 }
 
-/* Invert solid black background logo so it sits seamlessly on white pod */
-[data-theme="light"] .oem-card-logo-container img[src*="Fortify_Logo_Black_Bg"],
-[data-theme="light"] .oem-logo-badge-pod img[src*="Fortify_Logo_Black_Bg"],
-[data-theme="light"] .catalog-oem-banner-logo-box img[src*="Fortify_Logo_Black_Bg"],
-[data-theme="light"] .blogs-selected-logo-wrap img[src*="Fortify_Logo_Black_Bg"] {
-  filter: invert(1);
-  mix-blend-mode: multiply;
+/* Fortify: Display complete logo without white background across Partners, Products & Blogs in Dark Mode */
+.oem-card[data-oem-id="fortify"] .oem-card-logo-container,
+.blogs-oem-card[data-oem-id="fortify"] .oem-logo-badge-pod,
+.partner-static-card[data-partner-id="fortify"] .partner-stream-card-logo-box,
+.oem-running-logo-item[data-partner-id="fortify"] .oem-running-logo-box,
+.oem-card-logo-container:has(img[src*="Fortify"]),
+.oem-logo-badge-pod:has(img[src*="Fortify"]),
+.partner-stream-card-logo-box:has(img[src*="Fortify"]),
+.oem-running-logo-box:has(img[src*="Fortify"]),
+.catalog-oem-banner-logo-box:has(img[src*="Fortify"]),
+.blogs-selected-logo-wrap:has(img[src*="Fortify"]) {
+  background: transparent !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 4px 16px rgba(0, 0, 0, 0.35) !important;
+}
+
+.oem-card[data-oem-id="fortify"]:hover .oem-card-logo-container,
+.blogs-oem-card[data-oem-id="fortify"]:hover .oem-logo-badge-pod,
+.partner-static-card[data-partner-id="fortify"]:hover .partner-stream-card-logo-box,
+.oem-running-logo-item[data-partner-id="fortify"]:hover .oem-running-logo-box,
+.oem-card:hover .oem-card-logo-container:has(img[src*="Fortify"]),
+.blogs-oem-card:hover .oem-logo-badge-pod:has(img[src*="Fortify"]),
+.partner-static-card:hover .partner-stream-card-logo-box:has(img[src*="Fortify"]),
+.oem-running-logo-item:hover .oem-running-logo-box:has(img[src*="Fortify"]) {
+  background: rgba(255, 255, 255, 0.04) !important;
+  border-color: rgba(6, 182, 212, 0.5) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 24px rgba(6, 182, 212, 0.3) !important;
+}
+
+/* Fortify Logo Sizing & Centering */
+.oem-card-logo-container img[src*="Fortify"],
+.oem-logo-badge-pod img[src*="Fortify"],
+.partner-stream-card-logo-box img[src*="Fortify"],
+.oem-running-logo-box img[src*="Fortify"],
+.catalog-oem-banner-logo-box img[src*="Fortify"],
+.blogs-selected-logo-wrap img[src*="Fortify"],
+.cpl-inline-logo-img[src*="Fortify"],
+.partner-logo-img[src*="Fortify"],
+.oem-logo-img[src*="Fortify"],
+.oem-running-logo-img[src*="Fortify"] {
+  max-height: 44px !important;
+  width: auto !important;
+  max-width: 90% !important;
+  object-fit: contain !important;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Invert Fortify logo in light theme so it sits crisp and readable on white pod */
+[data-theme="light"] .oem-card[data-oem-id="fortify"] .oem-card-logo-container,
+[data-theme="light"] .blogs-oem-card[data-oem-id="fortify"] .oem-logo-badge-pod,
+[data-theme="light"] .partner-static-card[data-partner-id="fortify"] .partner-stream-card-logo-box,
+[data-theme="light"] .oem-running-logo-item[data-partner-id="fortify"] .oem-running-logo-box,
+[data-theme="light"] .oem-card-logo-container:has(img[src*="Fortify"]),
+[data-theme="light"] .oem-logo-badge-pod:has(img[src*="Fortify"]),
+[data-theme="light"] .partner-stream-card-logo-box:has(img[src*="Fortify"]),
+[data-theme="light"] .oem-running-logo-box:has(img[src*="Fortify"]),
+[data-theme="light"] .catalog-oem-banner-logo-box:has(img[src*="Fortify"]),
+[data-theme="light"] .blogs-selected-logo-wrap:has(img[src*="Fortify"]) {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06) !important;
+}
+
+[data-theme="light"] .oem-card-logo-container img[src*="Fortify"],
+[data-theme="light"] .oem-logo-badge-pod img[src*="Fortify"],
+[data-theme="light"] .partner-stream-card-logo-box img[src*="Fortify"],
+[data-theme="light"] .oem-running-logo-box img[src*="Fortify"],
+[data-theme="light"] .catalog-oem-banner-logo-box img[src*="Fortify"],
+[data-theme="light"] .blogs-selected-logo-wrap img[src*="Fortify"],
+[data-theme="light"] .cpl-inline-logo-img[src*="Fortify"],
+[data-theme="light"] .partner-logo-img[src*="Fortify"],
+[data-theme="light"] .oem-logo-img[src*="Fortify"],
+[data-theme="light"] .oem-running-logo-img[src*="Fortify"] {
+  filter: invert(1) brightness(0.1) !important;
 }
 
 /* Card Body & Title */
@@ -12677,6 +12911,7 @@ img, video, iframe {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center center;
   display: block;
   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }

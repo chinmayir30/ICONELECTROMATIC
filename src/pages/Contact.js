@@ -145,10 +145,10 @@ export function renderContactPage() {
           <div class="contact-relay-info">
             
             <!-- 1A. INQUIRY INFO CARDS (Default) -->
-            <div id="inquiry-info-column" style="${isRecruiting ? 'display:none;' : 'display:block;'}">
-              <div class="contact-relay-card">
+            <div id="inquiry-info-column" class="contact-info-panel" style="${isRecruiting ? 'display:none;' : 'display:flex;'}">
+              <div class="contact-relay-card contact-office-card">
                 <h3>Office Addresses</h3>
-                <p>
+                <p class="subtitle">
                   Direct access to our corporate headquarters in India and international liaison offices in Singapore and the United States.
                 </p>
 
@@ -194,34 +194,6 @@ export function renderContactPage() {
                       <p style="font-size:0.84rem;">${c.hoursWeekend || 'Saturday: 9:30 AM – 1:30 PM IST'}</p>
                     </div>
                   </div>
-                </div>
-              </div>
-
-              <!-- Fast Requirement Presets -->
-              <div class="contact-relay-card">
-                <h4 style="font-size:1.05rem;font-weight:700;color:var(--text-white);margin-bottom:var(--space-2);display:flex;align-items:center;gap:8px;">
-                  <i class="fa-solid fa-bolt" style="color:var(--logo-red);"></i> Quick Requirement Presets
-                </h4>
-                <p style="font-size:0.85rem;color:var(--text-gray-400);margin-bottom:var(--space-3);">Click any preset to prefill your inquiry message:</p>
-                <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">
-                  ${(c.presets || [
-                    'Inquiring about High Frequency Laminates & Prepregs.',
-                    'Inquiring about Embedded Resistive Film.',
-                    'Inquiring about 3D Printed Dielectric Parts.',
-                    'Inquiring about High Power GaN Device and Beamforming IC.',
-                    'Inquiring about High Power Switches and Limiter.',
-                    'Inquiring about RF and MW Components.',
-                    'Inquiring about Tunable Filters.',
-                    'Inquiring about Software Defined Radios.',
-                    'Inquiring about high voltage power supplies.',
-                    'Inquiring about Temperature Sensors.',
-                    'Inquiring about Thin Film Capacitors.',
-                    'Inquiring about Ceramic Capacitors.',
-                    'Inquiring about PCB Fabrication.',
-                    'Inquiring about Perimeter Intrusion Detection System (PIDS).'
-                  ]).map(p => `
-                    <button class="filter-chip-dark quick-preset" data-preset="${p}">${p.replace(/^Inquiring about /, '').replace(/\.$/, '')}</button>
-                  `).join('')}
                 </div>
               </div>
 
@@ -272,7 +244,7 @@ export function renderContactPage() {
             <!-- ═══════════════════════════════════════════════════════════ -->
             <!-- FORM 1: SALES & TECHNICAL RFQ INQUIRY                       -->
             <!-- ═══════════════════════════════════════════════════════════ -->
-            <div id="inquiry-form-panel" style="${isRecruiting ? 'display:none;' : 'display:block;'}">
+            <div id="inquiry-form-panel" class="contact-form-panel" style="${isRecruiting ? 'display:none;' : 'display:flex;'}">
               <h3>Send Us a Message</h3>
               <p class="subtitle">Complete the form below. Technical responses and RFQ quotes provided within 24 hours.</p>
 
@@ -332,7 +304,7 @@ export function renderContactPage() {
                   <input type="text" id="c-model" name="model" value="${targetModel.replace(/"/g, '&quot;')}" placeholder="e.g. RT/duroid 5880 or ZX60-0433+ (2.4 - 5.8 GHz)" />
                 </div>
 
-                <div class="relay-field">
+                <div class="relay-field relay-field-message">
                   <label for="c-message">Technical Requirement / Message *</label>
                   <textarea id="c-message" name="message" placeholder="Please specify your project specifications, required quantities, target frequency band, and timeline..." required>${prefillMessage}</textarea>
                 </div>
@@ -452,6 +424,36 @@ export function renderContactPage() {
 
           </div>
         </div>
+
+        <!-- Fast Requirement Presets (Dedicated Row on Inquiry tab) -->
+        <div id="inquiry-presets-row" class="contact-presets-row" style="${isRecruiting ? 'display:none;' : 'display:block;'}">
+          <div class="contact-relay-card contact-presets-card">
+            <h4 style="font-size:1.05rem;font-weight:700;color:var(--text-white);margin-bottom:var(--space-2);display:flex;align-items:center;gap:8px;">
+              <i class="fa-solid fa-bolt" style="color:var(--logo-red);"></i> Quick Requirement Presets
+            </h4>
+            <p style="font-size:0.85rem;color:var(--text-gray-400);margin-bottom:var(--space-3);">Click any preset to prefill your inquiry message:</p>
+            <div class="contact-presets-grid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 8px;">
+              ${(c.presets || [
+                'Inquiring about High Frequency Laminates & Prepregs.',
+                'Inquiring about Embedded Resistive Film.',
+                'Inquiring about 3D Printed Dielectric Parts.',
+                'Inquiring about High Power GaN Device and Beamforming IC.',
+                'Inquiring about High Power Switches and Limiter.',
+                'Inquiring about RF and MW Components.',
+                'Inquiring about Tunable Filters.',
+                'Inquiring about Software Defined Radios.',
+                'Inquiring about high voltage power supplies.',
+                'Inquiring about Temperature Sensors.',
+                'Inquiring about Thin Film Capacitors.',
+                'Inquiring about Ceramic Capacitors.',
+                'Inquiring about PCB Fabrication.',
+                'Inquiring about Perimeter Intrusion Detection System (PIDS).'
+              ]).map(p => `
+                <button class="filter-chip-dark quick-preset" data-preset="${p}">${p.replace(/^Inquiring about /, '').replace(/\.$/, '')}</button>
+              `).join('')}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -465,6 +467,7 @@ export function initContactPage() {
   const recruitingPanel = document.getElementById('recruiting-form-panel');
   const inquiryInfoCol = document.getElementById('inquiry-info-column');
   const recruitingInfoCol = document.getElementById('recruiting-info-column');
+  const inquiryPresetsRow = document.getElementById('inquiry-presets-row');
   const breadcrumbActive = document.getElementById('contact-breadcrumb-active');
   const eyebrowText = document.getElementById('contact-eyebrow-text');
   const pageTitle = document.getElementById('contact-page-title');
@@ -493,13 +496,17 @@ export function initContactPage() {
     }
 
     if (inquiryPanel && recruitingPanel) {
-      inquiryPanel.style.display = isRecruiting ? 'none' : 'block';
-      recruitingPanel.style.display = isRecruiting ? 'block' : 'none';
+      inquiryPanel.style.display = isRecruiting ? 'none' : 'flex';
+      recruitingPanel.style.display = isRecruiting ? 'flex' : 'none';
     }
 
     if (inquiryInfoCol && recruitingInfoCol) {
-      inquiryInfoCol.style.display = isRecruiting ? 'none' : 'block';
-      recruitingInfoCol.style.display = isRecruiting ? 'block' : 'none';
+      inquiryInfoCol.style.display = isRecruiting ? 'none' : 'flex';
+      recruitingInfoCol.style.display = isRecruiting ? 'flex' : 'none';
+    }
+
+    if (inquiryPresetsRow) {
+      inquiryPresetsRow.style.display = isRecruiting ? 'none' : 'block';
     }
 
     if (breadcrumbActive) {

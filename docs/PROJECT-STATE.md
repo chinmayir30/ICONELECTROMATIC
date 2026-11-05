@@ -35,6 +35,12 @@ Stage 7 - Central CMS Supabase Persistence & SSG Integration (feat/admin-cms-sup
 - [x] Remove Spellman & AEE Israel from Products & Blogs (13 OEMs, 167 Products on feat/header-refinement-alignment)
 - [x] Remove Strategic Application Domains from About Us (feat/header-refinement-alignment)
 - [x] Remove Product Card Part Badges & Standardize to "View All Products" (feat/header-refinement-alignment)
+- [x] Remove Global Partnerships Pillar & Center Bespoke Solutions on About Us (feat/header-refinement-alignment)
+- [x] Slightly Increase Header Logo on Products, Partners & Blogs Pages (feat/header-refinement-alignment)
+- [x] Improve Timeline Milestone Image Cropping & Centering on About Us (feat/header-refinement-alignment)
+- [x] Equal Height & Proper Alignment for Office Addresses & Send Us a Message on Contact (feat/header-refinement-alignment)
+- [x] Separate Mini-Circuits & RFuW Homepage Filter Buttons (feat/header-refinement-alignment)
+- [x] Refine "Our Journey" Heading & Remove Bespoke Solutions Card on About Us (feat/header-refinement-alignment)
 
 ## Decisions (confirmed by the owner)
 | Date | Decision | Why |
@@ -49,6 +55,13 @@ Stage 7 - Central CMS Supabase Persistence & SSG Integration (feat/admin-cms-sup
 | 2026-11 | Streamline Header, Remove Homepage Capabilities & Elevate Light Theme | Reduce header crowding (height 92px, nav gap 1.75rem), remove redundant Request Quote header CTA (preserving quote elsewhere), remove Core Capabilities from homepage, and elevate homepage light theme to clean white with darkened hero background video |
 | 2026-11 | Prune Catalog to 13 Canonical OEMs | Completely remove Spellman and AEE Israel from Products and Blogs pages (leaving 13 authentic OEMs and 167 verified products) |
 | 2026-11 | Streamline About Us & Standardize Product Cards | Removed Strategic Application Domains from About page with balanced layout spacing; removed "X Parts" number badges from top-right corner of product cards and standardized card button/link to "View All Products" without numbers |
+| 2026-11 | Remove Global Partnerships Pillar & Increase Logo on Catalog Pages | Removed Global Partnerships card from About Us, centered remaining Bespoke Solutions pillar card, and slightly increased header logo size to 58px on Products, Partners, and Blogs pages while maintaining header alignment and nav spacing |
+| 2026-11 | Precision Crop & Center Milestone Images on About Us Timeline | Re-sliced 4 milestone photos from master infographic at exact geometry (644x400 px, 16:10 aspect ratio), eliminating rightward crop displacement and blue background void on Card 4, perfectly centering key subjects, and explicitly enforcing object-fit: cover and object-position: center center |
+| 2026-11 | Equal Height & Field Alignment on Contact Page | Aligned Office Addresses card and Send Us a Message form to equal height (1fr 1fr, align-items: stretch), unified typography, padding (32px), and rounded corners (20px), prevented select/field overflow via minmax(0, 1fr) and ellipsis, and moved Quick Requirement Presets to a dedicated clean row below the grid |
+| 2026-11 | Separate Mini-Circuits and RFuW Filter Buttons on Homepage | Split combined Mini-Circuits & RFuW filter chip into two independent buttons, each filtering strictly by its own OEM (minicircuits and rfuw-engineering) while maintaining existing chip styling, colors, and functionality |
+| 2026-11 | Promote "Our Journey" Heading & Remove Bespoke Solutions Card on About Us | Removed "Chronology" heading, promoted "Our Journey" to prominent primary section title, and removed "Bespoke Solutions" card and pillars section while preserving 4-milestone timeline and clean spacing |
+| 2026-11 | Replace PowerRF Logo on Partners Page & Running Ticker | Replaced legacy vertical PowerRF logo with the authentic horizontal brand logo (Smith chart circle emblem, orange Greek Phi, bold POWERF, tagline, and registered entity name), optimized as crisp 552x228 PNG with transparent background, seamlessly centered in white logo cards on both Partners grid and OEM running ticker |
+| 2026-11 | Display Complete Fortify Logo Without White Background Across Partners, Products & Blogs | Enhanced Fortify logo to complete, uncropped 2x Retina transparent PNG asset (652x126), eliminated the jarring solid white container background on Partners, Products, and Blogs cards in dark mode with transparent glassy outline styling, centered logo with max-height 44px, and preserved crisp inverted contrast in light mode |
 
 ## Proposed, not yet confirmed
 - Static site generation (Astro recommended) so every product is a real HTML page

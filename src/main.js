@@ -20,6 +20,8 @@ const app = document.getElementById('app');
 
 function renderPage(content, initFn) {
   const currentPath = getCurrentPath();
+  const pageKey = (currentPath.split('/')[1] || 'home').toLowerCase();
+  document.body.setAttribute('data-page', pageKey);
   let header = document.getElementById('site-header');
 
   if (!header) {
@@ -29,6 +31,7 @@ function renderPage(content, initFn) {
     document.body.insertBefore(header, app);
   }
   header.style.display = 'block';
+  header.setAttribute('data-page', pageKey);
   header.innerHTML = renderHeaderInner(currentPath);
   initHeader();
   updateDrawerActiveState(currentPath);

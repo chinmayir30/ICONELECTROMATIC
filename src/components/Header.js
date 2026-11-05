@@ -18,6 +18,7 @@ const DRAWER_LINKS = [
 
 export function renderHeaderInner(currentRoute) {
   const route = currentRoute || getCurrentPath();
+  const pageKey = (route.split('/')[1] || 'home').toLowerCase();
 
   const data = ContentService.getData('header');
   const ctaText = data.ctaLabel || data.ctaText || 'Request Quote';
@@ -44,7 +45,7 @@ export function renderHeaderInner(currentRoute) {
   );
 
   return `
-    <div class="header-inner">
+    <div class="header-inner" data-page="${pageKey}">
       <div class="header-left-cluster">
         <button class="header-sidebar-toggle" id="header-sidebar-toggle" aria-label="Open navigation sidebar" aria-expanded="false" title="Menu">
           <span class="sidebar-bar"></span>

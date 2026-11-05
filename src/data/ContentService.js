@@ -53,7 +53,7 @@ if (typeof window !== 'undefined') {
 }
 
 // ─── Version key: bump this to ensure fresh schema sync with existing localStorage ───
-const CMS_VERSION = 'v8';
+const CMS_VERSION = 'v12';
 
 const INITIAL_CONTENT = {
   header: {
@@ -202,8 +202,8 @@ const INITIAL_CONTENT = {
     visionDesc: 'To be India’s foremost and most trusted source of essential electronics components for research, development, and manufacturing across both public and private sectors.',
     missionTitle: 'Our Mission',
     missionDesc: 'To introduce the world’s most cutting-edge technology solutions and components to India by forging strategic partnerships with global industry leaders, fostering indigenous product development and advancing “Make in India” initiatives.',
-    journeyTitle: 'Chronology',
-    journeySubtitle: 'Our Journey',
+    journeyTitle: 'Our Journey',
+    journeySubtitle: '',
     journeyLead: 'From our founding in Bengaluru in 2009 as RF & Microwave specialists to global operations spanning Singapore, the USA, and India — empowering mission-critical Aerospace, Defence, Space, and SATCOM programs.',
     infographicImage: '/images/timeline/icon-journey-infographic-full.png',
     milestones: [
@@ -281,26 +281,7 @@ const INITIAL_CONTENT = {
         icon: 'fa-solid fa-shield-halved',
       },
     ],
-    pillars: [
-      {
-        id: 'pil-1',
-        eyebrow: 'GLOBAL ALLIANCES',
-        title: 'Global Partnerships',
-        subtitle: 'Advanced Technologies',
-        desc: 'Direct OEM partnerships with premier global innovators (Qorvo, Rogers, Tecdia, Mini-Circuits, and more), delivering verified authentic high-performance components to Indian industries.',
-        image: '/images/timeline/pillar-global-partnerships.jpg',
-        color: 'blue',
-      },
-      {
-        id: 'pil-2',
-        eyebrow: 'ENGINEERING EXPERTISE',
-        title: 'Bespoke Solutions',
-        subtitle: 'RF & Design Services',
-        desc: 'End-to-end design-in consultancy, specialized microwave simulation, prototyping, and custom RF assembly integration tailored precisely to mission specifications.',
-        image: '/images/timeline/pillar-bespoke-solutions.jpg',
-        color: 'red',
-      },
-    ],
+    pillars: [],
     whyUsTitle: 'Our Advantage',
     whyUsSubtitle: 'Why Us',
     whyUs: [
@@ -918,8 +899,8 @@ export const ContentService = {
         { id: 'quantic-eulex', name: 'Quantic Eulex / Evans', domain: 'Advanced Ceramic Microwave & Hybrid Capacitors', category: 'components', accentColor: 'blue', logoImg: '/images/oem-logos/Evans_logo.png', description: 'Quantic Eulex & Evans Hybrid Capacitors engineer high-energy, high-frequency ceramic capacitors and hybrid capacitor banks supporting radar, SATCOM, aerospace, and space platforms.', website: 'https://www.quanticdevices.com' },
         { id: 'quantic-ohmega', name: 'Quantic Ohmega-Ticer', domain: 'Embedded Thin-Film Resistive Materials', category: 'materials', accentColor: 'blue', logoImg: '/images/oem-logos/OhmegaTicer_Black.png', description: 'Ohmega-Ticer provides embedded thin-film resistive copper foils that enable compact, high-performance digital and RF PCB designs for defence, aerospace, and advanced electronics.', website: 'https://www.ohmega.com' },
         { id: 'thermosen', name: 'Thermosen Technologies', domain: 'Temperature Sensors for Hi-Rel Applications', category: 'sensors', accentColor: 'blue', logoImg: '/images/oem-logos/Thermosen_logo.png', description: 'Thermosen develops temperature sensing solutions focused on Hi-Rel, aerospace, and defence sectors, ensuring accurate thermal monitoring in extreme environments.', website: 'https://www.thermosen.com' },
-        { id: 'fortify', name: 'Fortify', domain: 'Dielectric 3D Printing for RF & Microwave Devices', category: 'materials', accentColor: 'blue', logoImg: '/images/oem-logos/Fortify_Logo_Black_Bg.png', description: 'Fortify enables advanced dielectric 3D printing materials for RF and microwave components, supporting complex geometries, rapid prototyping, and next-generation device development.', website: 'https://www.fortify3d.com' },
-        { id: 'powerfactor', name: 'PowerFactor Electronics (PowerRF)', domain: 'Power Electronics & RF Microwave Domains', category: 'components', accentColor: 'blue', logoImg: '/PICTURES/PowerRFlogo Vert Logo1.jpg', description: 'Specialized in R&D, design, testing, consultancy, and product development in Power Electronics and RF Microwave domains under the Make in India initiative.', website: 'https://powerrf.in' },
+        { id: 'fortify', name: 'Fortify', domain: 'Dielectric 3D Printing for RF & Microwave Devices', category: 'materials', accentColor: 'blue', logoImg: '/images/oem-logos/Fortify_Logo_Transparent.png', description: 'Fortify enables advanced dielectric 3D printing materials for RF and microwave components, supporting complex geometries, rapid prototyping, and next-generation device development.', website: 'https://www.fortify3d.com' },
+        { id: 'powerfactor', name: 'PowerFactor Electronics (PowerRF)', domain: 'Power Electronics & RF Microwave Domains', category: 'components', accentColor: 'blue', logoImg: '/images/oem-logos/powerrf-logo.png', description: 'Specialized in R&D, design, testing, consultancy, and product development in Power Electronics and RF Microwave domains under the Make in India initiative.', website: 'https://powerrf.in' },
         { id: 'nee', name: 'NEE International (New Era Electronics)', domain: 'Application PCBs for Microwave & Satellite Communication', category: 'sensors', accentColor: 'red', logoImg: '/images/oem-logos/NEE_Logo_wb.png', description: 'NEE International is a leading fabricator of microwave and satellite communication PCBs, supporting high-frequency and space-grade electronic applications.', website: 'https://neeinternational.com' },
       ];
       const initial = {
