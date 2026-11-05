@@ -20,7 +20,7 @@ test('Static Catalog Builder Suite', async (t) => {
       env: { VITE_SUPABASE_URL: '', VITE_SUPABASE_ANON_KEY: '' }
     });
     assert.equal(catalog, CATALOG, 'Must return authentic CATALOG array when unconfigured');
-    assert.equal(catalog.length, 13, 'Must contain 13 OEMs in fallback');
+    assert.equal(catalog.length, 12, 'Must contain 12 OEMs in fallback');
   });
 
   await t.test('Test 2: loadAuthoritativeCatalog parses and returns remote catalog when Supabase responds', async () => {

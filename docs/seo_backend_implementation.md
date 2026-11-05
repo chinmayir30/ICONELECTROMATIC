@@ -480,6 +480,52 @@ Open items that affect these phases: client decisions on category grouping, dupl
   - Live production deployment URL (checked after pull request merge).
 - **Undo:** Revert commit or branch.
 
+### Entry 32: Complete Removal of Fortify Across Website & Catalog
+- **Status:** In progress (branch `feat/header-refinement-alignment`, 05 Nov 2026)
+- **What was built:**
+  - Completely purged Fortify from the entire Icon Electromatic website, data architecture, build pipeline, and database seeds:
+    1. *Catalog & Products*: Removed Fortify OEM object (`id: "fortify"`), its single category (`3D Printed Dielectric Parts`), and all 8 associated products (`radix-28-dielectric-lens-material`, `radix-46-dielectric-lens-material`, `grin-dielectric-lens-radix-platform`, `3d-printed-horn-lens`, `switched-beam-antenna-lens`, `field-of-view-fov-enhancing-lens`, `tactical-fov-enhancing-lens`, `low-dk-printed-foam-spacer-lens-adjacent`) from `src/data/catalogData.js`. Removed Fortify from `POPULAR_PRODUCTS`.
+    2. *Partners Page*: Removed Fortify partner entry from `DEFAULT_PARTNERS` in `src/data/ContentService.js` and removed `'fortify'` mapping from `src/pages/Partners.js`.
+    3. *Blogs Page*: Removed Fortify OEM blog portal (`oemId: 'fortify'`) from `OEM_BLOGS` in `src/data/blogData.js`.
+    4. *Home Page*: Removed Fortify 3D Optics quick filter chip button and corresponding filter handling in `src/pages/Home.js`.
+    5. *About Us & Careers*: Removed `gal-7` (Fortify 3D lens photo) from `INITIAL_CONTENT.gallery` and removed Fortify reference from `INITIAL_CONTENT.about.keyPoints` in `src/data/ContentService.js`.
+    6. *Chatbot*: Removed Fortify query keyword matchers, updated authorized OEM list and welcome copy from 13 to 12 OEMs, and replaced the Fortify quick chip with Tecdia Capacitors in `src/components/Chatbot.js`.
+    7. *CSS*: Removed all Fortify custom dark/light theme style rules from `src/styles/index.css`.
+    8. *Static Pages & Sitemap*: Deleted `public/products/fortify/` directory (8 generated HTML pages) and deleted unused logo assets `Fortify_Logo_Transparent.png` and `Fortify_Logo_Black_Bg.png`. Regenerated static SSG pages and sitemap (now precisely 166 indexable URLs and 159 static product pages).
+    9. *Database Seeds*: Regenerated `supabase/seed_products_cms.sql` and `supabase/seed_cms_content.sql`, and cleaned legacy `supabase/seed.sql` to ensure 0 remaining instances of Fortify.
+    10. *Tests*: Updated test suites (`tests/admin-product-persistence.test.mjs`, `tests/publish-webhook-pipeline.test.mjs`, `tests/static-catalog-builder.test.mjs`) for the new canonical counts: 12 OEMs, 85 categories, 159 products.
+- **Technology and role:** Static site generator, catalog schema pruning, OCC schema version bump (`v13`), CSS cleanup.
+- **How it works:** Pruning the central dataset `CATALOG` and `INITIAL_CONTENT` automatically cascades across runtime views (Partners, Products, Blogs, Home, About, Chatbot). Running the SSG pipeline generates clean static HTML for the 159 verified products across 12 authentic OEMs without orphan routes or broken links.
+- **Files and folders added or changed:**
+  - `src/data/catalogData.js`
+  - `src/data/blogData.js`
+  - `src/data/ContentService.js`
+  - `src/pages/Home.js`
+  - `src/pages/Partners.js`
+  - `src/components/Chatbot.js`
+  - `src/styles/index.css`
+  - `public/products/fortify/` (deleted)
+  - `public/images/oem-logos/Fortify_Logo_Transparent.png` (deleted)
+  - `public/images/oem-logos/Fortify_Logo_Black_Bg.png` (deleted)
+  - `public/sitemap.xml`
+  - `public/catalog-images/full_extraction_report.json`
+  - `supabase/seed.sql`
+  - `supabase/seed_products_cms.sql`
+  - `supabase/seed_cms_content.sql`
+  - `tests/admin-product-persistence.test.mjs`
+  - `tests/publish-webhook-pipeline.test.mjs`
+  - `tests/static-catalog-builder.test.mjs`
+  - `docs/PROJECT-STATE.md`
+  - `docs/seo_backend_implementation.md`
+- **Data and security notes:** Zero hardcoded claims or invented data. Exactly 12 authentic OEMs, 85 categories, and 159 verified products remain. No secrets, no new dependencies.
+- **Checked (and how):**
+  - Automated tests: `node --test tests/*.test.mjs` — all 60 tests passing cleanly.
+  - Production build: `npm run build` — 159 static product pages and 166 indexable sitemap URLs generated with exit code 0.
+  - Codebase grep: zero active references to `fortify` across source code, templates, routes, CSS, or seeds.
+- **Not checked:**
+  - Live production deployment URL (checked after pull request merge).
+- **Undo:** Revert commit or branch.
+
 ### Entry 24: Streamline About Us Page & Standardize Product Card Actions
 - **Status:** In progress (branch `feat/header-refinement-alignment`, 03 Nov 2026)
 - **What was built:**
@@ -503,6 +549,52 @@ Open items that affect these phases: client decisions on category grouping, dupl
   - `npm run build`: Exit code 0, 167 static product pages generated.
   - Automated tests: `node --test tests/*.test.mjs` — 60/60 tests passing.
   - Scripted assertions verifying removal of number badges and presence of "View All Products".
+- **Not checked:**
+  - Live production deployment URL (checked after pull request merge).
+- **Undo:** Revert commit or branch.
+
+### Entry 32: Complete Removal of Fortify Across Website & Catalog
+- **Status:** In progress (branch `feat/header-refinement-alignment`, 05 Nov 2026)
+- **What was built:**
+  - Completely purged Fortify from the entire Icon Electromatic website, data architecture, build pipeline, and database seeds:
+    1. *Catalog & Products*: Removed Fortify OEM object (`id: "fortify"`), its single category (`3D Printed Dielectric Parts`), and all 8 associated products (`radix-28-dielectric-lens-material`, `radix-46-dielectric-lens-material`, `grin-dielectric-lens-radix-platform`, `3d-printed-horn-lens`, `switched-beam-antenna-lens`, `field-of-view-fov-enhancing-lens`, `tactical-fov-enhancing-lens`, `low-dk-printed-foam-spacer-lens-adjacent`) from `src/data/catalogData.js`. Removed Fortify from `POPULAR_PRODUCTS`.
+    2. *Partners Page*: Removed Fortify partner entry from `DEFAULT_PARTNERS` in `src/data/ContentService.js` and removed `'fortify'` mapping from `src/pages/Partners.js`.
+    3. *Blogs Page*: Removed Fortify OEM blog portal (`oemId: 'fortify'`) from `OEM_BLOGS` in `src/data/blogData.js`.
+    4. *Home Page*: Removed Fortify 3D Optics quick filter chip button and corresponding filter handling in `src/pages/Home.js`.
+    5. *About Us & Careers*: Removed `gal-7` (Fortify 3D lens photo) from `INITIAL_CONTENT.gallery` and removed Fortify reference from `INITIAL_CONTENT.about.keyPoints` in `src/data/ContentService.js`.
+    6. *Chatbot*: Removed Fortify query keyword matchers, updated authorized OEM list and welcome copy from 13 to 12 OEMs, and replaced the Fortify quick chip with Tecdia Capacitors in `src/components/Chatbot.js`.
+    7. *CSS*: Removed all Fortify custom dark/light theme style rules from `src/styles/index.css`.
+    8. *Static Pages & Sitemap*: Deleted `public/products/fortify/` directory (8 generated HTML pages) and deleted unused logo assets `Fortify_Logo_Transparent.png` and `Fortify_Logo_Black_Bg.png`. Regenerated static SSG pages and sitemap (now precisely 166 indexable URLs and 159 static product pages).
+    9. *Database Seeds*: Regenerated `supabase/seed_products_cms.sql` and `supabase/seed_cms_content.sql`, and cleaned legacy `supabase/seed.sql` to ensure 0 remaining instances of Fortify.
+    10. *Tests*: Updated test suites (`tests/admin-product-persistence.test.mjs`, `tests/publish-webhook-pipeline.test.mjs`, `tests/static-catalog-builder.test.mjs`) for the new canonical counts: 12 OEMs, 85 categories, 159 products.
+- **Technology and role:** Static site generator, catalog schema pruning, OCC schema version bump (`v13`), CSS cleanup.
+- **How it works:** Pruning the central dataset `CATALOG` and `INITIAL_CONTENT` automatically cascades across runtime views (Partners, Products, Blogs, Home, About, Chatbot). Running the SSG pipeline generates clean static HTML for the 159 verified products across 12 authentic OEMs without orphan routes or broken links.
+- **Files and folders added or changed:**
+  - `src/data/catalogData.js`
+  - `src/data/blogData.js`
+  - `src/data/ContentService.js`
+  - `src/pages/Home.js`
+  - `src/pages/Partners.js`
+  - `src/components/Chatbot.js`
+  - `src/styles/index.css`
+  - `public/products/fortify/` (deleted)
+  - `public/images/oem-logos/Fortify_Logo_Transparent.png` (deleted)
+  - `public/images/oem-logos/Fortify_Logo_Black_Bg.png` (deleted)
+  - `public/sitemap.xml`
+  - `public/catalog-images/full_extraction_report.json`
+  - `supabase/seed.sql`
+  - `supabase/seed_products_cms.sql`
+  - `supabase/seed_cms_content.sql`
+  - `tests/admin-product-persistence.test.mjs`
+  - `tests/publish-webhook-pipeline.test.mjs`
+  - `tests/static-catalog-builder.test.mjs`
+  - `docs/PROJECT-STATE.md`
+  - `docs/seo_backend_implementation.md`
+- **Data and security notes:** Zero hardcoded claims or invented data. Exactly 12 authentic OEMs, 85 categories, and 159 verified products remain. No secrets, no new dependencies.
+- **Checked (and how):**
+  - Automated tests: `node --test tests/*.test.mjs` — all 60 tests passing cleanly.
+  - Production build: `npm run build` — 159 static product pages and 166 indexable sitemap URLs generated with exit code 0.
+  - Codebase grep: zero active references to `fortify` across source code, templates, routes, CSS, or seeds.
 - **Not checked:**
   - Live production deployment URL (checked after pull request merge).
 - **Undo:** Revert commit or branch.
@@ -531,6 +623,52 @@ Open items that affect these phases: client decisions on category grouping, dupl
   - `npm run build`: Exit code 0, 167 static product pages generated.
   - Automated tests: `node --test tests/*.test.mjs` — 60/60 tests passing.
   - Local dev server active and hot-reloading smoothly.
+- **Not checked:**
+  - Live production deployment URL (checked after pull request merge).
+- **Undo:** Revert commit or branch.
+
+### Entry 32: Complete Removal of Fortify Across Website & Catalog
+- **Status:** In progress (branch `feat/header-refinement-alignment`, 05 Nov 2026)
+- **What was built:**
+  - Completely purged Fortify from the entire Icon Electromatic website, data architecture, build pipeline, and database seeds:
+    1. *Catalog & Products*: Removed Fortify OEM object (`id: "fortify"`), its single category (`3D Printed Dielectric Parts`), and all 8 associated products (`radix-28-dielectric-lens-material`, `radix-46-dielectric-lens-material`, `grin-dielectric-lens-radix-platform`, `3d-printed-horn-lens`, `switched-beam-antenna-lens`, `field-of-view-fov-enhancing-lens`, `tactical-fov-enhancing-lens`, `low-dk-printed-foam-spacer-lens-adjacent`) from `src/data/catalogData.js`. Removed Fortify from `POPULAR_PRODUCTS`.
+    2. *Partners Page*: Removed Fortify partner entry from `DEFAULT_PARTNERS` in `src/data/ContentService.js` and removed `'fortify'` mapping from `src/pages/Partners.js`.
+    3. *Blogs Page*: Removed Fortify OEM blog portal (`oemId: 'fortify'`) from `OEM_BLOGS` in `src/data/blogData.js`.
+    4. *Home Page*: Removed Fortify 3D Optics quick filter chip button and corresponding filter handling in `src/pages/Home.js`.
+    5. *About Us & Careers*: Removed `gal-7` (Fortify 3D lens photo) from `INITIAL_CONTENT.gallery` and removed Fortify reference from `INITIAL_CONTENT.about.keyPoints` in `src/data/ContentService.js`.
+    6. *Chatbot*: Removed Fortify query keyword matchers, updated authorized OEM list and welcome copy from 13 to 12 OEMs, and replaced the Fortify quick chip with Tecdia Capacitors in `src/components/Chatbot.js`.
+    7. *CSS*: Removed all Fortify custom dark/light theme style rules from `src/styles/index.css`.
+    8. *Static Pages & Sitemap*: Deleted `public/products/fortify/` directory (8 generated HTML pages) and deleted unused logo assets `Fortify_Logo_Transparent.png` and `Fortify_Logo_Black_Bg.png`. Regenerated static SSG pages and sitemap (now precisely 166 indexable URLs and 159 static product pages).
+    9. *Database Seeds*: Regenerated `supabase/seed_products_cms.sql` and `supabase/seed_cms_content.sql`, and cleaned legacy `supabase/seed.sql` to ensure 0 remaining instances of Fortify.
+    10. *Tests*: Updated test suites (`tests/admin-product-persistence.test.mjs`, `tests/publish-webhook-pipeline.test.mjs`, `tests/static-catalog-builder.test.mjs`) for the new canonical counts: 12 OEMs, 85 categories, 159 products.
+- **Technology and role:** Static site generator, catalog schema pruning, OCC schema version bump (`v13`), CSS cleanup.
+- **How it works:** Pruning the central dataset `CATALOG` and `INITIAL_CONTENT` automatically cascades across runtime views (Partners, Products, Blogs, Home, About, Chatbot). Running the SSG pipeline generates clean static HTML for the 159 verified products across 12 authentic OEMs without orphan routes or broken links.
+- **Files and folders added or changed:**
+  - `src/data/catalogData.js`
+  - `src/data/blogData.js`
+  - `src/data/ContentService.js`
+  - `src/pages/Home.js`
+  - `src/pages/Partners.js`
+  - `src/components/Chatbot.js`
+  - `src/styles/index.css`
+  - `public/products/fortify/` (deleted)
+  - `public/images/oem-logos/Fortify_Logo_Transparent.png` (deleted)
+  - `public/images/oem-logos/Fortify_Logo_Black_Bg.png` (deleted)
+  - `public/sitemap.xml`
+  - `public/catalog-images/full_extraction_report.json`
+  - `supabase/seed.sql`
+  - `supabase/seed_products_cms.sql`
+  - `supabase/seed_cms_content.sql`
+  - `tests/admin-product-persistence.test.mjs`
+  - `tests/publish-webhook-pipeline.test.mjs`
+  - `tests/static-catalog-builder.test.mjs`
+  - `docs/PROJECT-STATE.md`
+  - `docs/seo_backend_implementation.md`
+- **Data and security notes:** Zero hardcoded claims or invented data. Exactly 12 authentic OEMs, 85 categories, and 159 verified products remain. No secrets, no new dependencies.
+- **Checked (and how):**
+  - Automated tests: `node --test tests/*.test.mjs` — all 60 tests passing cleanly.
+  - Production build: `npm run build` — 159 static product pages and 166 indexable sitemap URLs generated with exit code 0.
+  - Codebase grep: zero active references to `fortify` across source code, templates, routes, CSS, or seeds.
 - **Not checked:**
   - Live production deployment URL (checked after pull request merge).
 - **Undo:** Revert commit or branch.
@@ -566,6 +704,52 @@ Open items that affect these phases: client decisions on category grouping, dupl
   - Live production deployment URL (checked after pull request merge).
 - **Undo:** Revert commit or branch.
 
+### Entry 32: Complete Removal of Fortify Across Website & Catalog
+- **Status:** In progress (branch `feat/header-refinement-alignment`, 05 Nov 2026)
+- **What was built:**
+  - Completely purged Fortify from the entire Icon Electromatic website, data architecture, build pipeline, and database seeds:
+    1. *Catalog & Products*: Removed Fortify OEM object (`id: "fortify"`), its single category (`3D Printed Dielectric Parts`), and all 8 associated products (`radix-28-dielectric-lens-material`, `radix-46-dielectric-lens-material`, `grin-dielectric-lens-radix-platform`, `3d-printed-horn-lens`, `switched-beam-antenna-lens`, `field-of-view-fov-enhancing-lens`, `tactical-fov-enhancing-lens`, `low-dk-printed-foam-spacer-lens-adjacent`) from `src/data/catalogData.js`. Removed Fortify from `POPULAR_PRODUCTS`.
+    2. *Partners Page*: Removed Fortify partner entry from `DEFAULT_PARTNERS` in `src/data/ContentService.js` and removed `'fortify'` mapping from `src/pages/Partners.js`.
+    3. *Blogs Page*: Removed Fortify OEM blog portal (`oemId: 'fortify'`) from `OEM_BLOGS` in `src/data/blogData.js`.
+    4. *Home Page*: Removed Fortify 3D Optics quick filter chip button and corresponding filter handling in `src/pages/Home.js`.
+    5. *About Us & Careers*: Removed `gal-7` (Fortify 3D lens photo) from `INITIAL_CONTENT.gallery` and removed Fortify reference from `INITIAL_CONTENT.about.keyPoints` in `src/data/ContentService.js`.
+    6. *Chatbot*: Removed Fortify query keyword matchers, updated authorized OEM list and welcome copy from 13 to 12 OEMs, and replaced the Fortify quick chip with Tecdia Capacitors in `src/components/Chatbot.js`.
+    7. *CSS*: Removed all Fortify custom dark/light theme style rules from `src/styles/index.css`.
+    8. *Static Pages & Sitemap*: Deleted `public/products/fortify/` directory (8 generated HTML pages) and deleted unused logo assets `Fortify_Logo_Transparent.png` and `Fortify_Logo_Black_Bg.png`. Regenerated static SSG pages and sitemap (now precisely 166 indexable URLs and 159 static product pages).
+    9. *Database Seeds*: Regenerated `supabase/seed_products_cms.sql` and `supabase/seed_cms_content.sql`, and cleaned legacy `supabase/seed.sql` to ensure 0 remaining instances of Fortify.
+    10. *Tests*: Updated test suites (`tests/admin-product-persistence.test.mjs`, `tests/publish-webhook-pipeline.test.mjs`, `tests/static-catalog-builder.test.mjs`) for the new canonical counts: 12 OEMs, 85 categories, 159 products.
+- **Technology and role:** Static site generator, catalog schema pruning, OCC schema version bump (`v13`), CSS cleanup.
+- **How it works:** Pruning the central dataset `CATALOG` and `INITIAL_CONTENT` automatically cascades across runtime views (Partners, Products, Blogs, Home, About, Chatbot). Running the SSG pipeline generates clean static HTML for the 159 verified products across 12 authentic OEMs without orphan routes or broken links.
+- **Files and folders added or changed:**
+  - `src/data/catalogData.js`
+  - `src/data/blogData.js`
+  - `src/data/ContentService.js`
+  - `src/pages/Home.js`
+  - `src/pages/Partners.js`
+  - `src/components/Chatbot.js`
+  - `src/styles/index.css`
+  - `public/products/fortify/` (deleted)
+  - `public/images/oem-logos/Fortify_Logo_Transparent.png` (deleted)
+  - `public/images/oem-logos/Fortify_Logo_Black_Bg.png` (deleted)
+  - `public/sitemap.xml`
+  - `public/catalog-images/full_extraction_report.json`
+  - `supabase/seed.sql`
+  - `supabase/seed_products_cms.sql`
+  - `supabase/seed_cms_content.sql`
+  - `tests/admin-product-persistence.test.mjs`
+  - `tests/publish-webhook-pipeline.test.mjs`
+  - `tests/static-catalog-builder.test.mjs`
+  - `docs/PROJECT-STATE.md`
+  - `docs/seo_backend_implementation.md`
+- **Data and security notes:** Zero hardcoded claims or invented data. Exactly 12 authentic OEMs, 85 categories, and 159 verified products remain. No secrets, no new dependencies.
+- **Checked (and how):**
+  - Automated tests: `node --test tests/*.test.mjs` — all 60 tests passing cleanly.
+  - Production build: `npm run build` — 159 static product pages and 166 indexable sitemap URLs generated with exit code 0.
+  - Codebase grep: zero active references to `fortify` across source code, templates, routes, CSS, or seeds.
+- **Not checked:**
+  - Live production deployment URL (checked after pull request merge).
+- **Undo:** Revert commit or branch.
+
 ### Entry 27: Equal Height & Field Alignment on Contact Page
 - **Status:** In progress (branch `feat/header-refinement-alignment`, 05 Nov 2026)
 - **What was built:**
@@ -592,6 +776,52 @@ Open items that affect these phases: client decisions on category grouping, dupl
   - Live production deployment URL (checked after pull request merge).
 - **Undo:** Revert commit or branch.
 
+### Entry 32: Complete Removal of Fortify Across Website & Catalog
+- **Status:** In progress (branch `feat/header-refinement-alignment`, 05 Nov 2026)
+- **What was built:**
+  - Completely purged Fortify from the entire Icon Electromatic website, data architecture, build pipeline, and database seeds:
+    1. *Catalog & Products*: Removed Fortify OEM object (`id: "fortify"`), its single category (`3D Printed Dielectric Parts`), and all 8 associated products (`radix-28-dielectric-lens-material`, `radix-46-dielectric-lens-material`, `grin-dielectric-lens-radix-platform`, `3d-printed-horn-lens`, `switched-beam-antenna-lens`, `field-of-view-fov-enhancing-lens`, `tactical-fov-enhancing-lens`, `low-dk-printed-foam-spacer-lens-adjacent`) from `src/data/catalogData.js`. Removed Fortify from `POPULAR_PRODUCTS`.
+    2. *Partners Page*: Removed Fortify partner entry from `DEFAULT_PARTNERS` in `src/data/ContentService.js` and removed `'fortify'` mapping from `src/pages/Partners.js`.
+    3. *Blogs Page*: Removed Fortify OEM blog portal (`oemId: 'fortify'`) from `OEM_BLOGS` in `src/data/blogData.js`.
+    4. *Home Page*: Removed Fortify 3D Optics quick filter chip button and corresponding filter handling in `src/pages/Home.js`.
+    5. *About Us & Careers*: Removed `gal-7` (Fortify 3D lens photo) from `INITIAL_CONTENT.gallery` and removed Fortify reference from `INITIAL_CONTENT.about.keyPoints` in `src/data/ContentService.js`.
+    6. *Chatbot*: Removed Fortify query keyword matchers, updated authorized OEM list and welcome copy from 13 to 12 OEMs, and replaced the Fortify quick chip with Tecdia Capacitors in `src/components/Chatbot.js`.
+    7. *CSS*: Removed all Fortify custom dark/light theme style rules from `src/styles/index.css`.
+    8. *Static Pages & Sitemap*: Deleted `public/products/fortify/` directory (8 generated HTML pages) and deleted unused logo assets `Fortify_Logo_Transparent.png` and `Fortify_Logo_Black_Bg.png`. Regenerated static SSG pages and sitemap (now precisely 166 indexable URLs and 159 static product pages).
+    9. *Database Seeds*: Regenerated `supabase/seed_products_cms.sql` and `supabase/seed_cms_content.sql`, and cleaned legacy `supabase/seed.sql` to ensure 0 remaining instances of Fortify.
+    10. *Tests*: Updated test suites (`tests/admin-product-persistence.test.mjs`, `tests/publish-webhook-pipeline.test.mjs`, `tests/static-catalog-builder.test.mjs`) for the new canonical counts: 12 OEMs, 85 categories, 159 products.
+- **Technology and role:** Static site generator, catalog schema pruning, OCC schema version bump (`v13`), CSS cleanup.
+- **How it works:** Pruning the central dataset `CATALOG` and `INITIAL_CONTENT` automatically cascades across runtime views (Partners, Products, Blogs, Home, About, Chatbot). Running the SSG pipeline generates clean static HTML for the 159 verified products across 12 authentic OEMs without orphan routes or broken links.
+- **Files and folders added or changed:**
+  - `src/data/catalogData.js`
+  - `src/data/blogData.js`
+  - `src/data/ContentService.js`
+  - `src/pages/Home.js`
+  - `src/pages/Partners.js`
+  - `src/components/Chatbot.js`
+  - `src/styles/index.css`
+  - `public/products/fortify/` (deleted)
+  - `public/images/oem-logos/Fortify_Logo_Transparent.png` (deleted)
+  - `public/images/oem-logos/Fortify_Logo_Black_Bg.png` (deleted)
+  - `public/sitemap.xml`
+  - `public/catalog-images/full_extraction_report.json`
+  - `supabase/seed.sql`
+  - `supabase/seed_products_cms.sql`
+  - `supabase/seed_cms_content.sql`
+  - `tests/admin-product-persistence.test.mjs`
+  - `tests/publish-webhook-pipeline.test.mjs`
+  - `tests/static-catalog-builder.test.mjs`
+  - `docs/PROJECT-STATE.md`
+  - `docs/seo_backend_implementation.md`
+- **Data and security notes:** Zero hardcoded claims or invented data. Exactly 12 authentic OEMs, 85 categories, and 159 verified products remain. No secrets, no new dependencies.
+- **Checked (and how):**
+  - Automated tests: `node --test tests/*.test.mjs` — all 60 tests passing cleanly.
+  - Production build: `npm run build` — 159 static product pages and 166 indexable sitemap URLs generated with exit code 0.
+  - Codebase grep: zero active references to `fortify` across source code, templates, routes, CSS, or seeds.
+- **Not checked:**
+  - Live production deployment URL (checked after pull request merge).
+- **Undo:** Revert commit or branch.
+
 ### Entry 28: Separate Mini-Circuits and RFuW Filter Buttons on Homepage
 - **Status:** In progress (branch `feat/header-refinement-alignment`, 05 Nov 2026)
 - **What was built:**
@@ -610,6 +840,52 @@ Open items that affect these phases: client decisions on category grouping, dupl
   - Verification test: confirmed Mini-Circuits returns 1 item (`RF/MW Amplifiers`) and RFuW returns 1 item (`RF Limiters`).
   - Automated tests: `node --test tests/*.test.mjs` — 60/60 tests passing.
   - Production build: `npm run build` — 167 static product pages generated, exit code 0.
+- **Not checked:**
+  - Live production deployment URL (checked after pull request merge).
+- **Undo:** Revert commit or branch.
+
+### Entry 32: Complete Removal of Fortify Across Website & Catalog
+- **Status:** In progress (branch `feat/header-refinement-alignment`, 05 Nov 2026)
+- **What was built:**
+  - Completely purged Fortify from the entire Icon Electromatic website, data architecture, build pipeline, and database seeds:
+    1. *Catalog & Products*: Removed Fortify OEM object (`id: "fortify"`), its single category (`3D Printed Dielectric Parts`), and all 8 associated products (`radix-28-dielectric-lens-material`, `radix-46-dielectric-lens-material`, `grin-dielectric-lens-radix-platform`, `3d-printed-horn-lens`, `switched-beam-antenna-lens`, `field-of-view-fov-enhancing-lens`, `tactical-fov-enhancing-lens`, `low-dk-printed-foam-spacer-lens-adjacent`) from `src/data/catalogData.js`. Removed Fortify from `POPULAR_PRODUCTS`.
+    2. *Partners Page*: Removed Fortify partner entry from `DEFAULT_PARTNERS` in `src/data/ContentService.js` and removed `'fortify'` mapping from `src/pages/Partners.js`.
+    3. *Blogs Page*: Removed Fortify OEM blog portal (`oemId: 'fortify'`) from `OEM_BLOGS` in `src/data/blogData.js`.
+    4. *Home Page*: Removed Fortify 3D Optics quick filter chip button and corresponding filter handling in `src/pages/Home.js`.
+    5. *About Us & Careers*: Removed `gal-7` (Fortify 3D lens photo) from `INITIAL_CONTENT.gallery` and removed Fortify reference from `INITIAL_CONTENT.about.keyPoints` in `src/data/ContentService.js`.
+    6. *Chatbot*: Removed Fortify query keyword matchers, updated authorized OEM list and welcome copy from 13 to 12 OEMs, and replaced the Fortify quick chip with Tecdia Capacitors in `src/components/Chatbot.js`.
+    7. *CSS*: Removed all Fortify custom dark/light theme style rules from `src/styles/index.css`.
+    8. *Static Pages & Sitemap*: Deleted `public/products/fortify/` directory (8 generated HTML pages) and deleted unused logo assets `Fortify_Logo_Transparent.png` and `Fortify_Logo_Black_Bg.png`. Regenerated static SSG pages and sitemap (now precisely 166 indexable URLs and 159 static product pages).
+    9. *Database Seeds*: Regenerated `supabase/seed_products_cms.sql` and `supabase/seed_cms_content.sql`, and cleaned legacy `supabase/seed.sql` to ensure 0 remaining instances of Fortify.
+    10. *Tests*: Updated test suites (`tests/admin-product-persistence.test.mjs`, `tests/publish-webhook-pipeline.test.mjs`, `tests/static-catalog-builder.test.mjs`) for the new canonical counts: 12 OEMs, 85 categories, 159 products.
+- **Technology and role:** Static site generator, catalog schema pruning, OCC schema version bump (`v13`), CSS cleanup.
+- **How it works:** Pruning the central dataset `CATALOG` and `INITIAL_CONTENT` automatically cascades across runtime views (Partners, Products, Blogs, Home, About, Chatbot). Running the SSG pipeline generates clean static HTML for the 159 verified products across 12 authentic OEMs without orphan routes or broken links.
+- **Files and folders added or changed:**
+  - `src/data/catalogData.js`
+  - `src/data/blogData.js`
+  - `src/data/ContentService.js`
+  - `src/pages/Home.js`
+  - `src/pages/Partners.js`
+  - `src/components/Chatbot.js`
+  - `src/styles/index.css`
+  - `public/products/fortify/` (deleted)
+  - `public/images/oem-logos/Fortify_Logo_Transparent.png` (deleted)
+  - `public/images/oem-logos/Fortify_Logo_Black_Bg.png` (deleted)
+  - `public/sitemap.xml`
+  - `public/catalog-images/full_extraction_report.json`
+  - `supabase/seed.sql`
+  - `supabase/seed_products_cms.sql`
+  - `supabase/seed_cms_content.sql`
+  - `tests/admin-product-persistence.test.mjs`
+  - `tests/publish-webhook-pipeline.test.mjs`
+  - `tests/static-catalog-builder.test.mjs`
+  - `docs/PROJECT-STATE.md`
+  - `docs/seo_backend_implementation.md`
+- **Data and security notes:** Zero hardcoded claims or invented data. Exactly 12 authentic OEMs, 85 categories, and 159 verified products remain. No secrets, no new dependencies.
+- **Checked (and how):**
+  - Automated tests: `node --test tests/*.test.mjs` — all 60 tests passing cleanly.
+  - Production build: `npm run build` — 159 static product pages and 166 indexable sitemap URLs generated with exit code 0.
+  - Codebase grep: zero active references to `fortify` across source code, templates, routes, CSS, or seeds.
 - **Not checked:**
   - Live production deployment URL (checked after pull request merge).
 - **Undo:** Revert commit or branch.
@@ -637,6 +913,52 @@ Open items that affect these phases: client decisions on category grouping, dupl
   - Live production deployment URL (checked after pull request merge).
 - **Undo:** Revert commit or branch.
 
+### Entry 32: Complete Removal of Fortify Across Website & Catalog
+- **Status:** In progress (branch `feat/header-refinement-alignment`, 05 Nov 2026)
+- **What was built:**
+  - Completely purged Fortify from the entire Icon Electromatic website, data architecture, build pipeline, and database seeds:
+    1. *Catalog & Products*: Removed Fortify OEM object (`id: "fortify"`), its single category (`3D Printed Dielectric Parts`), and all 8 associated products (`radix-28-dielectric-lens-material`, `radix-46-dielectric-lens-material`, `grin-dielectric-lens-radix-platform`, `3d-printed-horn-lens`, `switched-beam-antenna-lens`, `field-of-view-fov-enhancing-lens`, `tactical-fov-enhancing-lens`, `low-dk-printed-foam-spacer-lens-adjacent`) from `src/data/catalogData.js`. Removed Fortify from `POPULAR_PRODUCTS`.
+    2. *Partners Page*: Removed Fortify partner entry from `DEFAULT_PARTNERS` in `src/data/ContentService.js` and removed `'fortify'` mapping from `src/pages/Partners.js`.
+    3. *Blogs Page*: Removed Fortify OEM blog portal (`oemId: 'fortify'`) from `OEM_BLOGS` in `src/data/blogData.js`.
+    4. *Home Page*: Removed Fortify 3D Optics quick filter chip button and corresponding filter handling in `src/pages/Home.js`.
+    5. *About Us & Careers*: Removed `gal-7` (Fortify 3D lens photo) from `INITIAL_CONTENT.gallery` and removed Fortify reference from `INITIAL_CONTENT.about.keyPoints` in `src/data/ContentService.js`.
+    6. *Chatbot*: Removed Fortify query keyword matchers, updated authorized OEM list and welcome copy from 13 to 12 OEMs, and replaced the Fortify quick chip with Tecdia Capacitors in `src/components/Chatbot.js`.
+    7. *CSS*: Removed all Fortify custom dark/light theme style rules from `src/styles/index.css`.
+    8. *Static Pages & Sitemap*: Deleted `public/products/fortify/` directory (8 generated HTML pages) and deleted unused logo assets `Fortify_Logo_Transparent.png` and `Fortify_Logo_Black_Bg.png`. Regenerated static SSG pages and sitemap (now precisely 166 indexable URLs and 159 static product pages).
+    9. *Database Seeds*: Regenerated `supabase/seed_products_cms.sql` and `supabase/seed_cms_content.sql`, and cleaned legacy `supabase/seed.sql` to ensure 0 remaining instances of Fortify.
+    10. *Tests*: Updated test suites (`tests/admin-product-persistence.test.mjs`, `tests/publish-webhook-pipeline.test.mjs`, `tests/static-catalog-builder.test.mjs`) for the new canonical counts: 12 OEMs, 85 categories, 159 products.
+- **Technology and role:** Static site generator, catalog schema pruning, OCC schema version bump (`v13`), CSS cleanup.
+- **How it works:** Pruning the central dataset `CATALOG` and `INITIAL_CONTENT` automatically cascades across runtime views (Partners, Products, Blogs, Home, About, Chatbot). Running the SSG pipeline generates clean static HTML for the 159 verified products across 12 authentic OEMs without orphan routes or broken links.
+- **Files and folders added or changed:**
+  - `src/data/catalogData.js`
+  - `src/data/blogData.js`
+  - `src/data/ContentService.js`
+  - `src/pages/Home.js`
+  - `src/pages/Partners.js`
+  - `src/components/Chatbot.js`
+  - `src/styles/index.css`
+  - `public/products/fortify/` (deleted)
+  - `public/images/oem-logos/Fortify_Logo_Transparent.png` (deleted)
+  - `public/images/oem-logos/Fortify_Logo_Black_Bg.png` (deleted)
+  - `public/sitemap.xml`
+  - `public/catalog-images/full_extraction_report.json`
+  - `supabase/seed.sql`
+  - `supabase/seed_products_cms.sql`
+  - `supabase/seed_cms_content.sql`
+  - `tests/admin-product-persistence.test.mjs`
+  - `tests/publish-webhook-pipeline.test.mjs`
+  - `tests/static-catalog-builder.test.mjs`
+  - `docs/PROJECT-STATE.md`
+  - `docs/seo_backend_implementation.md`
+- **Data and security notes:** Zero hardcoded claims or invented data. Exactly 12 authentic OEMs, 85 categories, and 159 verified products remain. No secrets, no new dependencies.
+- **Checked (and how):**
+  - Automated tests: `node --test tests/*.test.mjs` — all 60 tests passing cleanly.
+  - Production build: `npm run build` — 159 static product pages and 166 indexable sitemap URLs generated with exit code 0.
+  - Codebase grep: zero active references to `fortify` across source code, templates, routes, CSS, or seeds.
+- **Not checked:**
+  - Live production deployment URL (checked after pull request merge).
+- **Undo:** Revert commit or branch.
+
 ### Entry 30: Replace PowerRF Brand Logo on Partners Page & Running Ticker
 - **Status:** In progress (branch `feat/header-refinement-alignment`, 05 Nov 2026)
 - **What was built:**
@@ -658,6 +980,52 @@ Open items that affect these phases: client decisions on category grouping, dupl
   - Automated tests: `node --test tests/*.test.mjs` — 60/60 tests passing.
   - Production build: `npm run build` — 167 static product pages generated, exit code 0.
   - Verified in runtime data model and responsive dimensions.
+- **Not checked:**
+  - Live production deployment URL (checked after pull request merge).
+- **Undo:** Revert commit or branch.
+
+### Entry 32: Complete Removal of Fortify Across Website & Catalog
+- **Status:** In progress (branch `feat/header-refinement-alignment`, 05 Nov 2026)
+- **What was built:**
+  - Completely purged Fortify from the entire Icon Electromatic website, data architecture, build pipeline, and database seeds:
+    1. *Catalog & Products*: Removed Fortify OEM object (`id: "fortify"`), its single category (`3D Printed Dielectric Parts`), and all 8 associated products (`radix-28-dielectric-lens-material`, `radix-46-dielectric-lens-material`, `grin-dielectric-lens-radix-platform`, `3d-printed-horn-lens`, `switched-beam-antenna-lens`, `field-of-view-fov-enhancing-lens`, `tactical-fov-enhancing-lens`, `low-dk-printed-foam-spacer-lens-adjacent`) from `src/data/catalogData.js`. Removed Fortify from `POPULAR_PRODUCTS`.
+    2. *Partners Page*: Removed Fortify partner entry from `DEFAULT_PARTNERS` in `src/data/ContentService.js` and removed `'fortify'` mapping from `src/pages/Partners.js`.
+    3. *Blogs Page*: Removed Fortify OEM blog portal (`oemId: 'fortify'`) from `OEM_BLOGS` in `src/data/blogData.js`.
+    4. *Home Page*: Removed Fortify 3D Optics quick filter chip button and corresponding filter handling in `src/pages/Home.js`.
+    5. *About Us & Careers*: Removed `gal-7` (Fortify 3D lens photo) from `INITIAL_CONTENT.gallery` and removed Fortify reference from `INITIAL_CONTENT.about.keyPoints` in `src/data/ContentService.js`.
+    6. *Chatbot*: Removed Fortify query keyword matchers, updated authorized OEM list and welcome copy from 13 to 12 OEMs, and replaced the Fortify quick chip with Tecdia Capacitors in `src/components/Chatbot.js`.
+    7. *CSS*: Removed all Fortify custom dark/light theme style rules from `src/styles/index.css`.
+    8. *Static Pages & Sitemap*: Deleted `public/products/fortify/` directory (8 generated HTML pages) and deleted unused logo assets `Fortify_Logo_Transparent.png` and `Fortify_Logo_Black_Bg.png`. Regenerated static SSG pages and sitemap (now precisely 166 indexable URLs and 159 static product pages).
+    9. *Database Seeds*: Regenerated `supabase/seed_products_cms.sql` and `supabase/seed_cms_content.sql`, and cleaned legacy `supabase/seed.sql` to ensure 0 remaining instances of Fortify.
+    10. *Tests*: Updated test suites (`tests/admin-product-persistence.test.mjs`, `tests/publish-webhook-pipeline.test.mjs`, `tests/static-catalog-builder.test.mjs`) for the new canonical counts: 12 OEMs, 85 categories, 159 products.
+- **Technology and role:** Static site generator, catalog schema pruning, OCC schema version bump (`v13`), CSS cleanup.
+- **How it works:** Pruning the central dataset `CATALOG` and `INITIAL_CONTENT` automatically cascades across runtime views (Partners, Products, Blogs, Home, About, Chatbot). Running the SSG pipeline generates clean static HTML for the 159 verified products across 12 authentic OEMs without orphan routes or broken links.
+- **Files and folders added or changed:**
+  - `src/data/catalogData.js`
+  - `src/data/blogData.js`
+  - `src/data/ContentService.js`
+  - `src/pages/Home.js`
+  - `src/pages/Partners.js`
+  - `src/components/Chatbot.js`
+  - `src/styles/index.css`
+  - `public/products/fortify/` (deleted)
+  - `public/images/oem-logos/Fortify_Logo_Transparent.png` (deleted)
+  - `public/images/oem-logos/Fortify_Logo_Black_Bg.png` (deleted)
+  - `public/sitemap.xml`
+  - `public/catalog-images/full_extraction_report.json`
+  - `supabase/seed.sql`
+  - `supabase/seed_products_cms.sql`
+  - `supabase/seed_cms_content.sql`
+  - `tests/admin-product-persistence.test.mjs`
+  - `tests/publish-webhook-pipeline.test.mjs`
+  - `tests/static-catalog-builder.test.mjs`
+  - `docs/PROJECT-STATE.md`
+  - `docs/seo_backend_implementation.md`
+- **Data and security notes:** Zero hardcoded claims or invented data. Exactly 12 authentic OEMs, 85 categories, and 159 verified products remain. No secrets, no new dependencies.
+- **Checked (and how):**
+  - Automated tests: `node --test tests/*.test.mjs` — all 60 tests passing cleanly.
+  - Production build: `npm run build` — 159 static product pages and 166 indexable sitemap URLs generated with exit code 0.
+  - Codebase grep: zero active references to `fortify` across source code, templates, routes, CSS, or seeds.
 - **Not checked:**
   - Live production deployment URL (checked after pull request merge).
 - **Undo:** Revert commit or branch.
@@ -688,6 +1056,98 @@ Open items that affect these phases: client decisions on category grouping, dupl
 - **Checked (and how):**
   - Automated tests: `node --test tests/*.test.mjs` — 60/60 tests passing.
   - Production build: `npm run build` — 167 static product pages generated, exit code 0.
+- **Not checked:**
+  - Live production deployment URL (checked after pull request merge).
+- **Undo:** Revert commit or branch.
+
+### Entry 32: Complete Removal of Fortify Across Website & Catalog
+- **Status:** In progress (branch `feat/header-refinement-alignment`, 05 Nov 2026)
+- **What was built:**
+  - Completely purged Fortify from the entire Icon Electromatic website, data architecture, build pipeline, and database seeds:
+    1. *Catalog & Products*: Removed Fortify OEM object (`id: "fortify"`), its single category (`3D Printed Dielectric Parts`), and all 8 associated products (`radix-28-dielectric-lens-material`, `radix-46-dielectric-lens-material`, `grin-dielectric-lens-radix-platform`, `3d-printed-horn-lens`, `switched-beam-antenna-lens`, `field-of-view-fov-enhancing-lens`, `tactical-fov-enhancing-lens`, `low-dk-printed-foam-spacer-lens-adjacent`) from `src/data/catalogData.js`. Removed Fortify from `POPULAR_PRODUCTS`.
+    2. *Partners Page*: Removed Fortify partner entry from `DEFAULT_PARTNERS` in `src/data/ContentService.js` and removed `'fortify'` mapping from `src/pages/Partners.js`.
+    3. *Blogs Page*: Removed Fortify OEM blog portal (`oemId: 'fortify'`) from `OEM_BLOGS` in `src/data/blogData.js`.
+    4. *Home Page*: Removed Fortify 3D Optics quick filter chip button and corresponding filter handling in `src/pages/Home.js`.
+    5. *About Us & Careers*: Removed `gal-7` (Fortify 3D lens photo) from `INITIAL_CONTENT.gallery` and removed Fortify reference from `INITIAL_CONTENT.about.keyPoints` in `src/data/ContentService.js`.
+    6. *Chatbot*: Removed Fortify query keyword matchers, updated authorized OEM list and welcome copy from 13 to 12 OEMs, and replaced the Fortify quick chip with Tecdia Capacitors in `src/components/Chatbot.js`.
+    7. *CSS*: Removed all Fortify custom dark/light theme style rules from `src/styles/index.css`.
+    8. *Static Pages & Sitemap*: Deleted `public/products/fortify/` directory (8 generated HTML pages) and deleted unused logo assets `Fortify_Logo_Transparent.png` and `Fortify_Logo_Black_Bg.png`. Regenerated static SSG pages and sitemap (now precisely 166 indexable URLs and 159 static product pages).
+    9. *Database Seeds*: Regenerated `supabase/seed_products_cms.sql` and `supabase/seed_cms_content.sql`, and cleaned legacy `supabase/seed.sql` to ensure 0 remaining instances of Fortify.
+    10. *Tests*: Updated test suites (`tests/admin-product-persistence.test.mjs`, `tests/publish-webhook-pipeline.test.mjs`, `tests/static-catalog-builder.test.mjs`) for the new canonical counts: 12 OEMs, 85 categories, 159 products.
+- **Technology and role:** Static site generator, catalog schema pruning, OCC schema version bump (`v13`), CSS cleanup.
+- **How it works:** Pruning the central dataset `CATALOG` and `INITIAL_CONTENT` automatically cascades across runtime views (Partners, Products, Blogs, Home, About, Chatbot). Running the SSG pipeline generates clean static HTML for the 159 verified products across 12 authentic OEMs without orphan routes or broken links.
+- **Files and folders added or changed:**
+  - `src/data/catalogData.js`
+  - `src/data/blogData.js`
+  - `src/data/ContentService.js`
+  - `src/pages/Home.js`
+  - `src/pages/Partners.js`
+  - `src/components/Chatbot.js`
+  - `src/styles/index.css`
+  - `public/products/fortify/` (deleted)
+  - `public/images/oem-logos/Fortify_Logo_Transparent.png` (deleted)
+  - `public/images/oem-logos/Fortify_Logo_Black_Bg.png` (deleted)
+  - `public/sitemap.xml`
+  - `public/catalog-images/full_extraction_report.json`
+  - `supabase/seed.sql`
+  - `supabase/seed_products_cms.sql`
+  - `supabase/seed_cms_content.sql`
+  - `tests/admin-product-persistence.test.mjs`
+  - `tests/publish-webhook-pipeline.test.mjs`
+  - `tests/static-catalog-builder.test.mjs`
+  - `docs/PROJECT-STATE.md`
+  - `docs/seo_backend_implementation.md`
+- **Data and security notes:** Zero hardcoded claims or invented data. Exactly 12 authentic OEMs, 85 categories, and 159 verified products remain. No secrets, no new dependencies.
+- **Checked (and how):**
+  - Automated tests: `node --test tests/*.test.mjs` — all 60 tests passing cleanly.
+  - Production build: `npm run build` — 159 static product pages and 166 indexable sitemap URLs generated with exit code 0.
+  - Codebase grep: zero active references to `fortify` across source code, templates, routes, CSS, or seeds.
+- **Not checked:**
+  - Live production deployment URL (checked after pull request merge).
+- **Undo:** Revert commit or branch.
+
+### Entry 32: Complete Removal of Fortify Across Website & Catalog
+- **Status:** In progress (branch `feat/header-refinement-alignment`, 05 Nov 2026)
+- **What was built:**
+  - Completely purged Fortify from the entire Icon Electromatic website, data architecture, build pipeline, and database seeds:
+    1. *Catalog & Products*: Removed Fortify OEM object (`id: "fortify"`), its single category (`3D Printed Dielectric Parts`), and all 8 associated products (`radix-28-dielectric-lens-material`, `radix-46-dielectric-lens-material`, `grin-dielectric-lens-radix-platform`, `3d-printed-horn-lens`, `switched-beam-antenna-lens`, `field-of-view-fov-enhancing-lens`, `tactical-fov-enhancing-lens`, `low-dk-printed-foam-spacer-lens-adjacent`) from `src/data/catalogData.js`. Removed Fortify from `POPULAR_PRODUCTS`.
+    2. *Partners Page*: Removed Fortify partner entry from `DEFAULT_PARTNERS` in `src/data/ContentService.js` and removed `'fortify'` mapping from `src/pages/Partners.js`.
+    3. *Blogs Page*: Removed Fortify OEM blog portal (`oemId: 'fortify'`) from `OEM_BLOGS` in `src/data/blogData.js`.
+    4. *Home Page*: Removed Fortify 3D Optics quick filter chip button and corresponding filter handling in `src/pages/Home.js`.
+    5. *About Us & Careers*: Removed `gal-7` (Fortify 3D lens photo) from `INITIAL_CONTENT.gallery` and removed Fortify reference from `INITIAL_CONTENT.about.keyPoints` in `src/data/ContentService.js`.
+    6. *Chatbot*: Removed Fortify query keyword matchers, updated authorized OEM list and welcome copy from 13 to 12 OEMs, and replaced the Fortify quick chip with Tecdia Capacitors in `src/components/Chatbot.js`.
+    7. *CSS*: Removed all Fortify custom dark/light theme style rules from `src/styles/index.css`.
+    8. *Static Pages & Sitemap*: Deleted `public/products/fortify/` directory (8 generated HTML pages) and deleted unused logo assets `Fortify_Logo_Transparent.png` and `Fortify_Logo_Black_Bg.png`. Regenerated static SSG pages and sitemap (now precisely 166 indexable URLs and 159 static product pages).
+    9. *Database Seeds*: Regenerated `supabase/seed_products_cms.sql` and `supabase/seed_cms_content.sql`, and cleaned legacy `supabase/seed.sql` to ensure 0 remaining instances of Fortify.
+    10. *Tests*: Updated test suites (`tests/admin-product-persistence.test.mjs`, `tests/publish-webhook-pipeline.test.mjs`, `tests/static-catalog-builder.test.mjs`) for the new canonical counts: 12 OEMs, 85 categories, 159 products.
+- **Technology and role:** Static site generator, catalog schema pruning, OCC schema version bump (`v13`), CSS cleanup.
+- **How it works:** Pruning the central dataset `CATALOG` and `INITIAL_CONTENT` automatically cascades across runtime views (Partners, Products, Blogs, Home, About, Chatbot). Running the SSG pipeline generates clean static HTML for the 159 verified products across 12 authentic OEMs without orphan routes or broken links.
+- **Files and folders added or changed:**
+  - `src/data/catalogData.js`
+  - `src/data/blogData.js`
+  - `src/data/ContentService.js`
+  - `src/pages/Home.js`
+  - `src/pages/Partners.js`
+  - `src/components/Chatbot.js`
+  - `src/styles/index.css`
+  - `public/products/fortify/` (deleted)
+  - `public/images/oem-logos/Fortify_Logo_Transparent.png` (deleted)
+  - `public/images/oem-logos/Fortify_Logo_Black_Bg.png` (deleted)
+  - `public/sitemap.xml`
+  - `public/catalog-images/full_extraction_report.json`
+  - `supabase/seed.sql`
+  - `supabase/seed_products_cms.sql`
+  - `supabase/seed_cms_content.sql`
+  - `tests/admin-product-persistence.test.mjs`
+  - `tests/publish-webhook-pipeline.test.mjs`
+  - `tests/static-catalog-builder.test.mjs`
+  - `docs/PROJECT-STATE.md`
+  - `docs/seo_backend_implementation.md`
+- **Data and security notes:** Zero hardcoded claims or invented data. Exactly 12 authentic OEMs, 85 categories, and 159 verified products remain. No secrets, no new dependencies.
+- **Checked (and how):**
+  - Automated tests: `node --test tests/*.test.mjs` — all 60 tests passing cleanly.
+  - Production build: `npm run build` — 159 static product pages and 166 indexable sitemap URLs generated with exit code 0.
+  - Codebase grep: zero active references to `fortify` across source code, templates, routes, CSS, or seeds.
 - **Not checked:**
   - Live production deployment URL (checked after pull request merge).
 - **Undo:** Revert commit or branch.

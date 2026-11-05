@@ -1,5 +1,5 @@
 {
-  "total_product_rows": 164,
+  "total_product_rows": 156,
   "total_images_extracted": 95,
   "products": [
     {
@@ -875,86 +875,6 @@
       "category": "TCR EHF Series",
       "product": "TCR EHF\u00ae 100N18P8X",
       "prod_slug": "tcr-ehf-100n18p8x",
-      "total_images": 0,
-      "images": []
-    },
-    {
-      "row": 58,
-      "oem": "Fortify",
-      "oem_slug": "fortify",
-      "category": "TCR EHF Series",
-      "product": "Radix\u2122 2.8 Dielectric Lens Material",
-      "prod_slug": "radix-28-dielectric-lens-material",
-      "total_images": 0,
-      "images": []
-    },
-    {
-      "row": 59,
-      "oem": "Fortify",
-      "oem_slug": "fortify",
-      "category": "TCR EHF Series",
-      "product": "Radix\u2122 4.6 Dielectric Lens Material",
-      "prod_slug": "radix-46-dielectric-lens-material",
-      "total_images": 0,
-      "images": []
-    },
-    {
-      "row": 60,
-      "oem": "Fortify",
-      "oem_slug": "fortify",
-      "category": "TCR EHF Series",
-      "product": "GRIN Dielectric Lens (Radix\u2122 Platform)",
-      "prod_slug": "grin-dielectric-lens-radix-platform",
-      "total_images": 0,
-      "images": []
-    },
-    {
-      "row": 61,
-      "oem": "Fortify",
-      "oem_slug": "fortify",
-      "category": "TCR EHF Series",
-      "product": "3D Printed Horn Lens",
-      "prod_slug": "3d-printed-horn-lens",
-      "total_images": 0,
-      "images": []
-    },
-    {
-      "row": 62,
-      "oem": "Fortify",
-      "oem_slug": "fortify",
-      "category": "TCR EHF Series",
-      "product": "Switched Beam Antenna Lens",
-      "prod_slug": "switched-beam-antenna-lens",
-      "total_images": 0,
-      "images": []
-    },
-    {
-      "row": 63,
-      "oem": "Fortify",
-      "oem_slug": "fortify",
-      "category": "TCR EHF Series",
-      "product": "Field-of-View (FOV) Enhancing Lens",
-      "prod_slug": "field-of-view-fov-enhancing-lens",
-      "total_images": 0,
-      "images": []
-    },
-    {
-      "row": 64,
-      "oem": "Fortify",
-      "oem_slug": "fortify",
-      "category": "TCR EHF Series",
-      "product": "Tactical FOV Enhancing Lens",
-      "prod_slug": "tactical-fov-enhancing-lens",
-      "total_images": 0,
-      "images": []
-    },
-    {
-      "row": 65,
-      "oem": "Fortify",
-      "oem_slug": "fortify",
-      "category": "TCR EHF Series",
-      "product": "Low-Dk Printed Foam Spacer (Lens Adjacent)",
-      "prod_slug": "low-dk-printed-foam-spacer-lens-adjacent",
       "total_images": 0,
       "images": []
     },

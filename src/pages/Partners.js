@@ -138,7 +138,6 @@ const PARTNER_TO_OEM_MAP = {
   'quantic-eulex': 'evans',
   'quantic-ohmega': 'ohmega-ticer',
   'thermosen': 'thermosen',
-  'fortify': 'fortify',
   'powerfactor': 'powerfactor',
   'nee': 'nee',
   'transline-technology': 'transline-technology'

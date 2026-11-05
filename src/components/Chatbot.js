@@ -35,7 +35,6 @@ function findOem(query) {
     if (oem.id === 'transline-technology' && q.includes('transline')) return oem;
     if (oem.id === 'evans' && (q.includes('eulex') || q.includes('paktron') || q.includes('evans capacitor'))) return oem;
     if (oem.id === 'tecdia' && (q.includes('tecdia') || q.includes('single layer cap'))) return oem;
-    if (oem.id === 'fortify' && (q.includes('radix') || q.includes('fluxcore') || q.includes('3d print') || q.includes('dielectric lens'))) return oem;
   }
   return null;
 }
@@ -181,12 +180,11 @@ export function getBotReply(userText) {
   ) {
     return `
       <div>
-        ICON Electromatic is the specialized engineering distributor for <strong>13 global technology OEMs</strong>:
+        ICON Electromatic is the specialized engineering distributor for <strong>12 global technology OEMs</strong>:
         <br/><br/>
         <ul style="padding-left:16px;margin:0 0 10px;font-size:0.8rem;line-height:1.6;color:var(--text-gray-300);">
           <li><strong>Rogers Corporation</strong> — High Frequency PTFE Laminates</li>
           <li><strong>Qorvo</strong> — GaN HEMTs, Power Amplifiers &amp; Front-End Modules</li>
-          <li><strong>Fortify</strong> — 3D Printed Low-Loss RF Dielectric Optics</li>
           <li><strong>Ohmega Ticer</strong> — Thin-Film Embedded Resistor Foils</li>
           <li><strong>Mini-Circuits</strong> — Broadline RF/MW Components &amp; Adapters</li>
           <li><strong>RFuW Engineering</strong> — High-Power Limiters &amp; Switches</li>
@@ -310,7 +308,7 @@ export function getBotReply(userText) {
   // Fallback
   return `
     <div>
-      Thank you for your inquiry. You can ask me about any of our <strong>13 authorized OEMs</strong> (e.g. <em>Rogers, Qorvo, Fortify, Mini-Circuits, Ohmega-Ticer</em>), specific <strong>categories</strong> (e.g. <em>RT/Duroid, Power Amplifiers, 3D RF Optics</em>), or target models.
+      Thank you for your inquiry. You can ask me about any of our <strong>12 authorized OEMs</strong> (e.g. <em>Rogers, Qorvo, Mini-Circuits, Ohmega-Ticer</em>), specific <strong>categories</strong> (e.g. <em>RT/Duroid, Power Amplifiers, Thin-Film Foils</em>), or target models.
       <br/><br/>
       For custom specifications or commercial quotes, please connect directly with our engineering team:
       <div style="margin-top:8px;">
@@ -347,17 +345,17 @@ export function renderChatbot() {
         <div class="chat-bubble-bot">
           👋 Welcome to <strong>ICON ELECTROMATIC</strong>. 
           <br/><br/>
-          I can assist you with information about our <strong>13 authorized OEMs</strong>, component categories (Laminates, GaN Amplifiers, 3D RF Optics, Limiters, SDRs), and flagship models.
+          I can assist you with information about our <strong>12 authorized OEMs</strong>, component categories (Laminates, GaN Amplifiers, Limiters, Embedded Foils, SDRs), and flagship models.
           <br/><br/>
           <em>What component or manufacturer can I assist you with today?</em>
         </div>
       </div>
 
       <div class="chat-quick-chips">
-        <button class="chat-chip" data-q="All 13 OEMs">All 13 OEMs</button>
+        <button class="chat-chip" data-q="All 12 OEMs">All 12 OEMs</button>
         <button class="chat-chip" data-q="Rogers Laminates">Rogers Laminates</button>
         <button class="chat-chip" data-q="Qorvo GaN & ICs">Qorvo GaN &amp; ICs</button>
-        <button class="chat-chip" data-q="Fortify 3D Optics">Fortify 3D Optics</button>
+        <button class="chat-chip" data-q="Tecdia Capacitors">Tecdia Capacitors</button>
         <button class="chat-chip" data-q="Request a Quote">Request Quote</button>
       </div>
 
