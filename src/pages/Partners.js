@@ -137,6 +137,7 @@ const PARTNER_TO_OEM_MAP = {
   'yttek': 'yttek',
   'quantic-eulex': 'evans',
   'quantic-ohmega': 'ohmega-ticer',
+  'ohmega-ticer': 'ohmega-ticer',
   'thermosen': 'thermosen',
   'fortify': 'fortify',
   'powerfactor': 'powerfactor',

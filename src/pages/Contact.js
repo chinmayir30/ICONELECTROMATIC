@@ -447,7 +447,6 @@ export function renderContactPage() {
                 'Inquiring about Thin Film Capacitors.',
                 'Inquiring about Ceramic Capacitors.',
                 'Inquiring about PCB Fabrication.',
-                'Inquiring about Perimeter Intrusion Detection System (PIDS).'
               ]).map(p => `
                 <button class="filter-chip-dark quick-preset" data-preset="${p}">${p.replace(/^Inquiring about /, '').replace(/\.$/, '')}</button>
               `).join('')}

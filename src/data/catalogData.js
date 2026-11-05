@@ -1898,13 +1898,13 @@ export const CATALOG = [
     shortName: "Ohmega Ticer",
     specialty: "Embedded Resistive Film",
     tagline: "Embedded Thin-Film Resistive Copper Foil Materials",
-    description: "Quantic Ohmega-Ticer pioneers thin-film embedded resistor technology, integrating precision resistor networks directly into inner PCB layers for aerospace, defense, and high-speed digital systems.",
+    description: "Ohmega-Ticer pioneers thin-film embedded resistor technology, integrating precision resistor networks directly into inner PCB layers for aerospace, defense, and high-speed digital systems.",
     website: "https://quanticohmega.com",
     accentColor: "#2563EB",
     glowColor: "rgba(37, 99, 235, 0.4)",
     defaultImage: "/images/rf-laminate.jpg",
     logoImg: "/images/oem-logos/OhmegaTicer_Black.png",
-    logoSvg: "<svg viewBox=\"0 0 220 42\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"2\" y=\"2\" width=\"38\" height=\"38\" rx=\"9\" fill=\"rgba(37,99,235,0.2)\" stroke=\"#2563EB\" stroke-width=\"1.8\"/><path d=\"M21 9l9 5.2v10.6l-9 5.2-9-5.2V14.2l9-5.2z\" stroke=\"#60A5FA\" stroke-width=\"2.2\" fill=\"none\"/><circle cx=\"21\" cy=\"20\" r=\"3.2\" fill=\"#3B82F6\"/><text x=\"48\" y=\"20\" fill=\"#93C5FD\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"800\" font-size=\"10\" letter-spacing=\"1.4\">QUANTIC</text><text x=\"48\" y=\"34\" fill=\"#FFFFFF\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"900\" font-size=\"14.5\" letter-spacing=\"-0.2\">Ohmega-Ticer</text></svg>",
+    logoSvg: "<svg viewBox=\"0 0 220 42\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"2\" y=\"2\" width=\"38\" height=\"38\" rx=\"9\" fill=\"rgba(37,99,235,0.2)\" stroke=\"#2563EB\" stroke-width=\"1.8\"/><path d=\"M21 9l9 5.2v10.6l-9 5.2-9-5.2V14.2l9-5.2z\" stroke=\"#60A5FA\" stroke-width=\"2.2\" fill=\"none\"/><circle cx=\"21\" cy=\"20\" r=\"3.2\" fill=\"#3B82F6\"/><text x=\"48\" y=\"27\" fill=\"#FFFFFF\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"900\" font-size=\"17\" letter-spacing=\"0.5\">Ohmega-Ticer</text></svg>",
     categories: [
       {
         id: "rcm-series",

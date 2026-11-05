@@ -13,6 +13,7 @@ export function renderAboutPage() {
     { icon: 'fa-solid fa-award', text: 'Multi-Decade Pedigree', color: '#FDA4AF', bg: 'rgba(225,29,72,0.08)', border: 'rgba(225,29,72,0.25)' },
     { icon: 'fa-solid fa-satellite', text: 'Defense & Telecom Solutions', color: '#FCD34D', bg: 'rgba(245,158,11,0.08)', border: 'rgba(245,158,11,0.25)' },
     { icon: 'fa-solid fa-globe', text: 'Global OEM Representation', color: '#6EE7B7', bg: 'rgba(16,185,129,0.08)', border: 'rgba(16,185,129,0.25)' },
+    { icon: 'fa-solid fa-leaf', text: 'DHL GoGreen Plus Certified (IESPL)', color: '#4ADE80', bg: 'rgba(34,197,94,0.08)', border: 'rgba(34,197,94,0.25)' },
   ];
 
   const highlightCards = d.highlightCards || [
