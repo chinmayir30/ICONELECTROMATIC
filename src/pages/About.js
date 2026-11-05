@@ -9,12 +9,22 @@ import { ContentService } from '../data/ContentService.js';
 export function renderAboutPage() {
   const d = ContentService.getData('about');
 
-  const badges = d.badges || [
+  let badges = (Array.isArray(d.badges) && d.badges.length > 0) ? [...d.badges] : [
     { icon: 'fa-solid fa-award', text: 'Multi-Decade Pedigree', color: '#FDA4AF', bg: 'rgba(225,29,72,0.08)', border: 'rgba(225,29,72,0.25)' },
     { icon: 'fa-solid fa-satellite', text: 'Defense & Telecom Solutions', color: '#FCD34D', bg: 'rgba(245,158,11,0.08)', border: 'rgba(245,158,11,0.25)' },
     { icon: 'fa-solid fa-globe', text: 'Global OEM Representation', color: '#6EE7B7', bg: 'rgba(16,185,129,0.08)', border: 'rgba(16,185,129,0.25)' },
     { icon: 'fa-solid fa-leaf', text: 'DHL GoGreen Plus Certified (IESPL)', color: '#4ADE80', bg: 'rgba(34,197,94,0.08)', border: 'rgba(34,197,94,0.25)' },
   ];
+  if (!badges.some(b => b.text && b.text.includes('DHL GoGreen'))) {
+    badges.push({
+      id: 'b-4',
+      icon: 'fa-solid fa-leaf',
+      text: 'DHL GoGreen Plus Certified (IESPL)',
+      color: '#4ADE80',
+      bg: 'rgba(34,197,94,0.08)',
+      border: 'rgba(34,197,94,0.25)'
+    });
+  }
 
   const highlightCards = d.highlightCards || [
     { title: 'Global Leader in RF & Electronic Solutions', desc: 'Providing mission-critical components, assemblies, and custom microwave engineering for advanced applications.', icon: 'fa-solid fa-tower-broadcast', color: 'blue' },

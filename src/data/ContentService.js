@@ -536,7 +536,6 @@ const INITIAL_CONTENT = {
       'Enquiring about Thin Film Capacitors.',
       'Enquiring about Ceramic Capacitors.',
       'Enquiring about PCB Fabrication.',
-      'Enquiring about Perimeter Intrusion Detection System (PIDS).',
     ],
     careers: {
       // Tab & Breadcrumbs
