@@ -692,13 +692,17 @@ Open items that affect these phases: client decisions on category grouping, dupl
   - Live production deployment URL (checked after pull request merge).
 - **Undo:** Revert commit or branch.
 
-### Entry 32: Display Complete Transline Technology Logo Across Partners, Products & Blogs
-- **Status:** In progress (branch `feat/transline-logo-frontend`, 05 Nov 2026)
+### Entry 32: Transline Logo, Ohmega-Ticer Brand Update, DHL GoGreen Badge & Contact Preset Cleanup
+- **Status:** In progress (PR #34, branch `feat/transline-logo-frontend`, 05 Nov 2026)
 - **What was built:**
   - Added official Transline Technology brand logo asset with transparent alpha background to `public/images/oem-logos/Transline_Logo_Transparent.png` (294 × 73 px), smoothly anti-aliased to render cleanly on both dark and light surfaces.
   - Linked `logoImg: "/images/oem-logos/Transline_Logo_Transparent.png"` to OEM `transline-technology` in `src/data/catalogData.js`.
   - Added Transline Technology to `initialPartners` in `src/data/ContentService.js` to ensure representation in the Partners page running logo ticker and static partner card grid.
   - Added dedicated styling rules in `src/styles/index.css` for Transline logo across `.oem-logo-img`, `.partner-logo-img`, `.blogs-selected-logo-wrap`, and `.oem-running-logo-box` with `max-height: 44px !important` and light theme contrast adaptation.
+  - **Row 74:** Removed "Quantic" prefix from "Quantic Ohmega-Ticer" across catalog data, partner lists, and vector branding, standardizing to "Ohmega-Ticer".
+  - **Row 75:** Removed "Inquiring about Perimeter Intrusion Detection System (PIDS)" from Contact page Quick Requirement Presets.
+  - **Row 84:** Added a "DHL GoGreen Plus Certified (IESPL)" badge to the About Us page highlights badge strip alongside existing pedigree highlights.
+  - Bumped `CMS_VERSION` to `v13` in `src/data/ContentService.js` to ensure immediate client cache synchronization.
   - Re-rendered static HTML product pages and sitemap via `npm run build`.
 - **Technology and role:** Image alpha extraction, CSS layout rules and theme adaptation, static site generation.
 - **How it works:** Transline Technology now supplies a primary `logoImg` so `Products.js`, `Blogs.js`, and `Partners.js` render the real brand logo instead of falling back to text or SVG placeholders.
