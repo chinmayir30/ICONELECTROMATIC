@@ -33,10 +33,6 @@ export function renderAboutPage() {
     { year: 'Nov 2020', title: 'Incorporation in India', desc: 'Transitioned and formally incorporated as Icon Electromatic Private Limited, scaling nationwide operations and advancing “Make in India” initiatives.', image: '/images/timeline/timeline-2020-india.jpg', caption: 'Incorporation in India', color: 'amber' },
   ];
 
-  const pillars = d.pillars || [
-    { eyebrow: 'GLOBAL ALLIANCES', title: 'Global Partnerships', subtitle: 'Advanced Technologies', desc: 'Direct OEM partnerships with premier global innovators (Qorvo, Rogers, Tecdia, Mini-Circuits, and more), delivering verified authentic high-performance components to Indian industries.', image: '/images/timeline/pillar-global-partnerships.jpg', color: 'blue' },
-    { eyebrow: 'ENGINEERING EXPERTISE', title: 'Bespoke Solutions', subtitle: 'RF & Design Services', desc: 'End-to-end design-in consultancy, specialized microwave simulation, prototyping, and custom RF assembly integration tailored precisely to mission specifications.', image: '/images/timeline/pillar-bespoke-solutions.jpg', color: 'red' },
-  ];
 
   const whyUs = d.whyUs || [
     { number: '01', title: 'We Help Customers Achieve Their Goals Without Compromise', desc: 'Access an expanding portfolio of high-performance RF and Microwave components, mmWave, and Semiconductor components. Whether simple or highly complex, our solutions integrate seamlessly into your designs—saving time, reducing effort, and accelerating project success.', icon: 'fa-solid fa-bullseye', color: 'red' },
@@ -209,14 +205,11 @@ export function renderAboutPage() {
 
           <!-- Section 5: Our Journey (Chronological Timeline Format) -->
           <div style="margin-bottom:var(--space-16);">
-            <div style="text-align:center;max-width:720px;margin:0 auto var(--space-8);">
-              <h2 style="font-family:var(--font-display);font-size:clamp(1.85rem, 2.8vw, 2.4rem);font-weight:800;letter-spacing:-0.02em;margin-bottom:8px;">
-                ${d.journeyTitle || 'Chronology'}
+            <div style="text-align:center;max-width:760px;margin:0 auto var(--space-8);">
+              <h2 style="font-family:var(--font-display);font-size:clamp(2.1rem, 3.2vw, 2.75rem);font-weight:800;letter-spacing:-0.02em;margin-bottom:14px;line-height:1.2;">
+                ${d.journeyTitle || 'Our Journey'}
               </h2>
-              <div class="about-section-sub-title" style="font-family:var(--font-display);font-size:clamp(1.15rem, 1.6vw, 1.35rem);font-weight:700;color:var(--logo-red-light);line-height:1.35;margin-bottom:14px;">
-                ${d.journeySubtitle || 'Our Journey'}
-              </div>
-              <p style="font-size:0.95rem;line-height:1.7;color:var(--text-muted);margin:0 auto 16px;">
+              <p style="font-size:1rem;line-height:1.7;color:var(--text-muted);margin:0 auto 18px;">
                 ${d.journeyLead || 'From our founding in Bengaluru in 2009 as RF & Microwave specialists to global operations spanning Singapore, the USA, and India — empowering mission-critical Aerospace, Defence, Space, and SATCOM programs.'}
               </p>
               <div style="display:flex;justify-content:center;gap:12px;">
@@ -370,35 +363,7 @@ export function renderAboutPage() {
               }).join('')}
             </div>
           </div>
-
-            <!-- Foundational Strategic Pillars -->
-            <div class="journey-pillars-grid">
-              ${pillars.map(pil => {
-                const img = ContentService.resolveImg(pil.image);
-                return `
-                  <div class="pillar-foundation-card ${pil.color || 'blue'}-pillar about-interactive-card ${pil.color || 'blue'}-glow about-animate-fadeup" style="border-left:4px solid var(--logo-${pil.color || 'blue'});">
-                    <div class="pillar-photo-frame">
-                      <img src="${img}" alt="${pil.title}" loading="lazy" />
-                    </div>
-                    <div>
-                      <div style="font-size:0.75rem;font-weight:700;color:var(--logo-${pil.color || 'blue'}-light);letter-spacing:0.08em;margin-bottom:4px;">
-                        ${pil.eyebrow || 'FOUNDATIONAL PILLAR'}
-                      </div>
-                      <h3 class="pillar-content-title">
-                        ${pil.title}
-                      </h3>
-                      <div class="pillar-content-sub">
-                        ${pil.subtitle}
-                      </div>
-                      <p class="pillar-content-text">
-                        ${pil.desc}
-                      </p>
-                    </div>
-                  </div>
-                `;
-              }).join('')}
-            </div>
-          </div>
+        </div>
 
           <!-- Section 6: Why Us -->
           <div style="margin-bottom:var(--space-12);">

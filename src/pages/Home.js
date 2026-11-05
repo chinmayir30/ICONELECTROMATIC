@@ -116,7 +116,8 @@ export function renderHomePage() {
           <button class="filter-chip-dark" data-filter="qorvo">Qorvo GaN &amp; ICs</button>
           <button class="filter-chip-dark" data-filter="ohmega">Ohmega-Ticer</button>
           <button class="filter-chip-dark" data-filter="fortify">Fortify 3D Optics</button>
-          <button class="filter-chip-dark" data-filter="components">Mini-Circuits &amp; RFuW</button>
+          <button class="filter-chip-dark" data-filter="minicircuits">Mini-Circuits</button>
+          <button class="filter-chip-dark" data-filter="rfuw">RFuW</button>
           <button class="filter-chip-dark" data-filter="sensors">Sensors &amp; PCB</button>
         </div>
 
@@ -349,8 +350,10 @@ export function initHomePage() {
           filtered = allPopular.filter(p => p.oemId === 'ohmega-ticer');
         } else if (filter === 'fortify') {
           filtered = allPopular.filter(p => p.oemId === 'fortify');
-        } else if (filter === 'components') {
-          filtered = allPopular.filter(p => p.oemId === 'minicircuits' || p.oemId === 'rfuw-engineering' || p.oemId === 'triteq');
+        } else if (filter === 'minicircuits') {
+          filtered = allPopular.filter(p => p.oemId === 'minicircuits');
+        } else if (filter === 'rfuw') {
+          filtered = allPopular.filter(p => p.oemId === 'rfuw-engineering');
         } else if (filter === 'sensors') {
           filtered = allPopular.filter(p => p.oemId === 'thermosen' || p.oemId === 'nee' || p.oemId === 'transline-technology');
         }

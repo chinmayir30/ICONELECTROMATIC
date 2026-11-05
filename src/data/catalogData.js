@@ -2143,7 +2143,7 @@ export const CATALOG = [
     accentColor: "#06B6D4",
     glowColor: "rgba(6, 182, 212, 0.4)",
     defaultImage: "/images/dielectric-3d-lens.jpg",
-    logoImg: "/images/oem-logos/Fortify_Logo_Black_Bg.png",
+    logoImg: "/images/oem-logos/Fortify_Logo_Transparent.png",
     logoSvg: "<svg viewBox=\"0 0 185 42\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"2\" y=\"2\" width=\"38\" height=\"38\" rx=\"9\" fill=\"rgba(6,182,212,0.2)\" stroke=\"#06B6D4\" stroke-width=\"1.8\"/><path d=\"M13 11h14v5h-9v4h7v5h-7v7H13V11z\" fill=\"#22D3EE\"/><circle cx=\"26\" cy=\"27\" r=\"2.8\" fill=\"#38BDF8\"/><text x=\"48\" y=\"27\" fill=\"#FFFFFF\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"900\" font-size=\"18\" letter-spacing=\"1.5\">FORTIFY</text></svg>",
     categories: [
       {
