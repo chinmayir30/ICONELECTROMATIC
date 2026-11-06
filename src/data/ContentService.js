@@ -146,7 +146,7 @@ const INITIAL_CONTENT = {
       },
     ],
     popularTitle: 'Popular Products & Components',
-    popularLead: 'High-frequency laminates, precision GaN semiconductors, 3D metamaterial optics, and microwave modules from our global OEM partners.',
+    popularLead: 'High-frequency laminates, precision GaN semiconductors, embedded resistive foils, and microwave modules from our global OEM partners.',
     insightsTitle: 'Insights',
     insightsSubtitle: 'Latest Blogs',
     insightsLead: 'Engineering articles, application notes, and microwave design breakthroughs from our technical team.',

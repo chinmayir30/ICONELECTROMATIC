@@ -781,7 +781,7 @@ Open items that affect these phases: client decisions on category grouping, dupl
 - **Undo:** Revert commit or branch.
 
 ### Entry 35: Purge Cached Fortify Data via CMS Version Bump (v14), Filter Exclusions, and Presets Purge
-- **Status:** In progress (PR #37, branch `fix/purge-fortify-and-bump-cms-version`, 06 Nov 2026)
+- **Status:** Implemented (PR #37, merge commit 4492ed7, 06 Nov 2026)
 - **What was built:**
   - Bumped `CMS_VERSION` from `v13` to `v14` in `src/data/ContentService.js` to automatically invalidate and purge stale browser `localStorage` containing Fortify.
   - Added strict runtime filtering for `o.id !== 'fortify'` across `ContentService.getData('products')`, `ContentService.getData('partners')`, `ContentService.getData('blogs')`, and `ContentService.init()` (Supabase remote hydration).
