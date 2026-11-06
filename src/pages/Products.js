@@ -17,7 +17,7 @@ import {
 } from '../data/catalogData.js';
 import { ContentService } from '../data/ContentService.js';
 
-const EXCLUDED_OEM_IDS = new Set(['spellman', 'aee-isarael']);
+const EXCLUDED_OEM_IDS = new Set(['spellman', 'aee-isarael', 'fortify']);
 
 function sanitizeOemList(list) {
   if (!Array.isArray(list)) return [];

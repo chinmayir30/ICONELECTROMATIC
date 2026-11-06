@@ -8,7 +8,7 @@ import { CATALOG } from '../data/catalogData.js';
 import { OEM_BLOGS } from '../data/blogData.js';
 import { ContentService } from '../data/ContentService.js';
 
-const EXCLUDED_OEM_IDS = new Set(['spellman', 'aee-isarael']);
+const EXCLUDED_OEM_IDS = new Set(['spellman', 'aee-isarael', 'fortify']);
 
 function getBlogCmsData() {
   const cms = ContentService.getData('blogs');

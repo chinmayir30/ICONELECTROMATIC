@@ -436,7 +436,6 @@ export function renderContactPage() {
               ${((c.presets || [
                 'Inquiring about High Frequency Laminates & Prepregs.',
                 'Inquiring about Embedded Resistive Film.',
-                'Inquiring about 3D Printed Dielectric Parts.',
                 'Inquiring about High Power GaN Device and Beamforming IC.',
                 'Inquiring about High Power Switches and Limiter.',
                 'Inquiring about RF and MW Components.',
@@ -447,7 +446,7 @@ export function renderContactPage() {
                 'Inquiring about Thin Film Capacitors.',
                 'Inquiring about Ceramic Capacitors.',
                 'Inquiring about PCB Fabrication.',
-              ]).filter(p => !p.toLowerCase().includes('perimeter intrusion'))).map(p => `
+              ]).filter(p => !p.toLowerCase().includes('perimeter intrusion') && !p.toLowerCase().includes('3d printed dielectric'))).map(p => `
                 <button class="filter-chip-dark quick-preset" data-preset="${p}">${p.replace(/^(Inquiring|Enquiring) about /, '').replace(/\.$/, '')}</button>
               `).join('')}
             </div>
