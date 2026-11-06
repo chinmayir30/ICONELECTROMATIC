@@ -14,8 +14,8 @@ export function renderHomePage() {
   const blogs = ContentService.getData('blogs');
 
   const statsList = data.stats || [
-    { value: '160+', label: 'VERIFIED COMPONENTS' },
-    { value: '15', label: 'OEM PARTNERS' },
+    { value: '159', label: 'VERIFIED COMPONENTS' },
+    { value: '12', label: 'OEM PARTNERS' },
     { value: '100%', label: 'ROHS & ISO 9001' }
   ];
 
@@ -99,7 +99,7 @@ export function renderHomePage() {
               <h2 class="section-tag-mono red-section-title" style="font-size: 2.75rem; font-weight: 800; letter-spacing: 0.05em; margin: 0; line-height: 1.2;">${data.popularTitle || 'Popular Products &amp; Components'}</h2>
             </div>
             <p class="section-lead" style="font-size: 1.25rem; max-width: 850px; margin: 0;">
-              ${data.popularLead || 'High-frequency laminates, precision GaN semiconductors, 3D metamaterial optics, and microwave modules from our global OEM partners.'}
+              ${data.popularLead || 'High-frequency laminates, precision GaN semiconductors, embedded resistive foils, and microwave modules from our global OEM partners.'}
             </p>
           </div>
           <div>
@@ -233,7 +233,6 @@ export function renderHomePage() {
                 ${(contact.presets || [
                   'Enquiring about High Frequency Laminates & Prepregs.',
                   'Enquiring about Embedded Resistive Film.',
-                  'Enquiring about 3D Printed Dielectric Parts.',
                   'Enquiring about High Power GaN Device and Beamforming IC.',
                   'Enquiring about High Power Switches and Limiter.',
                   'Enquiring about RF and MW Components.',

@@ -55,7 +55,6 @@ function findCategory(query) {
       if (cat.id === 'low-noise-amplifiers' && (q.includes('low noise') || q.includes('lna'))) return { oem, cat };
       if (cat.id === 'gan-hemts' && (q.includes('gan') || q.includes('hemt'))) return { oem, cat };
       if (cat.id === 'beamforming-integrated-circuits' && q.includes('beamforming')) return { oem, cat };
-      if (cat.id === '3d-printed-dielectric-parts' && (q.includes('dielectric') || q.includes('lens') || q.includes('radix'))) return { oem, cat };
       if (cat.id === 'rf-limiters' && q.includes('limiter')) return { oem, cat };
       if (cat.id === 'rf-switches' && (q.includes('rf switch') || q.includes('spdt') || q.includes('high isolation switch'))) return { oem, cat };
       if (cat.id === 'hypersdr' && (q.includes('sdr') || q.includes('software defined') || q.includes('hypersdr'))) return { oem, cat };
@@ -211,12 +210,11 @@ export function getBotReply(userText) {
   ) {
     return `
       <div>
-        Our portfolio spans <strong>over 70 specialized component categories</strong> across 13 manufacturers:
+        Our portfolio spans <strong>over 70 specialized component categories</strong> across 12 manufacturers:
         <br/><br/>
         <ul style="padding-left:16px;margin:0 0 10px;font-size:0.8rem;line-height:1.6;color:var(--text-gray-300);">
           <li><strong>RF &amp; Microwave Laminates:</strong> RT/duroid, RO400, RO300, TMM, CLTE, DICLAD</li>
           <li><strong>Active MMICs &amp; GaN:</strong> Power Amplifiers, LNAs, Beamforming ICs, Drivers, GaN HEMTs</li>
-          <li><strong>3D Printed RF Optics:</strong> GRIN dielectric lenses, low-loss Radix materials</li>
           <li><strong>Protection &amp; Control:</strong> High-power PIN diode limiters, fast RF switches</li>
           <li><strong>Embedded Passives:</strong> RCM, TCR resistor foils, single layer capacitors</li>
           <li><strong>Software-Defined Radios:</strong> HyperSDR, SDRspace transceivers</li>
@@ -308,7 +306,7 @@ export function getBotReply(userText) {
   // Fallback
   return `
     <div>
-      Thank you for your inquiry. You can ask me about any of our <strong>12 authorized OEMs</strong> (e.g. <em>Rogers, Qorvo, Fortify, Mini-Circuits, Ohmega-Ticer</em>), specific <strong>categories</strong> (e.g. <em>RT/Duroid, Power Amplifiers, Thin-Film Foils</em>), or target models.
+      Thank you for your inquiry. You can ask me about any of our <strong>12 authorized OEMs</strong> (e.g. <em>Rogers, Qorvo, Mini-Circuits, Ohmega-Ticer</em>), specific <strong>categories</strong> (e.g. <em>RT/Duroid, Power Amplifiers, Thin-Film Foils</em>), or target models.
       <br/><br/>
       For custom specifications or commercial quotes, please connect directly with our engineering team:
       <div style="margin-top:8px;">

@@ -53,7 +53,7 @@ if (typeof window !== 'undefined') {
 }
 
 // ─── Version key: bump this to ensure fresh schema sync with existing localStorage ───
-const CMS_VERSION = 'v13';
+const CMS_VERSION = 'v14';
 
 const INITIAL_CONTENT = {
   header: {
@@ -104,8 +104,8 @@ const INITIAL_CONTENT = {
     ctaQuoteText: 'Request a Quote',
     ctaQuoteLink: '/contact',
     stats: [
-      { id: 'stat-1', value: '160+', label: 'VERIFIED COMPONENTS' },
-      { id: 'stat-2', value: '13', label: 'OEM PARTNERS' },
+      { id: 'stat-1', value: '159', label: 'VERIFIED COMPONENTS' },
+      { id: 'stat-2', value: '12', label: 'OEM PARTNERS' },
       { id: 'stat-3', value: '100%', label: 'ROHS & ISO 9001' },
     ],
     coreCapabilitiesTitle: 'Core Capabilities',
@@ -524,7 +524,6 @@ const INITIAL_CONTENT = {
     presets: [
       'Enquiring about High Frequency Laminates & Prepregs.',
       'Enquiring about Embedded Resistive Film.',
-      'Enquiring about 3D Printed Dielectric Parts.',
       'Enquiring about High Power GaN Device and Beamforming IC.',
       'Enquiring about High Power Switches and Limiter.',
       'Enquiring about RF and MW Components.',
@@ -703,7 +702,20 @@ export const ContentService = {
       try {
         const { contentMap, metaMap } = await supabaseClient.getAllCmsContentWithMeta();
         if (contentMap && typeof contentMap === 'object' && Object.keys(contentMap).length > 0) {
-          for (const [k, val] of Object.entries(contentMap)) {
+          for (let [k, val] of Object.entries(contentMap)) {
+            if (k === 'products' && Array.isArray(val)) {
+              val = val.filter(o => o && o.id !== 'spellman' && o.id !== 'aee-isarael' && o.id !== 'fortify');
+            }
+            if (k === 'partners' && val) {
+              if (Array.isArray(val)) {
+                val = val.filter(p => p && p.id !== 'spellman' && p.id !== 'aee-isarael' && p.id !== 'fortify');
+              } else if (Array.isArray(val.partners)) {
+                val.partners = val.partners.filter(p => p && p.id !== 'spellman' && p.id !== 'aee-isarael' && p.id !== 'fortify');
+              }
+            }
+            if (k === 'blogs' && val && Array.isArray(val.oemBlogs)) {
+              val.oemBlogs = val.oemBlogs.filter(b => b && b.oemId !== 'spellman' && b.oemId !== 'aee-isarael' && b.oemId !== 'fortify');
+            }
             memoryCache.set(k, cloneData(val));
             if (metaMap && metaMap[k]) {
               sectionMetadata.set(k, { ...metaMap[k] });
@@ -769,14 +781,14 @@ export const ContentService = {
         if (pageKey === 'products') {
           // If cached products don't have categories (stale schema), ignore and reseed
           if (Array.isArray(parsed) && parsed.length > 0 && Array.isArray(parsed[0].categories)) {
-            const cleaned = parsed.filter(o => o && o.id !== 'spellman' && o.id !== 'aee-isarael');
+            const cleaned = parsed.filter(o => o && o.id !== 'spellman' && o.id !== 'aee-isarael' && o.id !== 'fortify');
             memoryCache.set(pageKey, cleaned);
             return cleaned;
           }
         } else if (pageKey === 'blogs') {
           // If cached blogs has structured oemBlogs, return it
           if (parsed && Array.isArray(parsed.oemBlogs)) {
-            parsed.oemBlogs = parsed.oemBlogs.filter(b => b && b.oemId !== 'spellman' && b.oemId !== 'aee-isarael');
+            parsed.oemBlogs = parsed.oemBlogs.filter(b => b && b.oemId !== 'spellman' && b.oemId !== 'aee-isarael' && b.oemId !== 'fortify');
             memoryCache.set(pageKey, parsed);
             return parsed;
           }
@@ -795,6 +807,7 @@ export const ContentService = {
           }
         } else if (pageKey === 'partners') {
           if (parsed && Array.isArray(parsed.partners)) {
+            parsed.partners = parsed.partners.filter(p => p && p.id !== 'spellman' && p.id !== 'aee-isarael' && p.id !== 'fortify');
             memoryCache.set(pageKey, parsed);
             return parsed;
           }

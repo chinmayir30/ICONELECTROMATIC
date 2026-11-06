@@ -745,7 +745,7 @@ Open items that affect these phases: client decisions on category grouping, dupl
 - **Undo:** Revert PR or branch.
 
 ### Entry 34: Complete Removal of Fortify Across Website and Catalog
-- **Status:** In progress (PR #36, branch `feat/remove-fortify-complete`, 06 Nov 2026)
+- **Status:** Implemented (PR #36, merge commit 08200c1, 06 Nov 2026)
 - **What was built:**
   - Removed Fortify OEM from `src/data/catalogData.js`, pruning 8 products (catalog updated to 12 authentic OEMs, 85 categories, 159 products).
   - Removed Fortify from `src/data/ContentService.js` initial partners list and technical engagement mentions.
@@ -779,6 +779,36 @@ Open items that affect these phases: client decisions on category grouping, dupl
 - **Not checked:**
   - Live production deployment URL (checked after pull request merge).
 - **Undo:** Revert commit or branch.
+
+### Entry 35: Purge Cached Fortify Data via CMS Version Bump (v14), Filter Exclusions, and Presets Purge
+- **Status:** In progress (PR #37, branch `fix/purge-fortify-and-bump-cms-version`, 06 Nov 2026)
+- **What was built:**
+  - Bumped `CMS_VERSION` from `v13` to `v14` in `src/data/ContentService.js` to automatically invalidate and purge stale browser `localStorage` containing Fortify.
+  - Added strict runtime filtering for `o.id !== 'fortify'` across `ContentService.getData('products')`, `ContentService.getData('partners')`, `ContentService.getData('blogs')`, and `ContentService.init()` (Supabase remote hydration).
+  - Added `'fortify'` to `EXCLUDED_OEM_IDS` in `src/pages/Products.js` and `src/pages/Blogs.js`.
+  - Removed "3D Printed Dielectric Parts" requirement presets from `src/data/ContentService.js`, `src/pages/Contact.js`, and `src/pages/Home.js`.
+  - Updated Home hero stats to reflect accurate 12 OEM partners and 159 verified components.
+  - Removed deprecated 3D printed dielectric references from `src/components/Chatbot.js`.
+  - Re-rendered all static HTML pages and updated sitemap.
+- **Technology and role:** Client-side cache management, defensive runtime filtering, preset configuration.
+- **How it works:** Prevents cached client-side localStorage or Supabase persistence stores from resurrecting deprecated Fortify OEM data, and invalidates older caches on visiting the site.
+- **Files and folders added or changed:**
+  - `src/data/ContentService.js`
+  - `src/pages/Products.js`
+  - `src/pages/Blogs.js`
+  - `src/pages/Contact.js`
+  - `src/pages/Home.js`
+  - `src/components/Chatbot.js`
+  - `docs/seo_backend_implementation.md`
+  - `docs/PROJECT-STATE.md`
+- **Data and security notes:** No secrets, no new dependencies, strictly frontend data cleanliness.
+- **Checked (and how):**
+  - Unit tests: 43 tests passing (100%).
+  - Production build: `npm run build` exits 0 with 159 static product pages.
+  - Runtime verification: Verified `getOEMs()`, `getData('products')`, `getData('blogs')`, and `getData('partners')` all exclude Fortify.
+- **Not checked:**
+  - Live production deployment URL (checked after pull request merge).
+- **Undo:** Revert PR or branch.
 
 ## 7. Entry template (copy for each new phase)
 ```
