@@ -463,7 +463,6 @@ const INITIAL_CONTENT = {
       { id: 'gal-4', title: 'Defense & SATCOM Earth Station Hardware', category: 'Systems', image: '/images/defense-satcom.jpg', caption: 'Ground terminal transceiver and feed assemblies' },
       { id: 'gal-5', title: 'Active Phased Array GaN MMIC Die', category: 'Semiconductors', image: '/images/gan-power-chip.jpg', caption: 'Beamformer front-end module on ceramic carrier' },
       { id: 'gal-6', title: 'High-Power PIN Diode RF Switch', category: 'Modules', image: '/images/rf-switch.jpg', caption: 'Fast-switching high-isolation multi-throw module' },
-      { id: 'gal-7', title: '3D Printed Metamaterial Dielectric Lens', category: 'Optics', image: '/images/dielectric-3d-lens.jpg', caption: 'Fortify custom dielectric GRIN RF lens' },
       { id: 'gal-8', title: 'Precision Laboratory Attenuator Module', category: 'Test & Measurement', image: '/images/rf-attenuator.jpg', caption: 'DC to 40 GHz calibrated step attenuator' },
     ],
   },
@@ -562,7 +561,7 @@ const INITIAL_CONTENT = {
           icon: 'fa-solid fa-microchip',
           iconColor: '#60A5FA',
           title: 'Global OEM Partnerships',
-          description: 'Direct technical engagement with leaders like Rogers Corporation, Qorvo, Fortify, and YTTEK.'
+          description: 'Direct technical engagement with leaders like Rogers Corporation, Qorvo, and YTTEK.'
         },
         {
           id: 'ben-2',
@@ -899,7 +898,6 @@ export const ContentService = {
         { id: 'quantic-eulex', name: 'Quantic Eulex / Evans', domain: 'Advanced Ceramic Microwave & Hybrid Capacitors', category: 'components', accentColor: 'blue', logoImg: '/images/oem-logos/Evans_logo.png', description: 'Quantic Eulex & Evans Hybrid Capacitors engineer high-energy, high-frequency ceramic capacitors and hybrid capacitor banks supporting radar, SATCOM, aerospace, and space platforms.', website: 'https://www.quanticdevices.com' },
         { id: 'quantic-ohmega', name: 'Ohmega-Ticer', domain: 'Embedded Thin-Film Resistive Materials', category: 'materials', accentColor: 'blue', logoImg: '/images/oem-logos/OhmegaTicer_Black.png', description: 'Ohmega-Ticer provides embedded thin-film resistive copper foils that enable compact, high-performance digital and RF PCB designs for defence, aerospace, and advanced electronics.', website: 'https://www.ohmega.com' },
         { id: 'thermosen', name: 'Thermosen Technologies', domain: 'Temperature Sensors for Hi-Rel Applications', category: 'sensors', accentColor: 'blue', logoImg: '/images/oem-logos/Thermosen_logo.png', description: 'Thermosen develops temperature sensing solutions focused on Hi-Rel, aerospace, and defence sectors, ensuring accurate thermal monitoring in extreme environments.', website: 'https://www.thermosen.com' },
-        { id: 'fortify', name: 'Fortify', domain: 'Dielectric 3D Printing for RF & Microwave Devices', category: 'materials', accentColor: 'blue', logoImg: '/images/oem-logos/Fortify_Logo_Transparent.png', description: 'Fortify enables advanced dielectric 3D printing materials for RF and microwave components, supporting complex geometries, rapid prototyping, and next-generation device development.', website: 'https://www.fortify3d.com' },
         { id: 'powerfactor', name: 'PowerFactor Electronics (PowerRF)', domain: 'Power Electronics & RF Microwave Domains', category: 'components', accentColor: 'blue', logoImg: '/images/oem-logos/powerrf-logo.png', description: 'Specialized in R&D, design, testing, consultancy, and product development in Power Electronics and RF Microwave domains under the Make in India initiative.', website: 'https://powerrf.in' },
         { id: 'nee', name: 'NEE International (New Era Electronics)', domain: 'Application PCBs for Microwave & Satellite Communication', category: 'sensors', accentColor: 'red', logoImg: '/images/oem-logos/NEE_Logo_wb.png', description: 'NEE International is a leading fabricator of microwave and satellite communication PCBs, supporting high-frequency and space-grade electronic applications.', website: 'https://neeinternational.com' },
         { id: 'transline', name: 'Transline Technology', domain: 'High Frequency, Microwave & mmWave PCB Fabrication', category: 'materials', accentColor: 'blue', logoImg: '/images/oem-logos/Transline_Logo_Transparent.png', description: 'Transline Technology is an elite fabricator of advanced RF, microwave, and millimeter-wave printed circuit boards utilizing Rogers, PTFE, and hybrid dielectric stackups for aerospace and defense electronics.', website: 'https://translinetech.com' },

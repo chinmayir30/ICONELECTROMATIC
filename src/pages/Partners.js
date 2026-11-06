@@ -139,7 +139,6 @@ const PARTNER_TO_OEM_MAP = {
   'quantic-ohmega': 'ohmega-ticer',
   'ohmega-ticer': 'ohmega-ticer',
   'thermosen': 'thermosen',
-  'fortify': 'fortify',
   'powerfactor': 'powerfactor',
   'nee': 'nee',
   'transline-technology': 'transline-technology'

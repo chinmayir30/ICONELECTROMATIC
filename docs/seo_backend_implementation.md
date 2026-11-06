@@ -744,6 +744,42 @@ Open items that affect these phases: client decisions on category grouping, dupl
   - Live production deployment URL (checked after pull request merge).
 - **Undo:** Revert PR or branch.
 
+### Entry 34: Complete Removal of Fortify Across Website and Catalog
+- **Status:** In progress (PR #36, branch `feat/remove-fortify-complete`, 06 Nov 2026)
+- **What was built:**
+  - Removed Fortify OEM from `src/data/catalogData.js`, pruning 8 products (catalog updated to 12 authentic OEMs, 85 categories, 159 products).
+  - Removed Fortify from `src/data/ContentService.js` initial partners list and technical engagement mentions.
+  - Removed Fortify blog entries and technical whitepapers from `src/data/blogData.js`.
+  - Removed Fortify filter chip from `src/pages/Home.js`.
+  - Removed Fortify routing mapping from `src/pages/Partners.js`.
+  - Removed Fortify chatbot queries and quick chips from `src/components/Chatbot.js`.
+  - Removed Fortify specific styling rules and light/dark theme filters from `src/styles/index.css`.
+  - Removed Fortify pre-rendered static HTML directory (`public/products/fortify/`) and OEM logo assets.
+  - Re-rendered static HTML catalog with 159 product pages and updated sitemap.
+- **Technology and role:** Static site generator, catalog service, test suite alignment.
+- **How it works:** Prunes deprecated partner cleanly from codebase, data models, static HTML pages, and sitemap.
+- **Files and folders added or changed:**
+  - `src/data/catalogData.js`
+  - `src/data/ContentService.js`
+  - `src/data/blogData.js`
+  - `src/pages/Home.js`
+  - `src/pages/Partners.js`
+  - `src/components/Chatbot.js`
+  - `src/styles/index.css`
+  - `public/products/fortify/`
+  - `tests/admin-product-persistence.test.mjs`
+  - `tests/publish-webhook-pipeline.test.mjs`
+  - `tests/static-catalog-builder.test.mjs`
+  - `docs/seo_backend_implementation.md`
+  - `docs/PROJECT-STATE.md`
+- **Data and security notes:** No invented data, no secrets, no new dependencies.
+- **Checked (and how):**
+  - Production build: `npm run build` succeeds generating 159 pages cleanly (exit code 0).
+  - Test suite: 100% passing across all 42 tests.
+- **Not checked:**
+  - Live production deployment URL (checked after pull request merge).
+- **Undo:** Revert commit or branch.
+
 ## 7. Entry template (copy for each new phase)
 ```
 ### Entry N: name

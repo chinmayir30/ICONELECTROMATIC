@@ -198,69 +198,6 @@ export const OEM_BLOGS = [
     ]
   },
   {
-    oemId: 'fortify',
-    officialWebsite: 'https://3dfortify.com',
-    portalName: 'Fortify RF Dielectric Optics Lab',
-    headline: '3D Printed Low-Loss Dielectric Lenses, Antennas & GRIN RF Optics',
-    articles: [
-      {
-        id: 'fortify-art-1',
-        title: 'Fortify Unveils Radix™ 2.8 Dielectric Material for Tailored 3D Lens Antennas',
-        date: 'October 2026',
-        category: 'Additive RF Optics',
-        readTime: '4 min read',
-        image: '/images/dielectric-3d-lens.jpg',
-        summary: 'Using patented Digital Composite Manufacturing (DCM), Fortify produces low-loss (Df < 0.001) Luneburg and Maxwell fish-eye lenses up to 110 GHz with custom dielectric gradations.',
-        content: `
-          <p>Traditional manufacturing of graded-index (GRIN) microwave optics requires complex machining of concentric dielectric shells with unpredictable air gaps. Fortify’s additive photopolymerization platform directly prints monolithic Luneburg lenses with continuous internal dielectric variation.</p>
-          <h4>Radix™ Material Performance:</h4>
-          <ul>
-            <li><strong>Dielectric Constant Flexibility:</strong> Tunable Dk from 1.5 to 4.5 in a single printed structure.</li>
-            <li><strong>Ultralow RF Loss:</strong> Dissipation factor below 0.0012 across Ka, V, and W-bands.</li>
-            <li><strong>Mass Reduction:</strong> Cellular lattice topologies reduce total antenna weight by 60% compared to solid teflon optics.</li>
-          </ul>
-        `,
-        tags: ['3D Printing', 'Radix Material', 'Luneburg Lens', 'Sub-THz']
-      }
-    ],
-    videos: [
-      {
-        id: 'fortify-vid-1',
-        title: 'Demonstration: 3D Printing Wide-Angle Luneburg Lenses for SATCOM',
-        speaker: 'Karlo Delos Reyes, VP Applications',
-        duration: '15:20',
-        date: 'September 2026',
-        thumbnail: '/images/dielectric-3d-lens.jpg',
-        summary: 'Live laboratory testing comparing a Fortify 3D printed dielectric lens antenna against a traditional parabolic reflector at 28 GHz.',
-        topics: ['Beam Steering', 'GRIN Lenses', 'Additive Manufacturing']
-      }
-    ],
-    whitepapers: [
-      {
-        id: 'fortify-wp-1',
-        title: 'Graded-Index Dielectric Lenses for Millimeter-Wave Beam Steering',
-        author: 'Fortify RF Engineering Team',
-        date: 'July 2026',
-        pages: '12 Pages',
-        frequencyBand: '18 to 90 GHz',
-        summary: 'Electromagnetic simulation and chamber validation of 3D printed microwave lenses achieving ±60° scan angles with zero mechanical wear.',
-        keyFindings: [
-          'Gain enhancement of +18 dBi achieved over bare horn feed at 38 GHz.',
-          'Zero internal reflection at graded dielectric boundaries eliminates focal point degradation.',
-          'High glass transition temperature (Tg > 165°C) withstands harsh outdoor airborne operating environments.'
-        ]
-      }
-    ],
-    officialLinks: [
-      {
-        title: 'Fortify RF Optics Technology Hub',
-        url: 'https://3dfortify.com/applications/rf-devices-antennas/',
-        description: 'Case studies, Radix resin technical data sheets, and custom 3D lens design guidelines.',
-        icon: 'fa-cube'
-      }
-    ]
-  },
-  {
     oemId: 'minicircuits',
     officialWebsite: 'https://www.minicircuits.com',
     portalName: 'Mini-Circuits Technical Portal',

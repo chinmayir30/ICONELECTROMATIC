@@ -17,10 +17,10 @@ const __dirname = path.dirname(__filename);
 const ROOT_DIR = path.resolve(__dirname, '..');
 
 test('Admin Product & OEM Persistence Suite', async (t) => {
-  await t.test('Test 1: extractAuthoritativeCatalog extracts all 13 OEMs and 167 products', () => {
+  await t.test('Test 1: extractAuthoritativeCatalog extracts all 12 OEMs and 159 products', () => {
     const catalog = extractAuthoritativeCatalog();
     assert.ok(Array.isArray(catalog), 'Catalog must be an array');
-    assert.equal(catalog.length, 13, 'Must contain exactly 13 authentic OEMs');
+    assert.equal(catalog.length, 12, 'Must contain exactly 13 authentic OEMs');
 
     let totalCats = 0;
     let totalProds = 0;
@@ -42,17 +42,17 @@ test('Admin Product & OEM Persistence Suite', async (t) => {
       }
     }
 
-    assert.equal(totalCats, 86, 'Must extract exactly 86 categories');
-    assert.equal(totalProds, 167, 'Must extract exactly 167 products');
+    assert.equal(totalCats, 85, 'Must extract exactly 86 categories');
+    assert.equal(totalProds, 159, 'Must extract exactly 167 products');
   });
 
   await t.test('Test 2: generateProductSeedSql creates valid idempotent SQL', () => {
     const catalog = extractAuthoritativeCatalog();
     const { sql, oemCount, categoryCount, productCount } = generateProductSeedSql(catalog);
 
-    assert.equal(oemCount, 13);
-    assert.equal(categoryCount, 86);
-    assert.equal(productCount, 167);
+    assert.equal(oemCount, 12);
+    assert.equal(categoryCount, 85);
+    assert.equal(productCount, 159);
 
     assert.match(sql, /INSERT INTO public\.cms_content/);
     assert.match(sql, /'products'/);
@@ -72,7 +72,7 @@ test('Admin Product & OEM Persistence Suite', async (t) => {
   await t.test('Test 4: supabaseClient.getAuthoritativeCatalog returns complete catalog', async () => {
     const catalog = await supabaseClient.getAuthoritativeCatalog();
     assert.ok(Array.isArray(catalog), 'Catalog must be an array');
-    assert.equal(catalog.length, 13, 'Must return 13 OEMs in offline/fallback mode');
+    assert.equal(catalog.length, 12, 'Must return 13 OEMs in offline/fallback mode');
 
     const rogers = catalog.find(o => o.id === 'rogers-corporation' || o.name.includes('Rogers'));
     assert.ok(rogers, 'Rogers Corporation must exist in catalog');

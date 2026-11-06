@@ -44,6 +44,7 @@ Stage 7 - Central CMS Supabase Persistence & SSG Integration (feat/admin-cms-sup
 - [x] Display Complete Transline Logo across Products, Blogs & Partners (PR #34)
 - [x] Remove Quantic from Ohmega-Ticer, Add DHL GoGreen Badge to About Us, Remove PIDS Contact Preset (PR #34)
 - [x] Align Contact Us Quick Requirement Presets & Fix GaN Button Wrapping (fix/contact-preset-button-alignment)
+- [x] Complete Removal of Fortify Across Website and Catalog (PR #36)
 
 ## Decisions (confirmed by the owner)
 | Date | Decision | Why |
