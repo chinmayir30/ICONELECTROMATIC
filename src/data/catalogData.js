@@ -2133,101 +2133,6 @@ export const CATALOG = [
     ]
   },
   {
-    id: "fortify",
-    name: "Fortify",
-    shortName: "Fortify",
-    specialty: "3D Printed Dielectric Parts",
-    tagline: "3D Printed Dielectric Materials & Metamaterial RF Lenses",
-    description: "Fortify enables advanced dielectric 3D printing for RF and microwave components, delivering complex GRIN lenses, radomes, and conformal antenna optics with precise spatial permittivity control.",
-    website: "https://3dfortify.com",
-    accentColor: "#06B6D4",
-    glowColor: "rgba(6, 182, 212, 0.4)",
-    defaultImage: "/images/dielectric-3d-lens.jpg",
-    logoImg: "/images/oem-logos/Fortify_Logo_Transparent.png",
-    logoSvg: "<svg viewBox=\"0 0 185 42\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"2\" y=\"2\" width=\"38\" height=\"38\" rx=\"9\" fill=\"rgba(6,182,212,0.2)\" stroke=\"#06B6D4\" stroke-width=\"1.8\"/><path d=\"M13 11h14v5h-9v4h7v5h-7v7H13V11z\" fill=\"#22D3EE\"/><circle cx=\"26\" cy=\"27\" r=\"2.8\" fill=\"#38BDF8\"/><text x=\"48\" y=\"27\" fill=\"#FFFFFF\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"900\" font-size=\"18\" letter-spacing=\"1.5\">FORTIFY</text></svg>",
-    categories: [
-      {
-        id: "3d-printed-dielectric-parts",
-        name: "3D Printed Dielectric Parts",
-        description: "Industry\u2019s first low-loss dielectric photopolymer enabling scalable 3D printing of dielectric and GRIN lenses. Dielectric constant 2.8, loss tangent 0.0043.",
-        products: [
-          {
-            id: "radix-2-8-dielectric-lens-material-58",
-            name: "Radix\u2122 2.8 Dielectric Lens Material",
-            category: "3D Printed Dielectric Parts",
-            description: "Industry\u2019s first low-loss dielectric photopolymer enabling scalable 3D printing of dielectric and GRIN lenses. Dielectric constant 2.8, loss tangent 0.0043.",
-            applications: "RF & mmWave dielectric lenses, antenna gain enhancement, GRIN and Luneburg lenses.",
-            link: "https://3dfortify.com/advanced-3d-printing-materials-2/rf-materials-2-3/",
-            image: "/images/dielectric-3d-lens.jpg"
-          },
-          {
-            id: "radix-4-6-dielectric-lens-material-59",
-            name: "Radix\u2122 4.6 Dielectric Lens Material",
-            category: "3D Printed Dielectric Parts",
-            description: "Higher-Dk printable dielectric material enabling reduced feature size and transformation optics. Dielectric constant 4.6, loss tangent 0.0046.",
-            applications: "Compact RF lenses, high-gain antenna optics, phased-array enhancement.",
-            link: "https://3dfortify.com/advanced-3d-printing-materials-2/rf-materials-2-3/",
-            image: "/images/dielectric-3d-lens.jpg"
-          },
-          {
-            id: "grin-dielectric-lens-radix-platform-60",
-            name: "GRIN Dielectric Lens (Radix\u2122 Platform)",
-            category: "3D Printed Dielectric Parts",
-            description: "Gradient-index dielectric lenses created using lattice-controlled effective permittivity. Enables spatial Dk variation within a single printed lens.",
-            applications: "GRIN lenses, beam steering, wide-band RF optics.",
-            link: "https://3dfortify.com/rf-applications/",
-            image: "/images/dielectric-3d-lens.jpg"
-          },
-          {
-            id: "3d-printed-horn-lens-61",
-            name: "3D Printed Horn Lens",
-            category: "3D Printed Dielectric Parts",
-            description: "Dielectric horn-mounted lens that increases antenna gain without increasing antenna length. Reduces device length by ~33% for equivalent gain.",
-            applications: "Point-to-point RF links, FWA, backhaul, antenna characterization.",
-            link: "https://3dfortify.com/rf-applications/",
-            image: "/images/dielectric-3d-lens.jpg"
-          },
-          {
-            id: "switched-beam-antenna-lens-62",
-            name: "Switched Beam Antenna Lens",
-            category: "3D Printed Dielectric Parts",
-            description: "Dielectric lens replacing phase shifters to enable wide-band beam steering with lower power consumption and reduced system complexity.",
-            applications: "EW systems, direction finding, ground-to-satellite & cellular base stations.",
-            link: "https://3dfortify.com/rf-applications/",
-            image: "/images/dielectric-3d-lens.jpg"
-          },
-          {
-            id: "field-of-view-fov-enhancing-lens-63",
-            name: "Field-of-View (FOV) Enhancing Lens",
-            category: "3D Printed Dielectric Parts",
-            description: "3D printed dielectric lens extending antenna field-of-view up to \u00b190\u00b0 while reducing scan loss at high angles.",
-            applications: "5G infrastructure, outdoor antennas, phased-array systems.",
-            link: "https://3dfortify.com/rf-applications/",
-            image: "/images/dielectric-3d-lens.jpg"
-          },
-          {
-            id: "tactical-fov-enhancing-lens-64",
-            name: "Tactical FOV Enhancing Lens",
-            category: "3D Printed Dielectric Parts",
-            description: "Dielectric lens optimized for AESA reduction, enabling 360\u00b0 coverage with fewer antennas and lower power consumption.",
-            applications: "LPD/LPI tactical communications, mesh networking, defense RF systems.",
-            link: "https://3dfortify.com/rf-applications/",
-            image: "/images/dielectric-3d-lens.jpg"
-          },
-          {
-            id: "low-dk-printed-foam-spacer-lens-adjacent-65",
-            name: "Low-Dk Printed Foam Spacer (Lens Adjacent)",
-            category: "3D Printed Dielectric Parts",
-            description: "Non-compressing, low-Dk printed structures used near antenna/lens assemblies to improve predictability and integration.",
-            applications: "Antenna stack-ups, conformal RF structures, radomes.",
-            link: "https://3dfortify.com/rf-applications/",
-            image: "/images/dielectric-3d-lens.jpg"
-          },
-        ]
-      },
-    ]
-  },
-  {
     id: "nee",
     name: "NEE",
     shortName: "NEE International",
@@ -2338,7 +2243,6 @@ export function getPopularProducts() {
     { oemId: 'qorvo', catId: 'power-amplifiers', prodName: 'Power Amplifiers' },
     { oemId: 'qorvo', catId: 'gan-hemts', prodName: 'GaN HEMTs' },
     { oemId: 'ohmega-ticer', catId: 'rcm-series', prodName: 'OhmegaPly® RCM – 0.5A10PT' },
-    { oemId: 'fortify', catId: '3d-printed-dielectric-parts', prodName: 'Radix™ 2.8 Dielectric Lens Material' },
     { oemId: 'rfuw-engineering', catId: 'rf-limiters', prodName: 'RF Limiters' },
     { oemId: 'minicircuits', catId: 'rf-mw-amplifiers', prodName: 'RF/MW Amplifiers' },
     { oemId: 'triteq', catId: 'harmonic-switched-filters', prodName: 'Harmonic Switched Filters' },
