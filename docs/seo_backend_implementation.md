@@ -811,7 +811,7 @@ Open items that affect these phases: client decisions on category grouping, dupl
 - **Undo:** Revert PR or branch.
 
 ### Entry 36: Services Page Hero Lead Copy Refinement & CMS Version Bump (v15)
-- **Status:** In progress (PR #39, branch `content/update-services-hero-lead`, 09 Nov 2026)
+- **Status:** Implemented (PR #39, merge commit 38e403b, 09 Nov 2026)
 - **What was built:**
   - Updated the Services page hero lead paragraph in `src/pages/Services.js` and `src/data/ContentService.js` to: *"From representing world-class RF and Microwave components, semiconductors manufacturers to offering design collaboration and strategic business consultancy, our services empower engineers and organisations to innovate with confidence."*
   - Bumped `CMS_VERSION` to `'v15'` in `src/data/ContentService.js` to ensure client browser `localStorage` refreshes automatically on next visit.
@@ -821,6 +821,31 @@ Open items that affect these phases: client decisions on category grouping, dupl
 - **Files and folders added or changed:**
   - `src/pages/Services.js`
   - `src/data/ContentService.js`
+  - `supabase/seed_cms_content.sql`
+  - `FEATURE.md`
+  - `docs/seo_backend_implementation.md`
+  - `docs/PROJECT-STATE.md`
+- **Data and security notes:** No invented data, no secrets, no new dependencies.
+- **Checked (and how):**
+  - Production build: `npm run build` succeeds generating 159 pages cleanly (exit code 0).
+  - Test suite: 100% passing across all 43 tests.
+- **Not checked:**
+  - Live production deployment URL (checked after pull request merge).
+- **Undo:** Revert PR or branch.
+
+### Entry 37: Partners Page Heading and Lead Copy Refinement & CMS Version Bump (v16)
+- **Status:** In progress (PR #40, branch `content/update-partners-page-header`, 09 Nov 2026)
+- **What was built:**
+  - Updated Partners page heading in `src/pages/Partners.js`, `src/data/ContentService.js`, `src/admin/Admin.js`, `scripts/seed-cms-content.mjs`, and `supabase/seed_cms_content.sql` from *"Authorized Technology Partners"* to *"Our Global Technology Partners"*.
+  - Updated Partners page lead paragraph to: *"Icon Electromatic collaborates with a select group of globally recognised technology partners to deliver advanced RF, microwave, mmWave, semiconductor, and Hi-Rel solutions. Together, these partnerships enable reliable access to cutting-edge components, materials, and systems for mission-critical aerospace, defence, space, SATCOM, and next-generation communication applications."*
+  - Bumped `CMS_VERSION` to `'v16'` in `src/data/ContentService.js` to ensure client browser `localStorage` refreshes automatically on next visit.
+- **Technology and role:** Frontend copy refinement, CMS default content, client cache invalidation.
+- **How it works:** Provides clear, professional narrative aligning global partner capabilities with mission-critical aerospace, defense, space, and SATCOM applications.
+- **Files and folders added or changed:**
+  - `src/pages/Partners.js`
+  - `src/data/ContentService.js`
+  - `src/admin/Admin.js`
+  - `scripts/seed-cms-content.mjs`
   - `supabase/seed_cms_content.sql`
   - `FEATURE.md`
   - `docs/seo_backend_implementation.md`
