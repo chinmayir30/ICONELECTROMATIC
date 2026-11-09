@@ -34,7 +34,7 @@ export function renderServicesPage() {
               ${d.heroTitle || 'Engineering Services & Global Representation'}
             </h1>
             <p class="page-lead-unified">
-              ${d.heroLead || 'We represent major RF, Microwave, mmWave, Semiconductors, Components, Subsystems and Power supplies manufacturers around the world, providing unparalleled support to electronic designers, manufacturers, engineers and researchers.'}
+              ${d.heroLead || 'From representing world-class RF and Microwave components, semiconductors manufacturers to offering design collaboration and strategic business consultancy, our services empower engineers and organisations to innovate with confidence.'}
             </p>
           </div>
 

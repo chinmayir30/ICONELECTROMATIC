@@ -500,7 +500,7 @@
   * **Type:** Copy / Content Refinement
   * **Details:**
     * **Updated Header Lead Paragraph:** Replaced the generic intro with comprehensive OEM representation copy across both Light and Dark themes:
-      > *"We represent major RF, Microwave, mmWave, Semiconductors, Components, Subsystems and Power supplies manufacturers around the world, providing unparalleled support to electronic designers, manufacturers, engineers and researchers."*
+      > *"From representing world-class RF and Microwave components, semiconductors manufacturers to offering design collaboration and strategic business consultancy, our services empower engineers and organisations to innovate with confidence."*
 
 * **Category:** Services Page — Removed Direct Collaboration CTA Section
   * **Page / Files:** [`src/pages/Services.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Services.js), [`src/styles/index.css`](file:///d:/ICON%20ELECTROMATIC/src/styles/index.css)

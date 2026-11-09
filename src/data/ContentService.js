@@ -53,7 +53,7 @@ if (typeof window !== 'undefined') {
 }
 
 // ─── Version key: bump this to ensure fresh schema sync with existing localStorage ───
-const CMS_VERSION = 'v14';
+const CMS_VERSION = 'v15';
 
 const INITIAL_CONTENT = {
   header: {
@@ -323,7 +323,7 @@ const INITIAL_CONTENT = {
   services: {
     heroEyebrow: 'CAPABILITIES & SERVICES',
     heroTitle: 'Engineering Services & Global Representation',
-    heroLead: 'We represent major RF, Microwave, mmWave, Semiconductors, Components, Subsystems and Power supplies manufacturers around the world, providing unparalleled support to electronic designers, manufacturers, engineers and researchers.',
+    heroLead: 'From representing world-class RF and Microwave components, semiconductors manufacturers to offering design collaboration and strategic business consultancy, our services empower engineers and organisations to innovate with confidence.',
     badges: [
       { id: 'sb-1', icon: 'fa-solid fa-handshake-angle', text: 'Tier-1 Global Manufacturers Representation', color: '#93C5FD' },
       { id: 'sb-2', icon: 'fa-solid fa-landmark', text: 'Indian Govt Tender Portals (GeM & CPPP)', color: '#FDA4AF' },
