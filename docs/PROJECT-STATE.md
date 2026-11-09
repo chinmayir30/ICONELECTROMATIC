@@ -1,6 +1,6 @@
 # PROJECT-STATE.md - Icon Electromatic website
 
-Last updated: 2026-11-03
+Last updated: 2026-11-09
 Rule: update this file at the end of every task. Never write passwords, keys or tokens here.
 Read docs/seo_backend_implementation.md for the implementation log, technology stack and phase status.
 
@@ -46,6 +46,7 @@ Stage 7 - Central CMS Supabase Persistence & SSG Integration (feat/admin-cms-sup
 - [x] Align Contact Us Quick Requirement Presets & Fix GaN Button Wrapping (fix/contact-preset-button-alignment)
 - [x] Complete Removal of Fortify Across Website and Catalog (PR #36)
 - [x] Purge Cached Fortify Data via CMS Version Bump (v14), Filter Exclusions & Presets (fix/purge-fortify-and-bump-cms-version)
+- [x] Update Services Page Hero Lead Copy & Bump CMS Version to v15 (content/update-services-hero-lead)
 
 ## Decisions (confirmed by the owner)
 | Date | Decision | Why |

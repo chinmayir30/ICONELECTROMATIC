@@ -810,6 +810,29 @@ Open items that affect these phases: client decisions on category grouping, dupl
   - Live production deployment URL (checked after pull request merge).
 - **Undo:** Revert PR or branch.
 
+### Entry 36: Services Page Hero Lead Copy Refinement & CMS Version Bump (v15)
+- **Status:** In progress (PR #39, branch `content/update-services-hero-lead`, 09 Nov 2026)
+- **What was built:**
+  - Updated the Services page hero lead paragraph in `src/pages/Services.js` and `src/data/ContentService.js` to: *"From representing world-class RF and Microwave components, semiconductors manufacturers to offering design collaboration and strategic business consultancy, our services empower engineers and organisations to innovate with confidence."*
+  - Bumped `CMS_VERSION` to `'v15'` in `src/data/ContentService.js` to ensure client browser `localStorage` refreshes automatically on next visit.
+  - Synchronized `supabase/seed_cms_content.sql` with the new services hero lead text.
+- **Technology and role:** Frontend copy refinement, CMS default content, client cache invalidation.
+- **How it works:** Provides clear, professional, unified value proposition across services representation, design collaboration, and strategic business consulting.
+- **Files and folders added or changed:**
+  - `src/pages/Services.js`
+  - `src/data/ContentService.js`
+  - `supabase/seed_cms_content.sql`
+  - `FEATURE.md`
+  - `docs/seo_backend_implementation.md`
+  - `docs/PROJECT-STATE.md`
+- **Data and security notes:** No invented data, no secrets, no new dependencies.
+- **Checked (and how):**
+  - Production build: `npm run build` succeeds generating 159 pages cleanly (exit code 0).
+  - Test suite: 100% passing across all 43 tests.
+- **Not checked:**
+  - Live production deployment URL (checked after pull request merge).
+- **Undo:** Revert PR or branch.
+
 ## 7. Entry template (copy for each new phase)
 ```
 ### Entry N: name
