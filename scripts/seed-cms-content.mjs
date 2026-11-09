@@ -39,8 +39,8 @@ export function extractAllContentSections() {
   if (partnersMatch) {
     const initialPartners = (new Function(`return (${partnersMatch[1]});`))();
     partnersSection = {
-      heroTitle: 'Authorized Technology Partners',
-      heroLead: 'We represent a diverse portfolio of OEMs across sectors, industries and application.<br />To know more about their products, make an enquiry or request samples just get in touch with us.',
+      heroTitle: 'Our Global Technology Partners',
+      heroLead: 'Icon Electromatic collaborates with a select group of globally recognised technology partners to deliver advanced RF, microwave, mmWave, semiconductor, and Hi-Rel solutions. Together, these partnerships enable reliable access to cutting-edge components, materials, and systems for mission-critical aerospace, defence, space, SATCOM, and next-generation communication applications.',
       trustBadge1: '10+ Global Technology Partners',
       trustBadge2: 'Space & Mil-Spec Screening Support',
       partners: initialPartners

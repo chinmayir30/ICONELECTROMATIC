@@ -47,6 +47,7 @@ Stage 7 - Central CMS Supabase Persistence & SSG Integration (feat/admin-cms-sup
 - [x] Complete Removal of Fortify Across Website and Catalog (PR #36)
 - [x] Purge Cached Fortify Data via CMS Version Bump (v14), Filter Exclusions & Presets (fix/purge-fortify-and-bump-cms-version)
 - [x] Update Services Page Hero Lead Copy & Bump CMS Version to v15 (content/update-services-hero-lead)
+- [x] Update Partners Page Heading and Lead Copy & Bump CMS Version to v16 (content/update-partners-page-header)
 
 ## Decisions (confirmed by the owner)
 | Date | Decision | Why |

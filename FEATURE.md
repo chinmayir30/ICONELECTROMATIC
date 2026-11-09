@@ -292,7 +292,7 @@
   * **Type:** UX/UI Design Consistency, Typographic Hierarchy & Contrast Restoration
   * **Details:**
     * **Page Headings in Signature Brand Dark Red (`#e32726`):**
-      * Styled all main page hero headings (`h1.page-title-unified`) across every page (`About Us`, `Authorized Technology Partners`, `Product Portfolio & Component Catalog`, `Engineering Services & Global Representation`, `OEM Technical News, Video Demos & Insights`, `Contact Our Technical Team`, and Product Detail models) in the authentic dark crimson red (`#e32726`) matching the official logo brand code.
+      * Styled all main page hero headings (`h1.page-title-unified`) across every page (`About Us`, `Our Global Technology Partners`, `Product Portfolio & Component Catalog`, `Engineering Services & Global Representation`, `OEM Technical News, Video Demos & Insights`, `Contact Our Technical Team`, and Product Detail models) in the authentic dark crimson red (`#e32726`) matching the official logo brand code.
     * **Full Visibility Restoration for Trust & Capability Badges:**
       * Restored crystal-clear visibility to all hero badges across all pages (`ISO 9001:2015 Operations`, `Multi-Decade Pedigree`, `Defense & Telecom Solutions`, `Global OEM Representation`, etc.).
       * Added high-contrast frosted glass container (`rgba(255, 255, 255, 0.12)` with `rgba(255, 255, 255, 0.3)` border and depth shadow).
@@ -529,7 +529,7 @@
         12. **NEE International**
         *(followed in catalog by Spellman, AEE Israel, and Transline Technology).*
     * **Updated Partners Page Lead Copy:** Updated the header lead paragraph across both Light and Dark themes to:
-      > *"We represent a diverse portfolio of OEMs across sectors, industries and application.<br>To know more about their products, make an enquiry or request samples just get in touch with us."*
+      > *"Icon Electromatic collaborates with a select group of globally recognised technology partners to deliver advanced RF, microwave, mmWave, semiconductor, and Hi-Rel solutions. Together, these partnerships enable reliable access to cutting-edge components, materials, and systems for mission-critical aerospace, defence, space, SATCOM, and next-generation communication applications."*
 
 * **Category:** Partners Page — Equalized Top/Bottom Ticker Spacing & Enhanced OEM Logo Shadows/Effects
   * **Page / Files:** [`src/pages/Partners.js`](file:///d:/ICON%20ELECTROMATIC/src/pages/Partners.js), [`src/styles/index.css`](file:///d:/ICON%20ELECTROMATIC/src/styles/index.css)

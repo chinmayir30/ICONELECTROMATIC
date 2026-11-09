@@ -53,7 +53,7 @@ if (typeof window !== 'undefined') {
 }
 
 // ─── Version key: bump this to ensure fresh schema sync with existing localStorage ───
-const CMS_VERSION = 'v15';
+const CMS_VERSION = 'v16';
 
 const INITIAL_CONTENT = {
   header: {
@@ -813,8 +813,8 @@ export const ContentService = {
           }
           if (Array.isArray(parsed)) {
             const wrapped = {
-              heroTitle: 'Authorized Technology Partners',
-              heroLead: 'We represent a diverse portfolio of OEMs across sectors, industries and application.<br />To know more about their products, make an enquiry or request samples just get in touch with us.',
+              heroTitle: 'Our Global Technology Partners',
+              heroLead: 'Icon Electromatic collaborates with a select group of globally recognised technology partners to deliver advanced RF, microwave, mmWave, semiconductor, and Hi-Rel solutions. Together, these partnerships enable reliable access to cutting-edge components, materials, and systems for mission-critical aerospace, defence, space, SATCOM, and next-generation communication applications.',
               trustBadge1: '10+ Global Technology Partners',
               trustBadge2: 'Space & Mil-Spec Screening Support',
               partners: parsed
@@ -916,8 +916,8 @@ export const ContentService = {
         { id: 'transline', name: 'Transline Technology', domain: 'High Frequency, Microwave & mmWave PCB Fabrication', category: 'materials', accentColor: 'blue', logoImg: '/images/oem-logos/Transline_Logo_Transparent.png', description: 'Transline Technology is an elite fabricator of advanced RF, microwave, and millimeter-wave printed circuit boards utilizing Rogers, PTFE, and hybrid dielectric stackups for aerospace and defense electronics.', website: 'https://translinetech.com' },
       ];
       const initial = {
-        heroTitle: 'Authorized Technology Partners',
-        heroLead: 'We represent a diverse portfolio of OEMs across sectors, industries and application.<br />To know more about their products, make an enquiry or request samples just get in touch with us.',
+        heroTitle: 'Our Global Technology Partners',
+        heroLead: 'Icon Electromatic collaborates with a select group of globally recognised technology partners to deliver advanced RF, microwave, mmWave, semiconductor, and Hi-Rel solutions. Together, these partnerships enable reliable access to cutting-edge components, materials, and systems for mission-critical aerospace, defence, space, SATCOM, and next-generation communication applications.',
         trustBadge1: '10+ Global Technology Partners',
         trustBadge2: 'Space & Mil-Spec Screening Support',
         partners: initialPartners
