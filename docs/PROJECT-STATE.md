@@ -50,6 +50,7 @@ Stage 7 - Central CMS Supabase Persistence & SSG Integration (feat/admin-cms-sup
 - [x] Update Partners Page Heading and Lead Copy & Bump CMS Version to v16 (content/update-partners-page-header)
 - [x] Update Home DHL GoGreen Plus Stat, Transline Logo Consistency in Light/Dark & Bump CMS Version to v17 (feat/home-gogreen-and-transline-logo)
 - [x] Remove Category and Product Count Badges from Products Page OEM Cards (feat/remove-oem-card-meta-counters)
+- [x] Deep Product Catalog Search with Hierarchical Route Display across all OEMs (feat/product-catalog-search-route)
 
 ## Decisions (confirmed by the owner)
 | Date | Decision | Why |

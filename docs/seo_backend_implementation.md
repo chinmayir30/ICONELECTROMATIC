@@ -882,7 +882,7 @@ Open items that affect these phases: client decisions on category grouping, dupl
 - **Undo:** Revert PR or branch.
 
 ### Entry 39: Remove Category and Product Count Badges from Products Page OEM Cards
-- **Status:** In progress (PR #42, branch `feat/remove-oem-card-meta-counters`, 10 Nov 2026)
+- **Status:** Implemented (PR #42, merge commit deed827, 10 Nov 2026)
 - **What was built:**
   - Removed `.oem-card-meta` (containing category and product counter badges such as "7 Categories" and "37 Products & Lines") from all 12 OEM cards in `src/pages/Products.js`.
   - Streamlined OEM cards to cleanly emphasize official brand logo, title, tagline, description, category preview pills, and direct exploration call-to-action.
@@ -896,6 +896,30 @@ Open items that affect these phases: client decisions on category grouping, dupl
 - **Checked (and how):**
   - Production build: `npm run build` succeeds generating 159 pages cleanly (exit code 0).
   - Test suite: 100% passing across all 43 tests.
+- **Not checked:**
+  - Live production deployment URL (checked after pull request merge).
+- **Undo:** Revert PR or branch.
+
+### Entry 40: Deep Product Catalog Search with Hierarchical Route Display Across All OEMs
+- **Status:** In progress (PR #43, branch `feat/product-catalog-search-route`, 10 Nov 2026)
+- **What was built:**
+  - Upgraded the Products catalog search on `src/pages/Products.js` to index across all 12 OEM partners, 85 categories, and 159 product models.
+  - Implemented tokenized and typo-tolerant search using word-boundary matching and Levenshtein distance $\le 2$ on words $\ge 4$ characters, so searches for product models (e.g. "RT/duroid 5880", "Capattery", "HyperSDR", "Bias Tees", and common misspellings) accurately identify the right products and OEMs.
+  - Added a dedicated rich search results view displaying matching products with full hierarchical route breadcrumbs (`OEM Partner → Category → Product`), product pictures, OEM overlays, descriptions, key application chips, direct category navigation links, standalone product page links, and RFQ quote buttons.
+  - Added synchronized OEM partner filtering to display associated OEMs alongside matching products, with automatic empty-state feedback and 1-click search reset.
+  - Styled with CSS variables for responsive multi-column layouts across desktop and mobile in both dark and light themes.
+- **Technology and role:** In-memory full-text search indexing, Levenshtein distance algorithm, DOM event delegation, CSS theming and responsive design.
+- **How it works:** `searchCatalog(query)` parses input tokens and evaluates them against OEM, category, and product data models. When queries are active, `applyFilters()` dynamically populates `#catalog-search-results-wrap` with route-badged product cards and filters the `#oem-cards-grid`.
+- **Files and folders added or changed:**
+  - `src/pages/Products.js`
+  - `src/styles/index.css`
+  - `docs/PROJECT-STATE.md`
+  - `docs/seo_backend_implementation.md`
+- **Data and security notes:** All search runs in-browser against authoritative catalog data. Zero invented data, no secrets, no new dependencies.
+- **Checked (and how):**
+  - Test suite: 100% passing across all 43 tests.
+  - Production build: `npm run build` generates 159 pages cleanly with zero errors.
+  - Verified searches: "rt duroid 5880", "rt duriod 5580", "capattery", "hypersdr", "bias tees", empty state, and 1-click reset.
 - **Not checked:**
   - Live production deployment URL (checked after pull request merge).
 - **Undo:** Revert PR or branch.
