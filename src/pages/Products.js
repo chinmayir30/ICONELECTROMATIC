@@ -933,6 +933,9 @@ function renderSearchResultProductCard(item) {
 // ═════════════════════════════════════════════════════════════════════════════
 export function initProductsPage() {
   attachCatalogEvents();
+  if (navState.level === 'oems' && navState.searchQuery) {
+    applyFilters();
+  }
 }
 
 function attachCatalogEvents() {
@@ -1012,15 +1015,23 @@ function attachCatalogEvents() {
     }
   });
 
-  // Search input typing
-  const searchInput = document.getElementById('oem-search-input');
-  if (searchInput) {
-    searchInput.addEventListener('input', (e) => {
+  // Delegated search input typing across any level transition or re-render
+  page.addEventListener('input', (e) => {
+    if (e.target && e.target.id === 'oem-search-input') {
       const query = e.target.value.trim().toLowerCase();
       navState.searchQuery = query;
       filterOEMsBySearch(query);
-    });
-  }
+    }
+  });
+
+  // Delegated keydown listener (Escape clears search)
+  page.addEventListener('keydown', (e) => {
+    if (e.target && e.target.id === 'oem-search-input') {
+      if (e.key === 'Escape') {
+        resetAllFilters();
+      }
+    }
+  });
 }
 
 function filterOEMsBySpecialty(specialty) {
@@ -1234,6 +1245,9 @@ function navigateTo(paramsStr) {
       content.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
       content.style.opacity = '1';
       content.style.transform = 'translateY(0)';
+      if (navState.level === 'oems') {
+        applyFilters();
+      }
     }, 100);
   }
 

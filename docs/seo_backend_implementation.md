@@ -901,7 +901,7 @@ Open items that affect these phases: client decisions on category grouping, dupl
 - **Undo:** Revert PR or branch.
 
 ### Entry 40: Deep Product Catalog Search with Hierarchical Route Display Across All OEMs
-- **Status:** In progress (PR #43, branch `feat/product-catalog-search-route`, 10 Nov 2026)
+- **Status:** Implemented (PR #43, merge commit fc8dc70, 10 Nov 2026)
 - **What was built:**
   - Upgraded the Products catalog search on `src/pages/Products.js` to index across all 12 OEM partners, 85 categories, and 159 product models.
   - Implemented tokenized and typo-tolerant search using word-boundary matching and Levenshtein distance $\le 2$ on words $\ge 4$ characters, so searches for product models (e.g. "RT/duroid 5880", "Capattery", "HyperSDR", "Bias Tees", and common misspellings) accurately identify the right products and OEMs.
@@ -920,6 +920,27 @@ Open items that affect these phases: client decisions on category grouping, dupl
   - Test suite: 100% passing across all 43 tests.
   - Production build: `npm run build` generates 159 pages cleanly with zero errors.
   - Verified searches: "rt duroid 5880", "rt duriod 5580", "capattery", "hypersdr", "bias tees", empty state, and 1-click reset.
+- **Not checked:**
+  - Live production deployment URL (checked after pull request merge).
+- **Undo:** Revert PR or branch.
+
+### Entry 41: Fix Catalog Search Event Delegation Across Navigation Transitions
+- **Status:** In progress (PR #44, branch `fix/catalog-search-event-delegation`, 10 Nov 2026)
+- **What was built:**
+  - Switched `#oem-search-input` event listener from direct DOM element binding to container-level event delegation on `#catalog-page`.
+  - Resolved event listener detachment issue where navigating into an OEM/category and returning to the main OEMs view destroyed and recreated the search input without its listener.
+  - Added delegated `<kbd>Escape</kbd>` key listener to quickly clear search queries and reset filters.
+  - Added automatic filter execution in `navigateTo()` whenever returning to `level === 'oems'` with an active search query.
+- **Technology and role:** DOM event delegation, SPA navigation lifecycle synchronization.
+- **How it works:** Attaching event listeners to the persistent `#catalog-page` container ensures events bubble correctly even when inner child HTML is replaced by level transitions.
+- **Files and folders added or changed:**
+  - `src/pages/Products.js`
+  - `docs/PROJECT-STATE.md`
+  - `docs/seo_backend_implementation.md`
+- **Data and security notes:** Pure frontend DOM event management. Zero secrets, no new dependencies.
+- **Checked (and how):**
+  - Test suite: 100% passing across all 43 tests.
+  - Production build: `npm run build` generates 159 pages cleanly with zero errors.
 - **Not checked:**
   - Live production deployment URL (checked after pull request merge).
 - **Undo:** Revert PR or branch.
