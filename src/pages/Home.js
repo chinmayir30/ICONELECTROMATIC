@@ -13,11 +13,18 @@ export function renderHomePage() {
   const contact = ContentService.getData('contact');
   const blogs = ContentService.getData('blogs');
 
-  const statsList = data.stats || [
+  const rawStats = data.stats || [
     { value: '159', label: 'VERIFIED COMPONENTS' },
     { value: '12', label: 'OEM PARTNERS' },
-    { value: '100%', label: 'ROHS & ISO 9001' }
+    { value: 'DHL GoGreen Plus', label: 'CERTIFIED (IESPL)' }
   ];
+
+  const statsList = rawStats.map(st => {
+    if (st.value === '100%' || (st.label && st.label.toUpperCase().includes('ROHS'))) {
+      return { value: 'DHL GoGreen Plus', label: 'CERTIFIED (IESPL)' };
+    }
+    return st;
+  });
 
   let blogList = [];
   if (Array.isArray(blogs)) {
@@ -81,7 +88,7 @@ export function renderHomePage() {
           <div class="hero-inline-stats" style="margin-top: 60px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.2); display: flex; justify-content: space-between; align-items: center; max-width: 760px; gap: 20px;">
             ${statsList.map(st => `
               <div class="hero-stat-item" style="flex-direction: column; align-items: flex-start; gap: 4px;">
-                <span class="hero-stat-number" style="color: var(--logo-red);">${st.value}</span>
+                <span class="hero-stat-number" style="color: var(--logo-red); font-size: ${st.value && st.value.length > 5 ? '1.35rem' : '1.8rem'}; line-height: 1.15; white-space: nowrap;">${st.value}</span>
                 <span class="hero-stat-label" style="color: #cbd5e1;">${st.label}</span>
               </div>
             `).join('')}

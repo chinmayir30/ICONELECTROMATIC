@@ -53,7 +53,7 @@ if (typeof window !== 'undefined') {
 }
 
 // ─── Version key: bump this to ensure fresh schema sync with existing localStorage ───
-const CMS_VERSION = 'v16';
+const CMS_VERSION = 'v17';
 
 const INITIAL_CONTENT = {
   header: {
@@ -106,7 +106,7 @@ const INITIAL_CONTENT = {
     stats: [
       { id: 'stat-1', value: '159', label: 'VERIFIED COMPONENTS' },
       { id: 'stat-2', value: '12', label: 'OEM PARTNERS' },
-      { id: 'stat-3', value: '100%', label: 'ROHS & ISO 9001' },
+      { id: 'stat-3', value: 'DHL GoGreen Plus', label: 'CERTIFIED (IESPL)' },
     ],
     coreCapabilitiesTitle: 'Core Capabilities',
     coreCapabilitiesSubtitle: 'Engineered for extreme performance.',

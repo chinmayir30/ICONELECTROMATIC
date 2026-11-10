@@ -1,6 +1,6 @@
 # PROJECT-STATE.md - Icon Electromatic website
 
-Last updated: 2026-11-09
+Last updated: 2026-11-10
 Rule: update this file at the end of every task. Never write passwords, keys or tokens here.
 Read docs/seo_backend_implementation.md for the implementation log, technology stack and phase status.
 
@@ -48,6 +48,7 @@ Stage 7 - Central CMS Supabase Persistence & SSG Integration (feat/admin-cms-sup
 - [x] Purge Cached Fortify Data via CMS Version Bump (v14), Filter Exclusions & Presets (fix/purge-fortify-and-bump-cms-version)
 - [x] Update Services Page Hero Lead Copy & Bump CMS Version to v15 (content/update-services-hero-lead)
 - [x] Update Partners Page Heading and Lead Copy & Bump CMS Version to v16 (content/update-partners-page-header)
+- [x] Update Home DHL GoGreen Plus Stat, Transline Logo Consistency in Light/Dark & Bump CMS Version to v17 (feat/home-gogreen-and-transline-logo)
 
 ## Decisions (confirmed by the owner)
 | Date | Decision | Why |
