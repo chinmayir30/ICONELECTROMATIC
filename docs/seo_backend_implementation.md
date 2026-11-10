@@ -834,7 +834,7 @@ Open items that affect these phases: client decisions on category grouping, dupl
 - **Undo:** Revert PR or branch.
 
 ### Entry 37: Partners Page Heading and Lead Copy Refinement & CMS Version Bump (v16)
-- **Status:** In progress (PR #40, branch `content/update-partners-page-header`, 09 Nov 2026)
+- **Status:** Implemented (PR #40, merge commit be72944, 09 Nov 2026)
 - **What was built:**
   - Updated Partners page heading in `src/pages/Partners.js`, `src/data/ContentService.js`, `src/admin/Admin.js`, `scripts/seed-cms-content.mjs`, and `supabase/seed_cms_content.sql` from *"Authorized Technology Partners"* to *"Our Global Technology Partners"*.
   - Updated Partners page lead paragraph to: *"Icon Electromatic collaborates with a select group of globally recognised technology partners to deliver advanced RF, microwave, mmWave, semiconductor, and Hi-Rel solutions. Together, these partnerships enable reliable access to cutting-edge components, materials, and systems for mission-critical aerospace, defence, space, SATCOM, and next-generation communication applications."*
@@ -848,6 +848,29 @@ Open items that affect these phases: client decisions on category grouping, dupl
   - `scripts/seed-cms-content.mjs`
   - `supabase/seed_cms_content.sql`
   - `FEATURE.md`
+  - `docs/seo_backend_implementation.md`
+  - `docs/PROJECT-STATE.md`
+- **Data and security notes:** No invented data, no secrets, no new dependencies.
+- **Checked (and how):**
+  - Production build: `npm run build` succeeds generating 159 pages cleanly (exit code 0).
+  - Test suite: 100% passing across all 43 tests.
+- **Not checked:**
+  - Live production deployment URL (checked after pull request merge).
+- **Undo:** Revert PR or branch.
+
+### Entry 38: Home Page DHL GoGreen Plus Stat & Transline Logo Consistency in Light/Dark & CMS Version Bump (v17)
+- **Status:** In progress (PR #41, branch `feat/home-gogreen-and-transline-logo`, 10 Nov 2026)
+- **What was built:**
+  - Replaced the Home page third hero stat item ("100% / ROHS & ISO 9001") with "DHL GoGreen Plus / CERTIFIED (IESPL)" across `src/pages/Home.js` and `src/data/ContentService.js`.
+  - Added dynamic font-size scaling for stat items in `src/pages/Home.js` and defensive sanitization mapping any cached "100%" or "ROHS" entries to "DHL GoGreen Plus Certified (IESPL)".
+  - Updated `src/styles/index.css` Transline logo styles to eliminate light mode color inversion (`filter: none !important;`) and wrapped the logo in a dark pod (`#0f172a`) in both light and dark modes, ensuring consistent appearance matching dark mode across the entire site.
+  - Bumped `CMS_VERSION` to `'v17'` in `src/data/ContentService.js` to ensure client browser `localStorage` refreshes automatically on next visit.
+- **Technology and role:** Frontend styling, responsive typography, CMS default content, client cache invalidation.
+- **How it works:** Aligns Home certification highlight with DHL GoGreen Plus credential and ensures Transline logo renders authentically with white text and gold swoosh in both theme modes.
+- **Files and folders added or changed:**
+  - `src/pages/Home.js`
+  - `src/data/ContentService.js`
+  - `src/styles/index.css`
   - `docs/seo_backend_implementation.md`
   - `docs/PROJECT-STATE.md`
 - **Data and security notes:** No invented data, no secrets, no new dependencies.
