@@ -373,16 +373,6 @@ function renderOEMCard(oem) {
             ${remainingCount > 0 ? `<span class="preview-pill preview-pill-more">+${remainingCount} more</span>` : ''}
           </div>
         </div>
-
-        <!-- Meta Counters -->
-        <div class="oem-card-meta">
-          <span class="oem-meta-badge" style="background: ${oem.accentColor}15; border-color: ${oem.accentColor}35; color: ${oem.accentColor};">
-            <i class="fa-solid fa-folder-tree"></i> ${totalCategories} ${totalCategories === 1 ? 'Category' : 'Categories'}
-          </span>
-          <span class="oem-meta-badge" style="background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.12); color: #E2E8F0;">
-            <i class="fa-solid fa-microchip"></i> ${totalProducts} ${totalProducts === 1 ? 'Product Line' : 'Products &amp; Lines'}
-          </span>
-        </div>
       </div>
 
       <div class="oem-card-cta" style="color: ${oem.accentColor};">

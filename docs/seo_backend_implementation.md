@@ -859,7 +859,7 @@ Open items that affect these phases: client decisions on category grouping, dupl
 - **Undo:** Revert PR or branch.
 
 ### Entry 38: Home Page DHL GoGreen Plus Stat & Transline Logo Consistency in Light/Dark & CMS Version Bump (v17)
-- **Status:** In progress (PR #41, branch `feat/home-gogreen-and-transline-logo`, 10 Nov 2026)
+- **Status:** Implemented (PR #41, merge commit 23ead60, 10 Nov 2026)
 - **What was built:**
   - Replaced the Home page third hero stat item ("100% / ROHS & ISO 9001") with "DHL GoGreen Plus / CERTIFIED (IESPL)" across `src/pages/Home.js` and `src/data/ContentService.js`.
   - Added dynamic font-size scaling for stat items in `src/pages/Home.js` and defensive sanitization mapping any cached "100%" or "ROHS" entries to "DHL GoGreen Plus Certified (IESPL)".
@@ -871,6 +871,25 @@ Open items that affect these phases: client decisions on category grouping, dupl
   - `src/pages/Home.js`
   - `src/data/ContentService.js`
   - `src/styles/index.css`
+  - `docs/seo_backend_implementation.md`
+  - `docs/PROJECT-STATE.md`
+- **Data and security notes:** No invented data, no secrets, no new dependencies.
+- **Checked (and how):**
+  - Production build: `npm run build` succeeds generating 159 pages cleanly (exit code 0).
+  - Test suite: 100% passing across all 43 tests.
+- **Not checked:**
+  - Live production deployment URL (checked after pull request merge).
+- **Undo:** Revert PR or branch.
+
+### Entry 39: Remove Category and Product Count Badges from Products Page OEM Cards
+- **Status:** In progress (PR #42, branch `feat/remove-oem-card-meta-counters`, 10 Nov 2026)
+- **What was built:**
+  - Removed `.oem-card-meta` (containing category and product counter badges such as "7 Categories" and "37 Products & Lines") from all 12 OEM cards in `src/pages/Products.js`.
+  - Streamlined OEM cards to cleanly emphasize official brand logo, title, tagline, description, category preview pills, and direct exploration call-to-action.
+- **Technology and role:** Frontend UI layout simplification.
+- **How it works:** Prunes redundant quantitative badge indicators on the primary catalog overview.
+- **Files and folders added or changed:**
+  - `src/pages/Products.js`
   - `docs/seo_backend_implementation.md`
   - `docs/PROJECT-STATE.md`
 - **Data and security notes:** No invented data, no secrets, no new dependencies.
