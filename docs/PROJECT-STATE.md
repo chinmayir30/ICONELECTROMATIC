@@ -53,6 +53,7 @@ Stage 7 - Central CMS Supabase Persistence & SSG Integration (feat/admin-cms-sup
 - [x] Deep Product Catalog Search with Hierarchical Route Display across all OEMs (feat/product-catalog-search-route)
 - [x] Fix Catalog Search Event Delegation across Navigation Transitions (fix/catalog-search-event-delegation)
 - [x] Universal Catalog Search Bar Across All Catalog Levels (feat/universal-catalog-search-all-levels)
+- [x] Client Typography Alignment with Fjalla One & Lato (feat/client-typography-alignment)
 
 ## Decisions (confirmed by the owner)
 | Date | Decision | Why |
