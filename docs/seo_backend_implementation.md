@@ -946,7 +946,7 @@ Open items that affect these phases: client decisions on category grouping, dupl
 - **Undo:** Revert PR or branch.
 
 ### Entry 42: Universal Catalog Search Bar Across All Catalog Levels
-- **Status:** In progress (PR #45, branch `feat/universal-catalog-search-all-levels`, 10 Nov 2026)
+- **Status:** Implemented (PR #45, merge commit 5790b10, 10 Nov 2026)
 - **What was built:**
   - Added a universal catalog search bar component across all inner catalog levels: Level 1 (All OEMs), Level 2 (OEM Categories View), and Level 3 (Category Products Table / Cards View).
   - Users can now search from any catalog view for any product, model, category, or manufacturer.
@@ -959,6 +959,29 @@ Open items that affect these phases: client decisions on category grouping, dupl
   - `docs/PROJECT-STATE.md`
   - `docs/seo_backend_implementation.md`
 - **Data and security notes:** Pure frontend enhancement against authoritative catalog data. Zero secrets, no new dependencies.
+- **Checked (and how):**
+  - Test suites: 43/43 tests passing.
+  - Production build: `npm run build` passing cleanly with 159 static HTML pages generated.
+- **Not checked:**
+  - Live production deployment URL (checked after pull request merge).
+- **Undo:** Revert PR or branch.
+
+### Entry 43: Client Typography Alignment with Fjalla One & Lato
+- **Status:** In progress (PR #46, branch `feat/client-typography-alignment`, 10 Nov 2026)
+- **What was built:**
+  - Analyzed the client's reference website (`https://iconelectromatic2.lbimedia.in/`) and identified their primary typography hierarchy: **Fjalla One** for headings, display titles, and prominent accents; and **Lato** for body text, descriptions, lists, and forms.
+  - Updated Google Fonts stylesheet in `index.html` and `scripts/build-static-catalog.mjs` to include `Fjalla One` and `Lato` (weights 300, 400, 700, 900, normal & italic).
+  - Updated `--font-display: 'Fjalla One', 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;` and `--font-body: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;` in `src/styles/index.css`.
+  - Adjusted heading line-height (1.25) and letter-spacing (0.01em) to render condensed display typography cleanly without bunching.
+- **Technology and role:** Web typography, Google Fonts CDN, CSS design tokens.
+- **How it works:** Custom CSS variables `--font-display` and `--font-body` drive all headings, nav links, buttons, and content throughout the application, automatically propagating Fjalla One and Lato across the whole site.
+- **Files and folders added or changed:**
+  - `index.html`
+  - `scripts/build-static-catalog.mjs`
+  - `src/styles/index.css`
+  - `docs/PROJECT-STATE.md`
+  - `docs/seo_backend_implementation.md`
+- **Data and security notes:** Pure typography and styling changes. Zero secrets, no new dependencies.
 - **Checked (and how):**
   - Test suites: 43/43 tests passing.
   - Production build: `npm run build` passing cleanly with 159 static HTML pages generated.
