@@ -217,6 +217,47 @@ function renderCurrentLevel() {
 }
 
 // ═════════════════════════════════════════════════════════════════════════════
+// UNIVERSAL SEARCH TOOLBAR COMPONENT
+// ═════════════════════════════════════════════════════════════════════════════
+function renderCatalogSearchToolbar(placeholder = "Search by company, specialty, category, or product...") {
+  return `
+    <!-- Universal Catalog Search Bar -->
+    <div class="catalog-filter-panel catalog-search-only-panel" style="margin-top: 20px; margin-bottom: 24px;">
+      <div class="catalog-filter-toolbar">
+        <div class="catalog-search-wrap">
+          <i class="fa-solid fa-magnifying-glass catalog-search-icon"></i>
+          <input 
+            type="text" 
+            id="oem-search-input" 
+            class="catalog-search-input" 
+            placeholder="${placeholder}"
+            value="${navState.searchQuery || ''}"
+          />
+          ${navState.searchQuery ? `
+            <button class="catalog-search-clear" id="catalog-search-clear" title="Clear search">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          ` : ''}
+        </div>
+        <div class="catalog-toolbar-actions">
+          <button 
+            class="catalog-reset-filters-btn" 
+            id="catalog-reset-filters-btn" 
+            title="Reset active search"
+            style="display: ${navState.searchQuery ? 'inline-flex' : 'none'};"
+          >
+            <i class="fa-solid fa-rotate-left"></i>
+            <span>Reset</span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- Results for deep search with complete hierarchical route -->
+    <div class="catalog-search-results-wrap" id="catalog-search-results-wrap" style="display:none;"></div>
+  `;
+}
+
+// ═════════════════════════════════════════════════════════════════════════════
 // LEVEL 1: ALL COMPANIES (13 OEMs)
 // ═════════════════════════════════════════════════════════════════════════════
 function renderOEMsLevel() {
@@ -435,8 +476,11 @@ function renderCategoriesLevel() {
       </div>
     </div>
 
+    <!-- Universal Search Bar on Level 2 -->
+    ${renderCatalogSearchToolbar("Search all products, models, categories, or manufacturers...")}
+
     <!-- Category Section Header -->
-    <div class="catalog-section-meta" style="margin-top: 32px;">
+    <div class="catalog-section-meta" id="category-section-meta" style="margin-top: 16px;">
       <div>
         <h3 class="catalog-level-title">Select a Product Category</h3>
         <p class="catalog-level-desc">Browse through ${oem.name}'s product families and click any category to view individual models and specifications.</p>
@@ -444,7 +488,7 @@ function renderCategoriesLevel() {
     </div>
 
     <!-- Categories Grid -->
-    <div class="category-cards-grid">
+    <div class="category-cards-grid" id="category-cards-grid">
       ${categories.map(cat => renderCategoryCard(oem, cat)).join('')}
     </div>
   `;
@@ -561,26 +605,31 @@ function renderProductsLevel() {
       </div>
     </div>
 
+    <!-- Universal Search Bar on Level 3 -->
+    ${renderCatalogSearchToolbar("Search all products, models, or manufacturers...")}
+
     <!-- Main Products View: Visual Cards or Data Table -->
-    ${navState.viewMode === 'cards' ? `
-      <div class="product-cards-grid" id="product-cards-grid">
-        ${products.map((p, i) => renderProductCard(p, i, oem, cat)).join('')}
-      </div>
-    ` : `
-      <div class="products-table-wrap">
-        <div class="products-table-header">
-          <div class="ptable-col ptable-col-num">#</div>
-          <div class="ptable-col ptable-col-img">Visual</div>
-          <div class="ptable-col ptable-col-name">Product Name &amp; Code</div>
-          <div class="ptable-col ptable-col-desc">Technical Description</div>
-          <div class="ptable-col ptable-col-apps">Target Applications</div>
-          <div class="ptable-col ptable-col-actions">Request RFQ</div>
+    <div id="product-view-container">
+      ${navState.viewMode === 'cards' ? `
+        <div class="product-cards-grid" id="product-cards-grid">
+          ${products.map((p, i) => renderProductCard(p, i, oem, cat)).join('')}
         </div>
-        <div class="products-table-body">
-          ${products.map((p, i) => renderProductRow(p, i, oem)).join('')}
+      ` : `
+        <div class="products-table-wrap">
+          <div class="products-table-header">
+            <div class="ptable-col ptable-col-num">#</div>
+            <div class="ptable-col ptable-col-img">Visual</div>
+            <div class="ptable-col ptable-col-name">Product Name &amp; Code</div>
+            <div class="ptable-col ptable-col-desc">Technical Description</div>
+            <div class="ptable-col ptable-col-apps">Target Applications</div>
+            <div class="ptable-col ptable-col-actions">Request RFQ</div>
+          </div>
+          <div class="products-table-body">
+            ${products.map((p, i) => renderProductRow(p, i, oem)).join('')}
+          </div>
         </div>
-      </div>
-    `}
+      `}
+    </div>
   `;
 }
 
@@ -1085,35 +1134,81 @@ function filterOEMsBySearch(query) {
 }
 
 function applyFilters() {
-  const cards = document.querySelectorAll('.oem-card');
   const query = (navState.searchQuery || '').trim();
   const filter = navState.activeFilter || 'all';
 
   const resultsWrap = document.getElementById('catalog-search-results-wrap');
-  const sectionTitle = document.getElementById('catalog-section-title');
-  const sectionDesc = document.getElementById('catalog-section-desc');
-  const sectionMeta = document.getElementById('catalog-section-meta');
+  const oemMeta = document.getElementById('catalog-section-meta');
+  const oemTitle = document.getElementById('catalog-section-title');
+  const oemDesc = document.getElementById('catalog-section-desc');
   const oemGrid = document.getElementById('oem-cards-grid');
 
+  const catMeta = document.getElementById('category-section-meta');
+  const catGrid = document.getElementById('category-cards-grid');
+
+  const prodView = document.getElementById('product-view-container');
+
   if (!query) {
-    // Normal level 1 view
+    // Normal level view: hide search results, restore native level content
     if (resultsWrap) {
       resultsWrap.style.display = 'none';
       resultsWrap.innerHTML = '';
     }
-    if (sectionMeta) sectionMeta.style.display = 'flex';
-    if (sectionTitle) sectionTitle.textContent = 'Authorized Technology Manufacturers';
-    if (sectionDesc) sectionDesc.textContent = 'Select an OEM partner below to explore their specialized categories and product models';
-    if (oemGrid) oemGrid.style.display = 'grid';
 
-    let visibleCount = 0;
+    if (navState.level === 'oems') {
+      if (oemMeta) oemMeta.style.display = 'flex';
+      if (oemTitle) oemTitle.textContent = 'Authorized Technology Manufacturers';
+      if (oemDesc) oemDesc.textContent = 'Select an OEM partner below to explore their specialized categories and product models';
+      if (oemGrid) oemGrid.style.display = 'grid';
+
+      const cards = document.querySelectorAll('.oem-card');
+      let visibleCount = 0;
+      cards.forEach(card => {
+        const cardSpecialty = card.getAttribute('data-specialty') || '';
+        const matchesSpecialty = (filter === 'all') || (cardSpecialty === filter);
+        if (matchesSpecialty) {
+          card.classList.remove('is-hidden');
+          card.style.setProperty('display', 'flex', 'important');
+          visibleCount++;
+        } else {
+          card.classList.add('is-hidden');
+          card.style.setProperty('display', 'none', 'important');
+        }
+      });
+
+      const counter = document.getElementById('visible-oem-count');
+      if (counter) counter.textContent = visibleCount;
+    } else if (navState.level === 'categories') {
+      if (catMeta) catMeta.style.display = 'flex';
+      if (catGrid) catGrid.style.display = 'grid';
+    } else if (navState.level === 'products') {
+      if (prodView) prodView.style.display = 'block';
+    }
+
+    const resetBtn = document.getElementById('catalog-reset-filters-btn');
+    if (resetBtn) {
+      resetBtn.style.display = (navState.level === 'oems' && filter !== 'all') ? 'inline-flex' : 'none';
+    }
+    return;
+  }
+
+  // Active search query on ANY level: full-catalog deep search
+  const { matchingProducts, matchingOemIds } = searchCatalog(query);
+
+  // If on Level 1, filter OEM cards
+  let visibleOemCount = 0;
+  if (navState.level === 'oems') {
+    const cards = document.querySelectorAll('.oem-card');
     cards.forEach(card => {
+      const oemId = card.getAttribute('data-oem-id') || '';
       const cardSpecialty = card.getAttribute('data-specialty') || '';
       const matchesSpecialty = (filter === 'all') || (cardSpecialty === filter);
-      if (matchesSpecialty) {
+      const matchesOem = matchingOemIds.has(oemId);
+
+      if (matchesSpecialty && matchesOem) {
         card.classList.remove('is-hidden');
         card.style.setProperty('display', 'flex', 'important');
-        visibleCount++;
+        visibleOemCount++;
       } else {
         card.classList.add('is-hidden');
         card.style.setProperty('display', 'none', 'important');
@@ -1121,42 +1216,17 @@ function applyFilters() {
     });
 
     const counter = document.getElementById('visible-oem-count');
-    if (counter) counter.textContent = visibleCount;
-
-    const resetBtn = document.getElementById('catalog-reset-filters-btn');
-    if (resetBtn) {
-      resetBtn.style.display = (filter !== 'all') ? 'inline-flex' : 'none';
-    }
-    return;
+    if (counter) counter.textContent = visibleOemCount;
+  } else if (navState.level === 'categories') {
+    if (catMeta) catMeta.style.display = 'none';
+    if (catGrid) catGrid.style.display = 'none';
+  } else if (navState.level === 'products') {
+    if (prodView) prodView.style.display = 'none';
   }
-
-  // Active search query: full-catalog deep search
-  const { matchingProducts, matchingOemIds } = searchCatalog(query);
-
-  // Filter OEM cards
-  let visibleOemCount = 0;
-  cards.forEach(card => {
-    const oemId = card.getAttribute('data-oem-id') || '';
-    const cardSpecialty = card.getAttribute('data-specialty') || '';
-    const matchesSpecialty = (filter === 'all') || (cardSpecialty === filter);
-    const matchesOem = matchingOemIds.has(oemId);
-
-    if (matchesSpecialty && matchesOem) {
-      card.classList.remove('is-hidden');
-      card.style.setProperty('display', 'flex', 'important');
-      visibleOemCount++;
-    } else {
-      card.classList.add('is-hidden');
-      card.style.setProperty('display', 'none', 'important');
-    }
-  });
-
-  const counter = document.getElementById('visible-oem-count');
-  if (counter) counter.textContent = visibleOemCount;
 
   // Render search results section
   if (resultsWrap) {
-    if (matchingProducts.length === 0 && visibleOemCount === 0) {
+    if (matchingProducts.length === 0 && (navState.level !== 'oems' || visibleOemCount === 0)) {
       resultsWrap.style.display = 'block';
       resultsWrap.innerHTML = `
         <div class="search-empty-state">
@@ -1167,12 +1237,12 @@ function applyFilters() {
           </p>
           <button class="btn-primary search-clear-empty-btn" id="search-clear-empty-btn">
             <i class="fa-solid fa-rotate-left"></i>
-            <span>Clear Search &amp; View All OEMs</span>
+            <span>Clear Search &amp; Restore View</span>
           </button>
         </div>
       `;
       if (oemGrid) oemGrid.style.display = 'none';
-      if (sectionMeta) sectionMeta.style.display = 'none';
+      if (oemMeta) oemMeta.style.display = 'none';
     } else {
       resultsWrap.style.display = 'block';
       let html = '';
@@ -1198,14 +1268,16 @@ function applyFilters() {
 
       resultsWrap.innerHTML = html;
 
-      if (visibleOemCount > 0) {
-        if (oemGrid) oemGrid.style.display = 'grid';
-        if (sectionMeta) sectionMeta.style.display = 'flex';
-        if (sectionTitle) sectionTitle.textContent = `Matching Manufacturers (${visibleOemCount})`;
-        if (sectionDesc) sectionDesc.textContent = `Authorized OEM partners relevant to "${escapeHtml(query)}"`;
-      } else {
-        if (oemGrid) oemGrid.style.display = 'none';
-        if (sectionMeta) sectionMeta.style.display = 'none';
+      if (navState.level === 'oems') {
+        if (visibleOemCount > 0) {
+          if (oemGrid) oemGrid.style.display = 'grid';
+          if (oemMeta) oemMeta.style.display = 'flex';
+          if (oemTitle) oemTitle.textContent = `Matching Manufacturers (${visibleOemCount})`;
+          if (oemDesc) oemDesc.textContent = `Authorized OEM partners relevant to "${escapeHtml(query)}"`;
+        } else {
+          if (oemGrid) oemGrid.style.display = 'none';
+          if (oemMeta) oemMeta.style.display = 'none';
+        }
       }
     }
   }
@@ -1228,6 +1300,7 @@ function navigateTo(paramsStr) {
   navState.level = params.get('level') || 'oems';
   navState.oemId = params.get('oem') || null;
   navState.categoryId = params.get('category') || null;
+  navState.searchQuery = '';
 
   // Update browser hash
   const newHash = `#/products?${paramsStr}`;
@@ -1245,9 +1318,7 @@ function navigateTo(paramsStr) {
       content.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
       content.style.opacity = '1';
       content.style.transform = 'translateY(0)';
-      if (navState.level === 'oems') {
-        applyFilters();
-      }
+      applyFilters();
     }, 100);
   }
 
