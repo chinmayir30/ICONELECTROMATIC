@@ -1066,7 +1066,7 @@ Open items that affect these phases: client decisions on category grouping, dupl
 - **Undo:** Revert PR or branch.
 
 ### Entry 47: Unify Contact Us & Careers Page Red Accents in Dark Mode
-- **Status:** In progress (PR #50, branch `feat/unify-contact-page-red-accents`, 14 Nov 2026)
+- **Status:** Implemented (PR #50, merge commit bced572, 14 Nov 2026)
 - **What was built:**
   - Standardized Contact Us & Careers page components in `src/pages/Contact.js` and `src/styles/index.css`:
     - Updated `.contact-relay-form:hover` to Brand Red border (`rgba(225, 29, 72, 0.45)`) and red ambient glow (`0 0 26px rgba(225, 29, 72, 0.2)`), with soft red title highlight on hover.
@@ -1084,6 +1084,32 @@ Open items that affect these phases: client decisions on category grouping, dupl
 - **Files and folders added or changed:**
   - `src/styles/index.css`
   - `src/pages/Contact.js`
+  - `src/data/ContentService.js`
+  - `docs/PROJECT-STATE.md`
+  - `docs/seo_backend_implementation.md`
+- **Data and security notes:** Pure frontend styling and cache version bump. Zero secrets, no new dependencies.
+- **Checked (and how):**
+  - Test suites: 43/43 tests passing.
+  - Production build: `npm run build` passing cleanly with 159 static HTML pages generated.
+- **Not checked:**
+  - Live production deployment URL (checked after pull request merge).
+- **Undo:** Revert PR or branch.
+
+### Entry 48: Unify Hero Trust Badges & DHL GoGreen Labels to Brand Red
+- **Status:** In progress (PR #51, branch `feat/unify-about-trust-badges-red`, 14 Nov 2026)
+- **What was built:**
+  - Standardized the 4 hero trust badges on the About Us page (*Multi-Decade Pedigree*, *Defense & Telecom Solutions*, *Global OEM Representation*, and *DHL GoGreen Plus Certified (IESPL)*) in `src/pages/About.js` and `src/data/ContentService.js` to uniform Brand Red design tokens:
+    - Text color: `#FDA4AF` (soft red)
+    - Background: `rgba(225, 29, 72, 0.08)` (subtle red tint)
+    - Border: `1px solid rgba(225, 29, 72, 0.25)` (red border)
+    - Icons: `color: var(--logo-red-light)`
+  - Standardized `services.badges` in `src/pages/Services.js` and `src/data/ContentService.js` to `#FDA4AF` and red background/border for site-wide trust strip uniformity.
+  - Bumped `CMS_VERSION` to `v21` in `src/data/ContentService.js` for automatic browser cache invalidation.
+- **Technology and role:** Component data mapping, CSS design tokens, cache invalidation.
+- **How it works:** Replaces disparate amber and green badge colors with unified Brand Red design tokens and updates the local storage cache version.
+- **Files and folders added or changed:**
+  - `src/pages/About.js`
+  - `src/pages/Services.js`
   - `src/data/ContentService.js`
   - `docs/PROJECT-STATE.md`
   - `docs/seo_backend_implementation.md`

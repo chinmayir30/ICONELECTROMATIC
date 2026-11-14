@@ -53,7 +53,7 @@ if (typeof window !== 'undefined') {
 }
 
 // ─── Version key: bump this to ensure fresh schema sync with existing localStorage ───
-const CMS_VERSION = 'v20';
+const CMS_VERSION = 'v21';
 
 const INITIAL_CONTENT = {
   header: {
@@ -166,9 +166,9 @@ const INITIAL_CONTENT = {
     heroLead: 'Driven by decades of engineering expertise and global collaborations, Icon Electromatic Private Limited delivers advanced components and tailored solutions that transform design ambitions into reality.',
     badges: [
       { id: 'b-1', icon: 'fa-solid fa-award', text: 'Multi-Decade Pedigree', color: '#FDA4AF', bg: 'rgba(225,29,72,0.08)', border: 'rgba(225,29,72,0.25)' },
-      { id: 'b-2', icon: 'fa-solid fa-satellite', text: 'Defense & Telecom Solutions', color: '#FCD34D', bg: 'rgba(245,158,11,0.08)', border: 'rgba(245,158,11,0.25)' },
-      { id: 'b-3', icon: 'fa-solid fa-globe', text: 'Global OEM Representation', color: '#6EE7B7', bg: 'rgba(16,185,129,0.08)', border: 'rgba(16,185,129,0.25)' },
-      { id: 'b-4', icon: 'fa-solid fa-leaf', text: 'DHL GoGreen Plus Certified (IESPL)', color: '#4ADE80', bg: 'rgba(34,197,94,0.08)', border: 'rgba(34,197,94,0.25)' },
+      { id: 'b-2', icon: 'fa-solid fa-satellite', text: 'Defense & Telecom Solutions', color: '#FDA4AF', bg: 'rgba(225,29,72,0.08)', border: 'rgba(225,29,72,0.25)' },
+      { id: 'b-3', icon: 'fa-solid fa-globe', text: 'Global OEM Representation', color: '#FDA4AF', bg: 'rgba(225,29,72,0.08)', border: 'rgba(225,29,72,0.25)' },
+      { id: 'b-4', icon: 'fa-solid fa-leaf', text: 'DHL GoGreen Plus Certified (IESPL)', color: '#FDA4AF', bg: 'rgba(225,29,72,0.08)', border: 'rgba(225,29,72,0.25)' },
     ],
     coreCapabilitiesTitle: 'Core Capabilities',
     coreCapabilitiesSubtitle: 'Fulfillment partners for your electronic ambitions',
@@ -325,9 +325,9 @@ const INITIAL_CONTENT = {
     heroTitle: 'Engineering Services & Global Representation',
     heroLead: 'From representing world-class RF and Microwave components, semiconductors manufacturers to offering design collaboration and strategic business consultancy, our services empower engineers and organisations to innovate with confidence.',
     badges: [
-      { id: 'sb-1', icon: 'fa-solid fa-handshake-angle', text: 'Tier-1 Global Manufacturers Representation', color: '#93C5FD' },
-      { id: 'sb-2', icon: 'fa-solid fa-landmark', text: 'Indian Govt Tender Portals (GeM & CPPP)', color: '#FDA4AF' },
-      { id: 'sb-3', icon: 'fa-solid fa-coins', text: 'Global Multi-Currency Supply Logistics', color: '#E2E8F0' },
+      { id: 'sb-1', icon: 'fa-solid fa-handshake-angle', text: 'Tier-1 Global Manufacturers Representation', color: '#FDA4AF', bg: 'rgba(225,29,72,0.08)', border: 'rgba(225,29,72,0.25)' },
+      { id: 'sb-2', icon: 'fa-solid fa-landmark', text: 'Indian Govt Tender Portals (GeM & CPPP)', color: '#FDA4AF', bg: 'rgba(225,29,72,0.08)', border: 'rgba(225,29,72,0.25)' },
+      { id: 'sb-3', icon: 'fa-solid fa-coins', text: 'Global Multi-Currency Supply Logistics', color: '#FDA4AF', bg: 'rgba(225,29,72,0.08)', border: 'rgba(225,29,72,0.25)' },
     ],
     items: [
       {
