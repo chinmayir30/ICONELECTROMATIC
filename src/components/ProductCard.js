@@ -49,7 +49,7 @@ export function renderProductCard(product, index = 0) {
   const displayImage = getProductDisplayImage(product);
   const name = product.name || product.model || 'RF Component';
   const oemName = product.oemName || product.oemShort || 'Authorized OEM';
-  const oemAccent = product.oemAccent || '#2563EB';
+  const oemAccent = 'var(--logo-red, #e11d48)';
   const categoryName = product.categoryName || product.category || 'High-Frequency';
   
   // Format concise description

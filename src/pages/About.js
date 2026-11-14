@@ -47,9 +47,9 @@ export function renderAboutPage() {
 
   const whyUs = d.whyUs || [
     { number: '01', title: 'We Help Customers Achieve Their Goals Without Compromise', desc: 'Access an expanding portfolio of high-performance RF and Microwave components, mmWave, and Semiconductor components. Whether simple or highly complex, our solutions integrate seamlessly into your designs—saving time, reducing effort, and accelerating project success.', icon: 'fa-solid fa-bullseye', color: 'red' },
-    { number: '02', title: 'Empowering You With Cutting-Edge Technology', desc: 'From advanced ICs to mission-critical subsystems, we provide the technologies that unlock new possibilities. Our expertise helps you build smarter, faster, and more capable electronic systems across every application.', icon: 'fa-solid fa-microchip', color: 'blue' },
+    { number: '02', title: 'Empowering You With Cutting-Edge Technology', desc: 'From advanced ICs to mission-critical subsystems, we provide the technologies that unlock new possibilities. Our expertise helps you build smarter, faster, and more capable electronic systems across every application.', icon: 'fa-solid fa-microchip', color: 'red' },
     { number: '03', title: 'Engineered Solutions Tailored to Your Needs', desc: 'Combining engineering insight with best-in-class global products, we deliver solutions that balance innovation, performance, and reliability. Every recommendation is customised to your technical, commercial, and operational requirements.', icon: 'fa-solid fa-gears', color: 'red' },
-    { number: '04', title: 'Access to Advanced Technology', desc: 'Stay ahead with timely access to the latest RF, Microwave, mmWave, and Semiconductor innovations sourced from world-leading OEMs.', icon: 'fa-solid fa-bolt', color: 'blue' },
+    { number: '04', title: 'Access to Advanced Technology', desc: 'Stay ahead with timely access to the latest RF, Microwave, mmWave, and Semiconductor innovations sourced from world-leading OEMs.', icon: 'fa-solid fa-bolt', color: 'red' },
   ];
 
   const infographicImg = ContentService.resolveImg(d.infographicImage || '/images/timeline/icon-journey-infographic-full.png');
@@ -199,9 +199,9 @@ export function renderAboutPage() {
             </div>
 
             <!-- Our Mission Card -->
-            <div class="about-mission-card about-interactive-card about-animate-fadeup" style="padding:36px;display:flex;flex-direction:column;justify-content:space-between;border-top:3px solid var(--logo-blue);">
+            <div class="about-mission-card about-interactive-card red-glow about-animate-fadeup" style="padding:36px;display:flex;flex-direction:column;justify-content:space-between;border-top:3px solid var(--logo-red);">
               <div>
-                <div class="about-card-icon" style="width:52px;height:52px;border-radius:12px;background:rgba(37,99,235,0.12);border:1px solid rgba(37,99,235,0.3);color:var(--logo-blue-light);display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:20px;">
+                <div class="about-card-icon" style="width:52px;height:52px;border-radius:12px;background:rgba(225,29,72,0.12);border:1px solid rgba(225,29,72,0.3);color:var(--logo-red-light);display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:20px;">
                   <i class="fa-solid fa-bullseye"></i>
                 </div>
                 <h2 style="font-family:var(--font-display);font-size:1.75rem;font-weight:800;margin-bottom:14px;">

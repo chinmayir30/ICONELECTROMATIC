@@ -836,8 +836,14 @@ body[data-page="blog"] .logo-container img,
 
 .product-card-relay:hover {
   transform: translateY(-4px);
-  border-color: rgba(37, 99, 235, 0.45);
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.8), 0 0 24px rgba(37, 99, 235, 0.15);
+  border-color: rgba(225, 29, 72, 0.45);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.8), 0 0 24px rgba(225, 29, 72, 0.16);
+}
+
+.product-card-relay:hover .relay-product-title,
+.product-card-relay:hover .relay-product-title a {
+  color: var(--logo-red-light, #fb7185) !important;
+  transition: color 0.2s ease;
 }
 
 .product-card-relay-img {
@@ -2146,7 +2152,7 @@ body[data-page="blog"] .logo-container img,
 }
 
 .blog-card-relay:hover .blog-card-title {
-  color: #60A5FA;
+  color: var(--logo-red-light, #fb7185);
 }
 
 .blog-card-excerpt {
@@ -2890,14 +2896,10 @@ body[data-page="blog"] .logo-container img,
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
-.why-us-card:hover {
-  transform: translateY(-6px);
-  border-color: rgba(37, 99, 235, 0.45);
-  box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.7), 0 0 25px rgba(37, 99, 235, 0.2);
-}
-
+.why-us-card:hover,
 .why-us-card.red-accent:hover {
-  border-color: rgba(225, 29, 72, 0.45);
+  transform: translateY(-6px);
+  border-color: rgba(225, 29, 72, 0.5);
   box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.7), 0 0 25px rgba(225, 29, 72, 0.2);
 }
 
@@ -2914,12 +2916,9 @@ body[data-page="blog"] .logo-container img,
   transition: color 0.3s ease;
 }
 
-.why-us-card:hover .why-card-number {
-  color: rgba(37, 99, 235, 0.35);
-}
-
+.why-us-card:hover .why-card-number,
 .why-us-card.red-accent:hover .why-card-number {
-  color: rgba(225, 29, 72, 0.35);
+  color: rgba(225, 29, 72, 0.4);
 }
 
 /* 2-Step Journey Grid */
@@ -2951,11 +2950,7 @@ body[data-page="blog"] .logo-container img,
   box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.7);
 }
 
-.journey-step-card.blue-step:hover {
-  border-color: rgba(37, 99, 235, 0.5);
-  box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.7), 0 0 25px rgba(37, 99, 235, 0.2);
-}
-
+.journey-step-card.blue-step:hover,
 .journey-step-card.red-step:hover {
   border-color: rgba(225, 29, 72, 0.5);
   box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.7), 0 0 25px rgba(225, 29, 72, 0.2);
@@ -3719,8 +3714,8 @@ body[data-page="blog"] .logo-container img,
 
 .domain-sector-card:hover {
   transform: translateY(-6px);
-  border-color: rgba(37, 99, 235, 0.45);
-  box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.7), 0 0 25px rgba(37, 99, 235, 0.2);
+  border-color: rgba(225, 29, 72, 0.45);
+  box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.7), 0 0 25px rgba(225, 29, 72, 0.2);
 }
 
 .domain-photo-frame {
@@ -3826,11 +3821,7 @@ body[data-page="blog"] .logo-container img,
   box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.7);
 }
 
-.pillar-foundation-card.blue-pillar:hover {
-  border-color: rgba(37, 99, 235, 0.45);
-  box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.7), 0 0 25px rgba(37, 99, 235, 0.2);
-}
-
+.pillar-foundation-card.blue-pillar:hover,
 .pillar-foundation-card.red-pillar:hover {
   border-color: rgba(225, 29, 72, 0.45);
   box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.7), 0 0 25px rgba(225, 29, 72, 0.2);
@@ -7299,13 +7290,18 @@ html[data-theme="light"],
 
 .oem-card:hover {
   transform: translateY(-4px);
-  border-color: var(--oem-accent, rgba(255,255,255,0.25));
-  box-shadow: 0 16px 40px rgba(0,0,0,0.45), 0 0 0 1px var(--oem-accent, rgba(255,255,255,0.1));
+  border-color: rgba(225, 29, 72, 0.45);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.5), 0 0 22px rgba(225, 29, 72, 0.16);
+}
+
+.oem-card:hover .oem-card-name {
+  color: var(--logo-red-light, #fb7185);
+  transition: color 0.2s ease;
 }
 
 .oem-card-accent-bar {
   height: 3px;
-  background: var(--oem-accent, #2563EB);
+  background: var(--logo-red, #e11d48);
   width: 100%;
   opacity: 0.8;
   transition: opacity 0.25s;
@@ -7695,8 +7691,13 @@ html[data-theme="light"],
 
 .category-card:hover {
   transform: translateY(-4px);
-  border-color: var(--oem-accent, rgba(255,255,255,0.22));
-  box-shadow: 0 14px 36px rgba(0,0,0,0.4), 0 0 0 1px var(--oem-accent, rgba(255,255,255,0.08));
+  border-color: rgba(225, 29, 72, 0.45);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.4), 0 0 20px rgba(225, 29, 72, 0.16);
+}
+
+.category-card:hover .category-name {
+  color: var(--logo-red-light, #fb7185);
+  transition: color 0.2s ease;
 }
 
 .category-card-visual {
@@ -7970,8 +7971,14 @@ html[data-theme="light"],
 
 .product-detail-card:hover {
   transform: translateY(-4px);
-  border-color: var(--oem-accent, rgba(255,255,255,0.22));
-  box-shadow: 0 14px 36px rgba(0,0,0,0.4), 0 0 0 1px var(--oem-accent, rgba(255,255,255,0.08));
+  border-color: rgba(225, 29, 72, 0.45);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.4), 0 0 20px rgba(225, 29, 72, 0.16);
+}
+
+.product-detail-card:hover .product-card-name,
+.product-detail-card:hover .product-card-name a {
+  color: var(--logo-red-light, #fb7185);
+  transition: color 0.2s ease;
 }
 
 /* DEDICATED PRODUCT PICTURE BANNER */
@@ -8341,7 +8348,13 @@ html[data-theme="light"],
 }
 
 .ptable-row:last-child { border-bottom: none; }
-.ptable-row:hover { background: rgba(255,255,255,0.025); }
+.ptable-row:hover {
+  background: rgba(225, 29, 72, 0.035);
+}
+.ptable-row:hover .ptable-product-name {
+  color: var(--logo-red-light, #fb7185);
+  transition: color 0.2s ease;
+}
 
 .ptable-thumb {
   width: 48px;

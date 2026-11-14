@@ -54,6 +54,7 @@ Stage 7 - Central CMS Supabase Persistence & SSG Integration (feat/admin-cms-sup
 - [x] Fix Catalog Search Event Delegation across Navigation Transitions (fix/catalog-search-event-delegation)
 - [x] Universal Catalog Search Bar Across All Catalog Levels (feat/universal-catalog-search-all-levels)
 - [x] Client Typography Alignment with Fjalla One & Lato (feat/client-typography-alignment)
+- [x] Uniform Brand Red Card Accents & Hover Effects in Dark Mode (feat/uniform-red-card-accents-darkmode)
 
 ## Decisions (confirmed by the owner)
 | Date | Decision | Why |
