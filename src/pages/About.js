@@ -9,22 +9,25 @@ import { ContentService } from '../data/ContentService.js';
 export function renderAboutPage() {
   const d = ContentService.getData('about');
 
-  let badges = (Array.isArray(d.badges) && d.badges.length > 0) ? [...d.badges] : [
-    { icon: 'fa-solid fa-award', text: 'Multi-Decade Pedigree', color: '#FDA4AF', bg: 'rgba(225,29,72,0.08)', border: 'rgba(225,29,72,0.25)' },
-    { icon: 'fa-solid fa-satellite', text: 'Defense & Telecom Solutions', color: '#FCD34D', bg: 'rgba(245,158,11,0.08)', border: 'rgba(245,158,11,0.25)' },
-    { icon: 'fa-solid fa-globe', text: 'Global OEM Representation', color: '#6EE7B7', bg: 'rgba(16,185,129,0.08)', border: 'rgba(16,185,129,0.25)' },
-    { icon: 'fa-solid fa-leaf', text: 'DHL GoGreen Plus Certified (IESPL)', color: '#4ADE80', bg: 'rgba(34,197,94,0.08)', border: 'rgba(34,197,94,0.25)' },
+  let rawBadges = (Array.isArray(d.badges) && d.badges.length > 0) ? [...d.badges] : [
+    { icon: 'fa-solid fa-award', text: 'Multi-Decade Pedigree' },
+    { icon: 'fa-solid fa-satellite', text: 'Defense & Telecom Solutions' },
+    { icon: 'fa-solid fa-globe', text: 'Global OEM Representation' },
+    { icon: 'fa-solid fa-leaf', text: 'DHL GoGreen Plus Certified (IESPL)' },
   ];
-  if (!badges.some(b => b.text && b.text.includes('DHL GoGreen'))) {
-    badges.push({
+  if (!rawBadges.some(b => b.text && b.text.includes('DHL GoGreen'))) {
+    rawBadges.push({
       id: 'b-4',
       icon: 'fa-solid fa-leaf',
-      text: 'DHL GoGreen Plus Certified (IESPL)',
-      color: '#4ADE80',
-      bg: 'rgba(34,197,94,0.08)',
-      border: 'rgba(34,197,94,0.25)'
+      text: 'DHL GoGreen Plus Certified (IESPL)'
     });
   }
+  const badges = rawBadges.map(b => ({
+    ...b,
+    color: '#FDA4AF',
+    bg: 'rgba(225,29,72,0.08)',
+    border: 'rgba(225,29,72,0.25)'
+  }));
 
   const highlightCards = d.highlightCards || [
     { title: 'Global Leader in RF & Electronic Solutions', desc: 'Providing mission-critical components, assemblies, and custom microwave engineering for advanced applications.', icon: 'fa-solid fa-tower-broadcast', color: 'blue' },
@@ -94,8 +97,8 @@ export function renderAboutPage() {
           <!-- Highlights Strip -->
           <div class="services-trust-strip about-trust-strip" style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:24px;margin-bottom:0;padding-bottom:0;border-bottom:none;">
             ${badges.map(b => `
-              <div style="background:${b.bg || 'rgba(255,255,255,0.05)'};border:1px solid ${b.border || 'rgba(255,255,255,0.15)'};border-radius:10px;padding:10px 18px;font-size:0.85rem;color:${b.color || '#fff'};display:flex;align-items:center;gap:8px;">
-                <i class="${b.icon || 'fa-solid fa-award'}"></i>
+              <div style="background:${b.bg || 'rgba(225,29,72,0.08)'};border:1px solid ${b.border || 'rgba(225,29,72,0.25)'};border-radius:10px;padding:10px 18px;font-size:0.85rem;color:${b.color || '#FDA4AF'};display:flex;align-items:center;gap:8px;">
+                <i class="${b.icon || 'fa-solid fa-award'}" style="color:var(--logo-red-light);"></i>
                 <span>${b.text}</span>
               </div>
             `).join('')}
