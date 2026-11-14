@@ -57,7 +57,7 @@ export function renderServicesPage() {
             ${items.map((srv, idx) => {
               const isEven = idx % 2 === 1;
               const slides = srv.slides || [];
-              const badgeColor = srv.badgeColor || (idx % 2 === 0 ? 'blue' : 'red');
+              const badgeColor = 'red';
 
               const textCol = `
                 <div class="service-text-col" style="${isEven ? 'order:2;' : ''}">

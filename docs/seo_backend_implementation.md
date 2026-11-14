@@ -967,7 +967,7 @@ Open items that affect these phases: client decisions on category grouping, dupl
 - **Undo:** Revert PR or branch.
 
 ### Entry 43: Client Typography Alignment with Fjalla One & Lato
-- **Status:** In progress (PR #46, branch `feat/client-typography-alignment`, 10 Nov 2026)
+- **Status:** Implemented (PR #46, merge commit f3012bf, 10 Nov 2026)
 - **What was built:**
   - Analyzed the client's reference website (`https://iconelectromatic2.lbimedia.in/`) and identified their primary typography hierarchy: **Fjalla One** for headings, display titles, and prominent accents; and **Lato** for body text, descriptions, lists, and forms.
   - Updated Google Fonts stylesheet in `index.html` and `scripts/build-static-catalog.mjs` to include `Fjalla One` and `Lato` (weights 300, 400, 700, 900, normal & italic).
@@ -982,6 +982,29 @@ Open items that affect these phases: client decisions on category grouping, dupl
   - `docs/PROJECT-STATE.md`
   - `docs/seo_backend_implementation.md`
 - **Data and security notes:** Pure typography and styling changes. Zero secrets, no new dependencies.
+- **Checked (and how):**
+  - Test suites: 43/43 tests passing.
+  - Production build: `npm run build` passing cleanly with 159 static HTML pages generated.
+- **Not checked:**
+  - Live production deployment URL (checked after pull request merge).
+- **Undo:** Revert PR or branch.
+
+### Entry 44: Uniform Brand Red Card Accents & Hover Effects in Dark Mode
+- **Status:** In progress (PR #47, branch `feat/uniform-red-card-accents-darkmode`, 14 Nov 2026)
+- **What was built:**
+  - Unified all card hover borders, ambient shadow glows, and title highlights in dark mode to Icon Electromatic's signature brand red (`rgba(225, 29, 72, 0.45)` border, soft red glow, and `var(--logo-red-light)` text).
+  - Standardized `.product-card-relay`, `.why-us-card`, `.oem-card`, `.category-card`, `.product-detail-card`, `.blog-card-relay`, `.journey-step-card`, `.domain-sector-card`, and `.pillar-foundation-card` hover states.
+  - Aligned internal card badges and headings (Why Us cards, Vision & Mission cards in `About.js`, and Core Services in `Services.js`) to uniform brand red accents instead of alternating blue/green.
+- **Technology and role:** CSS custom properties, responsive hover states, component styling.
+- **How it works:** Eliminates disparate blue and green hover states across dark mode cards, creating a unified industrial brand presence anchored by Icon Electromatic's brand red.
+- **Files and folders added or changed:**
+  - `src/styles/index.css`
+  - `src/components/ProductCard.js`
+  - `src/pages/About.js`
+  - `src/pages/Services.js`
+  - `docs/PROJECT-STATE.md`
+  - `docs/seo_backend_implementation.md`
+- **Data and security notes:** Pure frontend styling changes. Zero secrets, no new dependencies.
 - **Checked (and how):**
   - Test suites: 43/43 tests passing.
   - Production build: `npm run build` passing cleanly with 159 static HTML pages generated.
