@@ -10067,16 +10067,17 @@ html[data-theme="light"],
   position: relative;
 }
 
-.partner-static-card:hover {
+.partner-static-card:hover,
+.partner-static-card.accent-red:hover {
   transform: translateY(-6px);
-  border-color: rgba(37, 99, 235, 0.45);
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45), 0 0 25px rgba(37, 99, 235, 0.2);
+  border-color: rgba(225, 29, 72, 0.45);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45), 0 0 25px rgba(225, 29, 72, 0.2);
   background: var(--bg-card-hover);
 }
 
-.partner-static-card.accent-red:hover {
-  border-color: rgba(225, 29, 72, 0.45);
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45), 0 0 25px rgba(225, 29, 72, 0.2);
+.partner-static-card:hover .partner-stream-card-name {
+  color: var(--logo-red-light, #fb7185);
+  transition: color 0.2s ease;
 }
 
 @keyframes cardPulseGlow {
@@ -10145,16 +10146,17 @@ html[data-theme="light"],
   position: relative;
 }
 
-.partner-stream-card:hover {
+.partner-stream-card:hover,
+.partner-stream-card.accent-red:hover {
   transform: translateY(-6px);
-  border-color: rgba(37, 99, 235, 0.45);
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45), 0 0 25px rgba(37, 99, 235, 0.2);
+  border-color: rgba(225, 29, 72, 0.45);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45), 0 0 25px rgba(225, 29, 72, 0.2);
   background: var(--bg-card-hover);
 }
 
-.partner-stream-card.accent-red:hover {
-  border-color: rgba(225, 29, 72, 0.45);
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45), 0 0 25px rgba(225, 29, 72, 0.2);
+.partner-stream-card:hover .partner-stream-card-name {
+  color: var(--logo-red-light, #fb7185);
+  transition: color 0.2s ease;
 }
 
 /* Card Top: Logo Hero & Category Badge */

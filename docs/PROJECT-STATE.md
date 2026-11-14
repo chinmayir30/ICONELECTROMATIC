@@ -1,6 +1,6 @@
 # PROJECT-STATE.md - Icon Electromatic website
 
-Last updated: 2026-11-10
+Last updated: 2026-11-14
 Rule: update this file at the end of every task. Never write passwords, keys or tokens here.
 Read docs/seo_backend_implementation.md for the implementation log, technology stack and phase status.
 
@@ -55,6 +55,7 @@ Stage 7 - Central CMS Supabase Persistence & SSG Integration (feat/admin-cms-sup
 - [x] Universal Catalog Search Bar Across All Catalog Levels (feat/universal-catalog-search-all-levels)
 - [x] Client Typography Alignment with Fjalla One & Lato (feat/client-typography-alignment)
 - [x] Uniform Brand Red Card Accents & Hover Effects in Dark Mode (feat/uniform-red-card-accents-darkmode)
+- [x] Unify OEM Catalog and Partner Card Red Accents (feat/unify-oem-catalog-card-red-accents)
 
 ## Decisions (confirmed by the owner)
 | Date | Decision | Why |
