@@ -1013,7 +1013,7 @@ Open items that affect these phases: client decisions on category grouping, dupl
 - **Undo:** Revert PR or branch.
 
 ### Entry 45: Unify OEM Catalog and Partner Card Red Accents & Hover Effects
-- **Status:** In progress (PR #48, branch `feat/unify-oem-catalog-card-red-accents`, 14 Nov 2026)
+- **Status:** Implemented (PR #48, merge commit ec8e258, 14 Nov 2026)
 - **What was built:**
   - Standardized OEM, Category, Product, and Search Result cards in `src/pages/Products.js`: replaced all dynamic OEM hex accent colors (`#00C853` green, `#3B82F6` blue, `#0284C7` cyan, `#F59E0B` amber) with uniform Icon Electromatic Brand Red (`var(--logo-red, #e11d48)` and `var(--logo-red-light, #fb7185)`).
   - Aligned `.oem-specialty-pill`, `.category-cta`, `.product-card-badge-mini`, `.rfq-btn-primary`, and catalog deep search breadcrumbs & buttons to brand red.
@@ -1025,6 +1025,35 @@ Open items that affect these phases: client decisions on category grouping, dupl
   - `src/pages/Products.js`
   - `src/pages/Partners.js`
   - `src/styles/index.css`
+  - `src/data/ContentService.js`
+  - `docs/PROJECT-STATE.md`
+  - `docs/seo_backend_implementation.md`
+- **Data and security notes:** Pure frontend styling and cache version bump. Zero secrets, no new dependencies.
+- **Checked (and how):**
+  - Test suites: 43/43 tests passing.
+  - Production build: `npm run build` passing cleanly with 159 static HTML pages generated.
+- **Not checked:**
+  - Live production deployment URL (checked after pull request merge).
+- **Undo:** Revert PR or branch.
+
+### Entry 46: Unify Blogs Page Red Accents & Hover Effects in Dark Mode
+- **Status:** In progress (PR #49, branch `feat/unify-blogs-page-red-accents`, 14 Nov 2026)
+- **What was built:**
+  - Standardized all Blogs page components in `src/pages/Blogs.js` and `src/styles/index.css`:
+    - Updated active OEM filter chips (`.blogs-oem-chip.active`) and chip dots to Brand Red (`var(--logo-red, #e11d48)` with soft red shadow glow).
+    - Unified OEM cards (`.blogs-oem-card`): top accent bar, border hover (`rgba(225, 29, 72, 0.45)`), ambient red shadow glow (`0 0 24px rgba(225, 29, 72, 0.16)`), specialty label, footer arrow, and soft red title highlight on hover.
+    - Standardized article cards (`.blog-article-card`): red border and glow on hover, soft red title transition, and button hover updated from blue to Brand Red (`.blog-article-btn:hover`).
+    - Standardized video cards (`.blog-video-card`): red border, ambient red glow, soft red title transition, and speaker & topic badges styled in soft red tint.
+    - Standardized whitepaper cards (`.blog-whitepaper-card`): added hover state with red border, red shadow glow, soft red title highlight, red page badge, and red findings bullets.
+    - Standardized OEM link cards (`.blog-link-card`): red hover border, shadow glow, title transition, and red icon background.
+    - Aligned single OEM view: banner top border set to Brand Red, active content tabs (`.blogs-tab-btn.active`) set to red tint, and all inquiry buttons converted to `btn-relay-red`.
+    - Standardized hero trust badges strip to uniform Brand Red highlights.
+    - Bumped `CMS_VERSION` to `v19` in `src/data/ContentService.js` for automatic browser cache invalidation.
+- **Technology and role:** CSS custom properties, component markup templates, cache invalidation.
+- **How it works:** Replaces blue, green, amber, and manufacturer-specific accents across the Blogs view with unified Brand Red design tokens and updates the local storage cache version.
+- **Files and folders added or changed:**
+  - `src/styles/index.css`
+  - `src/pages/Blogs.js`
   - `src/data/ContentService.js`
   - `docs/PROJECT-STATE.md`
   - `docs/seo_backend_implementation.md`

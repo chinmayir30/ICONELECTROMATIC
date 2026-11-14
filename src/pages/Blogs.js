@@ -139,12 +139,12 @@ function renderAllOemsBlogView() {
               <i class="fa-solid fa-file-waveform" style="color:var(--logo-red-light);"></i>
               <span>${cmsData.trustBadge1 || 'Application Whitepapers &amp; Notes'}</span>
             </div>
-            <div style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#FCD34D;display:flex;align-items:center;gap:8px;">
-              <i class="fa-solid fa-circle-play" style="color:#F59E0B;"></i>
+            <div style="background:rgba(225,29,72,0.08);border:1px solid rgba(225,29,72,0.25);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#FDA4AF;display:flex;align-items:center;gap:8px;">
+              <i class="fa-solid fa-circle-play" style="color:var(--logo-red-light);"></i>
               <span>${cmsData.trustBadge2 || 'Video Demos &amp; Technical Webinars'}</span>
             </div>
-            <div style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.25);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#6EE7B7;display:flex;align-items:center;gap:8px;">
-              <i class="fa-solid fa-newspaper" style="color:#10B981;"></i>
+            <div style="background:rgba(225,29,72,0.08);border:1px solid rgba(225,29,72,0.25);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#FDA4AF;display:flex;align-items:center;gap:8px;">
+              <i class="fa-solid fa-newspaper" style="color:var(--logo-red-light);"></i>
               <span>${cmsData.trustBadge3 || 'Direct Manufacturer Bulletins'}</span>
             </div>
           </div>
@@ -161,7 +161,7 @@ function renderAllOemsBlogView() {
             </button>
           ${CATALOG.map(oem => `
             <button class="blogs-oem-chip" data-oem-select="${oem.id}">
-              <span style="width:8px;height:8px;border-radius:50%;background:${oem.accentColor};display:inline-block;"></span>
+              <span style="width:8px;height:8px;border-radius:50%;background:var(--logo-red, #e11d48);display:inline-block;"></span>
               ${oem.shortName}
             </button>
           `).join('')}
@@ -184,20 +184,20 @@ function renderAllOemsBlogView() {
           ${CATALOG.map(oem => {
             const counts = getActiveOemContentCount(oem.id);
             return `
-              <div class="blogs-oem-card" data-oem-id="${oem.id}" style="--oem-accent:${oem.accentColor};--oem-glow:${oem.glowColor};">
+              <div class="blogs-oem-card" data-oem-id="${oem.id}" style="--oem-accent:var(--logo-red, #e11d48);--oem-glow:rgba(225,29,72,0.35);">
                 <div class="blogs-oem-card-top-row">
-                  <span class="blogs-oem-partner-tag" style="color:${oem.accentColor};background:${oem.accentColor}18;border:1px solid ${oem.accentColor}35;">
+                  <span class="blogs-oem-partner-tag" style="color:var(--logo-red-light);background:rgba(225,29,72,0.12);border:1px solid rgba(225,29,72,0.3);">
                     <i class="fa-solid fa-certificate"></i> Official Partner
                   </span>
                   <span class="blogs-oem-card-count">
-                    <i class="fa-solid fa-newspaper" style="color:${oem.accentColor};font-size:0.7rem;"></i>
+                    <i class="fa-solid fa-newspaper" style="color:var(--logo-red-light);font-size:0.7rem;"></i>
                     ${counts.total} Updates
                   </span>
                 </div>
 
                 <!-- Centered Prominent OEM Logo Showcase -->
                 <div class="blogs-oem-card-logo-showcase">
-                  <div class="oem-logo-badge-pod" style="--oem-accent:${oem.accentColor};">
+                  <div class="oem-logo-badge-pod" style="--oem-accent:var(--logo-red, #e11d48);">
                     ${oem.logoImg ? `<img src="${ContentService.resolveImg(oem.logoImg)}" alt="${oem.name} Official Logo" class="oem-logo-img" loading="eager" />` : (oem.logoSvg || '')}
                   </div>
                 </div>
@@ -236,7 +236,7 @@ function renderAllOemsBlogView() {
                 </div>
                 <div class="blog-article-body">
                   <div class="blog-article-meta">
-                    <span style="color:${art.oemAccent};font-weight:700;"><i class="fa-solid fa-tag"></i> ${art.oemShort}</span>
+                    <span style="color:var(--logo-red-light);font-weight:700;"><i class="fa-solid fa-tag"></i> ${art.oemShort}</span>
                     <span>&bull;</span>
                     <span><i class="fa-regular fa-calendar"></i> ${art.date}</span>
                     <span>&bull;</span>
@@ -320,7 +320,7 @@ function renderAllOemsBlogView() {
           <span style="font-size:0.8rem;color:var(--text-gray-400);">
             <i class="fa-solid fa-shield-check" style="color:var(--success);margin-right:5px;"></i> Official Technical Dispatch
           </span>
-          <a class="btn-relay-blue" id="modal-article-rfq-link" href="#/contact?subject=technical">
+          <a class="btn-relay-red" id="modal-article-rfq-link" href="#/contact?subject=technical">
             <i class="fa-solid fa-paper-plane"></i> Inquire on this Technology
           </a>
         </div>
@@ -371,7 +371,7 @@ function renderSingleOemBlogView(oem, blog, activeTab) {
           </nav>
 
           <!-- Selected OEM Banner -->
-          <div class="blogs-selected-header" style="border-top:3px solid ${oem.accentColor};margin-bottom:0;">
+          <div class="blogs-selected-header" style="border-top:3px solid var(--logo-red, #e11d48);margin-bottom:0;">
             <div class="blogs-selected-info">
               <div class="blogs-selected-logo-wrap">
                 ${oem.logoImg ? `<img src="${ContentService.resolveImg(oem.logoImg)}" alt="${oem.name} Official Logo" class="oem-logo-img" loading="eager" />` : (oem.logoSvg || '')}
@@ -386,7 +386,7 @@ function renderSingleOemBlogView(oem, blog, activeTab) {
               <button class="btn-relay-dark" id="back-to-all-oems-btn">
                 <i class="fa-solid fa-arrow-left"></i> All OEMs
               </button>
-              <a class="btn-relay-blue" href="#/contact?subject=technical&oem=${encodeURIComponent(oem.name)}">
+              <a class="btn-relay-red" href="#/contact?subject=technical&oem=${encodeURIComponent(oem.name)}">
                 <i class="fa-solid fa-paper-plane"></i> Technical Inquiry
               </a>
             </div>
@@ -502,7 +502,7 @@ function renderSingleOemBlogView(oem, blog, activeTab) {
         ${(activeTab === 'all' || activeTab === 'whitepapers') && whitepapers.length > 0 ? `
           <div style="margin-bottom:var(--space-10);">
             <div style="margin-bottom:var(--space-4);display:flex;align-items:center;gap:10px;">
-              <i class="fa-solid fa-file-lines" style="color:var(--logo-blue-light);font-size:1.1rem;"></i>
+              <i class="fa-solid fa-file-lines" style="color:var(--logo-red-light);font-size:1.1rem;"></i>
               <h3 style="font-size:1.25rem;font-weight:800;color:var(--text-white);margin:0;">
                 Engineering Whitepapers &amp; Application Notes
               </h3>
@@ -553,7 +553,7 @@ function renderSingleOemBlogView(oem, blog, activeTab) {
             <a class="btn-relay-dark" data-route="/products?level=categories&oem=${oem.id}">
               <i class="fa-solid fa-boxes-stacked"></i> Browse Catalog
             </a>
-            <a class="btn-relay-blue" href="#/contact?subject=rfq&oem=${encodeURIComponent(oem.name)}">
+            <a class="btn-relay-red" href="#/contact?subject=rfq&oem=${encodeURIComponent(oem.name)}">
               <i class="fa-solid fa-file-invoice"></i> Request Quote for ${oem.shortName}
             </a>
           </div>
@@ -577,7 +577,7 @@ function renderSingleOemBlogView(oem, blog, activeTab) {
           <span style="font-size:0.8rem;color:var(--text-gray-400);">
             <i class="fa-solid fa-shield-check" style="color:var(--success);margin-right:5px;"></i> Official Technical Bulletin
           </span>
-          <a class="btn-relay-blue" id="modal-article-rfq-link" href="#/contact?subject=technical">
+          <a class="btn-relay-red" id="modal-article-rfq-link" href="#/contact?subject=technical">
             <i class="fa-solid fa-paper-plane"></i> Inquire on this Technology
           </a>
         </div>
@@ -732,7 +732,7 @@ export function initBlogsPage() {
           </div>
         </div>
 
-        <div style="font-size:0.82rem;color:var(--logo-blue-light);font-weight:700;margin-bottom:6px;">
+        <div style="font-size:0.82rem;color:var(--logo-red-light);font-weight:700;margin-bottom:6px;">
           <i class="fa-solid fa-microphone"></i> Presented by: ${video.speaker}
         </div>
         <p style="font-size:0.92rem;color:var(--text-gray-300);line-height:1.6;margin-bottom:16px;">
