@@ -56,6 +56,7 @@ Stage 7 - Central CMS Supabase Persistence & SSG Integration (feat/admin-cms-sup
 - [x] Client Typography Alignment with Fjalla One & Lato (feat/client-typography-alignment)
 - [x] Uniform Brand Red Card Accents & Hover Effects in Dark Mode (feat/uniform-red-card-accents-darkmode)
 - [x] Unify OEM Catalog and Partner Card Red Accents (feat/unify-oem-catalog-card-red-accents)
+- [x] Unify Blogs Page Red Accents & Hover Effects in Dark Mode (feat/unify-blogs-page-red-accents)
 
 ## Decisions (confirmed by the owner)
 | Date | Decision | Why |
