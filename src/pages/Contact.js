@@ -96,12 +96,12 @@ export function renderContactPage() {
 
           <!-- Highlights Strip (Matching Partners, Services, Blogs 1:1) -->
           <div class="services-trust-strip contact-trust-strip" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:16px;margin-bottom:0;padding-bottom:0;border-bottom:none;">
-            <div style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25);border-radius:8px;padding:7px 14px;font-size:0.82rem;color:#FCD34D;display:flex;align-items:center;gap:7px;">
-              <i class="fa-solid fa-dolly" style="color:#F59E0B;"></i>
+            <div style="background:rgba(225,29,72,0.08);border:1px solid rgba(225,29,72,0.25);border-radius:8px;padding:7px 14px;font-size:0.82rem;color:#FDA4AF;display:flex;align-items:center;gap:7px;">
+              <i class="fa-solid fa-dolly" style="color:var(--logo-red-light);"></i>
               <span>Global Sourcing &amp; Logistics</span>
             </div>
-            <div style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.25);border-radius:8px;padding:7px 14px;font-size:0.82rem;color:#6EE7B7;display:flex;align-items:center;gap:7px;">
-              <i class="fa-solid fa-shield-halved" style="color:#10B981;"></i>
+            <div style="background:rgba(225,29,72,0.08);border:1px solid rgba(225,29,72,0.25);border-radius:8px;padding:7px 14px;font-size:0.82rem;color:#FDA4AF;display:flex;align-items:center;gap:7px;">
+              <i class="fa-solid fa-shield-halved" style="color:var(--logo-red-light);"></i>
               <span>Defense &amp; Commercial Pricing</span>
             </div>
           </div>
@@ -203,12 +203,12 @@ export function renderContactPage() {
             <div id="recruiting-info-column" style="${isRecruiting ? 'display:block;' : 'display:none;'}">
               <div class="contact-relay-card">
                 <div style="display:flex;align-items:center;gap:10px;margin-bottom:var(--space-3);">
-                  <div style="width:38px;height:38px;border-radius:10px;background:rgba(37,99,235,0.15);color:var(--logo-blue-light);display:flex;align-items:center;justify-content:center;font-size:1.1rem;">
+                  <div style="width:38px;height:38px;border-radius:10px;background:rgba(225,29,72,0.12);color:var(--logo-red-light);display:flex;align-items:center;justify-content:center;font-size:1.1rem;">
                     <i class="${careers.introIcon || 'fa-solid fa-users'}"></i>
                   </div>
                   <div>
                     <h3 style="font-size:1.25rem;font-weight:800;color:var(--text-white);margin:0;">${careers.introTitle || 'Why Build Your Career at ICON?'}</h3>
-                    <span style="font-size:0.75rem;color:var(--logo-blue-light);font-weight:700;">${careers.introSubtitle || 'RF &amp; MICROWAVE EXCELLENCE'}</span>
+                    <span style="font-size:0.75rem;color:var(--logo-red-light);font-weight:700;">${careers.introSubtitle || 'RF &amp; MICROWAVE EXCELLENCE'}</span>
                   </div>
                 </div>
 
@@ -225,7 +225,7 @@ export function renderContactPage() {
                 <div class="recruiting-perks-list">
                   ${(careers.benefits || []).map(b => `
                     <div class="recruiting-perk-item">
-                      <i class="${b.icon || 'fa-solid fa-microchip'}" style="color:${b.iconColor || 'var(--logo-blue-light)'};"></i>
+                      <i class="${b.icon || 'fa-solid fa-microchip'}" style="color:${b.iconColor || 'var(--logo-red-light)'};"></i>
                       <div>
                         <strong>${b.title}${b.title.endsWith(':') ? '' : ':'}</strong>
                         ${b.description}
@@ -309,7 +309,7 @@ export function renderContactPage() {
                   <textarea id="c-message" name="message" placeholder="Please specify your project specifications, required quantities, target frequency band, and timeline..." required>${prefillMessage}</textarea>
                 </div>
 
-                <button type="submit" class="btn-relay-blue" style="width:100%;margin-top:var(--space-2);">
+                <button type="submit" class="btn-relay-red" style="width:100%;margin-top:var(--space-2);">
                   <i class="fa-solid fa-paper-plane"></i> Send Message to Engineering Team
                 </button>
               </form>
@@ -416,7 +416,7 @@ export function renderContactPage() {
                   <textarea id="r-statement" name="statement" placeholder="${careers.statementPlaceholder || 'Briefly highlight your relevant RF, Microwave, or electronics experience, core projects, and why you are keen to join ICON Electromatic...'}" ${careers.statementRequired !== false ? 'required' : ''}></textarea>
                 </div>
 
-                <button type="submit" class="btn-relay-blue" style="width:100%;margin-top:var(--space-2);background:linear-gradient(135deg, var(--logo-blue), #1E40AF);">
+                <button type="submit" class="btn-relay-red" style="width:100%;margin-top:var(--space-2);">
                   <i class="${careers.submitButtonIcon || 'fa-solid fa-briefcase'}"></i> ${careers.submitButtonText || 'Submit Engineering Application'}
                 </button>
               </form>
