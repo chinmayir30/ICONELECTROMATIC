@@ -386,11 +386,11 @@ function renderOEMCard(oem) {
   const remainingCount = visibleCategories.length - previewCats.length;
 
   return `
-    <div class="oem-card" data-nav-params="${params}" data-oem-id="${oem.id}" data-specialty="${oem.specialty}" style="--oem-accent: ${oem.accentColor}; --oem-glow: ${oem.glowColor};">
+    <div class="oem-card" data-nav-params="${params}" data-oem-id="${oem.id}" data-specialty="${oem.specialty}" style="--oem-accent: var(--logo-red, #e11d48); --oem-glow: rgba(225,29,72,0.35);">
       <div class="oem-card-accent-bar"></div>
       
       <!-- Prominent OEM Logo Header Showcase -->
-      <div class="oem-card-logo-showcase" style="border-bottom: 1px solid ${oem.accentColor}25;">
+      <div class="oem-card-logo-showcase" style="border-bottom: 1px solid rgba(255,255,255,0.08);">
         <div class="oem-card-logo-container">
           ${oem.logoImg ? `<img src="${ContentService.resolveImg(oem.logoImg)}" alt="${oem.name} Official Logo" class="oem-logo-img" loading="eager" />` : (oem.logoSvg || '')}
         </div>
@@ -400,7 +400,7 @@ function renderOEMCard(oem) {
         <div class="oem-card-title-header">
           <h3 class="oem-card-name">${oem.name}</h3>
           <div class="oem-specialty-row">
-            <span class="oem-specialty-pill" style="background: ${oem.accentColor}18; color: ${oem.accentColor}; border: 1px solid ${oem.accentColor}40;">
+            <span class="oem-specialty-pill" style="background: rgba(225,29,72,0.12); color: var(--logo-red-light); border: 1px solid rgba(225,29,72,0.3);">
               ${oem.specialty}
             </span>
           </div>
@@ -419,7 +419,7 @@ function renderOEMCard(oem) {
         </div>
       </div>
 
-      <div class="oem-card-cta" style="color: ${oem.accentColor};">
+      <div class="oem-card-cta" style="color: var(--logo-red-light);">
         <span>Explore Categories &amp; Products</span>
         <i class="fa-solid fa-arrow-right"></i>
       </div>
@@ -448,7 +448,7 @@ function renderCategoriesLevel() {
 
   return `
     <!-- OEM Header Banner -->
-    <div class="catalog-oem-banner" style="--oem-accent: ${oem.accentColor}; --oem-glow: ${oem.glowColor};">
+    <div class="catalog-oem-banner" style="--oem-accent: var(--logo-red, #e11d48); --oem-glow: rgba(225,29,72,0.35);">
       <div class="catalog-oem-banner-top">
         <div class="catalog-oem-banner-logo-box">
           ${oem.logoImg ? `<img src="${ContentService.resolveImg(oem.logoImg)}" alt="${oem.name} Official Logo" class="oem-banner-logo-img" loading="eager" />` : (oem.logoSvg || '')}
@@ -463,7 +463,7 @@ function renderCategoriesLevel() {
 
       <div class="catalog-oem-banner-info">
         <div class="catalog-oem-tag-row">
-          <span class="catalog-spec-badge" style="background:${oem.accentColor}20; color:${oem.accentColor}; border:1px solid ${oem.accentColor}50;">
+          <span class="catalog-spec-badge" style="background:rgba(225,29,72,0.12); color:var(--logo-red-light); border:1px solid rgba(225,29,72,0.3);">
             <i class="fa-solid fa-industry"></i>
             <span>Specialty: ${oem.specialty}</span>
           </span>
@@ -501,7 +501,7 @@ function renderCategoryCard(oem, cat) {
   const image = ContentService.resolveImg(sampleProd.image || oem.defaultImage || '/images/rf-filter.jpg');
 
   return `
-    <div class="category-card" data-nav-params="${params}" style="--oem-accent: ${oem.accentColor};">
+    <div class="category-card" data-nav-params="${params}" style="--oem-accent: var(--logo-red, #e11d48);">
       <!-- Category Visual Header Preview -->
       <div class="category-card-visual">
         <img 
@@ -524,7 +524,7 @@ function renderCategoryCard(oem, cat) {
           <div class="category-preview-title">Models &amp; Variants:</div>
           ${cat.products.slice(0, 3).map(p => `
             <div class="category-prod-preview-item">
-              <i class="fa-solid fa-check" style="color: ${oem.accentColor}; font-size: 0.65rem;"></i>
+              <i class="fa-solid fa-check" style="color: var(--logo-red-light); font-size: 0.65rem;"></i>
               <span class="preview-name">${p.name}</span>
             </div>
           `).join('')}
@@ -537,7 +537,7 @@ function renderCategoryCard(oem, cat) {
         </div>
       </div>
 
-      <div class="category-cta" style="color: ${oem.accentColor};">
+      <div class="category-cta" style="color: var(--logo-red-light);">
         <span>View All Products</span>
         <i class="fa-solid fa-arrow-right"></i>
       </div>
@@ -568,7 +568,7 @@ function renderProductsLevel() {
 
   return `
     <!-- Category & OEM Header Strip -->
-    <div class="catalog-product-level-header" style="--oem-accent: ${oem.accentColor};">
+    <div class="catalog-product-level-header" style="--oem-accent: var(--logo-red, #e11d48);">
       <div class="cpl-left">
         <div class="cpl-oem-badge-row">
           <div class="cpl-logo-inline">
@@ -582,7 +582,7 @@ function renderProductsLevel() {
       </div>
 
       <div class="cpl-actions">
-        <div class="cpl-counter-pill" style="border-color:${oem.accentColor}40; color:${oem.accentColor}; background:${oem.accentColor}12;">
+        <div class="cpl-counter-pill" style="border-color:rgba(225,29,72,0.3); color:var(--logo-red-light); background:rgba(225,29,72,0.12);">
           <i class="fa-solid fa-boxes-stacked"></i>
           <span>${products.length} ${products.length === 1 ? 'Product Model' : 'Products &amp; Lines'}</span>
         </div>
@@ -650,7 +650,7 @@ function renderProductCard(product, index, oem, cat) {
   const productUrl = `/products/${oem?.id || 'all'}/${product.id}`;
 
   return `
-    <div class="product-detail-card" style="--oem-accent: ${oem.accentColor};" data-product-id="${product.id}">
+    <div class="product-detail-card" style="--oem-accent: var(--logo-red, #e11d48);" data-product-id="${product.id}">
       <!-- Dedicated Product Picture Banner -->
       <div class="product-card-image-wrap">
         <img 
@@ -663,8 +663,8 @@ function renderProductCard(product, index, oem, cat) {
         <div class="product-card-img-gradient"></div>
 
         <!-- OEM Mini-Badge Overlay -->
-        <div class="product-card-oem-overlay" style="background: rgba(10,15,30,0.85); border: 1px solid ${oem.accentColor}40;">
-          <span style="color: ${oem.accentColor}; font-weight: 800; font-size: 0.72rem; letter-spacing: 0.05em;">
+        <div class="product-card-oem-overlay" style="background: rgba(10,15,30,0.85); border: 1px solid rgba(225,29,72,0.4);">
+          <span style="color: var(--logo-red-light); font-weight: 800; font-size: 0.72rem; letter-spacing: 0.05em;">
             ${oem.shortName}
           </span>
         </div>
@@ -689,11 +689,11 @@ function renderProductCard(product, index, oem, cat) {
         ${apps.length ? `
           <div class="product-card-apps-section">
             <span class="product-card-apps-title">
-              <i class="fa-solid fa-bullseye" style="color:${oem.accentColor};"></i> Key Applications:
+              <i class="fa-solid fa-bullseye" style="color:var(--logo-red-light);"></i> Key Applications:
             </span>
             <div class="product-card-apps-tags">
               ${apps.map(app => `
-                <span class="product-app-pill" style="border-color:${oem.accentColor}30; background:${oem.accentColor}10; color:#E2E8F0;">
+                <span class="product-app-pill" style="border-color:rgba(225,29,72,0.3); background:rgba(225,29,72,0.1); color:#E2E8F0;">
                   ${app}
                 </span>
               `).join('')}
@@ -708,7 +708,7 @@ function renderProductCard(product, index, oem, cat) {
           <i class="fa-solid fa-circle-info"></i>
           <span>Technical Inquiry</span>
         </a>
-        <a href="#/contact?subject=rfq&model=${encodeURIComponent(product.name)}&product=${encodeURIComponent(product.name)}&oem=${encodeURIComponent(oem.name)}" class="pcard-rfq-btn" style="background: ${oem.accentColor};">
+        <a href="#/contact?subject=rfq&model=${encodeURIComponent(product.name)}&product=${encodeURIComponent(product.name)}&oem=${encodeURIComponent(oem.name)}" class="pcard-rfq-btn" style="background: var(--logo-red, #e11d48);">
           <span>Request RFQ</span>
         </a>
       </div>
@@ -733,9 +733,9 @@ function renderProductRow(product, index, oem) {
   const productUrl = `/products/${oem?.id || 'all'}/${product.id}`;
 
   return `
-    <div class="ptable-row" style="--row-index: ${index}; --oem-accent: ${oem.accentColor};">
+    <div class="ptable-row" style="--row-index: ${index}; --oem-accent: var(--logo-red, #e11d48);">
       <div class="ptable-col ptable-col-num">
-        <span class="ptable-num" style="background: ${oem.accentColor}18; color: ${oem.accentColor};">
+        <span class="ptable-num" style="background: rgba(225,29,72,0.12); color: var(--logo-red-light);">
           ${String(index + 1).padStart(2, '0')}
         </span>
       </div>
@@ -752,7 +752,7 @@ function renderProductRow(product, index, oem) {
         <a href="${productUrl}" class="ptable-name-link" style="color: inherit; text-decoration: none;">
           <span class="ptable-product-name">${product.name}</span>
         </a>
-        <span class="ptable-oem-sub" style="color: ${oem.accentColor};">${oem.shortName}</span>
+        <span class="ptable-oem-sub" style="color: var(--logo-red-light);">${oem.shortName}</span>
       </div>
       <div class="ptable-col ptable-col-desc">
         <span class="ptable-desc-text">${product.description}</span>
@@ -763,7 +763,7 @@ function renderProductRow(product, index, oem) {
         </div>
       </div>
       <div class="ptable-col ptable-col-actions">
-        <a href="#/contact?subject=rfq&model=${encodeURIComponent(product.name)}&product=${encodeURIComponent(product.name)}&oem=${encodeURIComponent(oem.name)}" class="ptable-action-rfq" title="Request Quote" style="background: ${oem.accentColor};">
+        <a href="#/contact?subject=rfq&model=${encodeURIComponent(product.name)}&product=${encodeURIComponent(product.name)}&oem=${encodeURIComponent(oem.name)}" class="ptable-action-rfq" title="Request Quote" style="background: var(--logo-red, #e11d48);">
           Request RFQ
         </a>
       </div>
@@ -892,10 +892,10 @@ function renderSearchResultProductCard(item) {
   }
 
   return `
-    <div class="product-detail-card search-product-card" style="--oem-accent: ${oem.accentColor};" data-product-id="${product.id}">
+    <div class="product-detail-card search-product-card" style="--oem-accent: var(--logo-red, #e11d48);" data-product-id="${product.id}">
       <!-- Route Breadcrumb Banner (OEM → Category → Product) -->
       <div class="search-result-route-badge">
-        <span class="search-route-crumb search-route-oem" data-nav-params="${oemNavParams}" style="color: ${oem.accentColor}; cursor: pointer;" title="View all ${oem.name} categories">
+        <span class="search-route-crumb search-route-oem" data-nav-params="${oemNavParams}" style="color: var(--logo-red-light); cursor: pointer;" title="View all ${oem.name} categories">
           <i class="fa-solid fa-industry"></i>
           <span>${oem.name}</span>
         </span>
@@ -920,8 +920,8 @@ function renderSearchResultProductCard(item) {
           onerror="this.onerror=null; this.src='/images/rf-filter.jpg';"
         />
         <!-- OEM Mini-Badge Overlay -->
-        <div class="product-card-oem-overlay" style="background: rgba(10,15,30,0.85); border: 1px solid ${oem.accentColor}40;">
-          <span style="color: ${oem.accentColor}; font-weight: 800; font-size: 0.72rem; letter-spacing: 0.05em;">
+        <div class="product-card-oem-overlay" style="background: rgba(10,15,30,0.85); border: 1px solid rgba(225,29,72,0.4);">
+          <span style="color: var(--logo-red-light); font-weight: 800; font-size: 0.72rem; letter-spacing: 0.05em;">
             ${oem.shortName}
           </span>
         </div>
@@ -946,11 +946,11 @@ function renderSearchResultProductCard(item) {
         ${apps.length ? `
           <div class="product-card-apps-section">
             <span class="product-card-apps-title">
-              <i class="fa-solid fa-bullseye" style="color:${oem.accentColor};"></i> Key Applications:
+              <i class="fa-solid fa-bullseye" style="color:var(--logo-red-light);"></i> Key Applications:
             </span>
             <div class="product-card-apps-tags">
               ${apps.map(app => `
-                <span class="product-app-pill" style="border-color:${oem.accentColor}30; background:${oem.accentColor}10; color:#E2E8F0;">
+                <span class="product-app-pill" style="border-color:rgba(225,29,72,0.3); background:rgba(225,29,72,0.1); color:#E2E8F0;">
                   ${app}
                 </span>
               `).join('')}
@@ -969,7 +969,7 @@ function renderSearchResultProductCard(item) {
           <i class="fa-solid fa-circle-info"></i>
           <span>Details</span>
         </a>
-        <a href="#/contact?subject=rfq&model=${encodeURIComponent(product.name)}&product=${encodeURIComponent(product.name)}&oem=${encodeURIComponent(oem.name)}" class="pcard-rfq-btn" style="background: ${oem.accentColor};" title="Request Quote">
+        <a href="#/contact?subject=rfq&model=${encodeURIComponent(product.name)}&product=${encodeURIComponent(product.name)}&oem=${encodeURIComponent(oem.name)}" class="pcard-rfq-btn" style="background: var(--logo-red, #e11d48);" title="Request Quote">
           <span>Request RFQ</span>
         </a>
       </div>

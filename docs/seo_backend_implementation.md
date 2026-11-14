@@ -990,7 +990,7 @@ Open items that affect these phases: client decisions on category grouping, dupl
 - **Undo:** Revert PR or branch.
 
 ### Entry 44: Uniform Brand Red Card Accents & Hover Effects in Dark Mode
-- **Status:** In progress (PR #47, branch `feat/uniform-red-card-accents-darkmode`, 14 Nov 2026)
+- **Status:** Implemented (PR #47, merge commit eafc64b, 14 Nov 2026)
 - **What was built:**
   - Unified all card hover borders, ambient shadow glows, and title highlights in dark mode to Icon Electromatic's signature brand red (`rgba(225, 29, 72, 0.45)` border, soft red glow, and `var(--logo-red-light)` text).
   - Standardized `.product-card-relay`, `.why-us-card`, `.oem-card`, `.category-card`, `.product-detail-card`, `.blog-card-relay`, `.journey-step-card`, `.domain-sector-card`, and `.pillar-foundation-card` hover states.
@@ -1005,6 +1005,30 @@ Open items that affect these phases: client decisions on category grouping, dupl
   - `docs/PROJECT-STATE.md`
   - `docs/seo_backend_implementation.md`
 - **Data and security notes:** Pure frontend styling changes. Zero secrets, no new dependencies.
+- **Checked (and how):**
+  - Test suites: 43/43 tests passing.
+  - Production build: `npm run build` passing cleanly with 159 static HTML pages generated.
+- **Not checked:**
+  - Live production deployment URL (checked after pull request merge).
+- **Undo:** Revert PR or branch.
+
+### Entry 45: Unify OEM Catalog and Partner Card Red Accents & Hover Effects
+- **Status:** In progress (PR #48, branch `feat/unify-oem-catalog-card-red-accents`, 14 Nov 2026)
+- **What was built:**
+  - Standardized OEM, Category, Product, and Search Result cards in `src/pages/Products.js`: replaced all dynamic OEM hex accent colors (`#00C853` green, `#3B82F6` blue, `#0284C7` cyan, `#F59E0B` amber) with uniform Icon Electromatic Brand Red (`var(--logo-red, #e11d48)` and `var(--logo-red-light, #fb7185)`).
+  - Aligned `.oem-specialty-pill`, `.category-cta`, `.product-card-badge-mini`, `.rfq-btn-primary`, and catalog deep search breadcrumbs & buttons to brand red.
+  - Standardized partner cards in `src/pages/Partners.js`: applied `accent-red` to all partners, set action row text color to `var(--logo-red-light)`, and updated `.partner-stream-card:hover` in `src/styles/index.css` to red border and soft red title.
+  - Bumped `CMS_VERSION` to `v18` in `src/data/ContentService.js` to invalidate stale cached browser localStorage.
+- **Technology and role:** CSS custom properties, component markup templates, cache invalidation.
+- **How it works:** Replaces inline styles using OEM-specific hex accents with the brand red palette and bumps CMS version so user browsers automatically refresh stored content.
+- **Files and folders added or changed:**
+  - `src/pages/Products.js`
+  - `src/pages/Partners.js`
+  - `src/styles/index.css`
+  - `src/data/ContentService.js`
+  - `docs/PROJECT-STATE.md`
+  - `docs/seo_backend_implementation.md`
+- **Data and security notes:** Pure frontend styling and cache version bump. Zero secrets, no new dependencies.
 - **Checked (and how):**
   - Test suites: 43/43 tests passing.
   - Production build: `npm run build` passing cleanly with 159 static HTML pages generated.

@@ -32,8 +32,7 @@ function renderRunningLogoTicker(partners) {
 
 // Clean Static Card Component
 function renderPartnerCardMarkup(partner) {
-  const isRed = partner.accentColor === 'red';
-  const accentClass = isRed ? 'accent-red' : '';
+  const accentClass = 'accent-red';
   const resolvedLogo = ContentService.resolveImg(partner.logoImg);
 
   const logoMarkup = resolvedLogo
@@ -57,7 +56,7 @@ function renderPartnerCardMarkup(partner) {
       <p class="partner-stream-card-desc" style="margin-bottom:16px;">${partner.description || ''}</p>
 
       <!-- View Products Link Indicator -->
-      <div class="partner-card-action-row" style="margin-top:auto;display:flex;align-items:center;gap:6px;font-size:0.85rem;font-weight:700;color:${isRed ? 'var(--logo-red-light)' : 'var(--logo-blue-light)'};">
+      <div class="partner-card-action-row" style="margin-top:auto;display:flex;align-items:center;gap:6px;font-size:0.85rem;font-weight:700;color:var(--logo-red-light);">
         <span>View Products &amp; Catalog</span>
         <i class="fa-solid fa-arrow-right" style="font-size:0.75rem;"></i>
       </div>
