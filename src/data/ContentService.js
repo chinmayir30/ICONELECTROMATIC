@@ -53,7 +53,7 @@ if (typeof window !== 'undefined') {
 }
 
 // ─── Version key: bump this to ensure fresh schema sync with existing localStorage ───
-const CMS_VERSION = 'v19';
+const CMS_VERSION = 'v20';
 
 const INITIAL_CONTENT = {
   header: {

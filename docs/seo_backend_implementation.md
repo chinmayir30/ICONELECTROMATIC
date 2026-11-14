@@ -1037,7 +1037,7 @@ Open items that affect these phases: client decisions on category grouping, dupl
 - **Undo:** Revert PR or branch.
 
 ### Entry 46: Unify Blogs Page Red Accents & Hover Effects in Dark Mode
-- **Status:** In progress (PR #49, branch `feat/unify-blogs-page-red-accents`, 14 Nov 2026)
+- **Status:** Implemented (PR #49, merge commit c7bffdb, 14 Nov 2026)
 - **What was built:**
   - Standardized all Blogs page components in `src/pages/Blogs.js` and `src/styles/index.css`:
     - Updated active OEM filter chips (`.blogs-oem-chip.active`) and chip dots to Brand Red (`var(--logo-red, #e11d48)` with soft red shadow glow).
@@ -1054,6 +1054,36 @@ Open items that affect these phases: client decisions on category grouping, dupl
 - **Files and folders added or changed:**
   - `src/styles/index.css`
   - `src/pages/Blogs.js`
+  - `src/data/ContentService.js`
+  - `docs/PROJECT-STATE.md`
+  - `docs/seo_backend_implementation.md`
+- **Data and security notes:** Pure frontend styling and cache version bump. Zero secrets, no new dependencies.
+- **Checked (and how):**
+  - Test suites: 43/43 tests passing.
+  - Production build: `npm run build` passing cleanly with 159 static HTML pages generated.
+- **Not checked:**
+  - Live production deployment URL (checked after pull request merge).
+- **Undo:** Revert PR or branch.
+
+### Entry 47: Unify Contact Us & Careers Page Red Accents in Dark Mode
+- **Status:** In progress (PR #50, branch `feat/unify-contact-page-red-accents`, 14 Nov 2026)
+- **What was built:**
+  - Standardized Contact Us & Careers page components in `src/pages/Contact.js` and `src/styles/index.css`:
+    - Updated `.contact-relay-form:hover` to Brand Red border (`rgba(225, 29, 72, 0.45)`) and red ambient glow (`0 0 26px rgba(225, 29, 72, 0.2)`), with soft red title highlight on hover.
+    - Added soft red title transition on hover for `.contact-relay-card:hover h3`.
+    - Updated `.relay-field input:focus, select:focus, textarea:focus` to Brand Red border (`var(--logo-red)`) and red halo glow (`0 0 0 3px var(--logo-red-glow)`).
+    - Updated active form switcher tab (`.contact-tab-btn.active`) to Brand Red tint (`rgba(225, 29, 72, 0.15)`) with red border (`rgba(225, 29, 72, 0.5)`) and red glow.
+    - Updated active requirement presets (`.filter-chip-dark.active`) to Brand Red (`var(--logo-red)`).
+    - Standardized both Sales & RFQ Inquiry and Careers submit buttons to `btn-relay-red`.
+    - Standardized recruitment intro icon pod, subtitle, and perk icons in `src/pages/Contact.js` to Brand Red tints.
+    - Updated `.form-badge-recruiting` and `.resume-upload-box:hover` to Brand Red border, text, and icons.
+    - Standardized hero trust highlights strip to subtle Brand Red badges.
+    - Bumped `CMS_VERSION` to `v20` in `src/data/ContentService.js` for automatic browser cache invalidation.
+- **Technology and role:** CSS custom properties, component markup templates, cache invalidation.
+- **How it works:** Replaces blue, green, and amber elements on the Contact Us view with unified Brand Red design tokens and updates the local storage cache version.
+- **Files and folders added or changed:**
+  - `src/styles/index.css`
+  - `src/pages/Contact.js`
   - `src/data/ContentService.js`
   - `docs/PROJECT-STATE.md`
   - `docs/seo_backend_implementation.md`

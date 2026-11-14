@@ -802,11 +802,11 @@ body[data-page="blog"] .logo-container img,
 }
 
 .filter-chip-dark.active {
-  background: var(--logo-blue);
+  background: var(--logo-red);
   color: var(--text-white);
-  border-color: var(--logo-blue);
+  border-color: var(--logo-red);
   font-weight: 600;
-  box-shadow: 0 4px 14px var(--logo-blue-glow);
+  box-shadow: 0 4px 14px var(--logo-red-glow);
 }
 
 .products-grid-dark {
@@ -1052,9 +1052,14 @@ body[data-page="blog"] .logo-container img,
 }
 
 .contact-relay-card:hover {
-  border-color: rgba(227, 39, 38, 0.45);
+  border-color: rgba(225, 29, 72, 0.45);
   transform: translateY(-5px);
-  box-shadow: 0 22px 50px rgba(0, 0, 0, 0.75), 0 0 26px rgba(227, 39, 38, 0.2);
+  box-shadow: 0 22px 50px rgba(0, 0, 0, 0.75), 0 0 26px rgba(225, 29, 72, 0.2);
+}
+
+.contact-relay-card:hover h3 {
+  color: var(--logo-red-light, #fb7185);
+  transition: color 0.2s ease;
 }
 
 .contact-relay-card h3 {
@@ -1165,9 +1170,14 @@ body[data-page="blog"] .logo-container img,
 }
 
 .contact-relay-form:hover {
-  border-color: rgba(37, 99, 235, 0.45);
+  border-color: rgba(225, 29, 72, 0.45);
   transform: translateY(-5px);
-  box-shadow: 0 22px 50px rgba(0, 0, 0, 0.75), 0 0 26px rgba(37, 99, 235, 0.2);
+  box-shadow: 0 22px 50px rgba(0, 0, 0, 0.75), 0 0 26px rgba(225, 29, 72, 0.2);
+}
+
+.contact-relay-form:hover h3 {
+  color: var(--logo-red-light, #fb7185);
+  transition: color 0.2s ease;
 }
 
 .contact-relay-form h3 {
@@ -1296,8 +1306,8 @@ body[data-page="blog"] .logo-container img,
 .relay-field select:focus,
 .relay-field textarea:focus {
   background: rgba(255, 255, 255, 0.08);
-  border-color: var(--logo-blue);
-  box-shadow: 0 0 0 3px var(--logo-blue-glow);
+  border-color: var(--logo-red);
+  box-shadow: 0 0 0 3px var(--logo-red-glow);
 }
 
 .relay-field textarea {
@@ -9782,9 +9792,9 @@ html[data-theme="light"],
 
 .contact-tab-btn.active {
   color: var(--text-white);
-  background: #0D1B36;
-  border-color: rgba(37, 99, 235, 0.5);
-  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
+  background: rgba(225, 29, 72, 0.15);
+  border-color: rgba(225, 29, 72, 0.5);
+  box-shadow: 0 4px 14px rgba(225, 29, 72, 0.25);
 }
 
 .tab-hiring-pill {
@@ -9817,9 +9827,9 @@ html[data-theme="light"],
   gap: 8px;
   padding: 4px 12px;
   border-radius: var(--radius-full);
-  background: rgba(37, 99, 235, 0.12);
-  border: 1px solid rgba(37, 99, 235, 0.3);
-  color: var(--logo-blue-light);
+  background: rgba(225, 29, 72, 0.12);
+  border: 1px solid rgba(225, 29, 72, 0.3);
+  color: var(--logo-red-light);
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.5px;
@@ -9843,8 +9853,8 @@ html[data-theme="light"],
 }
 
 .resume-upload-box:hover {
-  border-color: var(--logo-blue-light);
-  background: rgba(37, 99, 235, 0.06);
+  border-color: var(--logo-red-light);
+  background: rgba(225, 29, 72, 0.06);
 }
 
 .resume-file-input {
@@ -9871,7 +9881,7 @@ html[data-theme="light"],
 
 .resume-upload-icon {
   font-size: 1.1rem;
-  color: var(--logo-blue-light);
+  color: var(--logo-red-light);
   flex-shrink: 0;
 }
 
