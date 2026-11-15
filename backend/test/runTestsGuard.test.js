@@ -130,6 +130,10 @@ test("forwards only a valid selected test file to Node's test runner", () => {
     TEST_DATABASE_URL: safeTestDatabaseUrl,
   };
   delete childEnvironment.NODE_TEST_CONTEXT;
+  delete childEnvironment.GITHUB_ACTIONS;
+  delete childEnvironment.GITHUB_RUN_ID;
+  delete childEnvironment.GITHUB_WORKSPACE;
+  delete childEnvironment.GITHUB_WORKFLOW;
 
   const result = spawnSync(
     process.execPath,
@@ -148,16 +152,23 @@ test("forwards only a valid selected test file to Node's test runner", () => {
 });
 
 test("rejects invalid test-file arguments before starting Node's test runner", () => {
+  const childEnvironment = {
+    ...process.env,
+    TEST_DATABASE_URL: safeTestDatabaseUrl,
+  };
+  delete childEnvironment.NODE_TEST_CONTEXT;
+  delete childEnvironment.GITHUB_ACTIONS;
+  delete childEnvironment.GITHUB_RUN_ID;
+  delete childEnvironment.GITHUB_WORKSPACE;
+  delete childEnvironment.GITHUB_WORKFLOW;
+
   const result = spawnSync(
     process.execPath,
     [testRunnerPath, "--test"],
     {
       cwd: backendDirectory,
       encoding: "utf8",
-      env: {
-        ...process.env,
-        TEST_DATABASE_URL: safeTestDatabaseUrl,
-      },
+      env: childEnvironment,
     }
   );
 
@@ -188,13 +199,23 @@ test("resolveTestDatabaseUrl falls back to DATABASE_URL when TEST_DATABASE_URL i
   );
 });
 
-test("resolveTestDatabaseUrl resolves DATABASE_URL from backend/.env when env variables are unset", () => {
-  const resolved = resolveTestDatabaseUrl({}, backendDirectory);
-  assert.ok(resolved.startsWith("postgresql://") || resolved.startsWith("postgres://"));
-  const url = new URL(resolved);
-  assert.equal(url.port, "5433");
-  assert.equal(url.pathname, "/icon_electromatic_test");
-  assert.ok(["localhost", "127.0.0.1"].includes(url.hostname));
+test("resolveTestDatabaseUrl resolves DATABASE_URL from .env when env variables are unset", () => {
+  const temporaryDirectory = mkdtempSync(path.join(os.tmpdir(), "backend-test-env-"));
+  try {
+    const envFilePath = path.join(temporaryDirectory, ".env");
+    writeFileSync(
+      envFilePath,
+      'DATABASE_URL="postgresql://user:pass@127.0.0.1:5433/icon_electromatic_test"\n'
+    );
+    const resolved = resolveTestDatabaseUrl({}, temporaryDirectory);
+    assert.ok(resolved.startsWith("postgresql://") || resolved.startsWith("postgres://"));
+    const url = new URL(resolved);
+    assert.equal(url.port, "5433");
+    assert.equal(url.pathname, "/icon_electromatic_test");
+    assert.ok(["localhost", "127.0.0.1"].includes(url.hostname));
+  } finally {
+    rmSync(temporaryDirectory, { recursive: true, force: true });
+  }
 });
 
 test("resolveTestDatabaseUrl throws when no TEST_DATABASE_URL or .env file is available", () => {

@@ -9,6 +9,10 @@ import {
 } from "../scripts/reset-admin-password.js";
 import { verifyPassword } from "../src/auth/security.js";
 
+const safeIsolatedTestEnv = Object.freeze({
+  DATABASE_URL: "postgresql://test:test@127.0.0.1:5433/icon_electromatic_test",
+});
+
 test("validateAdminEmail normalizes valid emails and rejects invalid formats", () => {
   assert.equal(
     validateAdminEmail("  ADMIN@IconElectromatic.COM  "),
@@ -77,6 +81,25 @@ test("verifySafeDatabaseTarget: wrong database name is rejected", () => {
         "postgresql://postgres:secret@127.0.0.1:5433/wrong_test_db"
       ),
     /does not match approved test database name "icon_electromatic_test"/
+  );
+});
+
+test("verifySafeDatabaseTarget: rejects icon_ci_test on port 5432 even with authorization", () => {
+  // The emergency password-reset CLI must never run against CI databases
+  assert.throws(
+    () =>
+      verifySafeDatabaseTarget(
+        "postgresql://postgres:postgres@localhost:5432/icon_ci_test",
+        { allowLocalDev: true }
+      ),
+    /does not match approved local database name "icon_electromatic"/
+  );
+  assert.throws(
+    () =>
+      verifySafeDatabaseTarget(
+        "postgresql://postgres:postgres@127.0.0.1:5432/icon_ci_test"
+      ),
+    /PostgreSQL port 5432 is blocked by default/
   );
 });
 
@@ -211,6 +234,7 @@ test("runResetAdminPassword rejects passwords passed via command-line arguments"
 
   const result = await runResetAdminPassword({
     args: ["--email", "admin@example.com", "--password", secret],
+    env: safeIsolatedTestEnv,
     errorOutput: { write: (m) => errors.push(m) },
   });
 
@@ -235,6 +259,7 @@ test("runResetAdminPassword rejects unknown administrator accounts", async () =>
 
   const result = await runResetAdminPassword({
     args: ["--email", "nonexistent@example.com"],
+    env: safeIsolatedTestEnv,
     errorOutput: { write: (m) => errors.push(m) },
     createPrismaClient: () => mockPrisma,
   });
@@ -263,6 +288,7 @@ test("runResetAdminPassword rejects inactive administrator accounts", async () =
 
   const result = await runResetAdminPassword({
     args: ["--email", "deactivated@example.com"],
+    env: safeIsolatedTestEnv,
     errorOutput: { write: (m) => errors.push(m) },
     createPrismaClient: () => mockPrisma,
   });
@@ -291,6 +317,7 @@ test("runResetAdminPassword cancels if user does not explicitly confirm with 'ye
 
   const result = await runResetAdminPassword({
     args: ["--email", "admin@example.com"],
+    env: safeIsolatedTestEnv,
     output: { write: (m) => outputs.push(m) },
     promptAsk: async () => "no", // User refuses confirmation
     createPrismaClient: () => mockPrisma,
@@ -322,6 +349,7 @@ test("runResetAdminPassword rejects password below 14 characters", async () => {
   let promptStep = 0;
   const result = await runResetAdminPassword({
     args: ["--email", "admin@example.com"],
+    env: safeIsolatedTestEnv,
     errorOutput: { write: (m) => errors.push(m) },
     promptAsk: async () => "yes",
     promptHidden: async () => {
@@ -358,6 +386,7 @@ test("runResetAdminPassword rejects mismatched password confirmation", async () 
   let promptStep = 0;
   const result = await runResetAdminPassword({
     args: ["--email", "admin@example.com"],
+    env: safeIsolatedTestEnv,
     errorOutput: { write: (m) => errors.push(m) },
     promptAsk: async () => "yes",
     promptHidden: async () => {
@@ -420,6 +449,7 @@ test("runResetAdminPassword successfully updates password, revokes sessions, and
 
   const result = await runResetAdminPassword({
     args: ["--email", "admin@iconelectromatic.com"],
+    env: safeIsolatedTestEnv,
     output: { write: (m) => outputs.push(m) },
     errorOutput: { write: (m) => errors.push(m) },
     promptAsk: async () => "yes",
