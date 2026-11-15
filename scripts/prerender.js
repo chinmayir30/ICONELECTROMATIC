@@ -35,6 +35,18 @@ const CORE_PAGE_MODULES = [
     render: 'renderProductsPage',
   },
   {
+    route: '/services',
+    title: 'Engineering Services & Technical Solutions',
+    description: 'Full lifecycle support including technical consulting, RF testing, defense/aerospace component qualification, and supply-chain logistics.',
+    render: 'renderServicesPage',
+  },
+  {
+    route: '/partners',
+    title: 'Authorized OEM Principals & Technology Partners',
+    description: 'Explore Icon Electromatic’s global manufacturing partners including Rogers Corporation, Mini-Circuits, Qorvo, Evans, Ohmega Ticer, and more.',
+    render: 'renderPartnersPage',
+  },
+  {
     route: '/blogs',
     title: 'Technical News, Video Demos & Whitepapers',
     description: 'Read official application notes, technical webinars, whitepapers, and product bulletins direct from our authorized OEM principals.',
@@ -128,6 +140,8 @@ async function prerenderCorePages(templateHtml) {
       home,
       about,
       products,
+      services,
+      partners,
       blogs,
       contact,
       header,
@@ -137,13 +151,15 @@ async function prerenderCorePages(templateHtml) {
       vite.ssrLoadModule('/src/pages/Home.js'),
       vite.ssrLoadModule('/src/pages/About.js'),
       vite.ssrLoadModule('/src/pages/Products.js'),
+      vite.ssrLoadModule('/src/pages/Services.js'),
+      vite.ssrLoadModule('/src/pages/Partners.js'),
       vite.ssrLoadModule('/src/pages/Blogs.js'),
       vite.ssrLoadModule('/src/pages/Contact.js'),
       vite.ssrLoadModule('/src/components/Header.js'),
       vite.ssrLoadModule('/src/components/Footer.js'),
       vite.ssrLoadModule('/src/components/Chatbot.js'),
     ]);
-    const renderers = { home, about, products, blogs, contact };
+    const renderers = { home, about, products, services, partners, blogs, contact };
 
     for (const page of CORE_PAGE_MODULES) {
       globalThis.window = {

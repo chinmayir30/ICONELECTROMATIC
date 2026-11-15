@@ -470,3 +470,209 @@ export async function sendAcknowledgementEmail(enquiry, options = {}) {
     };
   }
 }
+
+export {
+  buildRecoveryVerificationEmail,
+  buildPasswordResetEmail,
+  buildPasswordChangedNotificationEmail,
+  buildRecoveryEmailChangedNotificationEmail,
+} from "./recoveryEmailTemplates.js";
+
+import {
+  buildRecoveryVerificationEmail,
+  buildPasswordResetEmail,
+  buildPasswordChangedNotificationEmail,
+  buildRecoveryEmailChangedNotificationEmail,
+} from "./recoveryEmailTemplates.js";
+
+/**
+ * Dispatch recovery email verification message.
+ *
+ * @param {object} params
+ * @param {string} params.to - destination email (the recovery email being verified)
+ * @param {string} params.adminEmail - administrator account email
+ * @param {string} params.verificationUrl - verification link with opaque token
+ * @param {number} [params.expiresMinutes] - expiry duration in minutes
+ * @param {object} [options] - overrides for testing (resendClient, config)
+ */
+export async function sendRecoveryVerificationEmail(
+  { to, adminEmail, verificationUrl, expiresMinutes = 30 },
+  options = {}
+) {
+  const config = options.config || getEmailConfig();
+  if (!config.isConfigured) {
+    const errorMsg = `Server email configuration incomplete: missing ${config.missing.join(", ")}.`;
+    return { ok: false, error: errorMsg };
+  }
+  if (!to || typeof to !== "string") {
+    return { ok: false, error: "Missing recipient recovery email address." };
+  }
+
+  try {
+    const resend = options.resendClient || getResendClient(config.apiKey);
+    const emailData = buildRecoveryVerificationEmail({
+      adminEmail,
+      verificationUrl,
+      expiresMinutes,
+    });
+
+    const { data, error } = await resend.emails.send({
+      from: config.fromEmail,
+      to: [to.trim()],
+      subject: emailData.subject,
+      html: emailData.html,
+      text: emailData.text,
+    });
+
+    if (error) {
+      return { ok: false, error: error.message || "Email delivery failed." };
+    }
+    return { ok: true, id: data?.id };
+  } catch (err) {
+    return { ok: false, error: err.message || "Unexpected email error." };
+  }
+}
+
+/**
+ * Dispatch password reset email.
+ *
+ * @param {object} params
+ * @param {string} params.to - destination email (verified recovery email)
+ * @param {string} params.adminEmail - administrator account email
+ * @param {string} params.resetUrl - password reset link with opaque token
+ * @param {number} [params.expiresMinutes] - expiry duration in minutes
+ * @param {object} [options] - overrides for testing (resendClient, config)
+ */
+export async function sendPasswordResetEmail(
+  { to, adminEmail, resetUrl, expiresMinutes = 30 },
+  options = {}
+) {
+  const config = options.config || getEmailConfig();
+  if (!config.isConfigured) {
+    const errorMsg = `Server email configuration incomplete: missing ${config.missing.join(", ")}.`;
+    return { ok: false, error: errorMsg };
+  }
+  if (!to || typeof to !== "string") {
+    return { ok: false, error: "Missing recipient reset email address." };
+  }
+
+  try {
+    const resend = options.resendClient || getResendClient(config.apiKey);
+    const emailData = buildPasswordResetEmail({
+      adminEmail,
+      resetUrl,
+      expiresMinutes,
+    });
+
+    const { data, error } = await resend.emails.send({
+      from: config.fromEmail,
+      to: [to.trim()],
+      subject: emailData.subject,
+      html: emailData.html,
+      text: emailData.text,
+    });
+
+    if (error) {
+      return { ok: false, error: error.message || "Email delivery failed." };
+    }
+    return { ok: true, id: data?.id };
+  } catch (err) {
+    return { ok: false, error: err.message || "Unexpected email error." };
+  }
+}
+
+/**
+ * Dispatch password changed alert.
+ *
+ * @param {object} params
+ * @param {string} params.to - recipient email
+ * @param {string} params.adminEmail - administrator account email
+ * @param {Date} [params.timestamp] - timestamp of password change
+ * @param {object} [options] - overrides for testing (resendClient, config)
+ */
+export async function sendPasswordChangedEmail(
+  { to, adminEmail, timestamp = new Date() },
+  options = {}
+) {
+  const config = options.config || getEmailConfig();
+  if (!config.isConfigured) {
+    const errorMsg = `Server email configuration incomplete: missing ${config.missing.join(", ")}.`;
+    return { ok: false, error: errorMsg };
+  }
+  if (!to || typeof to !== "string") {
+    return { ok: false, error: "Missing recipient email address." };
+  }
+
+  try {
+    const resend = options.resendClient || getResendClient(config.apiKey);
+    const emailData = buildPasswordChangedNotificationEmail({
+      adminEmail,
+      timestamp,
+    });
+
+    const { data, error } = await resend.emails.send({
+      from: config.fromEmail,
+      to: [to.trim()],
+      subject: emailData.subject,
+      html: emailData.html,
+      text: emailData.text,
+    });
+
+    if (error) {
+      return { ok: false, error: error.message || "Email delivery failed." };
+    }
+    return { ok: true, id: data?.id };
+  } catch (err) {
+    return { ok: false, error: err.message || "Unexpected email error." };
+  }
+}
+
+/**
+ * Dispatch recovery email changed or removed alert.
+ *
+ * @param {object} params
+ * @param {string} params.to - recipient email
+ * @param {string} params.adminEmail - administrator account email
+ * @param {string} [params.action] - "updated", "verified", or "removed"
+ * @param {string|null} [params.previousRecoveryEmail]
+ * @param {Date} [params.timestamp]
+ * @param {object} [options] - overrides for testing (resendClient, config)
+ */
+export async function sendRecoveryEmailChangedEmail(
+  { to, adminEmail, action = "updated", previousRecoveryEmail = null, timestamp = new Date() },
+  options = {}
+) {
+  const config = options.config || getEmailConfig();
+  if (!config.isConfigured) {
+    const errorMsg = `Server email configuration incomplete: missing ${config.missing.join(", ")}.`;
+    return { ok: false, error: errorMsg };
+  }
+  if (!to || typeof to !== "string") {
+    return { ok: false, error: "Missing recipient email address." };
+  }
+
+  try {
+    const resend = options.resendClient || getResendClient(config.apiKey);
+    const emailData = buildRecoveryEmailChangedNotificationEmail({
+      adminEmail,
+      action,
+      previousRecoveryEmail,
+      timestamp,
+    });
+
+    const { data, error } = await resend.emails.send({
+      from: config.fromEmail,
+      to: [to.trim()],
+      subject: emailData.subject,
+      html: emailData.html,
+      text: emailData.text,
+    });
+
+    if (error) {
+      return { ok: false, error: error.message || "Email delivery failed." };
+    }
+    return { ok: true, id: data?.id };
+  } catch (err) {
+    return { ok: false, error: err.message || "Unexpected email error." };
+  }
+}

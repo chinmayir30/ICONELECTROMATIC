@@ -3,6 +3,17 @@
  * Framer / Relay-style floating circular cursor with smooth trailing & interactive scaling
  */
 
+export function isAdminArea() {
+  if (typeof window === 'undefined') return false;
+  const path = window.location.pathname || '';
+  if (path.startsWith('/admin') || path === '/reset-password') return true;
+  if (typeof document !== 'undefined') {
+    if (document.body && document.body.classList.contains('admin-mode')) return true;
+    if (document.querySelector('.a-login-page, .admin-wrap, .a-recovery-page, #a-verify-card, #a-reset-card')) return true;
+  }
+  return false;
+}
+
 export function initCustomCursor() {
   // Disable on touch devices or small screens
   if (window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 768) {
@@ -35,11 +46,22 @@ export function initCustomCursor() {
 
   // Track exact mouse position
   window.addEventListener('mousemove', (e) => {
+    if (isAdminArea()) {
+      ring.style.display = 'none';
+      dot.style.display = 'none';
+      ring.style.opacity = '0';
+      dot.style.opacity = '0';
+      isVisible = false;
+      return;
+    }
+
     mouseX = e.clientX;
     mouseY = e.clientY;
 
     if (!isVisible) {
       isVisible = true;
+      ring.style.display = 'block';
+      dot.style.display = 'block';
       ring.style.opacity = '1';
       dot.style.opacity = '1';
       ringX = mouseX;
@@ -49,6 +71,16 @@ export function initCustomCursor() {
 
   // Smooth animation loop using lerp (linear interpolation)
   function renderCursor() {
+    if (isAdminArea()) {
+      ring.style.display = 'none';
+      dot.style.display = 'none';
+      ring.style.opacity = '0';
+      dot.style.opacity = '0';
+      isVisible = false;
+      animFrameId = requestAnimationFrame(renderCursor);
+      return;
+    }
+
     // Lerp ring towards mouse with smooth damping factor
     const ease = 0.22;
     ringX += (mouseX - ringX) * ease;
@@ -74,13 +106,17 @@ export function initCustomCursor() {
   });
 
   document.addEventListener('mouseenter', () => {
+    if (isAdminArea()) return;
     isVisible = true;
+    ring.style.display = 'block';
+    dot.style.display = 'block';
     ring.style.opacity = '1';
     dot.style.opacity = '1';
   });
 
   // Click squeeze effect
   window.addEventListener('mousedown', () => {
+    if (isAdminArea()) return;
     ring.classList.add('cursor-active');
   });
 
@@ -90,6 +126,7 @@ export function initCustomCursor() {
 
   // Event delegation for interactive hover states across all cards, buttons, links
   document.addEventListener('mouseover', (e) => {
+    if (isAdminArea()) return;
     const target = e.target;
     const interactive = target.closest('a, button, [data-route], .product-card-relay, .capability-card-dark, .blog-card-relay, .testimonial-card-relay, .filter-chip-dark, input, select, textarea, .contact-relay-card');
 
@@ -114,6 +151,7 @@ export function initCustomCursor() {
   });
 
   document.addEventListener('mouseout', (e) => {
+    if (isAdminArea()) return;
     const target = e.target;
     const interactive = target.closest('a, button, [data-route], .product-card-relay, .capability-card-dark, .blog-card-relay, .testimonial-card-relay, .filter-chip-dark, input, select, textarea, .contact-relay-card');
 

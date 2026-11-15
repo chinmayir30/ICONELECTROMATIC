@@ -14,7 +14,6 @@ import { renderBlogsPage, initBlogsPage } from './pages/Blogs.js';
 import { renderContactPage, initContactPage } from './pages/Contact.js';
 import { renderChatbot, initChatbot } from './components/Chatbot.js';
 import { initCustomCursor } from './components/CustomCursor.js';
-import { renderAdminPage, initAdminPage } from './admin/Admin.js';
 import { ImageStorage } from './data/ImageStorage.js';
 import { SeoService } from './data/SeoService.js';
 import { ContentService } from './data/ContentService.js';
@@ -22,7 +21,24 @@ import { renderSafely } from './rendering.js';
 
 const app = document.getElementById('app');
 
+function enterAdminMode() {
+  if (typeof document !== 'undefined') {
+    document.body.classList.add('admin-mode');
+    const ring = document.getElementById('custom-cursor-ring');
+    const dot = document.getElementById('custom-cursor-dot');
+    if (ring) { ring.style.display = 'none'; ring.style.opacity = '0'; }
+    if (dot) { dot.style.display = 'none'; dot.style.opacity = '0'; }
+  }
+}
+
+function exitAdminMode() {
+  if (typeof document !== 'undefined') {
+    document.body.classList.remove('admin-mode');
+  }
+}
+
 function renderPage(renderContent, initFn) {
+  exitAdminMode();
   const currentPath = getCurrentPath();
   let header = document.getElementById('site-header');
 
@@ -105,15 +121,87 @@ registerRoute('/partners', () => renderPage(renderPartnersPage, initPartnersPage
 registerRoute('/blogs', (params) => renderPage(() => renderBlogsPage(params), () => initBlogsPage(params)));
 registerRoute('/blog', (params) => renderPage(() => renderBlogsPage(params), () => initBlogsPage(params)));
 registerRoute('/contact', () => renderPage(renderContactPage, initContactPage));
-registerRoute('/admin', () => {
+function renderAdminLoadingPlaceholder(message = 'Loading Administration Portal...') {
+  return `
+    <div style="min-height:100vh;background:#0f172a;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#f8fafc;font-family:sans-serif;padding:24px;">
+      <div style="width:44px;height:44px;border:3px solid rgba(255,255,255,0.15);border-top-color:#3b82f6;border-radius:50%;animation:admin-spin 0.8s linear infinite;margin-bottom:16px;"></div>
+      <p style="color:#94a3b8;font-size:0.95rem;margin:0;">${message}</p>
+      <style>@keyframes admin-spin { to { transform: rotate(360deg); } }</style>
+    </div>
+  `;
+}
+
+function renderAdminErrorPlaceholder(title, errorDetail = '') {
+  return `
+    <div style="min-height:100vh;background:#0f172a;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#f8fafc;font-family:sans-serif;padding:24px;text-align:center;">
+      <div style="width:52px;height:52px;border-radius:50%;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);display:flex;align-items:center;justify-content:center;color:#ef4444;font-size:1.5rem;margin-bottom:16px;">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+      </div>
+      <h2 style="font-size:1.35rem;font-weight:700;margin:0 0 8px 0;color:#f8fafc;">${title}</h2>
+      <p style="color:#94a3b8;max-width:440px;font-size:0.9rem;margin:0 0 20px 0;">An error occurred while loading this section. Please refresh or return to the website.</p>
+      ${errorDetail ? `<pre style="background:rgba(0,0,0,0.3);padding:10px 14px;border-radius:6px;font-size:0.75rem;color:#cbd5e1;max-width:500px;overflow-x:auto;margin-bottom:20px;">${errorDetail}</pre>` : ''}
+      <a href="/" class="btn-relay btn-relay-primary" style="padding:10px 22px;font-size:0.85rem;text-decoration:none;border-radius:8px;">Return to Home</a>
+    </div>
+  `;
+}
+
+registerRoute('/admin', async () => {
+  enterAdminMode();
   closeSidebarDrawer();
   const header = document.getElementById('site-header');
   if (header) header.style.display = 'none';
   SeoService.setDefaultSeo('/admin');
   const app = document.getElementById('app');
-  app.innerHTML = renderAdminPage();
-  initAdminPage();
+  if (app) app.innerHTML = renderAdminLoadingPlaceholder('Loading Administration Portal...');
+  try {
+    const { renderAdminPage, initAdminPage } = await import('./admin/Admin.js');
+    if (app) app.innerHTML = renderAdminPage();
+    initAdminPage();
+  } catch (err) {
+    console.error('Failed to load Admin CMS:', err);
+    if (app) app.innerHTML = renderAdminErrorPlaceholder('Unable to load Admin CMS', err?.message);
+  }
 });
+
+registerRoute('/admin/verify-recovery', async (params) => {
+  enterAdminMode();
+  closeSidebarDrawer();
+  const header = document.getElementById('site-header');
+  if (header) header.style.display = 'none';
+  SeoService.setDefaultSeo('/admin');
+  const app = document.getElementById('app');
+  if (app) app.innerHTML = renderAdminLoadingPlaceholder('Loading Recovery Verification...');
+  try {
+    await import('./admin/admin.css');
+    const { renderVerifyRecoveryPage, initVerifyRecoveryPage } = await import('./admin/PublicRecovery.js');
+    if (app) app.innerHTML = renderVerifyRecoveryPage();
+    initVerifyRecoveryPage(params);
+  } catch (err) {
+    console.error('Failed to load verification view:', err);
+    if (app) app.innerHTML = renderAdminErrorPlaceholder('Unable to load verification view', err?.message);
+  }
+});
+
+async function loadResetPasswordRoute(params) {
+  enterAdminMode();
+  closeSidebarDrawer();
+  const header = document.getElementById('site-header');
+  if (header) header.style.display = 'none';
+  SeoService.setDefaultSeo('/admin');
+  const app = document.getElementById('app');
+  if (app) app.innerHTML = renderAdminLoadingPlaceholder('Loading Password Reset...');
+  try {
+    await import('./admin/admin.css');
+    const { renderResetPasswordPage, initResetPasswordPage } = await import('./admin/PublicRecovery.js');
+    if (app) app.innerHTML = renderResetPasswordPage();
+    initResetPasswordPage(params);
+  } catch (err) {
+    console.error('Failed to load password reset view:', err);
+    if (app) app.innerHTML = renderAdminErrorPlaceholder('Unable to load password reset view', err?.message);
+  }
+}
+registerRoute('/admin/reset-password', (params) => loadResetPasswordRoute(params));
+registerRoute('/reset-password', (params) => loadResetPasswordRoute(params));
 
 // Listen for real-time CMS content updates to refresh layout and public page views
 if (typeof window !== 'undefined') {

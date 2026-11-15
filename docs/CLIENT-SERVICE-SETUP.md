@@ -80,7 +80,7 @@ Cloudflare R2 provides S3-compatible cloud object storage for product images and
      * **S3 Endpoint:** Formatted as `https://<ACCOUNT_ID>.r2.cloudflarestorage.com`.
 
 6. **Optional Public Custom Domain:**
-   * The default delivery path uses `GET /api/media/file/:id`; the backend streams from the private bucket or falls back to a short-lived signed URL.
+   * The default delivery path uses `GET /api/media/file/:id`; the backend streams from the private bucket. If streaming fails, the route returns a non-cacheable `502` rather than redirecting to an expiring public URL.
    * Only configure a public custom domain if the client explicitly wants public object delivery. The route redirects to that host when `R2_PUBLIC_DOMAIN` is set; ensure the domain serves uploaded object keys and understand that this changes the private-bucket delivery model.
 
 ### Environment Variables to Provide:

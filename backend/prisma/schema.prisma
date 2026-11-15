@@ -7,11 +7,11 @@
 
 generator client {
   provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 enum MediaAssetStatus {
@@ -54,6 +54,11 @@ enum CommunicationType {
 enum AdminRole {
   ADMIN
   EDITOR
+}
+
+enum SecurityTokenType {
+  RECOVERY_EMAIL_VERIFICATION
+  PASSWORD_RESET
 }
 
 enum ImportRunType {
@@ -286,21 +291,24 @@ model ProductMedia {
 }
 
 model AdminUser {
-  id                String         @id @default(cuid())
-  email             String         @unique
-  passwordHash      String
-  role              AdminRole      @default(EDITOR)
-  active            Boolean        @default(true)
-  passwordChangedAt DateTime?
-  createdAt         DateTime       @default(now())
-  updatedAt         DateTime       @updatedAt
-  sessions          AdminSession[]
-  mediaUploads      MediaAsset[]
-  auditEvents       AuditEvent[]
-  importRuns        ImportRun[]
-  siteContents      SiteContent[]
-  assignedEnquiries Enquiry[]              @relation("EnquiryAssignedTo")
-  enquiryComms      EnquiryCommunication[] @relation("CommunicationAuthor")
+  id                      String                 @id @default(cuid())
+  email                   String                 @unique
+  recoveryEmail           String?                @unique
+  recoveryEmailVerifiedAt DateTime?
+  passwordHash            String
+  role                    AdminRole              @default(EDITOR)
+  active                  Boolean                @default(true)
+  passwordChangedAt       DateTime?
+  createdAt               DateTime               @default(now())
+  updatedAt               DateTime               @updatedAt
+  sessions                AdminSession[]
+  securityTokens          AdminSecurityToken[]
+  mediaUploads            MediaAsset[]
+  auditEvents             AuditEvent[]
+  importRuns              ImportRun[]
+  siteContents            SiteContent[]
+  assignedEnquiries       Enquiry[]              @relation("EnquiryAssignedTo")
+  enquiryComms            EnquiryCommunication[] @relation("CommunicationAuthor")
 }
 
 model AdminSession {
@@ -318,6 +326,21 @@ model AdminSession {
   @@index([adminUserId, absoluteExpiresAt])
   @@index([absoluteExpiresAt])
   @@index([lastSeenAt])
+}
+
+model AdminSecurityToken {
+  id          String            @id @default(cuid())
+  adminUserId String
+  type        SecurityTokenType
+  tokenHash   String            @unique @db.Char(64)
+  payload     String?
+  expiresAt   DateTime
+  usedAt      DateTime?
+  createdAt   DateTime          @default(now())
+  adminUser   AdminUser         @relation(fields: [adminUserId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@index([adminUserId, type, expiresAt])
+  @@index([tokenHash, expiresAt])
 }
 
 model AuditEvent {

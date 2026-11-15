@@ -12,9 +12,10 @@
 > `/api/*` to a separate backend service. See
 > [CLIENT-HANDOVER-GUIDE.md](./CLIENT-HANDOVER-GUIDE.md) and
 > [PRODUCTION-DEPLOYMENT-GUIDE.md](./PRODUCTION-DEPLOYMENT-GUIDE.md) for current
-> client deployment guidance.
+> client deployment guidance. The dated sections below are historical; the
+> current status table that follows supersedes their status claims where noted.
 
-### Follow-up corrections (2026-11-10)
+### Follow-up corrections (2026-11-11)
 
 - The unsupported homepage hero statistics and certification claims described
   under `FINDING-L1` were removed from the homepage rendering and default
@@ -28,6 +29,35 @@
   origins and inline behavior, then deploy a report-only policy on representative
   pages and resolve violations before enforcement.
 
+### Current status and scope (2026-11-11)
+
+The checked-in historical audit has 16 numbered sections and seven named
+`FINDING-*` entries. It is not the referenced 22-row scorecard. This update
+records the findings actually present in this file and the six specifically
+identified handover findings; it does not invent the missing scorecard entries
+or claim that all 22 have been independently reconciled.
+
+| Finding | Current status | Evidence and remaining dependency |
+|---|---|---|
+| Shared catalogue (#2) | **Mitigated with deployment constraint** | Frontend and backend use the canonical `shared/catalogData.js`. The backend is not a standalone package; the complete repository checkout, including `shared/`, is required and documented. No catalogue duplication or product-data change is needed. |
+| Content Security Policy (#10) | **Deferred pending client information** | The Express server serves API responses, not the static frontend document. A compatible Report-Only candidate and browser review steps are documented. Enforcement and central report delivery await the selected frontend host, approved API/media origins, and a client-controlled report collector. |
+| Reverse proxy and serving (#13) | **Mitigated with deployment constraint** | The Nginx template maps static/prerendered paths, `/api/`, and `/sitemap.xml` through HTTPS on one origin, and documents proxy trust. The `/api/` request-size allowance is 11 MiB for multipart overhead while backend file validation remains 10 MiB. `vercel.json` still has no backend destination; client hosting and API origin remain unconfigured. |
+| `CmsDocument` (#17) | **Retained; client decision required before removal** | No checked-in application references were found; the schema and migration create the table. The local Docker test database contains the table with zero rows, but production/client database contents were not accessed. Keep the model, migration, table, and records unless the client database owner separately confirms removal is safe. |
+| Test scripts and workspaces (#20) | **Resolved for documented local/CI workflows** | Root `npm test` delegates to the backend guard; frontend tests have a separate direct Node test command. The runner permits only the named local test DB or a GitHub Actions DB when runner metadata is present. No npm workspace is required. |
+| Large presentation/flyer assets (#19) | **Accepted repository-size exception** | The tracked presentation is 68,134,938 bytes; the tracked flyer assets are unchanged. No compression, Git LFS, deletion, or tracking change is part of this remediation. |
+| Public R2 media expiration behavior | **Resolved in code; handover text corrected** | Public media streams through the backend or uses the configured stable public domain. A stream failure returns a non-cacheable `502`; the public route no longer redirects to an expiring presigned URL. Admin previews remain temporary and authenticated. |
+| `FINDING-H1` — Non-catalog CMS persistence | **Resolved after the audit date** | Admin writes use authenticated `PUT /api/admin/content/:pageKey` and PostgreSQL `SiteContent`. Browser `localStorage` is a cache/fallback, not the sole persistence store. |
+| `FINDING-M1` — Admin UI in public bundle | **Mitigated; code-splitting remains optional** | `src/main.js` imports the admin module into the frontend bundle. Backend session, role, and CSRF checks remain the security boundary; hiding or splitting the UI is not authorization. |
+| `FINDING-M2` — Header search uses static catalogue | **Not applicable to current code** | The current `Header.js` has no global product-search implementation or static `CATALOG` import. The historical finding and recommendation do not describe the checked-in header. |
+| `FINDING-M3` — `__Host-` cookie topology | **Mitigated with deployment constraint** | The same-origin reverse-proxy requirement is documented. The client must configure the selected host's `/api/` and sitemap routes without inventing a backend origin. |
+| `FINDING-L1` — Unsupported homepage claims | **Resolved** | The reported homepage claims were removed; no replacement claims were added. |
+| `FINDING-L2` — No CAPTCHA/Turnstile | **Open client decision** | Forms use honeypots and IP rate limits but no CAPTCHA. Add a provider-specific challenge only if the client requires it or observed spam warrants the extra dependency and user friction. |
+| `FINDING-L3` — Dependency advisory | **Unverified; do not mark resolved** | The lockfile currently resolves `body-parser` 1.20.8. The historical advisory has not been rechecked against current advisory data in this task, and no dependency update was made. |
+
+Statuses above describe checked-in code and local test-only evidence, not a
+production certification. In particular, no production database, hosting,
+DNS, R2 bucket, or email service was accessed.
+
 ---
 
 ## 1. Executive Summary
@@ -40,7 +70,7 @@ unverified.
 ### Key Audit Findings Summary
 * **Backend Security & Core API Architecture (`PASS`)**: The Express backend demonstrates exceptional engineering standards. Administrative authentication employs Node.js native `scrypt` hashing with OWASP-recommended parameters, constant-time verification, cryptographic CSRF double-submit token hashing, independent IP and account login rate-limiting, Helmet security headers, 250 KB JSON payload limits, 10 MB magic-byte upload filtering, and clean 400/413/500 error masking.
 * **Catalog Data Synchronization (`PASS`)**: The catalog hierarchy (15 OEMs, 88 Categories, 169 Products) is fully integrated between the Admin CMS, the Express API, and PostgreSQL. Public product detail pages and catalog listings dynamically fetch live records with resilient fallback handling.
-* **Non-Catalog CMS Content Synchronization (`PARTIAL / HIGH RISK`)**: While catalog changes persist to PostgreSQL, website content for the Homepage (hero, stats, capabilities), Header/Footer settings, Testimonials, Projects, Gallery, and Blogs is currently saved to browser `localStorage` (`cms_${pageKey}`) via `ContentService.saveData()`. These non-catalog edits **do not persist to PostgreSQL and are invisible to other users and devices**.
+* **Non-Catalog CMS Content Synchronization (`RESOLVED AFTER AUDIT DATE`)**: The audit-date implementation used browser `localStorage`. Current admin edits persist through authenticated API routes to PostgreSQL `SiteContent`; `localStorage` remains a client cache/fallback.
 * **Excel / Spreadsheet Integration (`NOT IMPLEMENTED`)**: Contact/RFQ and Careers submissions are stored in PostgreSQL and dispatched to company inboxes via Resend. No Excel, Google Sheets, or Microsoft Graph integration exists.
 * **Deployment Portability (`NOT VERIFIED`)**: The repository contains a static frontend build and a Node.js/Express backend. A same-origin reverse proxy is recommended for the admin cookie model. No production provider has been validated; the current `vercel.json` does not proxy `/api/*` to a separate backend.
 
@@ -80,13 +110,13 @@ unverified.
 | Area | Status | Evidence & Details |
 |---|:---:|---|
 | **Homepage & Navigation** | `PARTIAL` | Navigation routes (`/`, `/about`, `/partners`, `/products`, `/services`, `/blogs`, `/contact`) work cleanly via HTML5 history router (`src/router.js`). The unsupported homepage hero figures noted in this historical audit have since been removed; no replacement figures should be added without documented client evidence. |
-| **Search & Filtering** | `PARTIAL` | On `/products`, search and frequency-band filtering work across active catalog items. However, the global header search modal (`src/components/Header.js`) searches static `CATALOG` from `catalogData.js` directly, meaning newly added backend products will not appear in global header search until a rebuild. |
+| **Search & Filtering** | `PARTIAL` | On `/products`, search and frequency-band filtering work across active catalog items. The historical global header-search finding does not match the current `Header.js`, which contains no global product-search implementation. |
 | **Product Listing & Details** | `PASS` | `Products.js` loads the hierarchical catalog via `CatalogService.getPublicCatalog()`. `ProductDetail.js` queries `CatalogService.getPublicProduct(id)` with safe fallback to `findFallbackProduct()`. Specifications, applications, OEM logos, and canonical URLs render correctly. |
 | **Contact & RFQ Forms** | `PASS` | `src/pages/Contact.js` validates inputs and submits to `POST /api/enquiries/contact`. Loading spinners, error messages, and success confirmations function correctly. |
 | **Careers Application** | `PASS` | Multipart form validates resume file extensions (PDF, DOC, DOCX) and size ceiling (10 MB). Dispatches to `POST /api/enquiries/careers`. |
 | **Admin Login & Dashboard** | `PASS` | Login modal authenticates via `ApiService.login()`. Session checks handle unauthenticated probes gracefully without throwing unhandled exceptions. |
 | **Admin Catalog Management** | `PASS` | Product, category, and OEM modals allow editing names, descriptions, visibility toggles, external links, and optional SEO title/description overrides. Mutations trigger atomic backend updates. |
-| **Non-Catalog CMS Editor** | `FAIL` | In `Admin.js`, edits to Home, Header, Footer, Blogs, Testimonials, Projects, and Gallery call `ContentService.saveData(pageKey, data)`. This writes solely to browser `localStorage` (`cms_${pageKey}`). Edits do not reach PostgreSQL. |
+| **Non-Catalog CMS Editor** | `PASS WITH CACHE/FALLBACK` | Admin content writes use the authenticated `SiteContent` API and PostgreSQL. `ContentService` also keeps browser `localStorage` for cached content and offline fallback. |
 | **Responsive Design** | `PASS` | Checked at 360px, 768px, 1024px, and 1440px. Grid breakpoints collapse gracefully, tables scroll horizontally with sticky indicators, and mobile hamburger navigation opens smoothly. |
 | **Dead Code in Repository** | `PARTIAL` | Legacy mock files `src/data/products.js` (old fake products) and references to legacy mock catalog remain in the tree, though runtime pages now use `catalogData.js` or `CatalogService`. |
 
@@ -167,6 +197,10 @@ unverified.
 
 ## 8. Admin-to-Public Website Synchronization
 
+The table below records the state at the 2026-11-05 audit date. Database-backed
+`SiteContent` persistence was added afterward; use the current status table at
+the start of this document for the present behavior.
+
 | Entity / Change | Admin Action | Storage Destination | Visible on Public Site? | Browser Refresh Safe? | Visible to Other Users? | Status |
 |---|---|---|:---:|:---:|:---:|:---:|
 | **Create Product** | Admin &rarr; Add Product | PostgreSQL | Yes (Dynamic API) | Yes | Yes | `PASS` |
@@ -178,7 +212,7 @@ unverified.
 | **Blogs & News** | Admin &rarr; Add Blog Post | **Browser localStorage** | Only in Editor | Yes (Editor only) | **NO** | `FAIL` |
 | **Testimonials** | Admin &rarr; Edit Quotes | **Browser localStorage** | Only in Editor | Yes (Editor only) | **NO** | `FAIL` |
 
-> **Critical Synchronization Finding**: There is an architectural split in the CMS. Catalog data (products, categories, OEMs) synchronizes globally via PostgreSQL. However, general website marketing content (Home, Header, Footer, Blogs, Testimonials) is stored exclusively in `localStorage` (`cms_${pageKey}`). Edits made to these sections by an administrator are **completely invisible to visitors on other devices**.
+> **Historical audit finding**: At the audit date, general website marketing content was stored only in `localStorage`. Current admin edits persist through the PostgreSQL `SiteContent` model; local storage is retained as a cache/fallback.
 
 ---
 
@@ -264,34 +298,37 @@ unverified.
 
 ### Severity Categories
 
-#### A. Critical Issues (Count: 0)
+The severity counts and evidence in this section describe the 2026-11-05
+audit snapshot. Use the current status table above for subsequent changes.
+
+#### A. Critical Issues (Count at audit date: 0)
 * *No critical vulnerabilities (zero RCE, zero SQL injection, zero unauthenticated write endpoints, zero exposed secrets).*
 
-#### B. High-Priority Issues (Count: 1)
-* **Finding ID: `FINDING-H1` — Non-Catalog CMS Content Stored Exclusively in LocalStorage**
+#### B. High-Priority Issues (Count at audit date: 1)
+* **Finding ID: `FINDING-H1` — Non-Catalog CMS Content Stored Exclusively in LocalStorage (Resolved after audit date)**
   * **File**: [`src/data/ContentService.js`](../src/data/ContentService.js#L661-L680), [`src/admin/Admin.js`](../src/admin/Admin.js#L600)
-  * **Evidence**: `ContentService.saveData(pageKey, data)` executes `localStorage.setItem('cms_' + pageKey, JSON.stringify(data))`.
-  * **Impact**: Homepage hero text, capabilities, stats, header/footer settings, testimonials, and blogs edited in the Admin CMS are stored only on the admin's local device. Visitors on other browsers see initial defaults.
-  * **Recommended Fix**: Add a simple generic PostgreSQL model (`SiteContent` with `pageKey` and JSON `content`) and corresponding authenticated backend endpoints (`GET /api/content/:pageKey`, `PUT /api/content/:pageKey`).
+  * **Audit-date evidence**: The earlier implementation stored CMS edits in browser `localStorage`.
+  * **Current evidence**: Admin saves use the authenticated `PUT /api/admin/content/:pageKey` route and PostgreSQL `SiteContent`. Browser storage is used as a cache/fallback.
+  * **Status**: Resolved for cross-device persistence in the current implementation.
 
-#### C. Medium-Priority Issues (Count: 3)
+#### C. Medium-Priority Issues (Count at audit date: 3)
 * **Finding ID: `FINDING-M1` — Admin CMS Code Compiled into Public Bundle**
-  * **File**: [`src/admin/Admin.js`](../src/admin/Admin.js), [`src/router.js`](../src/router.js#L28)
+  * **File**: [`src/admin/Admin.js`](../src/admin/Admin.js), [`src/main.js`](../src/main.js)
   * **Evidence**: `Admin.js` is imported directly into the router, compiling ~5,500 lines of admin code into `dist/assets/index-CNRZeONy.js`.
   * **Impact**: While backend APIs are strictly secured, unauthenticated users can access the `/admin` UI shell.
-  * **Recommended Fix**: Code-split the admin interface using dynamic `import()` so it is loaded on demand.
+  * **Recommended Improvement**: Consider dynamic `import()` to load the admin interface on demand; this is a bundle-size improvement, not an access-control fix.
 * **Finding ID: `FINDING-M2` — Global Search Searches Static Data Rather than PostgreSQL**
   * **File**: [`src/components/Header.js`](../src/components/Header.js#L8)
-  * **Evidence**: `import { CATALOG } from '../data/catalogData.js';` is used to filter search query results.
-  * **Impact**: Products added via Admin CMS do not appear in the header search dropdown until a new static build is deployed.
-  * **Recommended Fix**: Wire header search to `CatalogService.getCurrentPublicCatalog()`.
+  * **Audit-date evidence**: The prior header implementation reportedly searched a static catalogue.
+  * **Current evidence**: No global product-search implementation or static `CATALOG` import was found in the current `Header.js`.
+  * **Status**: The historical finding is not applicable to the current checked-in header.
 * **Finding ID: `FINDING-M3` — Same-Origin Topology Dependency for `__Host-` Cookies**
   * **File**: [`backend/src/routes/auth.js`](../backend/src/routes/auth.js#L30-L50)
   * **Evidence**: Cookies use `__Host-` prefix in production.
   * **Impact**: Prevents split-domain hosting unless an API reverse proxy is configured.
   * **Recommended Fix**: Document the reverse-proxy requirement in the handover guide.
 
-#### D. Low-Priority Issues (Count: 3)
+#### D. Low-Priority Issues (Count at audit date: 3)
 * **Finding ID: `FINDING-L1` — Hardcoded Placeholder Stats in Homepage (Resolved)**
   * **File**: [`src/pages/Home.js`](../src/pages/Home.js), [`src/data/ContentService.js`](../src/data/ContentService.js)
   * **Evidence**: At the audit date, placeholder hero stats were hard-coded in the page and default content. Follow-up review removed the homepage stats display and unsupported defaults.
@@ -304,9 +341,9 @@ unverified.
   * **Recommended Fix**: Add Cloudflare Turnstile if automated spam becomes an operational issue.
 * **Finding ID: `FINDING-L3` — Transitive Dependency Advisories**
   * **File**: `backend/package.json`
-  * **Evidence**: `body-parser < 1.20.9` advisory via Express 4.21.2.
-  * **Impact**: Minimal (payload limits are enforced at 250 KB).
-  * **Recommended Fix**: Run `npm update express` when 4.21.3+ is released.
+  * **Audit-date evidence**: A prior advisory was reported for `body-parser < 1.20.9` via Express.
+  * **Current evidence**: The backend lockfile resolves `body-parser` 1.20.8. Current advisory status was not checked in this task.
+  * **Status**: Unverified; review current advisory data and compatibility before updating dependencies.
 
 ---
 
@@ -335,4 +372,4 @@ The application core is exceptionally strong and ready for client ownership:
 1. **Catalog & E-Commerce Core**: Completely ready. 15 OEMs, 88 Categories, and 169 Products are synchronized with PostgreSQL, fully accessible, and crawlable with dynamic SEO.
 2. **Contact & Careers System**: Completely ready. Submissions are persisted to PostgreSQL and dispatched via Resend.
 3. **Security Architecture**: Enterprise-grade password hashing, rate limiting, and CSRF protection.
-4. **Primary Handover Action Required**: The client must be informed that non-catalog CMS marketing content (Homepage text, Testimonials, Blogs) is currently browser-local and requires a small `SiteContent` database model to synchronize globally across devices if non-technical staff intend to edit general website copy through the CMS.
+4. **CMS content persistence**: The earlier local-only persistence finding is resolved by the authenticated PostgreSQL `SiteContent` API. Production migration/hosting status remains client-owned and is not certified by this code audit.

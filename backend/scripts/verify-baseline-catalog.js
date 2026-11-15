@@ -13,10 +13,10 @@
  *    - State C: INCONSISTENT_PARTIAL -> HALTS immediately, outputs diagnostic report, never overwrites or deletes
  */
 
-import { PrismaClient } from '@prisma/client';
 import { verifyDatabaseSafety } from './verify-db-target.js';
 import { normalizeCatalog, validateHierarchy, computeFingerprint, analyzeTransfer } from '../src/routes/transfer.js';
 import { CATALOG } from '../../shared/catalogData.js';
+import { createPrismaClient } from '../src/prismaClient.js';
 
 export async function inspectBaselineCatalog(prismaClient) {
   const [oemCount, catCount, prodCount, importRunCount, importItemCount] = await Promise.all([
@@ -258,7 +258,7 @@ if (process.argv[1] && process.argv[1].endsWith('verify-baseline-catalog.js')) {
     verifyDatabaseSafety({ expectedDbName: expectedDb, expectedPort });
 
     const targetUrl = process.env.TEST_DATABASE_URL || process.env.DATABASE_URL;
-    const prisma = new PrismaClient({ datasources: { db: { url: targetUrl } } });
+    const prisma = createPrismaClient(targetUrl);
 
     try {
       console.log(`[CATALOG-INSPECT] Inspecting database "${expectedDb}"...`);

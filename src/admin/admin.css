@@ -230,6 +230,41 @@
 }
 .a-textarea { resize: vertical; min-height: 90px; }
 
+/* ── Password Visibility Toggle ── */
+.a-password-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+}
+.a-password-wrapper .a-input {
+  padding-right: 42px;
+}
+.a-password-toggle-btn {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 38px;
+  height: 100%;
+  border: none;
+  background: transparent;
+  color: var(--a-muted, #64748b);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  border-radius: 0 7px 7px 0;
+  transition: color 0.15s ease-in-out;
+}
+.a-password-toggle-btn:hover {
+  color: var(--a-blue, #0b2e59);
+}
+.a-password-toggle-btn:focus-visible {
+  outline: 2px solid var(--a-blue, #0b2e59);
+  outline-offset: -2px;
+}
+
 /* ── Section Divider ── */
 .a-section-divider {
   font-size: 0.72rem;
@@ -1223,4 +1258,213 @@
   color: #be123c;
   font-size: 0.75rem;
   line-height: 1.4;
+}
+
+/* ── Account Security & Password Recovery ── */
+.a-recovery-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  letter-spacing: 0.2px;
+}
+
+.a-badge-verified {
+  background: #ecfdf5;
+  color: #059669;
+  border: 1px solid #a7f3d0;
+}
+
+.a-badge-pending {
+  background: #fffbeb;
+  color: #d97706;
+  border: 1px solid #fde68a;
+}
+
+.a-badge-empty {
+  background: #f1f5f9;
+  color: #64748b;
+  border: 1px solid #cbd5e1;
+}
+
+.a-recovery-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.a-recovery-alert i {
+  font-size: 1.1rem;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.a-recovery-alert strong {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.a-recovery-alert p {
+  margin: 0;
+}
+
+.a-recovery-alert-success {
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  color: #065f46;
+}
+
+.a-recovery-alert-success i {
+  color: #059669;
+}
+
+.a-recovery-alert-error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+}
+
+.a-recovery-alert-error i {
+  color: #dc2626;
+}
+
+.a-recovery-alert-warning {
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  color: #92400e;
+}
+
+.a-recovery-alert-warning i {
+  color: #d97706;
+}
+
+.a-recovery-alert-pending {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: #1e40af;
+}
+
+.a-recovery-alert-pending i {
+  color: #2563eb;
+}
+
+.a-recovery-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 14px 16px;
+  font-size: 0.85rem;
+  color: #475569;
+  line-height: 1.5;
+}
+
+.a-recovery-notice i {
+  color: var(--a-blue, #0b2e59);
+  font-size: 1.1rem;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.a-recovery-notice strong {
+  display: block;
+  color: #1e293b;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.a-recovery-notice p {
+  margin: 0;
+}
+
+/* ── Standalone Public Recovery Pages ── */
+.a-recovery-page {
+  padding: 24px 16px;
+  background: linear-gradient(135deg, #0b2e59 0%, #0e3a72 60%, #1a1a2e 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.a-recovery-box {
+  background: #ffffff !important;
+  border-radius: 16px;
+  padding: 40px;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+  box-sizing: border-box;
+  color: #1e293b;
+}
+
+.a-recovery-box .a-btn-primary {
+  background: var(--a-blue, #0b2e59) !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  font-size: 0.95rem !important;
+  padding: 13px 24px !important;
+  border-radius: 8px !important;
+  border: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  box-shadow: 0 4px 14px rgba(11, 46, 89, 0.3);
+  transition: all 0.2s ease !important;
+  cursor: pointer !important;
+  text-decoration: none !important;
+}
+
+.a-recovery-box .a-btn-primary:hover:not(:disabled) {
+  background: var(--a-blue2, #0e3a72) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(11, 46, 89, 0.4);
+}
+
+.a-recovery-box .a-btn-primary:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.a-recovery-box .a-btn-outline {
+  background: #ffffff !important;
+  border: 1px solid var(--a-border, #e2e8f0) !important;
+  color: var(--a-muted, #64748b) !important;
+  font-weight: 500 !important;
+  padding: 9px 18px !important;
+  border-radius: 8px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  transition: all 0.15s ease !important;
+  text-decoration: none !important;
+}
+
+.a-recovery-box .a-btn-outline:hover {
+  border-color: var(--a-blue, #0b2e59) !important;
+  color: var(--a-blue, #0b2e59) !important;
+  background: #f8fafc !important;
+}
+
+/* Disable custom marketing cursor in all admin CMS and recovery views */
+#custom-cursor-ring,
+#custom-cursor-dot,
+.custom-cursor-ring,
+.custom-cursor-dot {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }

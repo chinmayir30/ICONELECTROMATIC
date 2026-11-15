@@ -4,6 +4,7 @@
  * Connected to ContentService for dynamic CRUD, image upload, and reordering.
  */
 import { ContentService } from '../data/ContentService.js';
+import { navigate } from '../router.js';
 
 // Helper: Running OEM Logos Ticker (Unconfined, full-width continuous flow of only large OEM logos)
 function renderRunningLogoTicker(partners) {
@@ -164,7 +165,7 @@ export function initPartnersPage() {
       const pid = card.getAttribute('data-partner-id');
       if (pid) {
         const oemId = PARTNER_TO_OEM_MAP[pid] || pid;
-        window.location.hash = `#/products?level=categories&oem=${encodeURIComponent(oemId)}`;
+        navigate(`/products?level=categories&oem=${encodeURIComponent(oemId)}`);
       }
     });
   });

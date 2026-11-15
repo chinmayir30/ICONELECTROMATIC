@@ -71,6 +71,8 @@ test("non-interactive provisioning stores a password hash without printing the s
   assert.equal(succeeded, true);
   assert.equal(disconnected, true);
   assert.equal(createArgs.data.email, "admin@example.com");
+  assert.equal(createArgs.data.recoveryEmail, "admin@example.com");
+  assert.equal(createArgs.data.recoveryEmailVerifiedAt, null);
   assert.notEqual(createArgs.data.passwordHash, secret);
   assert.equal(
     await verifyPassword(secret, createArgs.data.passwordHash),

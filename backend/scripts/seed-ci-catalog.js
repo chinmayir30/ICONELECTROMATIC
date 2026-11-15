@@ -15,8 +15,8 @@
  * is already present it exits cleanly without touching the database.
  */
 
-import { PrismaClient } from "@prisma/client";
 import { seedBaselineCatalog } from "./verify-baseline-catalog.js";
+import { createPrismaClient } from "../src/prismaClient.js";
 
 const REQUIRED_DB_NAME = "icon_ci_test";
 const ALLOWED_HOSTS = new Set(["localhost", "127.0.0.1"]);
@@ -60,7 +60,7 @@ async function main() {
 
   console.log("[CI-SEED] Safety check passed. Connecting to CI database…");
 
-  const prisma = new PrismaClient({ datasources: { db: { url } } });
+  const prisma = createPrismaClient(url);
 
   try {
     const result = await seedBaselineCatalog(prisma);

@@ -1,4 +1,4 @@
-import test from 'node:test';
+import test, { after } from 'node:test';
 import assert from 'node:assert/strict';
 
 // Provide browser storage mocks for Node test environment
@@ -33,6 +33,10 @@ import {
   CORE_PAGES,
   formatLastmod,
 } from '../src/routes/sitemap.js';
+
+after(async () => {
+  await prisma.$disconnect();
+});
 
 async function withServer(app, callback) {
   const server = app.listen(0, '127.0.0.1');
@@ -294,7 +298,7 @@ test('PRERENDER VERIFICATION: dist/product/:id/index.html files contain valid st
     assert.ok(html.includes('property="og:description"'), 'Must have og:description');
     assert.ok(html.includes('id="structured-data-jsonld"'), 'Must have structured-data-jsonld');
     assert.ok(html.includes('<main class="page-content product-detail-page"'), 'Must contain rendered product body for non-JS readers');
-    
+
     // Exactly one <h1> tag on the public product page
     const h1Matches = [...html.matchAll(/<h1[\s>]/g)];
     assert.equal(h1Matches.length, 1, `Expected exactly 1 <h1> tag, found ${h1Matches.length} in ${prodId}`);
@@ -304,13 +308,11 @@ test('PRERENDER VERIFICATION: dist/product/:id/index.html files contain valid st
 test('POST-TRANSFER DATABASE VERIFICATION: PostgreSQL catalog tables contain the expected baseline counts', async () => {
   // The baseline catalog transfer was applied via the Admin CMS.
   // These counts verify that the SEO tests did not corrupt or modify catalog records.
-  const [oemCount, catCount, prodCount, importRunCount, importItemCount] = await Promise.all([
-    prisma.oem.count(),
-    prisma.category.count(),
-    prisma.product.count(),
-    prisma.importRun.count(),
-    prisma.importItem.count(),
-  ]);
+  const oemCount = await prisma.oem.count();
+  const catCount = await prisma.category.count();
+  const prodCount = await prisma.product.count();
+  const importRunCount = await prisma.importRun.count();
+  const importItemCount = await prisma.importItem.count();
 
   assert.ok(oemCount >= 15, `oem table must have at least 15 records, got ${oemCount}`);
   assert.ok(catCount >= 88, `category table must have at least 88 records, got ${catCount}`);
@@ -409,7 +411,7 @@ test('DYNAMIC SITEMAP: Filters out hidden products, hidden categories, and hidde
   let responseBody = '';
   let responseStatus = 0;
   const mockRes = {
-    setHeader: () => {},
+    setHeader: () => { },
     status: (s) => {
       responseStatus = s;
       return mockRes;
@@ -445,7 +447,7 @@ test('DYNAMIC SITEMAP: Automatically includes newly added products without requi
   // 1. Initial request before adding product
   let xml1 = '';
   await handler({}, {
-    setHeader: () => {},
+    setHeader: () => { },
     status: () => ({ send: (b) => { xml1 = b; } }),
   });
   assert.ok(xml1.includes('baseline-part-1'));
@@ -460,7 +462,7 @@ test('DYNAMIC SITEMAP: Automatically includes newly added products without requi
   // 3. Second request immediately reflects the new product
   let xml2 = '';
   await handler({}, {
-    setHeader: () => {},
+    setHeader: () => { },
     status: () => ({ send: (b) => { xml2 = b; } }),
   });
   assert.ok(xml2.includes('<loc>https://iconelectromatic.com/product/new-future-amp-999</loc>'));
@@ -492,7 +494,7 @@ test('DYNAMIC SITEMAP: Falls back gracefully to static fallback when database qu
     let resBody = '';
     let resStatus = 0;
     await handler({}, {
-      setHeader: () => {},
+      setHeader: () => { },
       status: (s) => {
         resStatus = s;
         return {

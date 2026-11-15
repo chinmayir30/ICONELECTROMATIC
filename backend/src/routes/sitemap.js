@@ -119,10 +119,10 @@ export async function getActiveProducts(prismaClient = prisma) {
 
 function findFallbackSitemap() {
   const candidatePaths = [
-    path.resolve(__dirname, "../../public/sitemap.fallback.xml"),
-    path.resolve(__dirname, "../../public/sitemap.xml"),
-    path.resolve(__dirname, "../../dist/sitemap.fallback.xml"),
-    path.resolve(__dirname, "../../dist/sitemap.xml"),
+    path.resolve(__dirname, "../../../public/sitemap.fallback.xml"),
+    path.resolve(__dirname, "../../../public/sitemap.xml"),
+    path.resolve(__dirname, "../../../dist/sitemap.fallback.xml"),
+    path.resolve(__dirname, "../../../dist/sitemap.xml"),
   ];
   for (const p of candidatePaths) {
     if (fs.existsSync(p)) return p;

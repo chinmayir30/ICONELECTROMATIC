@@ -1,4 +1,4 @@
-import test from "node:test";
+import test, { after } from "node:test";
 import assert from "node:assert/strict";
 import express from "express";
 import { CATALOG } from "../../shared/catalogData.js";
@@ -12,6 +12,10 @@ import {
 import prisma from "../src/db.js";
 import { createRequireAdmin } from "../src/middleware/requireAdmin.js";
 import { createOpaqueToken, hashOpaqueToken } from "../src/auth/security.js";
+
+after(async () => {
+  await prisma.$disconnect();
+});
 
 // Helper mock to simulate Prisma database calls in unit tests
 function createMockPrisma({
@@ -740,13 +744,11 @@ test("execute: missing or bad status represents failed execution – Admin.js gu
 test("POST-TRANSFER DATABASE VERIFICATION: PostgreSQL catalog tables contain the expected baseline counts", async () => {
   // The baseline catalog transfer was applied via the Admin CMS (1 ImportRun, APPLIED status).
   // These counts verify the transfer committed correctly and completely.
-  const [oemCount, catCount, prodCount, importRunCount, importItemCount] = await Promise.all([
-    prisma.oem.count(),
-    prisma.category.count(),
-    prisma.product.count(),
-    prisma.importRun.count(),
-    prisma.importItem.count(),
-  ]);
+  const oemCount = await prisma.oem.count();
+  const catCount = await prisma.category.count();
+  const prodCount = await prisma.product.count();
+  const importRunCount = await prisma.importRun.count();
+  const importItemCount = await prisma.importItem.count();
 
   assert.ok(oemCount >= 15, `oem table must have at least 15 records, got ${oemCount}`);
   assert.ok(catCount >= 88, `category table must have at least 88 records, got ${catCount}`);

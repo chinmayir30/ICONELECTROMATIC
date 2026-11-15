@@ -144,28 +144,62 @@ catalogue hierarchy after an approved import.
 The test-only script `node scripts/verify-baseline-catalog.js` is restricted to
 the local test database and port 5433; do not use it for production recovery.
 
-## 6. Administrator account recovery
+## 6. Administrator account recovery and emergency password reset
 
-The interactive provisioning command creates a new active `ADMIN` user and
-requires the database to be available:
+The application provides a three-tier recovery model for administrator access:
+
+### Tier 1: Self-service password recovery (Standard)
+
+Active administrators with an existing, verified recovery email (either their verified default login email or an optional verified personal recovery email) can recover access without operator intervention:
+
+1. **Initiation:** On the `/admin` login screen, the administrator clicks **Forgot password?** and enters either their primary login email or their verified recovery email. Both identifiers resolve to the same administrator account, while account-level and cross-identifier rate limiting prevents bypassing protections by alternating addresses.
+2. **Destination & Token:** The endpoint (`POST /api/auth/forgot-password`) verifies account status and dispatches a reset link strictly to the administrator's **active verified recovery email** (never to an unverified address, and never to multiple destinations). If the administrator verified their default login email, the reset link is sent to that login email; if they configured and verified a personal recovery email, the reset link is sent to that personal recovery email. Resetting the password never replaces the administrator's primary login email with the recovery email. The reset token is a cryptographically random 256-bit opaque token, valid for **30 minutes**, and stored as a SHA-256 hash.
+3. **Reset Completion:** The administrator opens the emailed link (`/admin/reset-password?token=...` or `/reset-password?token=...`), enters a new password meeting policy (14–1024 characters), confirms the password, and submits.
+4. **Enforcement & Revocation:** Upon successful reset (`POST /api/auth/reset-password`):
+   - The token is consumed atomically (single-use; subsequent replay attempts are rejected).
+   - **All active sessions for that administrator are immediately revoked across all browsers and devices.**
+   - Security alert emails are dispatched to both the primary login and verified recovery addresses (or a single deduplicated email if the recovery address is the login email).
+5. **Unconfigured or Unverified Accounts:** Newly provisioned administrators have their login email set as the default recovery email awaiting verification (`recoveryEmailVerifiedAt: null`). If an administrator has **no verified recovery email** (or has not yet verified the default login email), the forgot-password endpoint returns the identical uniform HTTP 200 message to prevent account enumeration, but no email is dispatched. Accounts without a verified recovery email cannot use self-service recovery.
+
+### Tier 2: Controlled administrator-assisted recovery
+
+If an administrator is locked out and has no verified recovery email, or has permanently lost access to their recovery mailbox:
+
+1. **Authorization & Identity Gate:** The operator must verify the administrator's identity and obtain explicit client authorization through corporate channels before taking action.
+2. **No CMS Admin-to-Admin Password Reset:** The web CMS does not provide an administrator-to-administrator password-reset function or allow viewing unmasked recovery credentials.
+3. **Separate New Administrator Account:** If the client authorizes creating a separate new administrator account, provision it using:
+   ```sh
+   # From backend/, interactive terminal only:
+   node scripts/provision-admin.js
+   ```
+   Provisioning a new administrator creates a distinct active account; it does not recover, reset, or replace the existing administrator account.
+4. **Existing Account Retention:** If the existing administrator account and its audit history must be retained, use Tier 3.
+
+### Tier 3: Emergency password reset CLI (`reset-admin-password.js`)
+
+For emergency recovery of an existing administrator on an approved local database, the backend provides a guarded, interactive CLI script:
 
 ```sh
-# From backend/, use an interactive terminal and enter the password only
-# into the hidden prompt.
-node scripts/provision-admin.js
+# From backend/, interactive terminal only:
+node scripts/reset-admin-password.js --email="admin@iconelectromatic.com"
 ```
 
-It does not reset or replace an existing user's password. For a lost admin
-account, first use an authorized existing administrator or the client's approved
-database-admin recovery process. If provisioning a new administrator is
-necessary, obtain client authorization, use a unique strong password, follow
-least privilege/access approval, then verify login and remove any temporary
-secret values. Do not delete users or modify password hashes directly without
-an approved, reviewed recovery procedure.
+This is an exceptional operator procedure requiring client authorization.
 
-Non-interactive provisioning uses `ADMIN_EMAIL` and `ADMIN_PASSWORD` from a
-secret manager and `node scripts/provision-admin.js --non-interactive`. The
-password must not be in arguments, shell history, logs, or this runbook.
+**Strict safety constraints enforced by source code:**
+- **Interactive terminal required:** Passwords must never be passed in command-line arguments, options (`--password`, `-p`, `--pass`), or environment variables. The script uses hidden terminal input (`askHidden`) for password entry.
+- **Remote and production database targets strictly forbidden:** The script inspects `DATABASE_URL` and immediately aborts if the host is remote (not `127.0.0.1` or `localhost`) or if the database name or hostname contains `"prod"`. Production database targets are never permitted, even with authorization flags.
+- **Port 5432 safety gate:** PostgreSQL port `5432` is blocked by default to protect the local development database from accidental modification. Operating against local port `5432` requires explicit authorization:
+  ```sh
+  node scripts/reset-admin-password.js --allow-local-db --email="admin@iconelectromatic.com"
+  # or environment variable ALLOW_LOCAL_PORT_5432=true
+  ```
+  Even with explicit authorization, the CLI verifies that the host is strictly `127.0.0.1` or `localhost` and the database name matches the approved local database (`icon_electromatic`).
+- **Port 5433 (Test Database):** Permitted only when the database name matches the approved test database (`icon_electromatic_test`).
+- **Target verification:** Confirms that the target administrator exists and is active (`active: true`). Inactive accounts cannot be reset via the CLI.
+- **Explicit confirmation:** Prompts the operator: `Confirm password reset for active administrator "..."? (Type "yes" to proceed):`. Any answer other than `"yes"` cancels the reset immediately.
+- **Password policy enforcement:** Enforces client-side validation of the 14–1024 character policy and matching confirmation before database execution.
+- **Atomic transaction:** In a single database transaction, the CLI updates `passwordHash` and `passwordChangedAt`, revokes all active sessions for that administrator (`revokedAt = now`), and records an `AuditEvent` with action `ADMIN_PASSWORD_RESET_CLI`.
 
 ## 7. Cloudflare R2 media recovery
 
@@ -234,6 +268,10 @@ password must not be in arguments, shell history, logs, or this runbook.
 - [ ] `GET /api/health` and `GET /api/health/db` return expected healthy responses.
 - [ ] Catalogue hierarchy and counts were checked against an approved source.
 - [ ] Admin login works and only authorized active administrators can access the portal.
+- [ ] Admin recovery tokens enforce 30-minute expiry and atomic single-use behavior; replay attempts fail.
+- [ ] Successful password reset revokes all active sessions for that administrator across all devices.
+- [ ] Accounts without a verified recovery email cannot use self-service recovery, while public endpoints retain uniform generic responses.
+- [ ] Emergency CLI (`reset-admin-password.js`) target restrictions (strictly local hosts, port 5432 authorization gate, port 5433 test DB match, no production targets) and interactive confirmation safeguards are verified.
 - [ ] Enquiry records and communication history are present and readable by authorized staff.
 - [ ] Site content, SEO, media metadata, and import history were sampled for expected integrity.
 - [ ] R2 object availability and database metadata are consistent using a non-destructive check.

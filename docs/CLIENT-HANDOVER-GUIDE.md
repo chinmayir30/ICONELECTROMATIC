@@ -133,7 +133,7 @@ All environment variables must be configured directly in your hosting platform d
 | `R2_SECRET_ACCESS_KEY` | Required for R2 | Secret from provider | Bucket-scoped R2 S3 API secret. |
 | `R2_BUCKET_NAME` | Required for R2 | Client-selected bucket | Target bucket name. |
 | `R2_ENDPOINT` | **Yes** | `https://<ACCOUNT_ID>.r2.cloudflarestorage.com` | S3 API endpoint URL for your Cloudflare R2 account. |
-| `R2_PUBLIC_DOMAIN` | Optional | Client-configured HTTPS domain | If set, media delivery redirects to this host, which must serve uploaded object keys. Otherwise the backend streams from the private bucket or uses a short-lived signed URL fallback. |
+| `R2_PUBLIC_DOMAIN` | Optional | Client-configured HTTPS domain | If set, public media redirects to this stable host, which must serve uploaded object keys. Otherwise the backend streams from the private bucket; a stream failure returns a non-cacheable `502` rather than an expiring public URL. |
 
 `ADMIN_EMAIL` and `ADMIN_PASSWORD` are needed only for non-interactive first-admin
 provisioning. `PRODUCTION_DATABASE_URL` is used only by the optional production
@@ -236,9 +236,10 @@ Cloudflare R2 provides zero-egress S3-compatible storage for product images and 
    `POST /api/media/upload`. The backend validates image bytes and size, writes
    the object to R2, then records the media asset in PostgreSQL. Public delivery
    uses `GET /api/media/file/:id`; by default the backend streams from the private
-   bucket, with a signed-URL fallback. If `R2_PUBLIC_DOMAIN` is configured, the
-   route redirects to that host instead. Browser-to-R2 uploads and bucket CORS
-   are not part of this implemented upload flow.
+   bucket. A public stream failure returns a non-cacheable `502`; it does not
+   redirect visitors to a short-lived signed URL. If `R2_PUBLIC_DOMAIN` is
+   configured, the route redirects to that stable host instead. Browser-to-R2
+   uploads and bucket CORS are not part of this implemented upload flow.
 
 ---
 
@@ -296,6 +297,22 @@ provider's secret store. Do not pass passwords as command-line arguments, print
 them, or place them in shell history. Remove temporary provisioning secrets
 after setup.
 
+### Step 3b: Verify Administrator Recovery Email (Mandatory Security Practice)
+Upon administrator account provisioning via `provision-admin.js`, the administrator's login email is automatically recorded as the initial recovery email awaiting verification (`recoveryEmailVerifiedAt: null`). It is never automatically marked as verified.
+
+Immediately after starting the application:
+1. Sign in to `https://iconelectromatic.com/admin` (or `/admin` under your deployed domain) using the provisioned credentials.
+2. In the navigation sidebar under **ACCOUNT**, click **Account Security**.
+3. Under **Emergency Recovery Address**, the administrator's login email is displayed as the default recovery destination awaiting verification.
+4. Click **Verify Login Email**, enter the current administrator password to complete password step-up authentication, and click **Send Verification Link**.
+5. A verification email containing a 30-minute confirmation link will be dispatched via Resend strictly to the login email address.
+6. Open the verification email, click the link (`/admin/verify-recovery?token=...`), and explicitly click the **Confirm & Verify Email** button on the page.
+7. Return to `/admin` and confirm that the Account Security tab now displays the **Active & Verified (Login Email)** badge with a verification timestamp.
+8. *(Optional)* If the administrator wishes to receive password reset links at a dedicated personal address instead, they can click **Add Personal Recovery Email**, enter the personal address, verify with password step-up, and complete verification via the link sent strictly to that personal address. The existing verified recovery address remains active until replacement verification succeeds.
+
+> [!IMPORTANT]
+> Self-service password recovery is unavailable until a recovery email is verified. If an administrator forgets their password while the recovery email remains unverified, they cannot reset it from the web interface.
+
 ### Step 4: Initial Catalog Transfer to PostgreSQL
 1. Start the server and visit `/admin` in your browser.
 2. Sign in with the newly provisioned administrator account.
@@ -340,6 +357,17 @@ npm start
 * Starts `src/server.js` using the provider-assigned `PORT`, or the application's
   default port when the provider does not set one.
 
+### Frontend Tests
+
+From the repository root, run the three frontend test files directly:
+
+```bash
+node --test test/liveCatalog.test.js test/frontendReliability.test.js test/adminUpload.test.js
+```
+
+These tests use local mocks and do not connect to PostgreSQL, send email, or
+access Cloudflare R2.
+
 ### Backend Tests
 
 From the repository root, set `TEST_DATABASE_URL` in the local PowerShell
@@ -352,35 +380,204 @@ npm test
 
 The test runner rejects missing or non-local test database URLs, sets
 `NODE_ENV=test`, and enables the suite's CI skips for tests that require live R2
-or production-seeded catalog data. GitHub Actions uses its isolated
-`icon_ci_test` database. The test suite includes database-backed tests and may
-write test fixtures; do not point it at the native CMS database on port `5432`
-or at any database containing data that must be preserved. The runner does not
-apply migrations or reset databases.
+or production-seeded catalog data. Locally it accepts only
+`icon_electromatic_test` on port `5433`. GitHub Actions uses its isolated
+`icon_ci_test` database on port `5432`, and the runner requires GitHub Actions
+run metadata before allowing that exception. The test suite includes
+database-backed tests and may write test fixtures; never point it at the native
+CMS database on port `5432` or at any database containing data that must be
+preserved. The runner does not apply migrations or reset databases.
+
+The root `npm test` command delegates to the backend test runner; it is not the
+frontend test command. The project does not use npm workspaces.
 
 ### Content Security Policy
 
-The Express backend serves API/media responses, not the frontend document, so
-its disabled Helmet CSP does not protect the static website. Apply CSP at the
-selected frontend host. That host is not selected yet, so enforcement remains
-deferred.
+The Express backend serves API/media responses, not the static frontend
+document. Helmet's disabled CSP in `backend/src/server.js` therefore does not
+protect the website HTML. Put any CSP header on the selected frontend host
+(such as the client-managed Nginx serving `dist/`), not only on the API. The
+frontend host is not selected, so this policy is for **Report-Only testing
+only**; do not enforce it yet.
 
-The current page requires local scripts, inline styles used by generated
-markup, Google Fonts (`fonts.googleapis.com` and `fonts.gstatic.com`), and
-Font Awesome CSS/fonts from `cdnjs.cloudflare.com`. API requests use same-origin
-`/api` by default but can use a configured API origin. CMS/product images and
-media may use configured R2/CDN or approved external origins.
+#### Resource and inline-code inventory
 
-Candidate policy for **Report-Only review only**, not a ready-to-enforce header:
+- The Vite frontend loads its application scripts, styles, images, and default
+  hero video from the site itself. Google Fonts use
+  `https://fonts.googleapis.com` for stylesheets and
+  `https://fonts.gstatic.com` for font files. Font Awesome CSS and fonts use
+  `https://cdnjs.cloudflare.com`.
+- The existing UI contains inline `style` attributes, including dynamically
+  rendered public and admin/CMS markup. It also has inline JavaScript event
+  handlers (including image-error fallbacks and a reload fallback). A strict
+  `script-src-attr 'none'` will therefore produce Report-Only violations for
+  those handlers; it will not block them in Report-Only mode. No `eval()` or
+  `new Function()` use was found in the current frontend source.
+- Prerendered product pages contain inline JSON-LD structured data. Check
+  browser reports and confirm structured data remains present when reviewing
+  the policy; do not add a broad inline-script exception merely to suppress a
+  report.
+- `img-src` needs the site origin, `data:`, and `blob:` for local, data, and
+  browser-generated preview images. Source-defined product images include
+  `https://www.minicircuits.com`. CMS/catalogue content can supply other image
+  URLs, so inspect actual approved content and add only its required origins.
+- `media-src` needs the site origin for the local default hero video. Add an
+  external media origin only if an approved deployed CMS value actually uses
+  one. The admin video field by itself does not establish that YouTube/Vimeo
+  frames are loaded by the current application.
+- API calls default to same-origin `/api`. If the client configures
+  `VITE_API_BASE_URL` or `window.__ICON_API_BASE__` to a cross-origin API,
+  add that exact origin to `connect-src`. With private R2, public media is
+  streamed through the same-origin API. If the client configures
+  `R2_PUBLIC_DOMAIN`, the media route redirects to that host; add its exact
+  origin to `img-src` only when that delivery mode is selected.
+- Manufacturer and social URLs used as ordinary links do not belong in
+  `img-src` or `connect-src` unless browser testing shows that the page actually
+  loads resources or makes connections to them.
+
+The separate root-level `com.html` file is a legacy WordPress-exported page
+with its own inline scripts/styles and external WordPress resources. The current
+Vite build uses `index.html` as its input; `com.html` is not part of the normal
+Vite `dist/` build. Its deployment/serving status has not been confirmed. If
+the client serves it, review it separately and configure/test the policy for
+that page's actual resources; do not add its legacy origins to the main
+application policy without evidence.
+
+#### CSP Report-Only draft
+
+The following is a complete **draft for Report-Only review**, not a ready-to-use
+enforcing header. Before configuring it, replace each bracketed placeholder
+with the exact client-approved origin(s), or remove the placeholder when that
+origin is not needed. Do not include brackets literally. `'self'` represents
+the final frontend origin.
 
 ```text
-default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: blob: <approved-image-origins>; media-src 'self' blob: <approved-media-origins>; connect-src 'self' <configured-backend-origin>; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'
+Content-Security-Policy-Report-Only: default-src 'self'; base-uri 'self'; object-src 'none'; frame-src https://challenges.cloudflare.com; frame-ancestors 'none'; form-action 'self'; script-src 'self' https://challenges.cloudflare.com; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: blob: https://www.minicircuits.com [approved-R2-CDN-or-other-image-origins]; media-src 'self' [approved-external-media-origins]; connect-src 'self' https://challenges.cloudflare.com [approved-cross-origin-API-origin]
 ```
 
-Replace the placeholders only with client-approved origins. Review browser
-violations on public pages and `/admin`, including API requests, R2 images/media,
-fonts, and CMS behavior, before considering enforcement. Do not copy this draft
-as an enforcing policy while its origins remain unresolved.
+`'unsafe-inline'` is retained for styles because inline style attributes are
+widespread. `script-src-attr 'none'` deliberately reports the existing inline
+event handlers for review. Report-Only does not block either resource. The draft
+does not permit `unsafe-eval`, inline scripts, or frames. Confirm JSON-LD
+behavior in supported browsers during testing. The `frame-ancestors 'none'`
+setting disallows embedding the site; confirm the client has no legitimate
+embedding requirement before any later enforcement.
+
+#### Report-Only browser review and reporting
+
+Configure the draft only as `Content-Security-Policy-Report-Only` on the
+frontend host. Open browser developer tools, enable Preserve Log in the
+Console and Network panels, then visit representative public pages (home,
+catalogue, product detail, contact, and other deployed prerendered pages).
+Also exercise the admin login, `/admin`, CMS editing and previews, API-backed
+catalogue/content loads, form flows, fonts, images, and the hero video. Check
+the console for policy violations and the Network panel for failed requests.
+Report-Only should report violations without blocking these resources.
+
+For centralized reports, the client must select and operate a report collector
+and approve its access, rate limiting, and retention policy. The application
+does not provide a CSP report endpoint. Configure a client-controlled
+`Reporting-Endpoints` value and the appropriate `report-to` directive (and
+`report-uri` only if required for legacy browser support) at the selected
+frontend host; verify report delivery without sending reports to an
+unconfigured application endpoint. Review reported directives and destinations,
+add only justified origins, and repeat the browser checks.
+
+The final hosting origin, whether the API is same-origin or cross-origin, the
+selected R2 public domain/CDN, any externally hosted CMS images or media, and
+the reporting collector are client-dependent. Confirm these values from the
+client's deployment and approved content before adjusting the draft. Keep
+enforcement deferred until the host is selected, Report-Only results are
+reviewed across public and admin/CMS workflows, legitimate violations are
+resolved, and the client approves the final policy.
+
+#### Cloudflare Turnstile handover
+
+Turnstile protects the homepage enquiry, Contact/RFQ, and Careers forms. It is
+an additional bot check, not a replacement for server-side validation, request
+rate limits, or the existing hidden honeypot fields. Those controls address
+different failure modes and remain enabled.
+
+**Developer implementation already completed**
+
+- The frontend explicitly loads Cloudflare's Turnstile script once and renders
+  independent widgets for the forms. Contact/RFQ and the homepage enquiry use
+  the `contact_enquiry` action; Careers uses `careers_application`.
+- Each form sends its widget token in the `X-Turnstile-Token` request header.
+  The backend calls Cloudflare Siteverify with a three-second timeout and
+  verifies success, the exact action, and a hostname listed in `FRONTEND_URL`.
+- Careers verification runs after rate limiting and before Multer processes or
+  buffers the resume. Rejected requests therefore do not process the upload.
+- Missing, invalid, expired, reused, misconfigured, or unverifiable tokens fail
+  closed. The backend does not accept a submission by bypassing verification.
+  Tokens are single-use; an expired or rejected challenge is reset so the user
+  can complete a fresh challenge and retry without clearing form fields.
+- Automated tests mock Turnstile and Siteverify. They must not call Cloudflare
+  or use production keys.
+
+**Client responsibilities: Cloudflare and deployment configuration**
+
+1. In the client's Cloudflare account, create a Turnstile widget for the
+   website, choose the widget mode appropriate to the approved user experience,
+   and register every exact frontend hostname that will serve the production
+   forms. Register `www` and non-`www` separately if both are used; do not rely
+   on an unconfigured alias or wildcard.
+2. Provide the widget's **site key** to the frontend build environment as
+   `VITE_TURNSTILE_SITE_KEY`. It is public and is embedded in frontend assets;
+   it is not an API secret. The root `.env.example` contains a placeholder.
+3. Store the widget's **secret key** only in the backend deployment's private
+   environment or secret manager as `TURNSTILE_SECRET_KEY`. It must never be
+   put in frontend variables, code, build arguments that become public assets,
+   logs, API responses, documentation with real values, or Git. The
+   `backend/.env.example` contains only a placeholder.
+4. Configure backend `FRONTEND_URL` with comma-separated, exact frontend
+   origins, including the production hostnames above. The backend uses these
+   origins both for its CORS allowlist and to validate Siteverify's returned
+   hostname. Production entries must use HTTPS and an origin only (no path,
+   credentials, query, fragment, or non-default port).
+5. Configure these values independently in the client's local development and
+   production environments. Use only client-approved non-production
+   credentials for manual local widget testing; never copy production keys into
+   local development or automated test environments. Keep local `.env` files
+   untracked. Automated verification tests use mocks and need no keys.
+6. Confirm the final hosting and API origins, then retain
+   `https://challenges.cloudflare.com` in `script-src`, `frame-src`, and
+   `connect-src` of the **Report-Only draft above**. These entries are required
+   for the widget script, challenge frame, and browser communications. Do not
+   enable an enforcing CSP as part of this setup.
+
+The `.env.example` files document the variable names only; they do not
+configure a deployment. The client or hosting operator owns provisioning,
+secret storage, hostname registration, frontend build variables, backend
+runtime variables, and any CSP Report-Only response header. Developers own the
+application integration, mock-based regression tests, and these handover
+instructions. No live Cloudflare verification has been performed, and neither
+key is configured in this repository.
+
+**Troubleshooting**
+
+- If a widget is blank or reports a script error, confirm the frontend can load
+  `https://challenges.cloudflare.com`, the CSP Report-Only report includes the
+  required directives, and `VITE_TURNSTILE_SITE_KEY` is configured in the
+  frontend build environment. The form must remain blocked until verification
+  works; rebuild/redeploy the frontend after changing its build variable.
+- `TURNSTILE_REQUIRED` or `TURNSTILE_INVALID` means the token was missing or
+  malformed. Confirm the widget completed and that the form request includes
+  `X-Turnstile-Token`.
+- `TURNSTILE_REJECTED` indicates provider rejection, expiry/reuse, or a
+  hostname/action mismatch. Recomplete the challenge; verify that the widget
+  hostname is explicitly registered and the matching origin is included in
+  `FRONTEND_URL`. Do not loosen hostname or action validation.
+- `TURNSTILE_UNAVAILABLE` means Siteverify could not be reached or returned an
+  unusable response. `TURNSTILE_NOT_CONFIGURED` means required backend
+  configuration is missing or invalid. Both fail closed; an operator should
+  check service connectivity and secret-manager/environment configuration.
+- `ENQUIRY_SAVED_EMAIL_FAILED` and `CAREER_SAVED_EMAIL_FAILED` mean the
+  submission was saved but email dispatch failed. Do not resubmit normally;
+  contact the client team to avoid creating a duplicate submission.
+- If a connection failure leaves submission status unknown, the page warns that
+  it may already have been received and prevents ordinary resubmission. Contact
+  the team before attempting another submission.
 
 ---
 
@@ -412,6 +609,52 @@ Click **View Details** on any enquiry row to open the operational workspace:
    * Staff assignment logs (who assigned it, previous assignee, new assignee).
    * Manually recorded customer email replies, phone call notes, and internal team memos.
 5. **Optimistic Concurrency Protection:** If two staff members edit the same enquiry simultaneously, the portal detects the collision (HTTP 409) and prompts to reload the latest data without overwriting edits.
+
+### Administrator Account Security & Password Recovery
+
+The CMS provides self-service password recovery and account security controls for administrators:
+
+#### 1. Account Security Tab Navigation & Status
+In the authenticated admin portal (`/admin`), click **Account Security** in the sidebar:
+- **Masked Address Display:** Displays the administrator's recovery email in privacy-preserving masked format (e.g. `a***n@domain.com`) alongside their permanent login email.
+- **Status Badges & Architecture:**
+  - `Active & Verified (Login Email)`: The administrator's primary login email is verified and serves as the active recovery destination for password resets.
+  - `Active & Verified (Personal Email)`: A separate personal recovery email has been verified and serves as the active recovery destination.
+  - `Pending Verification`: The default login email or a replacement personal address has been requested but not yet verified. **Any existing verified recovery address remains active until replacement verification succeeds.**
+  - `Not Configured`: No recovery address is configured (e.g. if a personal recovery email was removed without re-verifying the login email). Self-service password recovery is disabled.
+
+#### 2. Default Login Email Verification and Optional Personal Recovery Email
+- **Verifying the Default Login Email:** Newly provisioned administrators have their login email recorded as the default recovery email awaiting verification. Clicking **Verify Login Email** and entering the account password dispatches a verification link strictly to the login email (`POST /api/auth/recovery-email/request`).
+- **Adding/Replacing a Personal Recovery Email:** Click **Add Personal Recovery Email** (or **Change Address**), enter the personal recovery email, and enter the account password for password step-up authentication (`POST /api/auth/recovery-email/request`). The verification link is dispatched strictly to that proposed personal address (never to the login email).
+- **Verifying the Address:** The system dispatches a verification link (`/admin/verify-recovery?token=<64-hex>`). Upon visiting the link, the page requires an explicit click on **Confirm & Verify Email** (`POST /api/auth/recovery-email/confirm`). This activates the new recovery address and deactivates any previous recovery address.
+- **Removing a Personal Recovery Address:** Click **Remove**, review the confirmation warning, enter the current password, and confirm (`POST /api/auth/recovery-email/remove`). Security alerts are dispatched to both the primary login email and the removed recovery address. The default login email cannot be removed, but can be replaced by configuring a personal recovery email.
+- **Permanent Login Identity:** The administrator's primary login email never changes through recovery address operations. Personal recovery emails cannot authenticate at `/admin/login`.
+
+#### 3. Requesting a Password Reset (Forgot Password)
+- **Initiation:** On the `/admin` login screen, click **Forgot password?**, enter either the administrator's permanent login email or their verified recovery email, and click **Send Reset Link** (`POST /api/auth/forgot-password`). Both addresses resolve to the same administrator account.
+- **Destination:** Reset links are sent strictly to the **active verified recovery email address** configured for that account (either the verified default login email or the verified personal recovery email). Reset links are never sent to unverified addresses, and are never dispatched to multiple addresses simultaneously.
+- **Permanent Login Identity Preserved:** Resetting a password does not replace the administrator's login email with their recovery email; administrators always continue logging in with their permanent login email.
+- **Enumeration Defense:** The endpoint always returns an identical generic response:
+  `"If an active account exists with a verified recovery address, a password reset link has been dispatched."`
+  This response is returned regardless of whether the account exists, is inactive, or has no verified recovery email, preventing account enumeration.
+- **Rate Limiting:** Protected by dual IP-based and email-based rate limiters (3 requests per 15 minutes), augmented by account-level and cross-identifier throttling so that alternating between the login email and recovery email cannot bypass rate limits.
+- **Accounts Without a Verified Recovery Address:** If no verified recovery address is configured (or the default login email has not yet been verified), the generic 200 response is still returned to callers, but no email is dispatched. The account cannot be recovered through self-service.
+
+#### 4. Completing a Password Reset
+- **Reset Page:** The link opens `/admin/reset-password?token=<64-hex>` (or `/reset-password?token=<64-hex>`).
+- **Password Policy:** The form enforces client-side validation of the 14–1024 character password policy and matching confirmation before submission.
+- **Submission:** Submitting sends `POST /api/auth/reset-password`.
+- **All-Session Revocation:** Upon a successful reset, **all active sessions for that administrator are immediately revoked across all browsers and devices**.
+- **Browser State:** The frontend API client (`ApiService.js`) explicitly clears its cached in-memory CSRF token (`csrfToken = null`) upon reset completion.
+
+#### 5. Token Lifespan and Email Delivery Characteristics
+- **30-Minute Token Lifespan:** Both recovery verification tokens and password reset tokens expire exactly **30 minutes** after generation. This 30-minute window represents the token's validity period before expiration, **not an email-delivery delay**.
+- **Single-Use Behavior:** Tokens are consumed atomically in the database (`usedAt = now()`); subsequent replay attempts fail.
+- **Email Delivery Timing:** Outbound email delivery is performed via Resend. The system does not guarantee immediate delivery; delivery speed depends on the client's verified domain DNS health, Resend service availability, and destination mail server processing.
+- **Address-Bar Scrubbing vs. HTTP Referer:** When a public verification or reset link is loaded in the browser, client-side JavaScript immediately scrubs the `?token=...` query parameter from the address bar and browser history using `window.history.replaceState`. This prevents the token from remaining visible on screen or in local browser history. However, address-bar scrubbing does not alter the initial HTTP `Referer` header sent by external mail clients during navigation; full Referer protection requires host-level or document-level `Referrer-Policy: no-referrer` configuration.
+
+#### 6. Emergency Recovery Reference
+If an administrator is locked out and cannot use self-service recovery (e.g., no recovery email was configured or the recovery mailbox is permanently inaccessible), refer to the operator-assisted recovery and emergency CLI reset procedures documented in [DISASTER-RECOVERY-RUNBOOK.md](./DISASTER-RECOVERY-RUNBOOK.md).
 
 ---
 
@@ -447,6 +690,9 @@ Before directing public DNS traffic to the live production server:
 - [ ] Production PostgreSQL 14+ database created and connection string tested.
 - [ ] Database migrations applied cleanly via `npm run migrate`.
 - [ ] First administrator provisioned via `node scripts/provision-admin.js`.
+- [ ] Recovery email configured and verified for administrator accounts in Account Security.
+- [ ] Client-authorized live recovery email and password reset test completed using the client's configured Resend sending domain (developer automated tests use mocks and do not establish successful live Resend delivery).
+- [ ] Emergency CLI procedure (`backend/scripts/reset-admin-password.js`) reviewed by the client's authorized technical operator in [DISASTER-RECOVERY-RUNBOOK.md](./DISASTER-RECOVERY-RUNBOOK.md).
 - [ ] Initial catalog imported via Admin CMS (15 OEMs, 88 categories, 169 products).
 - [ ] Resend corporate domain `iconelectromatic.com` verified with SPF, DKIM, and DMARC DNS records.
 - [ ] Three regional sales mailboxes (`salesiepl@...`, `IESing@...`, `salesiellc@...`) verified active on corporate email server.

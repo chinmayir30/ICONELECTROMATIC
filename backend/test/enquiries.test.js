@@ -15,6 +15,7 @@ import assert from "node:assert/strict";
 import express from "express";
 import { createEnquiriesRouter } from "../src/routes/enquiries.js";
 import { createEnquiryRateLimit } from "../src/middleware/enquiryRateLimit.js";
+import { TurnstileVerificationError } from "../src/services/turnstileVerification.js";
 
 // ─── Mock helpers ─────────────────────────────────────────────────────────────
 
@@ -109,10 +110,19 @@ function makeApp({
   emailAcknowledgement = mockEmailOk,
   rateLimitMiddleware = null,
   trustProxy = false,
+  turnstileVerifier = async () => ({ success: true }),
+  turnstileToken = "mock-turnstile-token",
+  careerUploadMiddleware,
 } = {}) {
   const app = express();
   if (trustProxy) app.set("trust proxy", true);
   app.use(express.json());
+  app.use((req, _res, next) => {
+    if (turnstileToken && !req.get("X-Turnstile-Token")) {
+      req.headers["x-turnstile-token"] = turnstileToken;
+    }
+    next();
+  });
 
   const rl = rateLimitMiddleware || ((req, res, next) => next());
 
@@ -122,6 +132,8 @@ function makeApp({
     emailSendCareer: emailCareer,
     emailSendAcknowledgement: emailAcknowledgement,
     rateLimitMiddleware: rl,
+    turnstileVerifier,
+    careerUploadMiddleware,
   });
 
   app.use("/api/enquiries", router);
@@ -278,6 +290,66 @@ test("POST /api/enquiries/contact — honeypot field filled returns 200 (silent 
   }
 });
 
+test("POST /api/enquiries/contact — rejected Turnstile token creates no record or email", async () => {
+  const mockPrisma = makeMockPrisma();
+  let emailCalls = 0;
+  const { server, baseUrl } = await startServer(
+    makeApp({
+      mockPrisma,
+      emailEnquiry: async () => {
+        emailCalls += 1;
+        return mockEmailOk();
+      },
+      turnstileVerifier: async () => {
+        throw new TurnstileVerificationError("TURNSTILE_REJECTED");
+      },
+    })
+  );
+  try {
+    const res = await fetch(`${baseUrl}/contact`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(validContact),
+    });
+    const data = await res.json();
+
+    assert.equal(res.status, 400);
+    assert.equal(data.code, "TURNSTILE_REJECTED");
+    assert.equal(JSON.stringify(data).includes("mock-turnstile-token"), false);
+    assert.equal(mockPrisma._enquiries.size, 0);
+    assert.equal(emailCalls, 0);
+  } finally {
+    server.close();
+  }
+});
+
+test("POST /api/enquiries/contact — requires token from the verification header", async () => {
+  let verifierCalls = 0;
+  const { server, baseUrl } = await startServer(
+    makeApp({
+      turnstileToken: null,
+      turnstileVerifier: async () => {
+        verifierCalls += 1;
+        return { success: true };
+      },
+    })
+  );
+  try {
+    const res = await fetch(`${baseUrl}/contact`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...validContact, turnstileToken: "body-is-not-trusted" }),
+    });
+    const data = await res.json();
+
+    assert.equal(res.status, 400);
+    assert.equal(data.code, "TURNSTILE_REQUIRED");
+    assert.equal(verifierCalls, 0);
+  } finally {
+    server.close();
+  }
+});
+
 test("POST /api/enquiries/contact — rate limit blocks after threshold", async () => {
   // Tight limiter: allow only 2 per window so the 3rd is rejected
   let fakeNow = Date.now();
@@ -388,6 +460,7 @@ test("POST /api/enquiries/contact — email failure returns 502 and record saved
 
     assert.equal(res.status, 502);
     assert.equal(data.success, false);
+    assert.equal(data.code, "ENQUIRY_SAVED_EMAIL_FAILED");
     assert.ok(
       data.message.includes("could not be dispatched to our team automatically"),
       `Expected corrected message, got: ${data.message}`
@@ -694,6 +767,46 @@ test("POST /api/enquiries/careers — honeypot field returns 200 (silent reject)
   }
 });
 
+test("POST /api/enquiries/careers — rejected Turnstile token precedes Multer and side effects", async () => {
+  const mockPrisma = makeMockPrisma();
+  let uploadCalls = 0;
+  let emailCalls = 0;
+  const { server, baseUrl } = await startServer(
+    makeApp({
+      mockPrisma,
+      turnstileVerifier: async ({ action }) => {
+        assert.equal(action, "careers_application");
+        throw new TurnstileVerificationError("TURNSTILE_REJECTED");
+      },
+      careerUploadMiddleware: (_req, _res, next) => {
+        uploadCalls += 1;
+        next();
+      },
+      emailCareer: async () => {
+        emailCalls += 1;
+        return mockEmailOk();
+      },
+    })
+  );
+  try {
+    const fd = buildCareerFormData(validCareerFields, {
+      filename: "resume.pdf",
+      mimetype: "application/pdf",
+      content: "PDF-DATA",
+    });
+    const res = await fetch(`${baseUrl}/careers`, { method: "POST", body: fd });
+    const data = await res.json();
+
+    assert.equal(res.status, 400);
+    assert.equal(data.code, "TURNSTILE_REJECTED");
+    assert.equal(uploadCalls, 0);
+    assert.equal(mockPrisma._careers.size, 0);
+    assert.equal(emailCalls, 0);
+  } finally {
+    server.close();
+  }
+});
+
 test("POST /api/enquiries/careers — email failure returns 502 and record saved as EMAIL_FAILED", async () => {
   const mockPrisma = makeMockPrisma();
   const { server, baseUrl } = await startServer(
@@ -711,6 +824,7 @@ test("POST /api/enquiries/careers — email failure returns 502 and record saved
 
     assert.equal(res.status, 502);
     assert.equal(data.success, false);
+    assert.equal(data.code, "CAREER_SAVED_EMAIL_FAILED");
     assert.ok(
       data.message.includes("could not be dispatched to our team automatically"),
       `Expected corrected message, got: ${data.message}`

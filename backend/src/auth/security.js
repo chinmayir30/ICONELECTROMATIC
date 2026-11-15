@@ -15,6 +15,48 @@ const PASSWORD_SALT_LENGTH = 16;
 const DUMMY_SALT = Buffer.alloc(PASSWORD_SALT_LENGTH, 0x5a);
 const TOKEN_PATTERN = /^[a-f0-9]{64}$/;
 
+export const PASSWORD_MIN_LENGTH = 14;
+export const PASSWORD_MAX_LENGTH = 1024;
+export const SECURITY_TOKEN_EXPIRY_MINUTES = 30;
+
+export function isValidOpaqueToken(token) {
+  return typeof token === "string" && TOKEN_PATTERN.test(token);
+}
+
+export function validatePasswordPolicy(password, confirmation = password) {
+  if (typeof password !== "string") {
+    throw new Error("Password must be a string.");
+  }
+  if (password.length < PASSWORD_MIN_LENGTH) {
+    throw new Error(
+      `Password must be at least ${PASSWORD_MIN_LENGTH} characters long.`
+    );
+  }
+  if (password.length > PASSWORD_MAX_LENGTH) {
+    throw new Error(
+      `Password must not exceed ${PASSWORD_MAX_LENGTH} characters.`
+    );
+  }
+  if (password !== confirmation) {
+    throw new Error("Password confirmation does not match.");
+  }
+  return password;
+}
+
+export function computeTokenExpiry(minutes = SECURITY_TOKEN_EXPIRY_MINUTES) {
+  const safeMinutes =
+    typeof minutes === "number" && minutes > 0
+      ? minutes
+      : SECURITY_TOKEN_EXPIRY_MINUTES;
+  return new Date(Date.now() + safeMinutes * 60 * 1000);
+}
+
+export function isTokenExpired(expiresAt) {
+  if (!expiresAt) return true;
+  const date = expiresAt instanceof Date ? expiresAt : new Date(expiresAt);
+  return isNaN(date.getTime()) || date.getTime() <= Date.now();
+}
+
 async function derivePasswordKey(password, salt) {
   return scrypt(password, salt, PASSWORD_KEY_LENGTH, {
     N: SCRYPT_COST,

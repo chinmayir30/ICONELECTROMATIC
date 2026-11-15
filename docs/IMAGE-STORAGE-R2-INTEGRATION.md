@@ -65,7 +65,7 @@ The PostgreSQL schema migration (`20261019233400_add_cms_backend_schema`) provid
 - **Bucket Name:** `icon-electromatic-media` (separate buckets for staging/production via environment variables).
 - **Bucket access:** Keep the bucket private by default. The backend uses S3-compatible credentials held only in its environment.
 - **Credentials:** `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_BUCKET_NAME`, and `R2_ENDPOINT` are required for the implemented R2 service. Never expose them to frontend code.
-- **Optional public domain:** If `R2_PUBLIC_DOMAIN` is set, the delivery route redirects to that host and object key. Otherwise the backend streams from R2 and can fall back to a short-lived signed URL.
+- **Optional public domain:** If `R2_PUBLIC_DOMAIN` is set, the delivery route redirects to that stable host and object key. Otherwise the backend streams from the private bucket. A public streaming failure returns a non-cacheable `502`; it does not fall back to an expiring public URL.
 
 ---
 
@@ -77,7 +77,7 @@ The PostgreSQL schema migration (`20261019233400_add_cms_backend_schema`) provid
 2. The backend validates the image's magic bytes (JPEG, PNG, WebP, or GIF) and enforces a 10 MB limit.
 3. The backend uploads the object to R2, creates a `MediaAsset` record in PostgreSQL, and attempts to return a short-lived preview URL.
 4. If the database record cannot be saved after the R2 upload, the backend attempts to delete the newly uploaded object as compensation.
-5. Public delivery uses `GET /api/media/file/:id`. It streams from the private bucket where possible, uses a short-lived signed URL fallback, or redirects to `R2_PUBLIC_DOMAIN` when configured.
+5. Public delivery uses `GET /api/media/file/:id`. It streams from the private bucket, or redirects to `R2_PUBLIC_DOMAIN` when configured. If private-bucket streaming fails, the route returns a non-cacheable `502`.
 
 Uploads are proxied through the backend; the browser does not upload directly to R2. Therefore, a direct browser-to-bucket CORS configuration is not required for this upload implementation.
 
@@ -132,8 +132,9 @@ For images created during demo admin usage:
 
 ## 7. Existing Fallbacks and Recovery Considerations
 
-1. `GET /api/media/file/:id` can fall back from streaming to a short-lived signed
-   URL when R2 streaming fails.
+1. If `GET /api/media/file/:id` cannot stream from the private bucket, it returns
+   a non-cacheable `502`; public delivery does not use a short-lived signed URL
+   fallback. The short-lived URL is reserved for authenticated admin previews.
 2. Existing `idb:` image values remain displayable using the browser's existing
    IndexedDB resolution support; new upload failures are not saved there.
 3. R2 object versioning, automated database restoration, and universal fallback

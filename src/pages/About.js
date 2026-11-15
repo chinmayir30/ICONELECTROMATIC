@@ -5,6 +5,56 @@
  * Brand Theme: Deep Black, Electric Blue (#2563EB), Vibrant Red (#E11D48)
  */
 import { ContentService } from '../data/ContentService.js';
+import { CatalogService } from '../data/CatalogService.js';
+
+function getDerivedAboutStats() {
+  try {
+    const catalog = CatalogService.getCurrentPublicCatalog();
+    if (!Array.isArray(catalog) || catalog.length === 0) {
+      return [];
+    }
+    const oemCount = catalog.length;
+    const categoryCount = catalog.reduce((sum, oem) => sum + (Array.isArray(oem.categories) ? oem.categories.length : 0), 0);
+    const productCount = catalog.reduce((sum, oem) => {
+      return sum + (Array.isArray(oem.categories)
+        ? oem.categories.reduce((cSum, cat) => cSum + (Array.isArray(cat.products) ? cat.products.length : 0), 0)
+        : 0);
+    }, 0);
+
+    if (productCount === 0 || oemCount === 0) {
+      return [];
+    }
+
+    return [
+      {
+        id: 's-products',
+        target: String(productCount),
+        suffix: '+',
+        label: 'Components in Catalog',
+        icon: 'fa-solid fa-boxes-stacked',
+        color: 'red',
+      },
+      {
+        id: 's-oems',
+        target: String(oemCount),
+        suffix: '+',
+        label: 'Global OEM Partners',
+        icon: 'fa-solid fa-handshake-angle',
+        color: 'blue',
+      },
+      {
+        id: 's-categories',
+        target: String(categoryCount),
+        suffix: '',
+        label: 'Product Categories',
+        icon: 'fa-solid fa-layer-group',
+        color: 'red',
+      },
+    ];
+  } catch {
+    return [];
+  }
+}
 
 export function renderAboutPage() {
   const d = ContentService.getData('about');
@@ -20,11 +70,9 @@ export function renderAboutPage() {
     { title: 'Advanced Components, Consultancy & Bespoke Design Services', desc: 'End-to-end design-in engineering, RF simulation review, and custom-tailored fulfillment for client success.', icon: 'fa-solid fa-microchip', color: 'red' },
   ];
 
-  const stats = d.stats || [
-    { target: '1500', suffix: '+', label: 'Products', icon: 'fa-solid fa-boxes-stacked', color: 'red' },
-    { target: '150', suffix: '+', label: 'Years of combined experience', icon: 'fa-solid fa-calendar-check', color: 'blue' },
-    { target: '15', suffix: '+', label: 'Partners', icon: 'fa-solid fa-handshake-angle', color: 'red' },
-  ];
+  const derivedStats = getDerivedAboutStats();
+  const rawStats = Array.isArray(d.stats) && d.stats.length > 0 ? d.stats : derivedStats;
+  const stats = rawStats.filter(st => !String(st.label || '').toLowerCase().includes('combined experience'));
 
   const milestones = d.milestones || [
     { year: '2009', title: 'RF & Microwave Genesis', desc: 'Established in Bengaluru, Karnataka by veteran RF & Microwave engineers focusing on defense electronics and aerospace components distribution.', image: '/images/timeline/timeline-2009-bengaluru.jpg', caption: 'Genesis in Bengaluru, India', color: 'cyan' },
@@ -153,16 +201,17 @@ export function renderAboutPage() {
             </div>
           </div>
 
-          <!-- Section 3: Some Quick Facts -->
+          <!-- Section 3: Quick Facts (Derived from authentic catalog data) -->
+          ${stats.length > 0 ? `
           <div class="about-stats-banner" id="about-stats-container">
             <div class="about-stats-banner-accent"></div>
             
             <div style="text-align:center;max-width:650px;margin:0 auto var(--space-8);">
               <h2 class="about-stats-h2" style="font-family:var(--font-display);font-size:clamp(1.85rem, 2.8vw, 2.4rem);font-weight:800;letter-spacing:-0.02em;margin-bottom:8px;">
-                ${d.statsTitle || 'Some Quick Facts'}
+                ${d.statsTitle || 'Quick Facts'}
               </h2>
               <div class="about-section-sub-title" style="font-family:var(--font-display);font-size:clamp(1.15rem, 1.6vw, 1.35rem);font-weight:700;color:var(--logo-red-light);line-height:1.35;margin-bottom:12px;">
-                ${d.statsSubtitle || 'The Numbers That Define Us'}
+                ${d.statsSubtitle || 'Authentic Component Distribution'}
               </div>
             </div>
 
@@ -180,6 +229,7 @@ export function renderAboutPage() {
               `).join('')}
             </div>
           </div>
+          ` : ''}
 
           <!-- Section 4: Our Vision & Our Mission -->
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-bottom:var(--space-16);">

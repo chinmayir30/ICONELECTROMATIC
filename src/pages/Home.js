@@ -7,7 +7,8 @@ import { getPopularProducts } from '../../shared/catalogData.js';
 import { renderProductCard } from '../components/ProductCard.js';
 import { CatalogService } from '../data/CatalogService.js';
 import { ContentService } from '../data/ContentService.js';
-import { ApiService } from '../data/ApiService.js';
+import { ApiService, isSubmissionOutcomeUnknown } from '../data/ApiService.js';
+import { TurnstileService } from '../data/TurnstileService.js';
 
 let currentPopularProducts = getPopularProducts();
 let homeCatalogLoadId = 0;
@@ -344,6 +345,11 @@ export function renderHomePage() {
                 <textarea id="h-message" rows="4" placeholder="Specify part numbers, frequency range, operational parameters, and delivery timeline..." required></textarea>
               </div>
 
+              <input class="turnstile-honeypot" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+              <div id="home-turnstile-widget" class="turnstile-widget" data-turnstile-action="contact_enquiry" role="group" aria-label="Security verification"></div>
+              <p id="home-turnstile-status" class="turnstile-status" role="status" aria-live="polite"></p>
+              <p id="home-contact-status" class="turnstile-status turnstile-error" role="alert" aria-live="assertive"></p>
+
               <button type="submit" class="btn-relay-red" style="width:100%; justify-content:center;">
                 Transmit Enquiry <i class="fa-solid fa-paper-plane" style="margin-left:8px;"></i>
               </button>
@@ -444,18 +450,59 @@ export function initHomePage() {
   const form = document.getElementById('home-contact-form');
   const submitBtn = form?.querySelector('button[type="submit"]');
   const formWrap = form?.closest('.contact-relay-form');
+  const turnstileContainer = document.getElementById('home-turnstile-widget');
+  const turnstileStatus = document.getElementById('home-turnstile-status');
+  const formStatus = document.getElementById('home-contact-status');
+  let turnstileWidget = null;
+  let requestInFlight = false;
+  let submissionLocked = false;
+
+  const showTurnstileStatus = (message) => {
+    if (turnstileStatus) turnstileStatus.textContent = message;
+  };
+  const showFormStatus = (message) => {
+    if (formStatus) formStatus.textContent = message;
+  };
+
+  if (turnstileContainer) {
+    showTurnstileStatus('Loading security verification...');
+    void TurnstileService.render({
+      container: turnstileContainer,
+      action: 'contact_enquiry',
+      onToken: () => showTurnstileStatus('Security check complete.'),
+      onExpired: () => showTurnstileStatus('Verification expired. Complete the security check again.'),
+      onError: () => showTurnstileStatus('The security check encountered an error. Please try again.'),
+    }).then((widget) => {
+      turnstileWidget = widget;
+      showTurnstileStatus('Complete the security check before sending your enquiry.');
+    }).catch(() => {
+      showFormStatus('Security verification could not load. Refresh the page to try again; your enquiry has not been sent.');
+    });
+  }
 
   if (form) {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
-      // Prevent duplicate submissions while a request is in flight
+      if (requestInFlight || submissionLocked) return;
+
+      const token = turnstileWidget?.getToken();
+      if (!token) {
+        showFormStatus(
+          turnstileWidget
+            ? 'Complete the security check before sending your enquiry.'
+            : 'Security verification is unavailable. Refresh the page to try again; your enquiry has not been sent.'
+        );
+        return;
+      }
+
+      requestInFlight = true;
+      showFormStatus('');
       if (submitBtn) {
         submitBtn.disabled = true;
         submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
       }
 
-      // Collect fields; website is the honeypot and must stay empty
       const rawName = (document.getElementById('h-name')?.value    || '').trim();
       const body = {
         fullname: rawName,
@@ -464,8 +511,7 @@ export function initHomePage() {
         phone:    (document.getElementById('h-phone')?.value   || '').trim(),
         subject:  (document.getElementById('h-subject')?.value || 'rfq').trim(),
         message:  (document.getElementById('h-message')?.value || '').trim(),
-        // honeypot — must stay empty; real users never fill this in
-        website:  '',
+        website:  (form.querySelector('input[name="website"]')?.value || '').trim(),
       };
 
       // Escape the name for safe insertion into innerHTML
@@ -476,9 +522,13 @@ export function initHomePage() {
         .replace(/"/g, '&quot;');
 
       try {
-        const data = await ApiService.post('/enquiries/contact', body);
+        const data = await ApiService.post('/enquiries/contact', body, {
+          headers: { 'X-Turnstile-Token': token },
+        });
 
         if (data.success) {
+          submissionLocked = true;
+          turnstileWidget?.cleanup();
           // Backend returns { success: true, id: <uuid string> }
           // Display the raw id as the submission token; do not reformat it here.
           const refToken = data.id || '—';
@@ -498,25 +548,35 @@ export function initHomePage() {
               </div>
             `;
           }
-        } else {
-          // Show the server's validation or dispatch error; re-enable button
-          const msg = data.message || 'Could not send your enquiry. Please try again or email us directly.';
-          const errEl = document.createElement('p');
-          errEl.style.cssText = 'color:var(--logo-red-light);font-size:0.9rem;margin-top:var(--space-2);text-align:center;';
-          errEl.textContent = msg;
-          form.insertAdjacentElement('beforebegin', errEl);
-          if (submitBtn) {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = 'Transmit Enquiry <i class="fa-solid fa-paper-plane" style="margin-left:8px;"></i>';
-          }
         }
-      } catch (_err) {
-        // Network / parse failure
-        const errEl = document.createElement('p');
-        errEl.style.cssText = 'color:var(--logo-red-light);font-size:0.9rem;margin-top:var(--space-2);text-align:center;';
-        errEl.textContent = 'Could not reach the server. Please check your connection or email us directly at enquiries@iconelectromatic.com.';
-        form.insertAdjacentElement('beforebegin', errEl);
-        if (submitBtn) {
+      } catch (error) {
+        const retryableVerification = [
+          'TURNSTILE_REQUIRED',
+          'TURNSTILE_INVALID',
+          'TURNSTILE_REJECTED',
+          'TURNSTILE_UNAVAILABLE',
+          'TURNSTILE_NOT_CONFIGURED',
+        ].includes(error?.code);
+        if (error?.code === 'ENQUIRY_SAVED_EMAIL_FAILED') {
+          submissionLocked = true;
+          turnstileWidget?.cleanup();
+          showFormStatus(error.message || 'Your enquiry was received, but email dispatch failed. Please contact the team before submitting again.');
+        } else if (retryableVerification) {
+          turnstileWidget?.reset();
+          submissionLocked = false;
+          showFormStatus(error.message || 'Verification failed. Complete a fresh security check and try again.');
+        } else if (isSubmissionOutcomeUnknown(error)) {
+          submissionLocked = true;
+          turnstileWidget?.cleanup();
+          showFormStatus('We could not confirm the submission status. Your enquiry may already have been received; please contact the team before trying again.');
+        } else {
+          turnstileWidget?.reset();
+          submissionLocked = false;
+          showFormStatus(error?.message || 'Could not send your enquiry. Please try again.');
+        }
+      } finally {
+        requestInFlight = false;
+        if (!submissionLocked && submitBtn) {
           submitBtn.disabled = false;
           submitBtn.innerHTML = 'Transmit Enquiry <i class="fa-solid fa-paper-plane" style="margin-left:8px;"></i>';
         }

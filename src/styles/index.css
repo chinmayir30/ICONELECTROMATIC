@@ -1083,6 +1083,32 @@ h1, h2, h3, h4, h5, h6 {
   box-sizing: border-box;
 }
 
+.turnstile-widget {
+  width: 100%;
+  max-width: 300px;
+  min-height: 65px;
+  margin: 0 0 var(--space-3);
+}
+
+.turnstile-status {
+  min-height: 1.25em;
+  margin: 0 0 var(--space-3);
+  color: var(--text-gray-400);
+  font-size: 0.82rem;
+}
+
+.turnstile-error {
+  color: var(--logo-red-light);
+  text-align: center;
+}
+
+.turnstile-honeypot {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+}
+
 .relay-field label {
   font-family: var(--font-display);
   font-size: 0.8rem;
@@ -1848,6 +1874,29 @@ h1, h2, h3, h4, h5, h6 {
   .custom-cursor-dot {
     display: none !important;
   }
+}
+
+/* Disable custom marketing cursor in all admin CMS and recovery views */
+body.admin-mode #custom-cursor-ring,
+body.admin-mode #custom-cursor-dot,
+body.admin-mode .custom-cursor-ring,
+body.admin-mode .custom-cursor-dot,
+body:has(.a-login-page) #custom-cursor-ring,
+body:has(.a-login-page) #custom-cursor-dot,
+body:has(.a-login-page) .custom-cursor-ring,
+body:has(.a-login-page) .custom-cursor-dot,
+body:has(.admin-wrap) #custom-cursor-ring,
+body:has(.admin-wrap) #custom-cursor-dot,
+body:has(.admin-wrap) .custom-cursor-ring,
+body:has(.admin-wrap) .custom-cursor-dot,
+body:has(.a-recovery-page) #custom-cursor-ring,
+body:has(.a-recovery-page) #custom-cursor-dot,
+body:has(.a-recovery-page) .custom-cursor-ring,
+body:has(.a-recovery-page) .custom-cursor-dot {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
 
 /* ==========================================================================

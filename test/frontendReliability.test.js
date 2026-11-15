@@ -77,3 +77,70 @@ test('render failures produce a fallback and log the component failure', () => {
   assert.equal(errors[0][0], 'Failed to render test component.');
   assert.match(errors[0][1].message, /render failed/);
 });
+
+test('partner card click navigation uses clean HTML5 route without hash', async () => {
+  const previousWindow = globalThis.window;
+  const previousDocument = globalThis.document;
+
+  const navigatedUrls = [];
+  const cardListeners = new Map();
+
+  const mockCard = {
+    getAttribute(name) {
+      if (name === 'data-partner-id') return 'rogers';
+      return null;
+    },
+    addEventListener(event, fn) {
+      cardListeners.set(event, fn);
+    },
+    click() {
+      const fn = cardListeners.get('click');
+      if (fn) fn();
+    },
+  };
+
+  globalThis.document = {
+    querySelectorAll(selector) {
+      if (selector === '.partner-static-card') return [mockCard];
+      if (selector === '.oem-running-logo-item') return [];
+      return [];
+    },
+    querySelector() { return null; },
+  };
+
+  globalThis.window = {
+    location: {
+      pathname: '/partners',
+      search: '',
+      hash: '',
+    },
+    history: {
+      pushState(_state, _title, url) {
+        navigatedUrls.push(url);
+      },
+    },
+    scrollTo() {},
+  };
+
+  try {
+    const { initPartnersPage } = await import('../src/pages/Partners.js');
+    initPartnersPage();
+    mockCard.click();
+
+    // Must navigate to clean route without setting window.location.hash
+    assert.equal(globalThis.window.location.hash, '');
+    assert.equal(navigatedUrls.length, 1);
+    assert.equal(navigatedUrls[0], '/products?level=categories&oem=rogers-corporation');
+  } finally {
+    if (previousWindow === undefined) {
+      delete globalThis.window;
+    } else {
+      globalThis.window = previousWindow;
+    }
+    if (previousDocument === undefined) {
+      delete globalThis.document;
+    } else {
+      globalThis.document = previousDocument;
+    }
+  }
+});

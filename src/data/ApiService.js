@@ -1,4 +1,4 @@
-const BUILD_API_BASE_URL = import.meta?.env?.VITE_API_BASE_URL || '';
+const BUILD_API_BASE_URL = import.meta.env?.VITE_API_BASE_URL || '';
 
 export function resolveApiBaseUrl(
   runtimeBase = typeof window !== 'undefined' ? window.__ICON_API_BASE__ : '',
@@ -12,11 +12,17 @@ const API_BASE_URL = resolveApiBaseUrl();
 let csrfToken = null;
 
 export class ApiError extends Error {
-  constructor(message, status) {
+  constructor(message, status, code) {
     super(message);
     this.name = 'ApiError';
     this.status = status;
+    this.code = code;
   }
+}
+
+export function isSubmissionOutcomeUnknown(error) {
+  const status = error?.status;
+  return !Number.isInteger(status) || status < 400 || status >= 500;
 }
 
 async function request(path, { method = 'GET', body, headers = {} } = {}) {
@@ -58,7 +64,11 @@ async function request(path, { method = 'GET', body, headers = {} } = {}) {
 
   if (!response.ok || (payload && payload.success !== true)) {
     if (response.status === 401) csrfToken = null;
-    throw new ApiError(payload?.message || `Catalog API request failed (${response.status}).`, response.status);
+    throw new ApiError(
+      payload?.message || `Catalog API request failed (${response.status}).`,
+      response.status,
+      payload?.code
+    );
   }
 
   return payload?.data !== undefined ? payload.data : payload;
@@ -106,24 +116,66 @@ export const ApiService = {
     return data;
   },
 
-  get(path) {
-    return request(path);
+  // ─── Account Recovery & Security API ───────────────────────────────────────
+  async getRecoveryEmailStatus() {
+    return request('/auth/recovery-email', { method: 'GET' });
   },
 
-  post(path, body) {
-    return request(path, { method: 'POST', body });
+  async requestRecoveryEmailChange(newRecoveryEmail, password) {
+    return request('/auth/recovery-email/request', {
+      method: 'POST',
+      body: { newRecoveryEmail, password },
+    });
   },
 
-  put(path, body) {
-    return request(path, { method: 'PUT', body });
+  async confirmRecoveryEmail(token) {
+    return request('/auth/recovery-email/confirm', {
+      method: 'POST',
+      body: { token },
+    });
   },
 
-  patch(path, body) {
-    return request(path, { method: 'PATCH', body });
+  async removeRecoveryEmail(password) {
+    return request('/auth/recovery-email/remove', {
+      method: 'POST',
+      body: { password },
+    });
   },
 
-  delete(path) {
-    return request(path, { method: 'DELETE' });
+  async forgotPassword(email) {
+    return request('/auth/forgot-password', {
+      method: 'POST',
+      body: { email },
+    });
+  },
+
+  async resetPassword(token, newPassword, confirmPassword) {
+    const data = await request('/auth/reset-password', {
+      method: 'POST',
+      body: { token, newPassword, confirmPassword },
+    });
+    csrfToken = null;
+    return data;
+  },
+
+  get(path, { headers = {} } = {}) {
+    return request(path, { method: 'GET', headers });
+  },
+
+  post(path, body, { headers = {} } = {}) {
+    return request(path, { method: 'POST', body, headers });
+  },
+
+  put(path, body, { headers = {} } = {}) {
+    return request(path, { method: 'PUT', body, headers });
+  },
+
+  patch(path, body, { headers = {} } = {}) {
+    return request(path, { method: 'PATCH', body, headers });
+  },
+
+  delete(path, { headers = {} } = {}) {
+    return request(path, { method: 'DELETE', headers });
   },
 
   async uploadMedia(file, folder = 'products') {

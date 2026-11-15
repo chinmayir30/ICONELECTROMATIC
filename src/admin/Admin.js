@@ -5,11 +5,15 @@ import { CATALOG } from '../../shared/catalogData.js';
 import { ApiService } from '../data/ApiService.js';
 import { CatalogService } from '../data/CatalogService.js';
 import { handleUploadError } from './uploadError.js';
+import { renderAccountSecurityTab, bindAccountSecurityEvents } from './AccountSecurity.js';
 
 // ─── State ─────────────────────────────────────────────────────────────────
 let isAuthenticated = false;
 let sessionCheckStarted = false;
 let loginError = '';
+let showForgotPassword = false;
+let forgotPasswordNotice = '';
+let forgotPasswordError = '';
 let catalogLoadError = '';
 let catalogSaving = false;
 let currentTab = 'dashboard';
@@ -43,6 +47,8 @@ const NAV = [
   { id: 'header',       icon: 'fa-solid fa-bars',            label: 'Header & Nav' },
   { id: 'footer',       icon: 'fa-solid fa-shoe-prints',     label: 'Footer & Offices' },
   { id: 'seo',          icon: 'fa-solid fa-magnifying-glass',label: 'SEO Settings' },
+  { section: 'ACCOUNT' },
+  { id: 'security',     icon: 'fa-solid fa-shield-halved',   label: 'Account Security' },
 ];
 
 // ─── Entry Points ────────────────────────────────────────────────────────────
@@ -88,6 +94,44 @@ export function initAdminPage() {
 
 // ─── Login ───────────────────────────────────────────────────────────────────
 function renderLogin() {
+  if (showForgotPassword) {
+    return `
+      <div class="a-login-page">
+        <div class="a-login-box">
+          <div class="a-login-logo">
+            <img src="/icon-logo-transparent.png" alt="Icon Electromatic" onerror="this.style.display='none'">
+          </div>
+          <h2>Reset Password</h2>
+          <p>Enter your administrator login email or verified recovery email.</p>
+          <form class="a-login-form" id="a-forgot-form">
+            <div class="a-field">
+              <label for="a-forgot-email">Login or Recovery Email</label>
+              <input class="a-input" type="email" id="a-forgot-email" autocomplete="username" placeholder="Enter your email address" required>
+            </div>
+            <button type="submit" class="a-btn a-btn-primary" id="a-submit-forgot-btn">
+              Send Reset Link <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </form>
+          ${forgotPasswordNotice ? `
+            <div class="a-recovery-alert a-recovery-alert-success" style="margin-top:14px; text-align:left;">
+              <i class="fa-solid fa-circle-check"></i>
+              <div>
+                <strong>Request Dispatched</strong>
+                <p>${escapeHtml(forgotPasswordNotice)}</p>
+              </div>
+            </div>
+          ` : ''}
+          <p class="a-login-error" id="a-forgot-error" role="alert">${escapeHtml(forgotPasswordError)}</p>
+          <div style="margin-top: 16px; text-align: center;">
+            <button type="button" id="a-back-to-login-btn" class="a-btn a-btn-outline a-btn-sm" style="display: inline-flex; align-items: center; gap: 8px;">
+              <i class="fa-solid fa-arrow-left"></i> Back to Sign In
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
   return `
     <div class="a-login-page">
       <div class="a-login-box">
@@ -102,14 +146,19 @@ function renderLogin() {
             <input class="a-input" type="email" id="a-email" autocomplete="username" required>
           </div>
           <div class="a-field">
-            <label>Password</label>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <label>Password</label>
+              <button type="button" id="a-show-forgot-btn" class="a-link-btn" style="background:none; border:none; color:var(--a-blue, #0b2e59); font-size:0.75rem; cursor:pointer; text-decoration:underline; padding:0;">
+                Forgot password?
+              </button>
+            </div>
             <input class="a-input" type="password" id="a-password" autocomplete="current-password" required>
           </div>
           <button type="submit" class="a-btn a-btn-primary">Sign In <i class="fa-solid fa-arrow-right"></i></button>
         </form>
         <p class="a-login-error" id="a-login-error" role="alert">${loginError}</p>
         <div style="margin-top: 16px; text-align: center;">
-          <a href="#/" class="a-btn a-btn-outline a-btn-sm" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none;">
+          <a href="/" class="a-btn a-btn-outline a-btn-sm" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none;">
             <i class="fa-solid fa-arrow-left"></i> Return to Website
           </a>
         </div>
@@ -119,6 +168,48 @@ function renderLogin() {
 }
 
 function bindLoginForm() {
+  document.getElementById('a-show-forgot-btn')?.addEventListener('click', () => {
+    showForgotPassword = true;
+    forgotPasswordNotice = '';
+    forgotPasswordError = '';
+    rerender();
+  });
+
+  document.getElementById('a-back-to-login-btn')?.addEventListener('click', () => {
+    showForgotPassword = false;
+    forgotPasswordNotice = '';
+    forgotPasswordError = '';
+    rerender();
+  });
+
+  document.getElementById('a-forgot-form')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const emailInput = document.getElementById('a-forgot-email');
+    const button = document.getElementById('a-submit-forgot-btn');
+    const email = emailInput?.value?.trim() || '';
+
+    forgotPasswordNotice = '';
+    forgotPasswordError = '';
+    if (button) {
+      button.disabled = true;
+      button.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
+    }
+
+    try {
+      const res = await ApiService.forgotPassword(email);
+      forgotPasswordNotice = res?.message || 'If an active account exists with a verified recovery address, a password reset link has been dispatched.';
+      rerender();
+    } catch (err) {
+      if (button) {
+        button.disabled = false;
+        button.innerHTML = 'Send Reset Link <i class="fa-solid fa-arrow-right"></i>';
+      }
+      forgotPasswordError = err?.message || 'Failed to dispatch reset request. Please try again.';
+      const errEl = document.getElementById('a-forgot-error');
+      if (errEl) errEl.textContent = forgotPasswordError;
+    }
+  });
+
   document.getElementById('a-login-form')?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const form = e.currentTarget;
@@ -224,7 +315,7 @@ function renderShell() {
             <p>Backend catalog CMS with local image previews</p>
           </div>
           <div class="a-topbar-right">
-            <a href="#/" class="a-btn a-btn-outline a-btn-sm" style="text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+            <a href="/" class="a-btn a-btn-outline a-btn-sm" style="text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
               <i class="fa-solid fa-globe"></i> View Site
             </a>
             <button class="a-btn a-btn-outline a-btn-sm" id="a-reset-btn" title="Reset this section to authentic default data">
@@ -624,6 +715,7 @@ function renderTabContent() {
     case 'partners':     return renderPartnersTab();
     case 'blogs':        return renderBlogsTab();
     case 'enquiries':    return renderEnquiriesTab();
+    case 'security':     return renderAccountSecurityTab();
     default:             return `<p>Section not yet implemented.</p>`;
   }
 }
@@ -665,6 +757,7 @@ function bindTabEvents() {
     case 'partners':     bindPartnersTabEvents(); break;
     case 'blogs':        bindBlogsTabEvents(); break;
     case 'enquiries':    bindEnquiriesTabEvents(); break;
+    case 'security':     bindAccountSecurityEvents(rerender, showToast); break;
   }
 }
 

@@ -1,10 +1,10 @@
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { PrismaClient } from "@prisma/client";
 import {
   inspectBaselineCatalog,
   seedBaselineCatalog,
 } from "./verify-baseline-catalog.js";
+import { createPrismaClient as makePrismaClient } from "../src/prismaClient.js";
 
 const CONFIRMATION_PREFIX = "--confirm-production-seed=";
 const BLOCKED_DATABASES = new Set([
@@ -89,8 +89,7 @@ export async function runProductionCatalogSeed({
   env = process.env,
   output = process.stdout,
   errorOutput = process.stderr,
-  createPrismaClient = (url) =>
-    new PrismaClient({ datasources: { db: { url } } }),
+  createPrismaClient = (url) => makePrismaClient(url),
   inspectCatalog = inspectBaselineCatalog,
   seedCatalog = seedBaselineCatalog,
 } = {}) {

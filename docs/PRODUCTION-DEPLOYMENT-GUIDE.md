@@ -58,7 +58,7 @@ infrastructure is not required.
 | `R2_SECRET_ACCESS_KEY` | Required for R2 | Secret from provider | R2 S3 API secret | Never expose to frontend build configuration. |
 | `R2_BUCKET_NAME` | Required for R2 | Client-selected bucket | R2 bucket name | Prefer private access; app uploads and retrieves through backend. |
 | `R2_ENDPOINT` | **Yes** | `https://<ID>.r2.cloudflarestorage.com` | R2 S3 compatibility endpoint | Cloudflare S3 endpoint URL. |
-| `R2_PUBLIC_DOMAIN` | Optional | Client-configured HTTPS domain | Public media domain | When configured, media delivery redirects there; otherwise the backend streams from the private bucket or uses a short-lived signed URL fallback. |
+| `R2_PUBLIC_DOMAIN` | Optional | Client-configured HTTPS domain | Public media domain | When configured, public media redirects there; otherwise the backend streams from the private bucket. A stream failure returns a non-cacheable `502`, not an expiring public URL. |
 
 `SITE_ORIGIN` configures the backend's canonical sitemap origin.
 `ADMIN_EMAIL` and `ADMIN_PASSWORD` are temporary inputs for non-interactive
@@ -116,12 +116,19 @@ left as a placeholder here; do not deploy an unresolved placeholder.
 The copyable placeholder-based configuration is
 [Nginx template](./templates/nginx.conf.example). It routes
 the SPA/static files, `/api/`, and `/sitemap.xml` through one HTTPS origin.
+The `/api/` location allows up to 11 MiB per request for multipart overhead;
+backend upload validators still enforce their 10 MiB file limit.
 Replace the domain, private backend address/port, deployed `dist/` path, and TLS
 certificate paths. Restrict backend network access to the proxy and set
 `TRUST_PROXY` only to match the verified proxy chain. If a CDN is in front,
 configure its trusted real-client-IP handling before relying on IP-based rate
 limits. The client must review TLS policy, security headers, upload/proxy
 timeouts, and certificate renewal before use.
+
+The Express API's disabled Helmet CSP does not set a policy for the static
+frontend. Apply the non-enforcing Report-Only candidate at the selected frontend
+host only after confirming its API, media, and font origins. See the CSP
+collection and review steps in the [client handover guide](./CLIENT-HANDOVER-GUIDE.md).
 
 ---
 
@@ -185,17 +192,53 @@ procedures. For field definitions and database relationships, see
 * `Cross-Origin-Resource-Policy: cross-origin`: Permits frontend pages on separate origins to load product images served by `/api/media/file/:id`.
 * `X-Powered-By`: Suppressed entirely to avoid advertising Express framework versions.
 
-### 2. Login Rate Limiting & Account Lockout Defense
-* **IP-based Limit**: 5 failed login attempts per IP within a 15-minute window.
-* **Account-based Limit**: 5 failed login attempts per normalized email within an independent 15-minute window. This stops distributed credential-stuffing attacks where an attacker rotates IP addresses against a single administrator account.
+### 2. Login & Password Recovery Defenses
+* **IP-based Limit**: 5 failed login attempts per IP within a 15-minute window; 3 password reset requests per IP within a 15-minute window.
+* **Account-based Limit**: 5 failed login attempts per normalized email within an independent 15-minute window; 3 password reset requests per normalized email across any client IP addresses within a 15-minute window. This stops distributed credential-stuffing and targeted password reset harassment attacks.
 * **Reset on Successful Authentication**: The failure counter is cleared immediately upon successful login, ensuring legitimate administrators entering valid credentials are never locked out.
+* **Enumeration Defense & Response Timing Note**: The public `POST /api/auth/forgot-password` endpoint returns an identical HTTP `200` status code and uniform JSON response (`"If an active account exists with a verified recovery address, a password reset link has been dispatched."`) for unknown, inactive, unconfigured, or valid accounts to prevent username enumeration. Note that response timing can differ slightly between accounts with an active verified recovery address and unconfigured/unknown accounts because outbound email delivery via Resend is awaited before returning the response. This timing variance is bounded and mitigated by dual IP-based and normalized-email-based rate limits (maximum 3 attempts per 15-minute window).
 
-### 3. Safe Error Handling
+### 3. CMS Recovery Email Verification & Password Reset Security
+
+As implemented in the current codebase, the CMS provides self-service password recovery for existing administrator accounts through a separately verified recovery email destination:
+
+#### Account Identity Separation
+* **Permanent Login Identity**: `AdminUser.email` serves as the administrator's permanent sign-in identity. Recovery email operations do not modify this permanent login email.
+* **Separation of Recovery Destination**: A separate `recoveryEmail` field on the `AdminUser` model stores the recovery address.
+* **Verified Destination Gate**: Password reset links are dispatched only to the verified recovery address associated with the account (`recoveryEmailVerifiedAt !== null`).
+* **Non-Interchangeable Sign-in**: The recovery email cannot independently authenticate or be used as a sign-in identity at `/admin/login`.
+
+#### Recovery Email Verification
+* **Authenticated Password Step-Up**: Adding or changing a recovery email (`POST /api/auth/recovery-email/request`) requires authenticated administrator access, CSRF token validation (`X-CSRF-Token`), and verification of the administrator's current password.
+* **Isolated Verification Dispatch**: Verification emails are sent strictly to the proposed recovery address, never to the permanent login email.
+* **Cryptographic Tokens**: Verification tokens are generated from 32 cryptographically secure random bytes (64 hex characters) and are hashed with SHA-256 before database storage in `AdminSecurityToken`.
+* **Single-Use and Expiry**: Verification tokens expire after 30 minutes and are consumed atomically in a single transaction; subsequent or replay attempts fail.
+* **Continuous Active Coverage**: Any existing verified recovery address remains active and eligible for password resets until the replacement recovery address is successfully verified.
+* **Removal Protection & Notifications**: Removing a recovery email (`POST /api/auth/recovery-email/remove`) requires current-password verification. Upon removal, the system generates security alert notifications to both the permanent login email and the removed recovery address.
+
+#### Forgot Password and Password Reset
+* **Dual Identifier Acceptance**: The public `POST /api/auth/forgot-password` endpoint accepts either the permanent administrator login email or the verified recovery email to resolve the account without creating duplicate records.
+* **Exclusive Reset Dispatch**: Reset links (`/admin/reset-password?token=<64-hex>`) are sent exclusively to the verified recovery email associated with the matched account.
+* **Anti-Enumeration Defense**: Requests for unknown, inactive, unconfigured, or valid accounts all receive a uniform HTTP 200 response with a generic message (`"If an active account exists with a verified recovery address, a password reset link has been dispatched."`) to reduce account enumeration.
+* **Reset Tokens**: Password reset tokens are single-use, hashed at rest with SHA-256, and expire after 30 minutes.
+* **Comprehensive Invalidation on Reset**: Executing `POST /api/auth/reset-password` updates the password hash, atomically burns the token, revokes all existing administrator sessions across all devices (`prisma.session.deleteMany`), invalidates outstanding security tokens, clears client-side authentication and CSRF state (`csrfToken = null`), and records an `AuditLog` security record alongside relevant notifications.
+
+#### Rate Limiting and Abuse Prevention
+* **IP Rate Limiting**: `POST /api/auth/forgot-password` requests are limited to 3 requests per 15-minute window by client IP.
+* **Account-Based Rate Limiting**: Account-based recovery requests are independently limited to 3 requests per 15-minute window per normalized account identifier.
+* **Cross-Identifier Throttling**: Cross-identifier tracking records attempts across both the login email and the recovery email, preventing attackers from alternating between identifiers to bypass limits.
+* **Atomic State Validation**: Token consumption conditionally validates token type (`PASSWORD_RESET` or `RECOVERY_EMAIL_VERIFICATION`), administrator association, expiry, unused status (`usedAt: null`), and active administrator status within a database transaction.
+* **No Destination Overrides**: Public endpoints do not permit callers to supply or override the recovery destination email address.
+
+#### Emergency Recovery
+If an administrator permanently loses access to the verified recovery email, self-service recovery cannot be used. Recovery must follow the controlled operator-assisted recovery procedure via the emergency CLI tool (`backend/scripts/reset-admin-password.js`), which requires direct server and database authorization. For operational instructions, see [DISASTER-RECOVERY-RUNBOOK.md](./DISASTER-RECOVERY-RUNBOOK.md). The public Forgot Password endpoint cannot bypass recovery verification.
+
+### 4. Safe Error Handling
 * Express global error handler suppresses stack traces and database error internals on all 500 responses.
 * CORS rejections return HTTP `403 Forbidden` with a clean JSON payload (`{ "success": false, "message": "CORS request forbidden: origin not allowed." }`) without logging server-side 500 error alerts.
 * Payload limits are enforced at 250 KB (`express.json({ limit: "250kb" })`), rejecting oversized payloads with HTTP 413.
 
-### 4. Media Storage Security
+### 5. Media Storage Security
 * Cloudflare R2 bucket is kept strictly private.
 * All uploaded files are inspected via magic bytes (`validateImageBuffer` supporting JPEG, PNG, WebP, GIF) and enforced under 10 MB.
 * Media files are stored using unguessable random UUIDs and SHA-256 digests (`generateObjectKey`), preventing directory traversal or overwrites.

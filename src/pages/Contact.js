@@ -7,7 +7,8 @@
  */
 import { ContentService } from '../data/ContentService.js';
 import { ImageStorage } from '../data/ImageStorage.js';
-import { ApiService } from '../data/ApiService.js';
+import { ApiService, isSubmissionOutcomeUnknown } from '../data/ApiService.js';
+import { TurnstileService } from '../data/TurnstileService.js';
 import { getRouteSearchParams } from '../router.js';
 
 export function getInquiryDetails() {
@@ -323,12 +324,14 @@ export function renderContactPage() {
                   <textarea id="c-message" name="message" placeholder="Please specify your project specifications, required quantities, target frequency band, and timeline..." required>${prefillMessage}</textarea>
                 </div>
 
+                <div id="contact-turnstile-widget" class="turnstile-widget" data-turnstile-action="contact_enquiry" role="group" aria-label="Security verification"></div>
+                <p id="contact-turnstile-status" class="turnstile-status" role="status" aria-live="polite"></p>
                 <button type="submit" class="btn-relay-blue" id="inquiry-submit-btn" style="width:100%;margin-top:var(--space-2);">
                   <i class="fa-solid fa-paper-plane"></i> Send Message to Engineering Team
                 </button>
                 <!-- Honeypot: hidden from real users, filled by bots -->
-                <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;" />
-                <div id="inquiry-form-error" role="alert" style="display:none;margin-top:var(--space-3);padding:10px 14px;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.35);border-radius:var(--radius-md);color:#fca5a5;font-size:0.88rem;"></div>
+                <input class="turnstile-honeypot" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+                <div id="inquiry-form-error" role="alert" aria-live="assertive" style="display:none;margin-top:var(--space-3);padding:10px 14px;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.35);border-radius:var(--radius-md);color:#fca5a5;font-size:0.88rem;"></div>
               </form>
             </div>
 
@@ -433,12 +436,14 @@ export function renderContactPage() {
                   <textarea id="r-statement" name="statement" placeholder="${careers.statementPlaceholder || 'Briefly highlight your relevant RF, Microwave, or electronics experience, core projects, and why you are keen to join ICON Electromatic...'}" ${careers.statementRequired !== false ? 'required' : ''}></textarea>
                 </div>
 
+                <div id="careers-turnstile-widget" class="turnstile-widget" data-turnstile-action="careers_application" role="group" aria-label="Security verification"></div>
+                <p id="careers-turnstile-status" class="turnstile-status" role="status" aria-live="polite"></p>
                 <button type="submit" class="btn-relay-blue" id="careers-submit-btn" style="width:100%;margin-top:var(--space-2);background:linear-gradient(135deg, var(--logo-blue), #1E40AF);">
                   <i class="${careers.submitButtonIcon || 'fa-solid fa-briefcase'}"></i> ${careers.submitButtonText || 'Submit Engineering Application'}
                 </button>
                 <!-- Honeypot: hidden from real users, filled by bots -->
-                <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;" />
-                <div id="careers-form-error" role="alert" style="display:none;margin-top:var(--space-3);padding:10px 14px;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.35);border-radius:var(--radius-md);color:#fca5a5;font-size:0.88rem;"></div>
+                <input class="turnstile-honeypot" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+                <div id="careers-form-error" role="alert" aria-live="assertive" style="display:none;margin-top:var(--space-3);padding:10px 14px;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.35);border-radius:var(--radius-md);color:#fca5a5;font-size:0.88rem;"></div>
               </form>
             </div>
 
@@ -471,6 +476,57 @@ export function initContactPage() {
   const modelInput = document.getElementById('c-model');
   const resumeInput = document.getElementById('r-resume-file');
   const resumeUploadText = document.getElementById('resume-upload-text');
+  const turnstileWidgets = { inquiry: null, careers: null };
+  const turnstileLoads = { inquiry: null, careers: null };
+  let inquiryRequestInFlight = false;
+  let inquirySubmissionLocked = false;
+  let careersRequestInFlight = false;
+  let careersSubmissionLocked = false;
+
+  function ensureTurnstileWidget(formName) {
+    if (turnstileWidgets[formName]) {
+      return Promise.resolve(turnstileWidgets[formName]);
+    }
+    if (turnstileLoads[formName]) return turnstileLoads[formName];
+
+    const isCareers = formName === 'careers';
+    const widgetContainer = document.getElementById(
+      isCareers ? 'careers-turnstile-widget' : 'contact-turnstile-widget'
+    );
+    const status = document.getElementById(
+      isCareers ? 'careers-turnstile-status' : 'contact-turnstile-status'
+    );
+    if (!widgetContainer) return Promise.resolve(null);
+    if (status) status.textContent = 'Loading security verification...';
+
+    turnstileLoads[formName] = TurnstileService.render({
+      container: widgetContainer,
+      action: isCareers ? 'careers_application' : 'contact_enquiry',
+      onToken: () => {
+        if (status) status.textContent = 'Security check complete.';
+      },
+      onExpired: () => {
+        if (status) status.textContent = 'Verification expired. Complete the security check again.';
+      },
+      onError: () => {
+        if (status) status.textContent = 'The security check encountered an error. Please try again.';
+      },
+    }).then((widget) => {
+      turnstileWidgets[formName] = widget;
+      if (status) status.textContent = 'Complete the security check before submitting.';
+      return widget;
+    }).catch(() => {
+      if (status) {
+        status.textContent =
+          'Security verification could not load. Refresh the page to try again; your submission has not been sent.';
+      }
+      return null;
+    }).finally(() => {
+      turnstileLoads[formName] = null;
+    });
+
+    return turnstileLoads[formName];
+  }
 
   // Switch between Inquiry and Recruiting Tabs
   function switchTab(tab) {
@@ -514,6 +570,8 @@ export function initContactPage() {
         ? (careers.careersLead || c.careersLead || 'Accelerate your career in millimeter-wave technology, defense electronics, and satellite communications. Explore engineering opportunities at ICON Electromatic.')
         : (c.heroLead || 'Whether you require component data sheets, custom waveguide machining, or volume pricing, our application engineering team in Bengaluru is ready to assist.');
     }
+
+    void ensureTurnstileWidget(isRecruiting ? 'careers' : 'inquiry');
   }
 
   // Bind tab buttons
@@ -602,10 +660,14 @@ export function initContactPage() {
   if (inquiryForm) {
     inquiryForm.addEventListener('submit', async (e) => {
       e.preventDefault();
+      if (inquiryRequestInFlight || inquirySubmissionLocked) return;
       const submitBtn = document.getElementById('inquiry-submit-btn');
       const errorDiv = document.getElementById('inquiry-form-error');
 
-      if (errorDiv) errorDiv.style.display = 'none';
+      if (errorDiv) {
+        errorDiv.style.display = 'none';
+        errorDiv.textContent = '';
+      }
 
       const regionVal = (regionSelect?.value || document.getElementById('c-region')?.value || '').trim().toLowerCase();
       if (!regionVal || !['india', 'singapore', 'usa'].includes(regionVal)) {
@@ -617,6 +679,20 @@ export function initContactPage() {
         return;
       }
 
+      const inquiryWidget = turnstileWidgets.inquiry;
+      const token = inquiryWidget?.getToken();
+      if (!token) {
+        if (errorDiv) {
+          errorDiv.textContent = inquiryWidget
+            ? 'Complete the security check before sending your enquiry.'
+            : 'Security verification is unavailable. Refresh the page to try again; your enquiry has not been sent.';
+          errorDiv.style.display = 'block';
+        }
+        void ensureTurnstileWidget('inquiry');
+        return;
+      }
+
+      inquiryRequestInFlight = true;
       // Loading state
       if (submitBtn) {
         submitBtn.disabled = true;
@@ -637,9 +713,13 @@ export function initContactPage() {
       };
 
       try {
-        const data = await ApiService.post('/enquiries/contact', body);
+        const data = await ApiService.post('/enquiries/contact', body, {
+          headers: { 'X-Turnstile-Token': token },
+        });
 
         if (data.success) {
+          inquirySubmissionLocked = true;
+          inquiryWidget?.cleanup();
           // Show existing success panel
           const name = body.fullname || 'Customer';
           if (inquiryPanel) {
@@ -668,18 +748,47 @@ export function initContactPage() {
             errorDiv.textContent = msg;
             errorDiv.style.display = 'block';
           }
-          if (submitBtn) {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Send Message to Engineering Team';
+        }
+      } catch (error) {
+        const retryableVerification = [
+          'TURNSTILE_REQUIRED',
+          'TURNSTILE_INVALID',
+          'TURNSTILE_REJECTED',
+          'TURNSTILE_UNAVAILABLE',
+          'TURNSTILE_NOT_CONFIGURED',
+        ].includes(error?.code);
+        if (error?.code === 'ENQUIRY_SAVED_EMAIL_FAILED') {
+          inquirySubmissionLocked = true;
+          inquiryWidget?.cleanup();
+          if (errorDiv) {
+            errorDiv.textContent = error.message || 'Your enquiry was received, but email dispatch failed. Please contact the team before submitting again.';
+            errorDiv.style.display = 'block';
+          }
+        } else if (retryableVerification) {
+          inquiryWidget?.reset();
+          if (errorDiv) {
+            errorDiv.textContent = error.message || 'Verification failed. Complete a fresh security check and try again.';
+            errorDiv.style.display = 'block';
+          }
+        } else if (isSubmissionOutcomeUnknown(error)) {
+          inquirySubmissionLocked = true;
+          inquiryWidget?.cleanup();
+          if (errorDiv) {
+            errorDiv.textContent = 'We could not confirm the submission status. Your enquiry may already have been received; please contact the team before trying again.';
+            errorDiv.style.display = 'block';
+          }
+        } else {
+          inquiryWidget?.reset();
+        }
+        if (errorDiv) {
+          if (!errorDiv.textContent) {
+            errorDiv.textContent = error?.message || 'Could not send your enquiry. Please try again.';
+            errorDiv.style.display = 'block';
           }
         }
-      } catch (_err) {
-        const fallbackMsg = 'Could not reach the server. Please check your connection or email us directly.';
-        if (errorDiv) {
-          errorDiv.textContent = fallbackMsg;
-          errorDiv.style.display = 'block';
-        }
-        if (submitBtn) {
+      } finally {
+        inquiryRequestInFlight = false;
+        if (!inquirySubmissionLocked && submitBtn) {
           submitBtn.disabled = false;
           submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Send Message to Engineering Team';
         }
@@ -691,6 +800,7 @@ export function initContactPage() {
   if (recruitingForm) {
     recruitingForm.addEventListener('submit', async (e) => {
       e.preventDefault();
+      if (careersRequestInFlight || careersSubmissionLocked) return;
       const c = ContentService.getData('contact') || {};
       const careers = c.careers || {};
       const submitBtn = document.getElementById('careers-submit-btn');
@@ -703,12 +813,29 @@ export function initContactPage() {
         return;
       }
 
+      const careersWidget = turnstileWidgets.careers;
+      const token = careersWidget?.getToken();
+      if (!token) {
+        if (errorDiv) {
+          errorDiv.textContent = careersWidget
+            ? 'Complete the security check before submitting your application.'
+            : 'Security verification is unavailable. Refresh the page to try again; your application has not been sent.';
+          errorDiv.style.display = 'block';
+        }
+        void ensureTurnstileWidget('careers');
+        return;
+      }
+
+      careersRequestInFlight = true;
       // Loading state
       if (submitBtn) {
         submitBtn.disabled = true;
         submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Submitting Application...';
       }
-      if (errorDiv) errorDiv.style.display = 'none';
+      if (errorDiv) {
+        errorDiv.style.display = 'none';
+        errorDiv.textContent = '';
+      }
 
       try {
         const formData = new FormData();
@@ -730,9 +857,13 @@ export function initContactPage() {
           formData.append('resume', resumeInput.files[0]);
         }
 
-        const data = await ApiService.post('/enquiries/careers', formData);
+        const data = await ApiService.post('/enquiries/careers', formData, {
+          headers: { 'X-Turnstile-Token': token },
+        });
 
         if (data.success) {
+          careersSubmissionLocked = true;
+          careersWidget?.cleanup();
           const candName = document.getElementById('r-fullname')?.value || 'Candidate';
           const position = document.getElementById('r-position')?.value || 'Engineering Role';
           const candRefId = data.id || ('ICON-CAREER-' + Math.floor(100000 + Math.random() * 900000));
@@ -772,18 +903,45 @@ export function initContactPage() {
             errorDiv.textContent = msg;
             errorDiv.style.display = 'block';
           }
-          if (submitBtn) {
-            submitBtn.disabled = false;
-            const icon = careers.submitButtonIcon || 'fa-solid fa-briefcase';
-            submitBtn.innerHTML = `<i class="${icon}"></i> ${careers.submitButtonText || 'Submit Engineering Application'}`;
+        }
+      } catch (error) {
+        const retryableVerification = [
+          'TURNSTILE_REQUIRED',
+          'TURNSTILE_INVALID',
+          'TURNSTILE_REJECTED',
+          'TURNSTILE_UNAVAILABLE',
+          'TURNSTILE_NOT_CONFIGURED',
+        ].includes(error?.code);
+        if (error?.code === 'CAREER_SAVED_EMAIL_FAILED') {
+          careersSubmissionLocked = true;
+          careersWidget?.cleanup();
+          if (errorDiv) {
+            errorDiv.textContent = error.message || 'Your application was received, but email dispatch failed. Please contact the team before submitting again.';
+            errorDiv.style.display = 'block';
+          }
+        } else if (retryableVerification) {
+          careersWidget?.reset();
+          if (errorDiv) {
+            errorDiv.textContent = error.message || 'Verification failed. Complete a fresh security check and try again.';
+            errorDiv.style.display = 'block';
+          }
+        } else if (isSubmissionOutcomeUnknown(error)) {
+          careersSubmissionLocked = true;
+          careersWidget?.cleanup();
+          if (errorDiv) {
+            errorDiv.textContent = 'We could not confirm the application status. Your application may already have been received; please contact the team before trying again.';
+            errorDiv.style.display = 'block';
+          }
+        } else {
+          careersWidget?.reset();
+          if (errorDiv) {
+            errorDiv.textContent = error?.message || 'Could not submit your application. Please try again.';
+            errorDiv.style.display = 'block';
           }
         }
-      } catch (_err) {
-        if (errorDiv) {
-          errorDiv.textContent = 'Could not reach the server. Please check your connection or email your CV directly.';
-          errorDiv.style.display = 'block';
-        }
-        if (submitBtn) {
+      } finally {
+        careersRequestInFlight = false;
+        if (!careersSubmissionLocked && submitBtn) {
           submitBtn.disabled = false;
           const icon = careers.submitButtonIcon || 'fa-solid fa-briefcase';
           submitBtn.innerHTML = `<i class="${icon}"></i> ${careers.submitButtonText || 'Submit Engineering Application'}`;

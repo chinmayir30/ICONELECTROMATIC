@@ -28,6 +28,8 @@ import { asyncHandler } from "../routes/common.js";
 import enquiryRateLimitDefault, {
   createEnquiryRateLimit,
 } from "../middleware/enquiryRateLimit.js";
+import { createRequireTurnstile } from "../middleware/requireTurnstile.js";
+import { verifyTurnstileToken } from "../services/turnstileVerification.js";
 
 // ─── Validation helpers ───────────────────────────────────────────────────────
 
@@ -227,6 +229,9 @@ export function createEnquiriesRouter({
   emailSendCareer = sendCareerEmail,
   emailSendAcknowledgement = sendAcknowledgementEmail,
   rateLimitMiddleware = enquiryRateLimitDefault,
+  turnstileVerifier = verifyTurnstileToken,
+  turnstileOptions = {},
+  careerUploadMiddleware = null,
 } = {}) {
   const router = Router();
 
@@ -235,11 +240,22 @@ export function createEnquiriesRouter({
     storage: multer.memoryStorage(),
     limits: { fileSize: RESUME_MAX_BYTES + 1024 }, // slight slack so multer won't reject before our message
   });
+  const contactTurnstileMiddleware = createRequireTurnstile({
+    action: "contact_enquiry",
+    verifier: turnstileVerifier,
+    verificationOptions: turnstileOptions,
+  });
+  const careersTurnstileMiddleware = createRequireTurnstile({
+    action: "careers_application",
+    verifier: turnstileVerifier,
+    verificationOptions: turnstileOptions,
+  });
 
   // ── POST /api/enquiries/contact ─────────────────────────────────────────────
   router.post(
     "/contact",
     rateLimitMiddleware,
+    contactTurnstileMiddleware,
     asyncHandler(async (req, res) => {
       // Honeypot: bots fill in the hidden `website` field; humans leave it empty.
       if (clean(req.body.website)) {
@@ -314,6 +330,7 @@ export function createEnquiriesRouter({
         // Internal sales notification failed: do not send customer acknowledgement.
         return res.status(502).json({
           success: false,
+          code: "ENQUIRY_SAVED_EMAIL_FAILED",
           message:
             "Your enquiry was received but could not be dispatched to our team automatically. Please contact us directly if urgent.",
         });
@@ -375,7 +392,8 @@ export function createEnquiriesRouter({
   router.post(
     "/careers",
     rateLimitMiddleware,
-    upload.single("resume"),
+    careersTurnstileMiddleware,
+    careerUploadMiddleware || upload.single("resume"),
     asyncHandler(async (req, res) => {
       // Honeypot check on multipart body
       if (clean(req.body.website)) {
@@ -453,6 +471,7 @@ export function createEnquiriesRouter({
       if (!emailResult.ok) {
         return res.status(502).json({
           success: false,
+          code: "CAREER_SAVED_EMAIL_FAILED",
           message:
             "Your application was received but could not be dispatched to our team automatically. Please email your CV directly to our careers address.",
         });

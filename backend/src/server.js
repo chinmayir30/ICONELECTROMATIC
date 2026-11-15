@@ -1,4 +1,11 @@
-import "dotenv/config";
+import dotenv from "dotenv";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+dotenv.config();
+dotenv.config({ path: path.resolve(__dirname, "../.env") });
+
 import cors from "cors";
 import express from "express";
 import helmet from "helmet";
@@ -200,15 +207,15 @@ export function createApp({
     const statusCode = Number.isInteger(error.status)
       ? error.status
       : Number.isInteger(error.statusCode)
-      ? error.statusCode
-      : 500;
+        ? error.statusCode
+        : 500;
 
     const message =
       statusCode === 400
         ? "Invalid JSON request body."
         : statusCode === 413
-        ? "Request body is too large."
-        : "Internal server error.";
+          ? "Request body is too large."
+          : "Internal server error.";
 
     if (statusCode >= 500) {
       console.error("Unhandled request error:", error);
@@ -280,7 +287,7 @@ export function createProcessErrorHandlers({
   function exitAfterShutdownFailure(error) {
     errorLogger(
       "[process] Fatal-error shutdown failed:\n" +
-        safeProcessErrorDetails(error, env)
+      safeProcessErrorDetails(error, env)
     );
     if (typeof processObject.exit === "function") {
       processObject.exit(1);
@@ -414,7 +421,7 @@ if (isDirectRun) {
     prismaClient: prisma,
   });
   process.on("SIGTERM", () => shutdown("SIGTERM"));
-  process.on("SIGINT",  () => shutdown("SIGINT"));
+  process.on("SIGINT", () => shutdown("SIGINT"));
   createProcessErrorHandlers({ shutdown });
 }
 

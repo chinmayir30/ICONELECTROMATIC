@@ -11,6 +11,7 @@ import {
   readCookie,
   verifyPassword,
 } from "../auth/security.js";
+import { createAuthRecoveryRouter } from "./authRecovery.js";
 
 const router = Router();
 const SESSION_DURATION_MS = 8 * 60 * 60 * 1000;
@@ -72,6 +73,8 @@ export function createAuthRouter({
   loginRateLimitMiddleware = loginRateLimit,
   now = () => new Date(),
   isProduction = process.env.NODE_ENV === "production",
+  emailService,
+  recoveryLimiters = {},
 } = {}) {
   const router = Router();
 
@@ -79,6 +82,17 @@ export function createAuthRouter({
     res.set("Cache-Control", "no-store");
     return next();
   });
+
+  router.use(
+    createAuthRecoveryRouter({
+      prismaClient,
+      requireAdminMiddleware,
+      now,
+      isProduction,
+      emailService,
+      ...recoveryLimiters,
+    })
+  );
 
   router.post("/login", loginRateLimitMiddleware, async (req, res) => {
     if (!isValidLoginBody(req.body)) {

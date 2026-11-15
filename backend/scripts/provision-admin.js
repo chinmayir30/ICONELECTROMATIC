@@ -1,9 +1,9 @@
 import "dotenv/config";
-import { PrismaClient } from "@prisma/client";
 import { createInterface } from "node:readline";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createPasswordHash } from "../src/auth/security.js";
+import { createPrismaClient as makePrismaClient } from "../src/prismaClient.js";
 
 function ask(question, input = process.stdin, output = process.stdout) {
   const readline = createInterface({
@@ -106,6 +106,8 @@ export async function provisionAdmin(prismaClient, { email, password }) {
   return prismaClient.adminUser.create({
     data: {
       email,
+      recoveryEmail: email,
+      recoveryEmailVerifiedAt: null,
       passwordHash,
       role: "ADMIN",
       active: true,
@@ -133,7 +135,7 @@ export async function runProvisionAdmin({
   input = process.stdin,
   output = process.stdout,
   errorOutput = process.stderr,
-  createPrismaClient = () => new PrismaClient(),
+  createPrismaClient = () => makePrismaClient(env.DATABASE_URL),
 } = {}) {
   let prismaClient;
   try {
