@@ -58,7 +58,9 @@ Stage 7 - Central CMS Supabase Persistence & SSG Integration (feat/admin-cms-sup
 - [x] Unify OEM Catalog and Partner Card Red Accents (feat/unify-oem-catalog-card-red-accents)
 - [x] Unify Blogs Page Red Accents & Hover Effects in Dark Mode (feat/unify-blogs-page-red-accents)
 - [x] Unify Contact Us & Careers Page Red Accents in Dark Mode (feat/unify-contact-page-red-accents)
-- [x] Unify Hero Trust Badges & DHL GoGreen Labels to Brand Red (feat/unify-about-trust-badges-red)
+- [x] Unify Hero Trust Badges & DHL GoGreen Labels to Brand Red (PR #51)
+- [x] Homepage Header Navigation Refinement, Stats Update & Hero Copy (PR #52)
+- [x] Unify Look and Feel of Trust Badges and Pills Across All Pages in Brand Red (feat/unify-site-look-and-feel-red)
 
 ## Decisions (confirmed by the owner)
 | Date | Decision | Why |
