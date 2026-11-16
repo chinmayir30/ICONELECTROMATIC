@@ -53,7 +53,7 @@ if (typeof window !== 'undefined') {
 }
 
 // ─── Version key: bump this to ensure fresh schema sync with existing localStorage ───
-const CMS_VERSION = 'v21';
+const CMS_VERSION = 'v22';
 
 const INITIAL_CONTENT = {
   header: {
@@ -96,7 +96,7 @@ const INITIAL_CONTENT = {
   },
   home: {
     heroTitle: 'ICON ELECTROMATIC turns complex high-frequency requirements into <span class="accent-red" style="color: var(--logo-red);">mission-ready hardware.</span>',
-    heroSubtitle: 'Delivering precision RF, microwave, and electronic components for defense, aerospace, SATCOM, and telecommunications.',
+    heroSubtitle: 'Delivering world-class RF and microwave technologies through trusted representation and distribution. Partnering with industry-leading suppliers, we bring innovative technologies, engineering support, and seamless supply-chain services to accelerate your success.',
     heroBgVideo: '/icon-video.mp4',
     heroBgImage: '/images/hero-new-bg.png',
     ctaExploreText: 'Explore Products',
@@ -104,8 +104,8 @@ const INITIAL_CONTENT = {
     ctaQuoteText: 'Request a Quote',
     ctaQuoteLink: '/contact',
     stats: [
-      { id: 'stat-1', value: '159', label: 'VERIFIED COMPONENTS' },
-      { id: 'stat-2', value: '12', label: 'OEM PARTNERS' },
+      { id: 'stat-1', value: '160+', label: 'VERIFIED COMPONENTS' },
+      { id: 'stat-2', value: '13+', label: 'OEM PARTNERS' },
       { id: 'stat-3', value: 'DHL GoGreen Plus', label: 'CERTIFIED (IESPL)' },
     ],
     coreCapabilitiesTitle: 'Core Capabilities',
