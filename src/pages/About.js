@@ -29,16 +29,16 @@ export function renderAboutPage() {
     border: 'rgba(225,29,72,0.25)'
   }));
 
-  const highlightCards = d.highlightCards || [
-    { title: 'Global Leader in RF & Electronic Solutions', desc: 'Providing mission-critical components, assemblies, and custom microwave engineering for advanced applications.', icon: 'fa-solid fa-tower-broadcast', color: 'blue' },
+  const highlightCards = (d.highlightCards || [
+    { title: 'Global Leader in RF & Electronic Solutions', desc: 'Providing mission-critical components, assemblies, and custom microwave engineering for advanced applications.', icon: 'fa-solid fa-tower-broadcast', color: 'red' },
     { title: 'Advanced Components, Consultancy & Bespoke Design Services', desc: 'End-to-end design-in engineering, RF simulation review, and custom-tailored fulfillment for client success.', icon: 'fa-solid fa-microchip', color: 'red' },
-  ];
+  ]).map(c => ({ ...c, color: 'red' }));
 
-  const stats = d.stats || [
+  const stats = (d.stats || [
     { target: '1500', suffix: '+', label: 'Products', icon: 'fa-solid fa-boxes-stacked', color: 'red' },
-    { target: '150', suffix: '+', label: 'Years of combined experience', icon: 'fa-solid fa-calendar-check', color: 'blue' },
+    { target: '150', suffix: '+', label: 'Years of combined experience', icon: 'fa-solid fa-calendar-check', color: 'red' },
     { target: '15', suffix: '+', label: 'Partners', icon: 'fa-solid fa-handshake-angle', color: 'red' },
-  ];
+  ]).map(s => ({ ...s, color: 'red' }));
 
   const milestones = d.milestones || [
     { year: '2009', title: 'RF & Microwave Genesis', desc: 'Established in Bengaluru, Karnataka by veteran RF & Microwave engineers focusing on defense electronics and aerospace components distribution.', image: '/images/timeline/timeline-2009-bengaluru.jpg', caption: 'Genesis in Bengaluru, India', color: 'cyan' },
@@ -247,10 +247,10 @@ export function renderAboutPage() {
               
               <!-- Node 1: 2009 (RF & Microwave Genesis) -->
               <div class="relay-timeline-node node-step-1" data-milestone="${milestones[0]?.year || '2009'}">
-                <div class="node-radar-wave-ring"></div>
-                <div class="node-radar-wave-ring delay"></div>
+                <div class="node-radar-wave-ring red-ring"></div>
+                <div class="node-radar-wave-ring red-ring delay"></div>
                 <div class="node-tech-reticle"></div>
-                <div class="timeline-node-circle cyan-node">
+                <div class="timeline-node-circle red-node">
                   <svg class="node-tech-svg" viewBox="0 0 32 32" fill="none" stroke="currentColor">
                     <path d="M16 8v15M13 23h6M12 17h8M14 12h4" stroke-width="1.8" stroke-linecap="round"/>
                     <circle cx="16" cy="7" r="2.5" fill="currentColor"/>
@@ -261,11 +261,11 @@ export function renderAboutPage() {
                     <path d="M10 27l6-3 6 3" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
                 </div>
-                <div class="timeline-node-year-pill cyan-pill">
+                <div class="timeline-node-year-pill red-pill">
                   <span class="node-year-text">${milestones[0]?.year || '2009'}</span>
                   <span class="node-live-dot"></span>
                 </div>
-                <div class="timeline-stem-connector cyan-stem">
+                <div class="timeline-stem-connector red-stem">
                   <div class="stem-photon-drop"></div>
                 </div>
               </div>
@@ -296,43 +296,43 @@ export function renderAboutPage() {
 
               <!-- Node 3: May 2020 (USA Transatlantic Corridor) -->
               <div class="relay-timeline-node node-step-3" data-milestone="${milestones[2]?.year || 'May 2020'}">
-                <div class="node-radar-wave-ring navy-ring"></div>
-                <div class="node-radar-wave-ring navy-ring delay"></div>
+                <div class="node-radar-wave-ring red-ring"></div>
+                <div class="node-radar-wave-ring red-ring delay"></div>
                 <div class="node-tech-reticle"></div>
-                <div class="timeline-node-circle navy-node">
+                <div class="timeline-node-circle red-node">
                   <svg class="node-tech-svg" viewBox="0 0 32 32" fill="none" stroke="currentColor">
                     <circle cx="16" cy="16" r="11.5" stroke-width="1.2" stroke-dasharray="2 2" opacity="0.6"/>
-                    <path d="M25 7l-6 13-3-3-5 3 2-6-3-3 15-4z" stroke-width="1.8" stroke-linejoin="round" fill="rgba(59,130,246,0.25)"/>
+                    <path d="M25 7l-6 13-3-3-5 3 2-6-3-3 15-4z" stroke-width="1.8" stroke-linejoin="round" fill="rgba(225,29,72,0.25)"/>
                     <path d="M10 23l-4 4M13 22l-5 5M12 25l-4 4" stroke-width="1.5" stroke-linecap="round" class="svg-thrust-trail"/>
                     <path d="M16 2v3M16 27v3M2 16h3M27 16h3" stroke-width="1.5" stroke-linecap="round"/>
                   </svg>
                 </div>
-                <div class="timeline-node-year-pill navy-pill">
+                <div class="timeline-node-year-pill red-pill">
                   <span class="node-year-text">${milestones[2]?.year || 'May 2020'}</span>
                   <span class="node-live-dot"></span>
                 </div>
-                <div class="timeline-stem-connector navy-stem">
+                <div class="timeline-stem-connector red-stem">
                   <div class="stem-photon-drop"></div>
                 </div>
               </div>
 
               <!-- Node 4: Nov 2020 (India Incorporation & Enterprise Crest) -->
               <div class="relay-timeline-node node-step-4" data-milestone="${milestones[3]?.year || 'Nov 2020'}">
-                <div class="node-radar-wave-ring amber-ring"></div>
-                <div class="node-radar-wave-ring amber-ring delay"></div>
+                <div class="node-radar-wave-ring red-ring"></div>
+                <div class="node-radar-wave-ring red-ring delay"></div>
                 <div class="node-tech-reticle"></div>
-                <div class="timeline-node-circle amber-node">
+                <div class="timeline-node-circle red-node">
                   <svg class="node-tech-svg" viewBox="0 0 32 32" fill="none" stroke="currentColor">
-                    <path d="M16 3l10 4v8c0 7-5 12-10 14C11 27 6 22 6 15V7l10-4z" stroke-width="1.8" stroke-linejoin="round" fill="rgba(245,158,11,0.2)"/>
+                    <path d="M16 3l10 4v8c0 7-5 12-10 14C11 27 6 22 6 15V7l10-4z" stroke-width="1.8" stroke-linejoin="round" fill="rgba(225,29,72,0.2)"/>
                     <path d="M16 9l2 4.5 4.5 1-3.5 3 1 4.5-4-2.5-4 2.5 1-4.5-3.5-3 4.5-1L16 9z" fill="currentColor" stroke-width="1" stroke-linejoin="round"/>
                     <path d="M10 29h12" stroke-width="2" stroke-linecap="round"/>
                   </svg>
                 </div>
-                <div class="timeline-node-year-pill amber-pill">
+                <div class="timeline-node-year-pill red-pill">
                   <span class="node-year-text">${milestones[3]?.year || 'Nov 2020'}</span>
                   <span class="node-live-dot"></span>
                 </div>
-                <div class="timeline-stem-connector amber-stem">
+                <div class="timeline-stem-connector red-stem">
                   <div class="stem-photon-drop"></div>
                 </div>
               </div>
@@ -342,11 +342,11 @@ export function renderAboutPage() {
             <div class="journey-grid-four">
               ${milestones.map((m, idx) => {
                 const img = ContentService.resolveImg(m.image);
-                const color = m.color || (idx === 0 ? 'cyan' : idx === 1 ? 'red' : idx === 2 ? 'navy' : 'amber');
-                const archClass = color === 'red' ? 'red' : color === 'navy' ? 'navy-flag' : color === 'amber' ? 'amber' : 'blue';
-                const cardAccentClass = color === 'red' ? 'card-accent-red red-glow' : color === 'navy' ? 'card-accent-navy blue-glow' : color === 'amber' ? 'card-accent-amber' : 'blue-glow';
-                const borderTopColor = color === 'red' ? 'var(--logo-red)' : color === 'navy' ? '#1e40af' : color === 'amber' ? '#d97706' : 'var(--logo-blue)';
-                const dotGlowClass = color === 'red' ? 'red' : color === 'navy' ? 'navy' : color === 'amber' ? 'amber' : '';
+                const color = 'red';
+                const archClass = 'red';
+                const cardAccentClass = 'card-accent-red red-glow';
+                const borderTopColor = 'var(--logo-red)';
+                const dotGlowClass = 'red';
 
                 return `
                   <div class="journey-milestone-card ${cardAccentClass} about-interactive-card about-animate-fadeup" style="border-top:3.5px solid ${borderTopColor};">

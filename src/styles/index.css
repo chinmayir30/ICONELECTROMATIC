@@ -10573,20 +10573,26 @@ html[data-theme="light"],
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 16px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 10px 18px;
+  background: rgba(225, 29, 72, 0.08);
+  border: 1px solid rgba(225, 29, 72, 0.25);
   border-radius: 10px;
   font-size: 0.85rem;
-  color: var(--text-gray-200);
+  color: #FDA4AF;
   transition: all 0.25s ease;
+}
+
+.catalog-trust-pill strong,
+.ecosystem-trust-pill strong {
+  color: #ffffff;
 }
 
 .catalog-trust-pill:hover,
 .ecosystem-trust-pill:hover {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.15);
+  background: rgba(227, 39, 38, 0.2);
+  border-color: #e32726;
   transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(227, 39, 38, 0.38), 0 0 12px rgba(227, 39, 38, 0.25);
 }
 
 [data-theme="light"] .catalog-trust-pill,
