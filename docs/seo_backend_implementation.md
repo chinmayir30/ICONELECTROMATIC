@@ -1121,6 +1121,38 @@ Open items that affect these phases: client decisions on category grouping, dupl
   - Live production deployment URL (checked after pull request merge).
 - **Undo:** Revert PR or branch.
 
+### Entry 49: Homepage Header Navigation Refinement, Stats Update & Hero Copy
+- **Status:** In progress (branch `feat/homepage-header-nav-stats-refinement`, 16 Nov 2026)
+- **What was built:**
+  - Slightly increased navigation tab font size from `1.02rem` to `1.08rem` in `src/styles/index.css` across both dark and light modes for crisp readability and visual prominence across all 7 tabs (*Home, About Us, Partners, Products, Services, Blogs, Contact*).
+  - Shifted desktop navigation menu rightward (`margin-left: auto; margin-right: 2.25rem;` on `.main-nav`) for clean balance and separation between the left cluster (hamburger toggle + logo) and the navigation links.
+  - Ensured mobile hamburger drawer styling (`.main-nav.mobile-active` on <=992px) explicitly resets margin (`margin: 0 !important;`) to preserve full-width responsive mobile behavior.
+  - Updated homepage hero statistics in `src/pages/Home.js` and `src/data/ContentService.js`:
+    - Stat 1: `159` -> `160+` (`VERIFIED COMPONENTS`)
+    - Stat 2: `12` -> `13+` (`OEM PARTNERS`)
+    - Stat 3: `DHL GoGreen Plus` (`CERTIFIED (IESPL)`) preserved.
+  - Replaced homepage hero description (`heroSubtitle`) in `src/pages/Home.js` and `src/data/ContentService.js` with:
+    > "Delivering world-class RF and microwave technologies through trusted representation and distribution. Partnering with industry-leading suppliers, we bring innovative technologies, engineering support, and seamless supply-chain services to accelerate your success."
+  - Bumped `CMS_VERSION` to `v22` in `src/data/ContentService.js` for automatic browser cache invalidation.
+  - Regenerated `supabase/seed_cms_content.sql` via `node scripts/seed-cms-content.mjs`.
+- **Technology and role:** CSS layout & typography refinement, component data synchronization, cache invalidation.
+- **How it works:** Flexbox margin alignment pushes `.main-nav` towards the right actions cluster while keeping the left brand elements intact. Updated defaults in `ContentService.js` and `Home.js` ensure clean instant rendering across both client-side navigation and serverless seeds.
+- **Files and folders added or changed:**
+  - `src/styles/index.css`
+  - `src/pages/Home.js`
+  - `src/data/ContentService.js`
+  - `supabase/seed_cms_content.sql`
+  - `docs/PROJECT-STATE.md`
+  - `docs/seo_backend_implementation.md`
+- **Data and security notes:** Client-specified copy and statistics. Zero secrets, no new dependencies.
+- **Checked (and how):**
+  - Test suites: `node --test tests/*.test.mjs` — all 60 tests passing cleanly.
+  - Production build: `npm run build` — exit code 0, 159 static HTML pages generated.
+  - Live server: tested on local Vite dev server at http://localhost:3000/.
+- **Not checked:**
+  - Live production deployment URL (checked after pull request merge).
+- **Undo:** Revert PR or branch.
+
 ## 7. Entry template (copy for each new phase)
 ```
 ### Entry N: name

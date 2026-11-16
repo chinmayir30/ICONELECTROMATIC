@@ -14,8 +14,8 @@ export function renderHomePage() {
   const blogs = ContentService.getData('blogs');
 
   const rawStats = data.stats || [
-    { value: '159', label: 'VERIFIED COMPONENTS' },
-    { value: '12', label: 'OEM PARTNERS' },
+    { value: '160+', label: 'VERIFIED COMPONENTS' },
+    { value: '13+', label: 'OEM PARTNERS' },
     { value: 'DHL GoGreen Plus', label: 'CERTIFIED (IESPL)' }
   ];
 
@@ -72,7 +72,7 @@ export function renderHomePage() {
           </h1>
 
           <p class="hero-description-clean">
-            ${data.heroSubtitle || 'Delivering precision RF, microwave, and electronic components for defense, aerospace, SATCOM, and telecommunications.'}
+            ${data.heroSubtitle || 'Delivering world-class RF and microwave technologies through trusted representation and distribution. Partnering with industry-leading suppliers, we bring innovative technologies, engineering support, and seamless supply-chain services to accelerate your success.'}
           </p>
 
           <div class="hero-actions-row">
