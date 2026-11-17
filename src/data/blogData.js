@@ -1,4 +1,4 @@
-/**
+﻿/**
  * OEM Technical Blogs, News, Videos & Resources Data — ICON ELECTROMATIC
  * Comprehensive engineering news, video releases, whitepapers, and official links
  * covering all 15 manufacturing partner OEMs.
@@ -194,69 +194,6 @@ export const OEM_BLOGS = [
         url: 'https://www.qorvo.com/design-hub/design-tools/matchcalc',
         description: 'Interactive Smith chart synthesis tool for discrete and distributed RF matching networks.',
         icon: 'fa-chart-line'
-      }
-    ]
-  },
-  {
-    oemId: 'fortify',
-    officialWebsite: 'https://3dfortify.com',
-    portalName: 'Fortify RF Dielectric Optics Lab',
-    headline: '3D Printed Low-Loss Dielectric Lenses, Antennas & GRIN RF Optics',
-    articles: [
-      {
-        id: 'fortify-art-1',
-        title: 'Fortify Unveils Radix™ 2.8 Dielectric Material for Tailored 3D Lens Antennas',
-        date: 'October 2026',
-        category: 'Additive RF Optics',
-        readTime: '4 min read',
-        image: '/images/dielectric-3d-lens.jpg',
-        summary: 'Using patented Digital Composite Manufacturing (DCM), Fortify produces low-loss (Df < 0.001) Luneburg and Maxwell fish-eye lenses up to 110 GHz with custom dielectric gradations.',
-        content: `
-          <p>Traditional manufacturing of graded-index (GRIN) microwave optics requires complex machining of concentric dielectric shells with unpredictable air gaps. Fortify’s additive photopolymerization platform directly prints monolithic Luneburg lenses with continuous internal dielectric variation.</p>
-          <h4>Radix™ Material Performance:</h4>
-          <ul>
-            <li><strong>Dielectric Constant Flexibility:</strong> Tunable Dk from 1.5 to 4.5 in a single printed structure.</li>
-            <li><strong>Ultralow RF Loss:</strong> Dissipation factor below 0.0012 across Ka, V, and W-bands.</li>
-            <li><strong>Mass Reduction:</strong> Cellular lattice topologies reduce total antenna weight by 60% compared to solid teflon optics.</li>
-          </ul>
-        `,
-        tags: ['3D Printing', 'Radix Material', 'Luneburg Lens', 'Sub-THz']
-      }
-    ],
-    videos: [
-      {
-        id: 'fortify-vid-1',
-        title: 'Demonstration: 3D Printing Wide-Angle Luneburg Lenses for SATCOM',
-        speaker: 'Karlo Delos Reyes, VP Applications',
-        duration: '15:20',
-        date: 'September 2026',
-        thumbnail: '/images/dielectric-3d-lens.jpg',
-        summary: 'Live laboratory testing comparing a Fortify 3D printed dielectric lens antenna against a traditional parabolic reflector at 28 GHz.',
-        topics: ['Beam Steering', 'GRIN Lenses', 'Additive Manufacturing']
-      }
-    ],
-    whitepapers: [
-      {
-        id: 'fortify-wp-1',
-        title: 'Graded-Index Dielectric Lenses for Millimeter-Wave Beam Steering',
-        author: 'Fortify RF Engineering Team',
-        date: 'July 2026',
-        pages: '12 Pages',
-        frequencyBand: '18 to 90 GHz',
-        summary: 'Electromagnetic simulation and chamber validation of 3D printed microwave lenses achieving ±60° scan angles with zero mechanical wear.',
-        keyFindings: [
-          'Gain enhancement of +18 dBi achieved over bare horn feed at 38 GHz.',
-          'Zero internal reflection at graded dielectric boundaries eliminates focal point degradation.',
-          'High glass transition temperature (Tg > 165°C) withstands harsh outdoor airborne operating environments.'
-        ]
-      }
-    ],
-    officialLinks: [
-      {
-        title: 'Fortify RF Optics Technology Hub',
-        url: 'https://3dfortify.com/applications/rf-devices-antennas/',
-        description: 'Case studies, Radix resin technical data sheets, and custom 3D lens design guidelines.',
-        icon: 'fa-cube'
       }
     ]
   },
@@ -541,62 +478,6 @@ export const OEM_BLOGS = [
     ]
   },
   {
-    oemId: 'spellman',
-    officialWebsite: 'https://www.spellmanhv.com',
-    portalName: 'Spellman High Voltage Technical Center',
-    headline: 'Precision High-Voltage DC Power Supplies & X-Ray Generators',
-    articles: [
-      {
-        id: 'spellman-art-1',
-        title: 'Spellman Introduces Modular 100kV Ultra-Low Ripple Power Supplies for Vacuum Tube TWTAs',
-        date: 'August 2026',
-        category: 'High Voltage DC',
-        readTime: '4 min read',
-        image: '/images/gan-power-chip.jpg',
-        summary: 'Compact high-voltage DC modules provide <0.001% peak-to-peak voltage ripple, safeguarding traveling wave tubes (TWT) and electron gun filaments in satellite uplink transmitters.',
-        content: `
-          <p>High-power microwave vacuum devices such as klystrons and traveling wave tube amplifiers (TWTAs) require extraordinarily stable DC bias potentials. Spellman’s modular high-voltage power converters incorporate resonant inverter topologies that eliminate high-frequency switching hash from radiated RF signals.</p>
-        `,
-        tags: ['High Voltage', 'TWTA Power', 'Low Ripple', 'Vacuum Electronics']
-      }
-    ],
-    videos: [
-      {
-        id: 'spellman-vid-1',
-        title: 'High Voltage Safety & Arc Fault Recovery in Microwave Transmitters',
-        speaker: 'Spellman Power Systems Lab',
-        duration: '13:50',
-        date: 'March 2026',
-        thumbnail: '/images/gan-power-chip.jpg',
-        summary: 'Demonstration of sub-microsecond electronic crowbar circuits protecting expensive electron tube grids during vacuum flashover events.',
-        topics: ['Arc Protection', 'Crowbar Circuits', 'Safety Protocols']
-      }
-    ],
-    whitepapers: [
-      {
-        id: 'spellman-wp-1',
-        title: 'Minimizing Phase Noise in TWT Radar Transmitters via Ultra-Clean HV Biasing',
-        author: 'Spellman High Voltage Electronics Corp.',
-        date: 'May 2026',
-        pages: '12 Pages',
-        frequencyBand: 'High Voltage DC',
-        summary: 'Mathematical modeling linking high voltage collector ripple to transmitter Doppler phase noise skirts in long-range search radar.',
-        keyFindings: [
-          'Ripple reduction to 10 ppm improves radar Doppler sub-clutter visibility by 8 dB.',
-          'Solid-state encapsulation allows high-altitude airborne operation up to 50,000 feet without corona breakdown.'
-        ]
-      }
-    ],
-    officialLinks: [
-      {
-        title: 'Spellman High Voltage Electronics Official Site',
-        url: 'https://www.spellmanhv.com',
-        description: 'Technical application notes on high-voltage power supplies, X-ray sources, and custom OEM converters.',
-        icon: 'fa-bolt-lightning'
-      }
-    ]
-  },
-  {
     oemId: 'thermosen',
     officialWebsite: 'https://www.thermosen.com',
     portalName: 'Thermosen Sensor Labs',
@@ -817,62 +698,6 @@ export const OEM_BLOGS = [
         url: 'https://www.nee-intl.com',
         description: 'Photochemical etching capabilities, material alloy selector, and metal tolerance guidelines.',
         icon: 'fa-scissors'
-      }
-    ]
-  },
-  {
-    oemId: 'aee-isarael',
-    officialWebsite: 'https://www.aee-israel.com',
-    portalName: 'AEE Israel Perimeter Defense Systems Center',
-    headline: 'Perimeter Intrusion Detection Systems (PIDS) & Fiber-Optic Sensor Arrays',
-    articles: [
-      {
-        id: 'aee-art-1',
-        title: 'AEE Israel Deploys Next-Gen Fiber-Optic PIDS with AI Classification of Physical Breaches',
-        date: 'May 2026',
-        category: 'Perimeter Security',
-        readTime: '4 min read',
-        image: '/images/rf-filter.jpg',
-        summary: 'Military-grade perimeter detection systems utilizing phase-sensitive Optical Time-Domain Reflectometry (phi-OTDR) distinguish vehicle movement from human cutting with zero false alarms.',
-        content: `
-          <p>Critical infrastructure protection around radar installations, defense laboratories, and military perimeters requires 100% detection probability without nuisance alarms caused by wildlife or wind. AEE Israel’s integrated fiber-optic sensory perimeter provides continuous 50-kilometer boundary monitoring with location accuracy within 2 meters.</p>
-        `,
-        tags: ['PIDS', 'Fiber-Optic Sensing', 'Base Defense', 'Intrusion Detection']
-      }
-    ],
-    videos: [
-      {
-        id: 'aee-vid-1',
-        title: 'Field Demonstration: Detecting Fence Climbing and Sub-Surface Tunneling',
-        speaker: 'AEE Defense Operations Division',
-        duration: '11:15',
-        date: 'January 2026',
-        thumbnail: '/images/rf-filter.jpg',
-        summary: 'Real-time telemetry showing live event detection, automated PTZ camera tracking, and military command system alerting.',
-        topics: ['OTDR Sensing', 'Fence Alarms', 'Command Integration']
-      }
-    ],
-    whitepapers: [
-      {
-        id: 'aee-wp-1',
-        title: 'Eliminating Nuisance Alarms in High-Wind Environments with Deep Learning Signal Processing',
-        author: 'AEE Israel R&D Labs',
-        date: 'November 2025',
-        pages: '12 Pages',
-        frequencyBand: 'Acoustic / Optical',
-        summary: 'Spectrogram analysis separating fence vibration patterns of mechanical wire cutting from heavy meteorological weather events.',
-        keyFindings: [
-          'False alarm rate reduced by 99.4% in desert and coastal installations.',
-          'Zero electrical power required along the passive fiber sensor perimeter line.'
-        ]
-      }
-    ],
-    officialLinks: [
-      {
-        title: 'AEE Israel Official Security Portal',
-        url: 'https://www.aee-israel.com',
-        description: 'Perimeter intrusion detection systems, seismic sensors, and defense facility security hardware.',
-        icon: 'fa-shield'
       }
     ]
   },

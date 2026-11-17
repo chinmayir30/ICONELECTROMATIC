@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Services Page — ICON ELECTROMATIC
  * High-End Dark Relay-styled layout matching the authentic Icon Electromatic services
  * Fully dynamic via ContentService — cards, images, slideshows, tags, and sections.
@@ -8,11 +8,17 @@ import { ContentService } from '../data/ContentService.js';
 export function renderServicesPage() {
   const d = ContentService.getData('services');
 
-  const badges = d.badges || [
-    { icon: 'fa-solid fa-handshake-angle', text: 'Tier-1 Global Manufacturers Representation', color: '#93C5FD' },
-    { icon: 'fa-solid fa-landmark', text: 'Indian Govt Tender Portals (GeM & CPPP)', color: '#FDA4AF' },
-    { icon: 'fa-solid fa-coins', text: 'Global Multi-Currency Supply Logistics', color: '#E2E8F0' },
+  const rawBadges = d.badges || [
+    { icon: 'fa-solid fa-handshake-angle', text: 'Tier-1 Global Manufacturers Representation' },
+    { icon: 'fa-solid fa-landmark', text: 'Indian Govt Tender Portals (GeM & CPPP)' },
+    { icon: 'fa-solid fa-coins', text: 'Global Multi-Currency Supply Logistics' },
   ];
+  const badges = rawBadges.map(b => ({
+    ...b,
+    color: '#FDA4AF',
+    bg: 'rgba(225,29,72,0.08)',
+    border: 'rgba(225,29,72,0.25)'
+  }));
 
   const items = d.items || [];
 
@@ -34,15 +40,15 @@ export function renderServicesPage() {
               ${d.heroTitle || 'Engineering Services & Global Representation'}
             </h1>
             <p class="page-lead-unified">
-              ${d.heroLead || 'We represent major RF, Microwave, mmWave, Semiconductors, Components, Subsystems and Power supplies manufacturers around the world, providing unparalleled support to electronic designers, manufacturers, engineers and researchers.'}
+              ${d.heroLead || 'From representing world-class RF and Microwave components, semiconductors manufacturers to offering design collaboration and strategic business consultancy, our services empower engineers and organisations to innovate with confidence.'}
             </p>
           </div>
 
           <!-- Trust Badges Strip -->
           <div class="services-trust-strip" style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:24px;margin-bottom:0;padding-bottom:0;border-bottom:none;">
             ${badges.map(b => `
-              <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:${b.color || '#fff'};display:flex;align-items:center;gap:8px;">
-                <i class="${b.icon || 'fa-solid fa-shield-halved'}" style="color:${b.color || 'var(--logo-blue-light)'};"></i>
+              <div style="background:${b.bg || 'rgba(225,29,72,0.08)'};border:1px solid ${b.border || 'rgba(225,29,72,0.25)'};border-radius:10px;padding:10px 18px;font-size:0.85rem;color:${b.color || '#FDA4AF'};display:flex;align-items:center;gap:8px;">
+                <i class="${b.icon || 'fa-solid fa-shield-halved'}" style="color:var(--logo-red-light);"></i>
                 <span>${b.text}</span>
               </div>
             `).join('')}
@@ -57,7 +63,7 @@ export function renderServicesPage() {
             ${items.map((srv, idx) => {
               const isEven = idx % 2 === 1;
               const slides = srv.slides || [];
-              const badgeColor = srv.badgeColor || (idx % 2 === 0 ? 'blue' : 'red');
+              const badgeColor = 'red';
 
               const textCol = `
                 <div class="service-text-col" style="${isEven ? 'order:2;' : ''}">
