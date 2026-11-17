@@ -105,7 +105,7 @@ function renderPageShell() {
           <!-- Trust & Capability Highlights matching Partners and Services -->
           <div class="catalog-trust-strip" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:24px;margin-bottom:0;">
             <div class="catalog-trust-pill">
-              <i class="fa-solid fa-industry" style="color:var(--logo-blue-light);"></i>
+              <i class="fa-solid fa-industry" style="color:var(--logo-red-light);"></i>
               <span><strong>${totalOEMs}</strong> Global OEM Partners</span>
             </div>
             <div class="catalog-trust-pill">
