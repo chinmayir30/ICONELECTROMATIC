@@ -110,15 +110,6 @@ export function renderHeader() {
  * Renders HTML for the slide-in sidebar drawer and overlay.
  * Mounted directly to document.body to avoid CSS transform containing blocks.
  */
-function hasAdminSession(route) {
-  if (route && route.startsWith('/admin')) return true;
-  if (typeof document === 'undefined') return false;
-  return Boolean(
-    document.cookie.includes('icon_admin_session') ||
-    document.cookie.includes('__Host-icon_admin_session')
-  );
-}
-
 function renderSidebarDrawerHTML(currentRoute) {
   const route = currentRoute || getCurrentPath();
   const data = ContentService.getData('header') || {};
@@ -166,17 +157,15 @@ function renderSidebarDrawerHTML(currentRoute) {
           </a>
         `).join('')}
 
-        ${hasAdminSession(route) ? `
-          <div class="drawer-divider"></div>
+        <div class="drawer-divider"></div>
 
-          <a href="/admin" class="drawer-nav-item drawer-employee-item ${route === '/admin' ? 'active' : ''}" data-route="/admin" id="drawer-employee-zone-link" title="Open Employee Zone Admin Panel">
-            <div class="drawer-nav-item-content">
-              <span class="drawer-icon employee-icon"><i class="fa-solid fa-id-badge"></i></span>
-              <span class="drawer-item-title" style="font-weight: 600;">Employee Zone</span>
-            </div>
-            <span class="drawer-employee-badge"><i class="fa-solid fa-shield-halved"></i> Admin</span>
-          </a>
-        ` : ''}
+        <a href="/admin" class="drawer-nav-item drawer-employee-item ${route === '/admin' ? 'active' : ''}" data-route="/admin" id="drawer-employee-zone-link" title="Open Employee Zone Admin Panel">
+          <div class="drawer-nav-item-content">
+            <span class="drawer-icon employee-icon"><i class="fa-solid fa-id-badge"></i></span>
+            <span class="drawer-item-title" style="font-weight: 600;">Employee Zone</span>
+          </div>
+          <span class="drawer-employee-badge"><i class="fa-solid fa-shield-halved"></i> Admin</span>
+        </a>
       </div>
 
       <div class="drawer-footer">
