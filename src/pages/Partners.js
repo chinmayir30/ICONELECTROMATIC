@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Partners Page — ICON ELECTROMATIC
  * High-End Dark Relay-styled layout matching authentic Icon Electromatic partners.
  * Connected to ContentService for dynamic CRUD, image upload, and reordering.
@@ -33,8 +33,7 @@ function renderRunningLogoTicker(partners) {
 
 // Clean Static Card Component
 function renderPartnerCardMarkup(partner) {
-  const isRed = partner.accentColor === 'red';
-  const accentClass = isRed ? 'accent-red' : '';
+  const accentClass = 'accent-red';
   const resolvedLogo = ContentService.resolveImg(partner.logoImg);
 
   const logoMarkup = resolvedLogo
@@ -58,7 +57,7 @@ function renderPartnerCardMarkup(partner) {
       <p class="partner-stream-card-desc" style="margin-bottom:16px;">${partner.description || ''}</p>
 
       <!-- View Products Link Indicator -->
-      <div class="partner-card-action-row" style="margin-top:auto;display:flex;align-items:center;gap:6px;font-size:0.85rem;font-weight:700;color:${isRed ? 'var(--logo-red-light)' : 'var(--logo-blue-light)'};">
+      <div class="partner-card-action-row" style="margin-top:auto;display:flex;align-items:center;gap:6px;font-size:0.85rem;font-weight:700;color:var(--logo-red-light);">
         <span>View Products &amp; Catalog</span>
         <i class="fa-solid fa-arrow-right" style="font-size:0.75rem;"></i>
       </div>
@@ -69,8 +68,8 @@ function renderPartnerCardMarkup(partner) {
 export function renderPartnersPage() {
   const d = ContentService.getData('partners') || {};
   const partners = Array.isArray(d) ? d : (d.partners || []);
-  const heroTitle = d.heroTitle || 'Authorized Technology Partners';
-  const heroLead = d.heroLead || 'We represent a diverse portfolio of OEMs across sectors, industries and application.<br />To know more about their products, make an enquiry or request samples just get in touch with us.';
+  const heroTitle = d.heroTitle || 'Our Global Technology Partners';
+  const heroLead = d.heroLead || 'Icon Electromatic collaborates with a select group of globally recognised technology partners to deliver advanced RF, microwave, mmWave, semiconductor, and Hi-Rel solutions. Together, these partnerships enable reliable access to cutting-edge components, materials, and systems for mission-critical aerospace, defence, space, SATCOM, and next-generation communication applications.';
   const trustBadge1 = d.trustBadge1 || '<strong>10+</strong> Global Technology Partners';
   const trustBadge2 = d.trustBadge2 || 'Space &amp; Mil-Spec Screening Support';
 
@@ -99,12 +98,12 @@ export function renderPartnersPage() {
 
           <!-- Trust Badges Strip -->
           <div class="services-trust-strip partners-trust-strip" style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:24px;margin-bottom:0;padding-bottom:0;border-bottom:none;">
-            <div style="background:rgba(37,99,235,0.08);border:1px solid rgba(37,99,235,0.25);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#93C5FD;display:flex;align-items:center;gap:8px;">
-              <i class="fa-solid fa-handshake-angle" style="color:var(--logo-blue-light);"></i>
+            <div style="background:rgba(225,29,72,0.08);border:1px solid rgba(225,29,72,0.25);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#FDA4AF;display:flex;align-items:center;gap:8px;">
+              <i class="fa-solid fa-handshake-angle" style="color:var(--logo-red-light);"></i>
               <span>${trustBadge1}</span>
             </div>
-            <div style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#FCD34D;display:flex;align-items:center;gap:8px;">
-              <i class="fa-solid fa-certificate" style="color:#F59E0B;"></i>
+            <div style="background:rgba(225,29,72,0.08);border:1px solid rgba(225,29,72,0.25);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#FDA4AF;display:flex;align-items:center;gap:8px;">
+              <i class="fa-solid fa-certificate" style="color:var(--logo-red-light);"></i>
               <span>${trustBadge2}</span>
             </div>
           </div>
@@ -138,8 +137,8 @@ const PARTNER_TO_OEM_MAP = {
   'yttek': 'yttek',
   'quantic-eulex': 'evans',
   'quantic-ohmega': 'ohmega-ticer',
+  'ohmega-ticer': 'ohmega-ticer',
   'thermosen': 'thermosen',
-  'fortify': 'fortify',
   'powerfactor': 'powerfactor',
   'nee': 'nee',
   'transline-technology': 'transline-technology'

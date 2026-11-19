@@ -6,6 +6,7 @@ import { ApiService } from '../data/ApiService.js';
 import { CatalogService } from '../data/CatalogService.js';
 import { handleUploadError } from './uploadError.js';
 import { renderAccountSecurityTab, bindAccountSecurityEvents } from './AccountSecurity.js';
+import { renderSeoPreviewCard } from './components/SeoPreviewCard.js';
 
 // ─── State ─────────────────────────────────────────────────────────────────
 let isAuthenticated = false;
@@ -5787,6 +5788,9 @@ function renderSeoPageEditor() {
           <div class="a-field span2"><label class="a-label">Meta Keywords (Comma separated)</label><input class="a-input" name="metaKeywords" value="${s.metaKeywords || ''}"></div>
         </div>
       </div>
+
+      <!-- Live Google SERP Simulation Preview -->
+      ${renderSeoPreviewCard({ meta_title: s.siteTitle, meta_description: s.metaDescription, canonical_url: 'https://iconelectromatic.com' })}
 
       <div class="a-card">
         <div class="a-card-header"><div><h3>Open Graph &amp; Social Share</h3><p>Preview cards when links are shared on LinkedIn, Twitter, etc.</p></div></div>

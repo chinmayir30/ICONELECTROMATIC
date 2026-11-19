@@ -17,7 +17,7 @@ export function renderProductDetailPage(params, catalogProduct = null, apiError 
       return `
         <div class="page-content product-detail-page" style="padding-top:calc(var(--header-height) + 40px);min-height:80vh;">
           <div class="container" style="text-align:center;padding:var(--space-20) 0;">
-            <i class="fa-solid fa-spinner fa-spin" style="font-size:2.5rem;color:var(--logo-blue);margin-bottom:var(--space-4);display:block;"></i>
+            <i class="fa-solid fa-spinner fa-spin" style="font-size:2.5rem;color:var(--logo-red);margin-bottom:var(--space-4);display:block;"></i>
             <p role="status" style="color:var(--text-gray-300);">Loading product specifications…</p>
           </div>
         </div>
@@ -32,7 +32,7 @@ export function renderProductDetailPage(params, catalogProduct = null, apiError 
           <i class="fa-solid fa-circle-exclamation" style="font-size:3rem; color:var(--text-gray-500); margin-bottom:var(--space-4); display:block;"></i>
           <h2 style="color:var(--text-white); margin-bottom:var(--space-2);">Component Not Found</h2>
           <p style="color:var(--text-gray-400); margin-bottom:var(--space-6);">The component you are searching for does not exist or has been removed from the catalog.</p>
-          <a class="btn-relay-blue" data-route="/products">
+          <a class="btn-relay-red" data-route="/products">
             <i class="fa-solid fa-arrow-left"></i> Back to Products
           </a>
         </div>
@@ -49,7 +49,7 @@ export function renderProductDetailPage(params, catalogProduct = null, apiError 
           <i class="fa-solid fa-eye-slash" style="font-size:3rem; color:var(--text-gray-500); margin-bottom:var(--space-4); display:block;"></i>
           <h2 style="color:var(--text-white); margin-bottom:var(--space-2);">Component Temporarily Unavailable</h2>
           <p style="color:var(--text-gray-400); margin-bottom:var(--space-6);">The component <strong>${product.model || product.name}</strong> is currently unlisted or archived.</p>
-          <a class="btn-relay-blue" data-route="/products">
+          <a class="btn-relay-red" data-route="/products">
             <i class="fa-solid fa-arrow-left"></i> Back to Products
           </a>
         </div>
@@ -103,7 +103,7 @@ export function renderProductDetailPage(params, catalogProduct = null, apiError 
               <img src="${displayImage}" alt="${modelName}" style="width:100%;height:100%;object-fit:contain;padding:12px;border-radius:var(--radius-md);" />
             </div>
             <div style="display:flex;gap:10px;">
-              <div style="width:72px;height:72px;border-radius:var(--radius-md);border:1.5px solid var(--logo-blue);overflow:hidden;cursor:pointer;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;">
+              <div style="width:72px;height:72px;border-radius:var(--radius-md);border:1.5px solid var(--logo-red);overflow:hidden;cursor:pointer;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;">
                 <img src="${displayImage}" alt="Thumb" style="width:100%;height:100%;object-fit:contain;padding:4px;" />
               </div>
             </div>
@@ -134,7 +134,7 @@ export function renderProductDetailPage(params, catalogProduct = null, apiError 
             <!-- Technical Specifications Table -->
             <div style="margin-bottom:var(--space-8);">
               <h3 style="font-size:1.1rem;font-weight:700;color:var(--text-white);margin-bottom:var(--space-3);display:flex;align-items:center;gap:8px;">
-                <i class="fa-solid fa-list-check" style="color:var(--logo-blue-light);font-size:0.9rem;"></i> Technical Specifications &amp; Applications
+                <i class="fa-solid fa-list-check" style="color:var(--logo-red-light);font-size:0.9rem;"></i> Technical Specifications &amp; Applications
               </h3>
               <div style="border:1px solid var(--border-card);border-radius:var(--radius-lg);overflow:hidden;background:var(--bg-card);">
                 <div style="display:flex;justify-content:space-between;padding:10px 16px;border-bottom:1px solid var(--border-subtle);background:rgba(255,255,255,0.02);font-size:0.875rem;">
@@ -173,7 +173,7 @@ export function renderProductDetailPage(params, catalogProduct = null, apiError 
               </div>
 
               <div style="display:flex;gap:var(--space-3);flex-wrap:wrap;">
-                <a class="btn-relay-blue" data-route="/contact?subject=rfq&model=${encodeURIComponent(modelName)}&product=${encodeURIComponent(product.name || modelName)}&oem=${encodeURIComponent(oemName)}" style="flex:1;justify-content:center;">
+                <a class="btn-relay-red" data-route="/contact?subject=rfq&model=${encodeURIComponent(modelName)}&product=${encodeURIComponent(product.name || modelName)}&oem=${encodeURIComponent(oemName)}" style="flex:1;justify-content:center;">
                   <i class="fa-solid fa-paper-plane"></i> Inquire for ${modelName}
                 </a>
                 <a class="btn-relay-dark" data-route="/contact?subject=technical&model=${encodeURIComponent(modelName)}&product=${encodeURIComponent(product.name || modelName)}&oem=${encodeURIComponent(oemName)}">

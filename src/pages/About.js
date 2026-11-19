@@ -1,78 +1,44 @@
-/**
+﻿/**
  * About Page — ICON ELECTROMATIC
  * Strictly containing the authentic content from https://iconelectromatic2.lbimedia.in/about-us/
  * Fully dynamic via ContentService — cards, images, milestones, domains, pillars, why us.
  * Brand Theme: Deep Black, Electric Blue (#2563EB), Vibrant Red (#E11D48)
  */
 import { ContentService } from '../data/ContentService.js';
-import { CatalogService } from '../data/CatalogService.js';
-
-function getDerivedAboutStats() {
-  try {
-    const catalog = CatalogService.getCurrentPublicCatalog();
-    if (!Array.isArray(catalog) || catalog.length === 0) {
-      return [];
-    }
-    const oemCount = catalog.length;
-    const categoryCount = catalog.reduce((sum, oem) => sum + (Array.isArray(oem.categories) ? oem.categories.length : 0), 0);
-    const productCount = catalog.reduce((sum, oem) => {
-      return sum + (Array.isArray(oem.categories)
-        ? oem.categories.reduce((cSum, cat) => cSum + (Array.isArray(cat.products) ? cat.products.length : 0), 0)
-        : 0);
-    }, 0);
-
-    if (productCount === 0 || oemCount === 0) {
-      return [];
-    }
-
-    return [
-      {
-        id: 's-products',
-        target: String(productCount),
-        suffix: '+',
-        label: 'Components in Catalog',
-        icon: 'fa-solid fa-boxes-stacked',
-        color: 'red',
-      },
-      {
-        id: 's-oems',
-        target: String(oemCount),
-        suffix: '+',
-        label: 'Global OEM Partners',
-        icon: 'fa-solid fa-handshake-angle',
-        color: 'blue',
-      },
-      {
-        id: 's-categories',
-        target: String(categoryCount),
-        suffix: '',
-        label: 'Product Categories',
-        icon: 'fa-solid fa-layer-group',
-        color: 'red',
-      },
-    ];
-  } catch {
-    return [];
-  }
-}
 
 export function renderAboutPage() {
   const d = ContentService.getData('about');
 
-  const badges = d.badges || [
-    { icon: 'fa-solid fa-award', text: 'Multi-Decade Pedigree', color: '#FDA4AF', bg: 'rgba(225,29,72,0.08)', border: 'rgba(225,29,72,0.25)' },
-    { icon: 'fa-solid fa-satellite', text: 'Defense & Telecom Solutions', color: '#FCD34D', bg: 'rgba(245,158,11,0.08)', border: 'rgba(245,158,11,0.25)' },
-    { icon: 'fa-solid fa-globe', text: 'Global OEM Representation', color: '#6EE7B7', bg: 'rgba(16,185,129,0.08)', border: 'rgba(16,185,129,0.25)' },
+  let rawBadges = (Array.isArray(d.badges) && d.badges.length > 0) ? [...d.badges] : [
+    { icon: 'fa-solid fa-award', text: 'Multi-Decade Pedigree' },
+    { icon: 'fa-solid fa-satellite', text: 'Defense & Telecom Solutions' },
+    { icon: 'fa-solid fa-globe', text: 'Global OEM Representation' },
+    { icon: 'fa-solid fa-leaf', text: 'DHL GoGreen Plus Certified (IESPL)' },
   ];
+  if (!rawBadges.some(b => b.text && b.text.includes('DHL GoGreen'))) {
+    rawBadges.push({
+      id: 'b-4',
+      icon: 'fa-solid fa-leaf',
+      text: 'DHL GoGreen Plus Certified (IESPL)'
+    });
+  }
+  const badges = rawBadges.map(b => ({
+    ...b,
+    color: '#FDA4AF',
+    bg: 'rgba(225,29,72,0.08)',
+    border: 'rgba(225,29,72,0.25)'
+  }));
 
-  const highlightCards = d.highlightCards || [
-    { title: 'Global Leader in RF & Electronic Solutions', desc: 'Providing mission-critical components, assemblies, and custom microwave engineering for advanced applications.', icon: 'fa-solid fa-tower-broadcast', color: 'blue' },
+  const highlightCards = (d.highlightCards || [
+    { title: 'Global Leader in RF & Electronic Solutions', desc: 'Providing mission-critical components, assemblies, and custom microwave engineering for advanced applications.', icon: 'fa-solid fa-tower-broadcast', color: 'red' },
     { title: 'Advanced Components, Consultancy & Bespoke Design Services', desc: 'End-to-end design-in engineering, RF simulation review, and custom-tailored fulfillment for client success.', icon: 'fa-solid fa-microchip', color: 'red' },
-  ];
+  ]).map(c => ({ ...c, color: 'red' }));
 
-  const derivedStats = getDerivedAboutStats();
-  const rawStats = Array.isArray(d.stats) && d.stats.length > 0 ? d.stats : derivedStats;
-  const stats = rawStats.filter(st => !String(st.label || '').toLowerCase().includes('combined experience'));
+  const stats = (d.stats || [
+    { target: '1500', suffix: '+', label: 'Products', icon: 'fa-solid fa-boxes-stacked', color: 'red' },
+    { target: '150', suffix: '+', label: 'Years of combined experience', icon: 'fa-solid fa-calendar-check', color: 'red' },
+    { target: '15', suffix: '+', label: 'Partners', icon: 'fa-solid fa-handshake-angle', color: 'red' },
+  ]).map(s => ({ ...s, color: 'red' }));
 
   const milestones = d.milestones || [
     { year: '2009', title: 'RF & Microwave Genesis', desc: 'Established in Bengaluru, Karnataka by veteran RF & Microwave engineers focusing on defense electronics and aerospace components distribution.', image: '/images/timeline/timeline-2009-bengaluru.jpg', caption: 'Genesis in Bengaluru, India', color: 'cyan' },
@@ -81,23 +47,12 @@ export function renderAboutPage() {
     { year: 'Nov 2020', title: 'Incorporation in India', desc: 'Transitioned and formally incorporated as Icon Electromatic Private Limited, scaling nationwide operations and advancing “Make in India” initiatives.', image: '/images/timeline/timeline-2020-india.jpg', caption: 'Incorporation in India', color: 'amber' },
   ];
 
-  const domains = d.domains || [
-    { title: 'Aerospace & Defence', desc: 'High-power GaN amplifiers, RF filters, waveguides, and radar subsystems for tactical airborne, naval, and ground-based defense platforms.', image: '/images/timeline/domain-aerospace-defence.jpg', tag: 'Radar & EW Systems' },
-    { title: 'Hi-Rel Space', desc: 'Spaceflight-qualified, radiation-tolerant microwave components and low-loss substrates engineered for orbital payloads and satellites.', image: '/images/timeline/domain-hirel-space.jpg', tag: 'Space-Grade Qualified' },
-    { title: '6G & SATCOM', desc: 'Ultra-wideband mmWave components, parabolic antenna feed networks, beamformers, and ground station transceivers.', image: '/images/timeline/domain-5g-satcom.jpg', tag: 'Next-Gen Telecom' },
-    { title: 'Homeland Security & Smart City', desc: 'Perimeter intrusion detection systems (PIDS), tactical perimeter radar sensors, and smart city surveillance electronics.', image: '/images/timeline/domain-homeland-security.jpg', tag: 'Intrusion & Radar' },
-  ];
-
-  const pillars = d.pillars || [
-    { eyebrow: 'GLOBAL ALLIANCES', title: 'Global Partnerships', subtitle: 'Advanced Technologies', desc: 'Direct OEM partnerships with premier global innovators (Qorvo, Rogers, Tecdia, Mini-Circuits, and more), delivering verified authentic high-performance components to Indian industries.', image: '/images/timeline/pillar-global-partnerships.jpg', color: 'blue' },
-    { eyebrow: 'ENGINEERING EXPERTISE', title: 'Bespoke Solutions', subtitle: 'RF & Design Services', desc: 'End-to-end design-in consultancy, specialized microwave simulation, prototyping, and custom RF assembly integration tailored precisely to mission specifications.', image: '/images/timeline/pillar-bespoke-solutions.jpg', color: 'red' },
-  ];
 
   const whyUs = d.whyUs || [
     { number: '01', title: 'We Help Customers Achieve Their Goals Without Compromise', desc: 'Access an expanding portfolio of high-performance RF and Microwave components, mmWave, and Semiconductor components. Whether simple or highly complex, our solutions integrate seamlessly into your designs—saving time, reducing effort, and accelerating project success.', icon: 'fa-solid fa-bullseye', color: 'red' },
-    { number: '02', title: 'Empowering You With Cutting-Edge Technology', desc: 'From advanced ICs to mission-critical subsystems, we provide the technologies that unlock new possibilities. Our expertise helps you build smarter, faster, and more capable electronic systems across every application.', icon: 'fa-solid fa-microchip', color: 'blue' },
+    { number: '02', title: 'Empowering You With Cutting-Edge Technology', desc: 'From advanced ICs to mission-critical subsystems, we provide the technologies that unlock new possibilities. Our expertise helps you build smarter, faster, and more capable electronic systems across every application.', icon: 'fa-solid fa-microchip', color: 'red' },
     { number: '03', title: 'Engineered Solutions Tailored to Your Needs', desc: 'Combining engineering insight with best-in-class global products, we deliver solutions that balance innovation, performance, and reliability. Every recommendation is customised to your technical, commercial, and operational requirements.', icon: 'fa-solid fa-gears', color: 'red' },
-    { number: '04', title: 'Access to Advanced Technology', desc: 'Stay ahead with timely access to the latest RF, Microwave, mmWave, and Semiconductor innovations sourced from world-leading OEMs.', icon: 'fa-solid fa-bolt', color: 'blue' },
+    { number: '04', title: 'Access to Advanced Technology', desc: 'Stay ahead with timely access to the latest RF, Microwave, mmWave, and Semiconductor innovations sourced from world-leading OEMs.', icon: 'fa-solid fa-bolt', color: 'red' },
   ];
 
   const infographicImg = ContentService.resolveImg(d.infographicImage || '/images/timeline/icon-journey-infographic-full.png');
@@ -142,8 +97,8 @@ export function renderAboutPage() {
           <!-- Highlights Strip -->
           <div class="services-trust-strip about-trust-strip" style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:24px;margin-bottom:0;padding-bottom:0;border-bottom:none;">
             ${badges.map(b => `
-              <div style="background:${b.bg || 'rgba(255,255,255,0.05)'};border:1px solid ${b.border || 'rgba(255,255,255,0.15)'};border-radius:10px;padding:10px 18px;font-size:0.85rem;color:${b.color || '#fff'};display:flex;align-items:center;gap:8px;">
-                <i class="${b.icon || 'fa-solid fa-award'}"></i>
+              <div style="background:${b.bg || 'rgba(225,29,72,0.08)'};border:1px solid ${b.border || 'rgba(225,29,72,0.25)'};border-radius:10px;padding:10px 18px;font-size:0.85rem;color:${b.color || '#FDA4AF'};display:flex;align-items:center;gap:8px;">
+                <i class="${b.icon || 'fa-solid fa-award'}" style="color:var(--logo-red-light);"></i>
                 <span>${b.text}</span>
               </div>
             `).join('')}
@@ -201,17 +156,16 @@ export function renderAboutPage() {
             </div>
           </div>
 
-          <!-- Section 3: Quick Facts (Derived from authentic catalog data) -->
-          ${stats.length > 0 ? `
+          <!-- Section 3: Some Quick Facts -->
           <div class="about-stats-banner" id="about-stats-container">
             <div class="about-stats-banner-accent"></div>
             
             <div style="text-align:center;max-width:650px;margin:0 auto var(--space-8);">
               <h2 class="about-stats-h2" style="font-family:var(--font-display);font-size:clamp(1.85rem, 2.8vw, 2.4rem);font-weight:800;letter-spacing:-0.02em;margin-bottom:8px;">
-                ${d.statsTitle || 'Quick Facts'}
+                ${d.statsTitle || 'Some Quick Facts'}
               </h2>
               <div class="about-section-sub-title" style="font-family:var(--font-display);font-size:clamp(1.15rem, 1.6vw, 1.35rem);font-weight:700;color:var(--logo-red-light);line-height:1.35;margin-bottom:12px;">
-                ${d.statsSubtitle || 'Authentic Component Distribution'}
+                ${d.statsSubtitle || 'The Numbers That Define Us'}
               </div>
             </div>
 
@@ -229,7 +183,6 @@ export function renderAboutPage() {
               `).join('')}
             </div>
           </div>
-          ` : ''}
 
           <!-- Section 4: Our Vision & Our Mission -->
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-bottom:var(--space-16);">
@@ -249,9 +202,9 @@ export function renderAboutPage() {
             </div>
 
             <!-- Our Mission Card -->
-            <div class="about-mission-card about-interactive-card about-animate-fadeup" style="padding:36px;display:flex;flex-direction:column;justify-content:space-between;border-top:3px solid var(--logo-blue);">
+            <div class="about-mission-card about-interactive-card red-glow about-animate-fadeup" style="padding:36px;display:flex;flex-direction:column;justify-content:space-between;border-top:3px solid var(--logo-red);">
               <div>
-                <div class="about-card-icon" style="width:52px;height:52px;border-radius:12px;background:rgba(37,99,235,0.12);border:1px solid rgba(37,99,235,0.3);color:var(--logo-blue-light);display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:20px;">
+                <div class="about-card-icon" style="width:52px;height:52px;border-radius:12px;background:rgba(225,29,72,0.12);border:1px solid rgba(225,29,72,0.3);color:var(--logo-red-light);display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:20px;">
                   <i class="fa-solid fa-bullseye"></i>
                 </div>
                 <h2 style="font-family:var(--font-display);font-size:1.75rem;font-weight:800;margin-bottom:14px;">
@@ -266,14 +219,11 @@ export function renderAboutPage() {
 
           <!-- Section 5: Our Journey (Chronological Timeline Format) -->
           <div style="margin-bottom:var(--space-16);">
-            <div style="text-align:center;max-width:720px;margin:0 auto var(--space-8);">
-              <h2 style="font-family:var(--font-display);font-size:clamp(1.85rem, 2.8vw, 2.4rem);font-weight:800;letter-spacing:-0.02em;margin-bottom:8px;">
-                ${d.journeyTitle || 'Chronology'}
+            <div style="text-align:center;max-width:760px;margin:0 auto var(--space-8);">
+              <h2 style="font-family:var(--font-display);font-size:clamp(2.1rem, 3.2vw, 2.75rem);font-weight:800;letter-spacing:-0.02em;margin-bottom:14px;line-height:1.2;">
+                ${d.journeyTitle || 'Our Journey'}
               </h2>
-              <div class="about-section-sub-title" style="font-family:var(--font-display);font-size:clamp(1.15rem, 1.6vw, 1.35rem);font-weight:700;color:var(--logo-red-light);line-height:1.35;margin-bottom:14px;">
-                ${d.journeySubtitle || 'Our Journey'}
-              </div>
-              <p style="font-size:0.95rem;line-height:1.7;color:var(--text-muted);margin:0 auto 16px;">
+              <p style="font-size:1rem;line-height:1.7;color:var(--text-muted);margin:0 auto 18px;">
                 ${d.journeyLead || 'From our founding in Bengaluru in 2009 as RF & Microwave specialists to global operations spanning Singapore, the USA, and India — empowering mission-critical Aerospace, Defence, Space, and SATCOM programs.'}
               </p>
               <div style="display:flex;justify-content:center;gap:12px;">
@@ -297,10 +247,10 @@ export function renderAboutPage() {
               
               <!-- Node 1: 2009 (RF & Microwave Genesis) -->
               <div class="relay-timeline-node node-step-1" data-milestone="${milestones[0]?.year || '2009'}">
-                <div class="node-radar-wave-ring"></div>
-                <div class="node-radar-wave-ring delay"></div>
+                <div class="node-radar-wave-ring red-ring"></div>
+                <div class="node-radar-wave-ring red-ring delay"></div>
                 <div class="node-tech-reticle"></div>
-                <div class="timeline-node-circle cyan-node">
+                <div class="timeline-node-circle red-node">
                   <svg class="node-tech-svg" viewBox="0 0 32 32" fill="none" stroke="currentColor">
                     <path d="M16 8v15M13 23h6M12 17h8M14 12h4" stroke-width="1.8" stroke-linecap="round"/>
                     <circle cx="16" cy="7" r="2.5" fill="currentColor"/>
@@ -311,11 +261,11 @@ export function renderAboutPage() {
                     <path d="M10 27l6-3 6 3" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
                 </div>
-                <div class="timeline-node-year-pill cyan-pill">
+                <div class="timeline-node-year-pill red-pill">
                   <span class="node-year-text">${milestones[0]?.year || '2009'}</span>
                   <span class="node-live-dot"></span>
                 </div>
-                <div class="timeline-stem-connector cyan-stem">
+                <div class="timeline-stem-connector red-stem">
                   <div class="stem-photon-drop"></div>
                 </div>
               </div>
@@ -346,43 +296,43 @@ export function renderAboutPage() {
 
               <!-- Node 3: May 2020 (USA Transatlantic Corridor) -->
               <div class="relay-timeline-node node-step-3" data-milestone="${milestones[2]?.year || 'May 2020'}">
-                <div class="node-radar-wave-ring navy-ring"></div>
-                <div class="node-radar-wave-ring navy-ring delay"></div>
+                <div class="node-radar-wave-ring red-ring"></div>
+                <div class="node-radar-wave-ring red-ring delay"></div>
                 <div class="node-tech-reticle"></div>
-                <div class="timeline-node-circle navy-node">
+                <div class="timeline-node-circle red-node">
                   <svg class="node-tech-svg" viewBox="0 0 32 32" fill="none" stroke="currentColor">
                     <circle cx="16" cy="16" r="11.5" stroke-width="1.2" stroke-dasharray="2 2" opacity="0.6"/>
-                    <path d="M25 7l-6 13-3-3-5 3 2-6-3-3 15-4z" stroke-width="1.8" stroke-linejoin="round" fill="rgba(59,130,246,0.25)"/>
+                    <path d="M25 7l-6 13-3-3-5 3 2-6-3-3 15-4z" stroke-width="1.8" stroke-linejoin="round" fill="rgba(225,29,72,0.25)"/>
                     <path d="M10 23l-4 4M13 22l-5 5M12 25l-4 4" stroke-width="1.5" stroke-linecap="round" class="svg-thrust-trail"/>
                     <path d="M16 2v3M16 27v3M2 16h3M27 16h3" stroke-width="1.5" stroke-linecap="round"/>
                   </svg>
                 </div>
-                <div class="timeline-node-year-pill navy-pill">
+                <div class="timeline-node-year-pill red-pill">
                   <span class="node-year-text">${milestones[2]?.year || 'May 2020'}</span>
                   <span class="node-live-dot"></span>
                 </div>
-                <div class="timeline-stem-connector navy-stem">
+                <div class="timeline-stem-connector red-stem">
                   <div class="stem-photon-drop"></div>
                 </div>
               </div>
 
               <!-- Node 4: Nov 2020 (India Incorporation & Enterprise Crest) -->
               <div class="relay-timeline-node node-step-4" data-milestone="${milestones[3]?.year || 'Nov 2020'}">
-                <div class="node-radar-wave-ring amber-ring"></div>
-                <div class="node-radar-wave-ring amber-ring delay"></div>
+                <div class="node-radar-wave-ring red-ring"></div>
+                <div class="node-radar-wave-ring red-ring delay"></div>
                 <div class="node-tech-reticle"></div>
-                <div class="timeline-node-circle amber-node">
+                <div class="timeline-node-circle red-node">
                   <svg class="node-tech-svg" viewBox="0 0 32 32" fill="none" stroke="currentColor">
-                    <path d="M16 3l10 4v8c0 7-5 12-10 14C11 27 6 22 6 15V7l10-4z" stroke-width="1.8" stroke-linejoin="round" fill="rgba(245,158,11,0.2)"/>
+                    <path d="M16 3l10 4v8c0 7-5 12-10 14C11 27 6 22 6 15V7l10-4z" stroke-width="1.8" stroke-linejoin="round" fill="rgba(225,29,72,0.2)"/>
                     <path d="M16 9l2 4.5 4.5 1-3.5 3 1 4.5-4-2.5-4 2.5 1-4.5-3.5-3 4.5-1L16 9z" fill="currentColor" stroke-width="1" stroke-linejoin="round"/>
                     <path d="M10 29h12" stroke-width="2" stroke-linecap="round"/>
                   </svg>
                 </div>
-                <div class="timeline-node-year-pill amber-pill">
+                <div class="timeline-node-year-pill red-pill">
                   <span class="node-year-text">${milestones[3]?.year || 'Nov 2020'}</span>
                   <span class="node-live-dot"></span>
                 </div>
-                <div class="timeline-stem-connector amber-stem">
+                <div class="timeline-stem-connector red-stem">
                   <div class="stem-photon-drop"></div>
                 </div>
               </div>
@@ -392,11 +342,11 @@ export function renderAboutPage() {
             <div class="journey-grid-four">
               ${milestones.map((m, idx) => {
                 const img = ContentService.resolveImg(m.image);
-                const color = m.color || (idx === 0 ? 'cyan' : idx === 1 ? 'red' : idx === 2 ? 'navy' : 'amber');
-                const archClass = color === 'red' ? 'red' : color === 'navy' ? 'navy-flag' : color === 'amber' ? 'amber' : 'blue';
-                const cardAccentClass = color === 'red' ? 'card-accent-red red-glow' : color === 'navy' ? 'card-accent-navy blue-glow' : color === 'amber' ? 'card-accent-amber' : 'blue-glow';
-                const borderTopColor = color === 'red' ? 'var(--logo-red)' : color === 'navy' ? '#1e40af' : color === 'amber' ? '#d97706' : 'var(--logo-blue)';
-                const dotGlowClass = color === 'red' ? 'red' : color === 'navy' ? 'navy' : color === 'amber' ? 'amber' : '';
+                const color = 'red';
+                const archClass = 'red';
+                const cardAccentClass = 'card-accent-red red-glow';
+                const borderTopColor = 'var(--logo-red)';
+                const dotGlowClass = 'red';
 
                 return `
                   <div class="journey-milestone-card ${cardAccentClass} about-interactive-card about-animate-fadeup" style="border-top:3.5px solid ${borderTopColor};">
@@ -427,76 +377,7 @@ export function renderAboutPage() {
               }).join('')}
             </div>
           </div>
-
-            <!-- Central Junction Connector to Strategic Sectors -->
-            <div class="timeline-central-junction about-animate-fadeup">
-              <div class="timeline-junction-divider">
-                <div class="timeline-junction-orb">
-                  <i class="fa-solid fa-satellite-dish"></i>
-                </div>
-              </div>
-              <h3 style="font-family:var(--font-display);font-size:clamp(1.65rem, 2.4vw, 2.05rem);font-weight:800;letter-spacing:-0.01em;margin-bottom:8px;">
-                ${d.strategicDomainsTitle || 'Strategic Application Domains'}
-              </h3>
-              <div class="about-section-sub-title" style="font-family:var(--font-display);font-size:clamp(1.1rem, 1.5vw, 1.3rem);font-weight:700;color:var(--logo-red-light);line-height:1.35;margin-bottom:14px;">
-                ${d.strategicDomainsSubtitle || 'Where Our Technology Operates'}
-              </div>
-              <p style="font-size:0.9rem;line-height:1.6;color:var(--text-muted);max-width:620px;margin:0 auto 28px;">
-                ${d.strategicDomainsLead || 'Delivering mission-critical electronic components, high-reliability assemblies, and custom microwave engineering across four strategic arenas.'}
-              </p>
-            </div>
-
-            <!-- 4 Domain Sector Cards -->
-            <div class="journey-domains-grid">
-              ${domains.map(dom => {
-                const img = ContentService.resolveImg(dom.image);
-                return `
-                  <div class="domain-sector-card about-interactive-card blue-glow about-animate-fadeup">
-                    <div class="domain-photo-frame">
-                      <img src="${img}" alt="${dom.title}" loading="lazy" />
-                      <div class="domain-photo-badge">
-                        ${dom.title}
-                      </div>
-                    </div>
-                    <p class="domain-sector-desc">
-                      ${dom.desc}
-                    </p>
-                    <span class="domain-tag-pill">
-                      <i class="fa-solid fa-shield-halved" style="margin-right:4px;"></i>${dom.tag || ''}
-                    </span>
-                  </div>
-                `;
-              }).join('')}
-            </div>
-
-            <!-- Foundational Strategic Pillars -->
-            <div class="journey-pillars-grid">
-              ${pillars.map(pil => {
-                const img = ContentService.resolveImg(pil.image);
-                return `
-                  <div class="pillar-foundation-card ${pil.color || 'blue'}-pillar about-interactive-card ${pil.color || 'blue'}-glow about-animate-fadeup" style="border-left:4px solid var(--logo-${pil.color || 'blue'});">
-                    <div class="pillar-photo-frame">
-                      <img src="${img}" alt="${pil.title}" loading="lazy" />
-                    </div>
-                    <div>
-                      <div style="font-size:0.75rem;font-weight:700;color:var(--logo-${pil.color || 'blue'}-light);letter-spacing:0.08em;margin-bottom:4px;">
-                        ${pil.eyebrow || 'FOUNDATIONAL PILLAR'}
-                      </div>
-                      <h3 class="pillar-content-title">
-                        ${pil.title}
-                      </h3>
-                      <div class="pillar-content-sub">
-                        ${pil.subtitle}
-                      </div>
-                      <p class="pillar-content-text">
-                        ${pil.desc}
-                      </p>
-                    </div>
-                  </div>
-                `;
-              }).join('')}
-            </div>
-          </div>
+        </div>
 
           <!-- Section 6: Why Us -->
           <div style="margin-bottom:var(--space-12);">

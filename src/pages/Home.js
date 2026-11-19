@@ -46,6 +46,19 @@ export function renderHomePage() {
   const contact = ContentService.getData('contact');
   const blogs = ContentService.getData('blogs');
 
+  const rawStats = data.stats || [
+    { value: '160+', label: 'VERIFIED COMPONENTS' },
+    { value: '13+', label: 'OEM PARTNERS' },
+    { value: 'DHL GoGreen Plus', label: 'CERTIFIED (IESPL)' }
+  ];
+
+  const statsList = rawStats.map(st => {
+    if (st.value === '100%' || (st.label && st.label.toUpperCase().includes('ROHS'))) {
+      return { value: 'DHL GoGreen Plus', label: 'CERTIFIED (IESPL)' };
+    }
+    return st;
+  });
+
   const capList = data.capabilities || [
     { title: 'RF & Microwave Active', desc: 'High-linearity power amplifiers, ultra-low noise LNAs, active frequency mixers, and voltage-controlled oscillators.', linkText: 'Explore Amplifiers →', linkUrl: '/products?category=amplifiers', icon: 'fa-solid fa-wave-square' },
     { title: 'Passive & Waveguides', desc: 'High-Q cavity bandpass filters, low-loss waveguide transitions, directional couplers, and coaxial terminations.', linkText: 'Explore Filters →', linkUrl: '/products?category=filters', icon: 'fa-solid fa-filter' },
@@ -99,16 +112,26 @@ export function renderHomePage() {
           </h1>
 
           <p class="hero-description-clean">
-            ${data.heroSubtitle || 'Delivering precision RF, microwave, and electronic components for defense, aerospace, SATCOM, and telecommunications.'}
+            ${data.heroSubtitle || 'Delivering world-class RF and microwave technologies through trusted representation and distribution. Partnering with industry-leading suppliers, we bring innovative technologies, engineering support, and seamless supply-chain services to accelerate your success.'}
           </p>
 
           <div class="hero-actions-row">
-            <a href="#${data.ctaExploreLink || '/products'}" class="btn-relay-red" data-route="${data.ctaExploreLink || '/products'}">
+            <a href="${data.ctaExploreLink || '/products'}" class="btn-relay-red" data-route="${data.ctaExploreLink || '/products'}">
               ${data.ctaExploreText || 'Explore Products'} <i class="fa-solid fa-arrow-right"></i>
             </a>
-            <a href="#${data.ctaQuoteLink || '/contact'}" class="btn-relay-dark" style="background:#ffffff; color:#000000;" data-route="${data.ctaQuoteLink || '/contact'}">
+            <a href="${data.ctaQuoteLink || '/contact'}" class="btn-relay-dark" style="background:#ffffff; color:#000000;" data-route="${data.ctaQuoteLink || '/contact'}">
               ${data.ctaQuoteText || 'Request a Quote'}
             </a>
+          </div>
+
+          <!-- Integrated Stats -->
+          <div class="hero-inline-stats" style="margin-top: 60px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.2); display: flex; justify-content: space-between; align-items: center; max-width: 760px; gap: 20px;">
+            ${statsList.map(st => `
+              <div class="hero-stat-item" style="flex-direction: column; align-items: flex-start; gap: 4px;">
+                <span class="hero-stat-number" style="color: var(--logo-red); font-size: ${st.value && st.value.length > 5 ? '1.35rem' : '1.8rem'}; line-height: 1.15; white-space: nowrap;">${st.value}</span>
+                <span class="hero-stat-label" style="font-size: 0.85rem; color: #ffffff; font-weight: 500; letter-spacing: 0.05em;">${st.label}</span>
+              </div>
+            `).join('')}
           </div>
 
         </div>
