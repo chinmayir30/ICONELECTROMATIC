@@ -125,11 +125,11 @@ export function renderHomePage() {
       <div class="container" style="position:relative;z-index:3;width:100%;">
         <div class="hero-relay-content">
           <h1 class="hero-title-giant">
-            ${data.heroTitle || 'Icon Electromatic is a provider of world-class RF and microwave technologies through <span class="accent-red" style="color: var(--logo-red);">trusted representation and distribution.</span> Partnering with industry-leading suppliers, we bring innovative technologies, engineering support, and seamless supply-chain services to accelerate your success.'}
+            ${data.heroTitle || 'World-Class RF & Microwave Technologies Through <span class="accent-red" style="color: var(--logo-red);">Trusted Representation & Distribution.</span>'}
           </h1>
 
           <p class="hero-description-clean">
-            ${data.heroSubtitle || 'Delivering precision RF, microwave, and electronic components for defense, aerospace, SATCOM, and telecommunications.'}
+            ${data.heroSubtitle || 'Partnering with industry-leading suppliers, we bring innovative technologies, engineering support, and seamless supply-chain services to accelerate your success.'}
           </p>
 
           <div class="hero-actions-row">

@@ -43,8 +43,8 @@ const INITIAL_CONTENT = {
     youtubeUrl: '#',
   },
   home: {
-    heroTitle: 'Icon Electromatic is a provider of world-class RF and microwave technologies through <span class="accent-red" style="color: var(--logo-red);">trusted representation and distribution.</span> Partnering with industry-leading suppliers, we bring innovative technologies, engineering support, and seamless supply-chain services to accelerate your success.',
-    heroSubtitle: 'Delivering precision RF, microwave, and electronic components for defense, aerospace, SATCOM, and telecommunications.',
+    heroTitle: 'World-Class RF & Microwave Technologies Through <span class="accent-red" style="color: var(--logo-red);">Trusted Representation & Distribution.</span>',
+    heroSubtitle: 'Partnering with industry-leading suppliers, we bring innovative technologies, engineering support, and seamless supply-chain services to accelerate your success.',
     heroBgVideo: '/icon-video.mp4',
     heroBgImage: '/images/hero-new-bg.png',
     ctaExploreText: 'Explore Products',
@@ -986,8 +986,9 @@ export const ContentService = {
             ...parsed,
             eventCards
           };
-          if (!merged.heroTitle || merged.heroTitle.includes('turns complex high-frequency')) {
+          if (!merged.heroTitle || merged.heroTitle.includes('turns complex high-frequency') || merged.heroTitle.includes('Icon Electromatic is a provider')) {
             merged.heroTitle = defaults.heroTitle;
+            merged.heroSubtitle = defaults.heroSubtitle;
           }
           _memoryCache.set(pageKey, merged);
           return merged;
