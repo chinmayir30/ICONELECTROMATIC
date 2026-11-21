@@ -8,15 +8,15 @@ import { navigate } from '../router.js';
 
 // Helper: Running OEM Logos Ticker (Unconfined, full-width continuous flow of only large OEM logos)
 function renderRunningLogoTicker(partners) {
-  const tickerPartners = partners.filter(p => Boolean(p.logoImg));
+  const tickerPartners = partners.filter(p => Boolean(p.logoImg || p.logoSvg));
   if (!tickerPartners.length) return '';
   const loopList = [...tickerPartners, ...tickerPartners, ...tickerPartners];
   const itemsMarkup = loopList.map((p, idx) => {
-    const img = ContentService.resolveImg(p.logoImg);
+    const img = p.logoImg ? ContentService.resolveImg(p.logoImg) : null;
     return `
       <div class="oem-running-logo-item" data-partner-id="${p.id}" title="${p.name}">
         <div class="oem-running-logo-box">
-          <img src="${img}" alt="${p.name} Official Logo" class="oem-running-logo-img" loading="eager" />
+          ${img ? `<img src="${img}" alt="${p.name} Official Logo" class="oem-running-logo-img" loading="eager" />` : (p.logoSvg || '')}
         </div>
       </div>
     `;
@@ -128,6 +128,7 @@ const PARTNER_TO_OEM_MAP = {
   'thermosen': 'thermosen',
   'powerfactor': 'powerfactor',
   'nee': 'nee',
+  'transline': 'transline-technology',
   'transline-technology': 'transline-technology'
 };
 

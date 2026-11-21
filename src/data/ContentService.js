@@ -925,13 +925,30 @@ export const ContentService = {
             return wrapped;
           }
         } else if (pageKey === 'partners') {
+          const translinePartner = {
+            id: 'transline-technology',
+            name: 'Transline Technology',
+            domain: 'High Frequency, Microwave & mmWave PCB Fabrication',
+            category: 'components',
+            accentColor: 'amber',
+            logoImg: '',
+            logoSvg: '<svg viewBox="0 0 220 42" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="38" height="38" rx="9" fill="rgba(245,158,11,0.2)" stroke="#F59E0B" stroke-width="1.8"/><path d="M12 21h8l4-9 4 18 4-9h8" stroke="#FBBF24" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><text x="48" y="21" fill="#FFFFFF" font-family="\'Plus Jakarta Sans\', sans-serif" font-weight="900" font-size="14.5" letter-spacing="0.5">TRANSLINE</text><text x="48" y="34" fill="#FBBF24" font-family="\'Plus Jakarta Sans\', sans-serif" font-weight="800" font-size="7.5" letter-spacing="1.5">RF/MW PCB TECH</text></svg>',
+            description: 'Transline Technology is an elite fabricator of advanced RF, microwave, and millimeter-wave printed circuit boards utilizing Rogers, PTFE, and hybrid dielectric stackups for aerospace and defense electronics.',
+            website: 'https://translinetech.com'
+          };
           if (parsed && Array.isArray(parsed.partners)) {
             parsed.partners = parsed.partners.filter(p => p.id !== 'fortify' && p.id !== '3dfortify');
+            if (!parsed.partners.some(p => p.id === 'transline-technology' || p.id === 'transline')) {
+              parsed.partners.push(translinePartner);
+            }
             _memoryCache.set(pageKey, parsed);
             return parsed;
           }
           if (Array.isArray(parsed)) {
             const list = parsed.filter(p => p.id !== 'fortify' && p.id !== '3dfortify');
+            if (!list.some(p => p.id === 'transline-technology' || p.id === 'transline')) {
+              list.push(translinePartner);
+            }
             const wrapped = {
               heroTitle: 'Authorized Technology Partners',
               heroLead: 'We represent a diverse portfolio of OEMs across sectors, industries and application.<br />To know more about their products, make an enquiry or request samples just get in touch with us.',
@@ -1054,6 +1071,7 @@ export const ContentService = {
         { id: 'thermosen', name: 'Thermosen Technologies', domain: 'Temperature Sensors for Hi-Rel Applications', category: 'sensors', accentColor: 'blue', logoImg: '/images/oem-logos/Thermosen_logo.png', description: 'Thermosen develops temperature sensing solutions focused on Hi-Rel, aerospace, and defence sectors, ensuring accurate thermal monitoring in extreme environments.', website: 'https://www.thermosen.com' },
         { id: 'powerfactor', name: 'PowerFactor Electronics (PowerRF)', domain: 'Power Electronics & RF Microwave Domains', category: 'components', accentColor: 'blue', logoImg: '/PICTURES/PowerRFlogo Vert Logo1.jpg', description: 'Specialized in R&D, design, testing, consultancy, and product development in Power Electronics and RF Microwave domains under the Make in India initiative.', website: 'https://powerrf.in' },
         { id: 'nee', name: 'NEE International (New Era Electronics)', domain: 'Application PCBs for Microwave & Satellite Communication', category: 'sensors', accentColor: 'red', logoImg: '/images/oem-logos/NEE_Logo_wb.png', description: 'NEE International is a leading fabricator of microwave and satellite communication PCBs, supporting high-frequency and space-grade electronic applications.', website: 'https://neeinternational.com' },
+        { id: 'transline-technology', name: 'Transline Technology', domain: 'High Frequency, Microwave & mmWave PCB Fabrication', category: 'components', accentColor: 'amber', logoImg: '', logoSvg: '<svg viewBox="0 0 220 42" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="38" height="38" rx="9" fill="rgba(245,158,11,0.2)" stroke="#F59E0B" stroke-width="1.8"/><path d="M12 21h8l4-9 4 18 4-9h8" stroke="#FBBF24" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><text x="48" y="21" fill="#FFFFFF" font-family="\'Plus Jakarta Sans\', sans-serif" font-weight="900" font-size="14.5" letter-spacing="0.5">TRANSLINE</text><text x="48" y="34" fill="#FBBF24" font-family="\'Plus Jakarta Sans\', sans-serif" font-weight="800" font-size="7.5" letter-spacing="1.5">RF/MW PCB TECH</text></svg>', description: 'Transline Technology is an elite fabricator of advanced RF, microwave, and millimeter-wave printed circuit boards utilizing Rogers, PTFE, and hybrid dielectric stackups for aerospace and defense electronics.', website: 'https://translinetech.com' },
       ];
       const initial = {
         heroTitle: 'Authorized Technology Partners',
