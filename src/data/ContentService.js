@@ -914,11 +914,11 @@ export const ContentService = {
           }
           if (Array.isArray(parsed) && parsed.length > 0 && parsed[0].oemId) {
             const wrapped = {
-              heroTitle: 'OEM Technical News, Video Demos & Insights',
-              heroSubtitle: 'Direct technical bulletins, video demonstrations, application whitepapers, and product release updates from ICON Electromatic\'s global manufacturing partners.',
-              trustBadge1: 'Application Whitepapers & Notes',
-              trustBadge2: 'Video Demos & Technical Webinars',
-              trustBadge3: 'Direct Manufacturer Bulletins',
+              heroTitle: 'OEM Technical News & Engineering Bulletins',
+              heroSubtitle: 'Direct technical bulletins, engineering updates, and product release announcements from ICON Electromatic\'s global manufacturing partners.',
+              trustBadge1: 'Technical Application Notes',
+              trustBadge2: 'Manufacturer Engineering Bulletins',
+              trustBadge3: 'Direct OEM Insights',
               oemBlogs: parsed
             };
             _memoryCache.set(pageKey, wrapped);
@@ -1090,11 +1090,11 @@ export const ContentService = {
 
     if (pageKey === 'blogs') {
       const initial = {
-        heroTitle: 'OEM Technical News, Video Demos & Insights',
-        heroSubtitle: 'Direct technical bulletins, video demonstrations, application whitepapers, and product release updates from ICON Electromatic\'s global manufacturing partners.',
-        trustBadge1: 'Application Whitepapers & Notes',
-        trustBadge2: 'Video Demos & Technical Webinars',
-        trustBadge3: 'Direct Manufacturer Bulletins',
+        heroTitle: 'OEM Technical News & Engineering Bulletins',
+        heroSubtitle: 'Direct technical bulletins, engineering updates, and product release announcements from ICON Electromatic\'s global manufacturing partners.',
+        trustBadge1: 'Technical Application Notes',
+        trustBadge2: 'Manufacturer Engineering Bulletins',
+        trustBadge3: 'Direct OEM Insights',
         oemBlogs: (OEM_BLOGS || []).map(b => ({
           oemId: b.oemId,
           officialWebsite: b.officialWebsite || '',

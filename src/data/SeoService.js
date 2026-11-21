@@ -280,13 +280,13 @@ export function setDefaultSeo(routePath = '/') {
       canonicalUrl: `${origin}/partners`,
     },
     '/blogs': {
-      title: 'Technical News, Video Demos & Whitepapers',
-      description: 'Read official application notes, technical webinars, whitepapers, and product bulletins direct from our authorized OEM principals.',
+      title: 'OEM Technical News & Engineering Bulletins',
+      description: 'Read official application notes and technical product bulletins direct from our authorized OEM principals.',
       canonicalUrl: `${origin}/blogs`,
     },
     '/blog': {
-      title: 'Technical News, Video Demos & Whitepapers',
-      description: 'Read official application notes, technical webinars, whitepapers, and product bulletins direct from our authorized OEM principals.',
+      title: 'OEM Technical News & Engineering Bulletins',
+      description: 'Read official application notes and technical product bulletins direct from our authorized OEM principals.',
       canonicalUrl: `${origin}/blogs`,
     },
     '/contact': {
