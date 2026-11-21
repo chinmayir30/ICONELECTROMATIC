@@ -5851,7 +5851,7 @@ function renderCardsManagerTab(title, cardsArray, cardType, fieldsList) {
           <tbody>
             ${cardsArray.map((card, idx) => {
               const img = fieldsList.includes('image') ? ImageStorage.resolveImageUrl(card.image) : '';
-              const titleVal = card.title || card.text || card.year || card.number || ('Item #' + (idx + 1));
+              const titleVal = card.title || card.badge || card.text || card.year || card.number || ('Item #' + (idx + 1));
               const subVal = card.desc || card.domain || card.subtitle || card.label || card.tag || card.company || '';
               return `
                 <tr>
