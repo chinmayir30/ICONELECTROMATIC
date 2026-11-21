@@ -93,16 +93,6 @@ export function renderAboutPage() {
               </p>
             </div>
           </div>
-
-          <!-- Highlights Strip -->
-          <div class="services-trust-strip about-trust-strip" style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:24px;margin-bottom:0;padding-bottom:0;border-bottom:none;">
-            ${badges.map(b => `
-              <div style="background:${b.bg || 'rgba(225,29,72,0.08)'};border:1px solid ${b.border || 'rgba(225,29,72,0.25)'};border-radius:10px;padding:10px 18px;font-size:0.85rem;color:${b.color || '#FDA4AF'};display:flex;align-items:center;gap:8px;">
-                <i class="${b.icon || 'fa-solid fa-award'}" style="color:var(--logo-red-light);"></i>
-                <span>${b.text}</span>
-              </div>
-            `).join('')}
-          </div>
         </div>
       </section>
 

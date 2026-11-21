@@ -101,22 +101,6 @@ function renderPageShell() {
             Authorized distributor for world-leading RF, microwave, mmWave, semiconductor, and Hi-Rel materials manufacturers.
             Explore authorized global OEM partners, multi-frequency categories, and specialized product lines.
           </p>
-
-          <!-- Trust & Capability Highlights matching Partners and Services -->
-          <div class="catalog-trust-strip" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:24px;margin-bottom:0;">
-            <div class="catalog-trust-pill">
-              <i class="fa-solid fa-industry" style="color:var(--logo-red-light);"></i>
-              <span><strong>${totalOEMs}</strong> Global OEM Partners</span>
-            </div>
-            <div class="catalog-trust-pill">
-              <i class="fa-solid fa-shapes" style="color:var(--logo-red-light);"></i>
-              <span><strong>${totalCats}</strong> Specialized Categories</span>
-            </div>
-            <div class="catalog-trust-pill">
-              <i class="fa-solid fa-microchip" style="color:#10B981;"></i>
-              <span><strong>${totalProds}</strong> Precision Products &amp; Lines</span>
-            </div>
-          </div>
         </div>
       </div>
     </section>

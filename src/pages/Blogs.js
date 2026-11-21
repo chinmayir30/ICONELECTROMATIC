@@ -125,22 +125,6 @@ function renderAllOemsBlogView() {
               ${cmsData.heroSubtitle || 'Direct technical bulletins, video demonstrations, application whitepapers, and product release updates from ICON Electromatic\'s 15 global manufacturing partners.'}
             </p>
           </div>
-
-          <!-- Trust & Insights Highlights Strip (Matching Partners & Services 1:1) -->
-          <div class="services-trust-strip blogs-trust-strip" style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:24px;margin-bottom:0;padding-bottom:0;border-bottom:none;">
-            <div style="background:rgba(225,29,72,0.08);border:1px solid rgba(225,29,72,0.25);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#FDA4AF;display:flex;align-items:center;gap:8px;">
-              <i class="fa-solid fa-file-waveform" style="color:var(--logo-red-light);"></i>
-              <span>${cmsData.trustBadge1 || 'Application Whitepapers &amp; Notes'}</span>
-            </div>
-            <div style="background:rgba(225,29,72,0.08);border:1px solid rgba(225,29,72,0.25);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#FDA4AF;display:flex;align-items:center;gap:8px;">
-              <i class="fa-solid fa-circle-play" style="color:var(--logo-red-light);"></i>
-              <span>${cmsData.trustBadge2 || 'Video Demos &amp; Technical Webinars'}</span>
-            </div>
-            <div style="background:rgba(225,29,72,0.08);border:1px solid rgba(225,29,72,0.25);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#FDA4AF;display:flex;align-items:center;gap:8px;">
-              <i class="fa-solid fa-newspaper" style="color:var(--logo-red-light);"></i>
-              <span>${cmsData.trustBadge3 || 'Direct Manufacturer Bulletins'}</span>
-            </div>
-          </div>
         </div>
       </section>
 
