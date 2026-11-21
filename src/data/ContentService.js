@@ -898,7 +898,7 @@ export const ContentService = {
             const wrapped = {
               heroTitle: 'Authorized Technology Partners',
               heroLead: 'We represent a diverse portfolio of OEMs across sectors, industries and application.<br />To know more about their products, make an enquiry or request samples just get in touch with us.',
-              trustBadge1: '10+ Global Technology Partners',
+              trustBadge1: '15+ Global Technology Partners',
               trustBadge2: 'Space & Mil-Spec Screening Support',
               partners: parsed
             };
@@ -990,7 +990,7 @@ export const ContentService = {
       const initial = {
         heroTitle: 'Authorized Technology Partners',
         heroLead: 'We represent a diverse portfolio of OEMs across sectors, industries and application.<br />To know more about their products, make an enquiry or request samples just get in touch with us.',
-        trustBadge1: '10+ Global Technology Partners',
+        trustBadge1: '15+ Global Technology Partners',
         trustBadge2: 'Space & Mil-Spec Screening Support',
         partners: initialPartners
       };

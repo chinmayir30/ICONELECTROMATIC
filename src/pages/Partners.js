@@ -70,7 +70,7 @@ export function renderPartnersPage() {
   const partners = Array.isArray(d) ? d : (d.partners || []);
   const heroTitle = d.heroTitle || 'Our Global Technology Partners';
   const heroLead = d.heroLead || 'Icon Electromatic collaborates with a select group of globally recognised technology partners to deliver advanced RF, microwave, mmWave, semiconductor, and Hi-Rel solutions. Together, these partnerships enable reliable access to cutting-edge components, materials, and systems for mission-critical aerospace, defence, space, SATCOM, and next-generation communication applications.';
-  const trustBadge1 = d.trustBadge1 || '<strong>10+</strong> Global Technology Partners';
+  const trustBadge1 = d.trustBadge1 || '<strong>15+</strong> Global Technology Partners';
   const trustBadge2 = d.trustBadge2 || 'Space &amp; Mil-Spec Screening Support';
 
   return `

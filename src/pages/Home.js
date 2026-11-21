@@ -48,13 +48,16 @@ export function renderHomePage() {
 
   const rawStats = data.stats || [
     { value: '160+', label: 'VERIFIED COMPONENTS' },
-    { value: '13+', label: 'OEM PARTNERS' },
+    { value: '15+', label: 'OEM PARTNERS' },
     { value: 'DHL GoGreen Plus', label: 'CERTIFIED (IESPL)' }
   ];
 
   const statsList = rawStats.map(st => {
     if (st.value === '100%' || (st.label && st.label.toUpperCase().includes('ROHS'))) {
       return { value: 'DHL GoGreen Plus', label: 'CERTIFIED (IESPL)' };
+    }
+    if (st.label && st.label.toUpperCase().includes('OEM PARTNERS') && (st.value === '13+' || st.value === '13')) {
+      return { ...st, value: '15+' };
     }
     return st;
   });
