@@ -333,16 +333,6 @@ function renderOEMCard(oem) {
             ${remainingCount > 0 ? `<span class="preview-pill preview-pill-more">+${remainingCount} more</span>` : ''}
           </div>
         </div>
-
-        <!-- Meta Counters -->
-        <div class="oem-card-meta">
-          <span class="oem-meta-badge" style="background: ${oem.accentColor}15; border-color: ${oem.accentColor}35; color: ${oem.accentColor};">
-            <i class="fa-solid fa-folder-tree"></i> ${totalCategories} ${totalCategories === 1 ? 'Category' : 'Categories'}
-          </span>
-          <span class="oem-meta-badge" style="background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.12); color: #E2E8F0;">
-            <i class="fa-solid fa-microchip"></i> ${totalProducts} ${totalProducts === 1 ? 'Product Line' : 'Products &amp; Lines'}
-          </span>
-        </div>
       </div>
 
       <div class="oem-card-cta" style="color: ${oem.accentColor};">
@@ -393,9 +383,6 @@ function renderCategoriesLevel() {
             <i class="fa-solid fa-industry"></i>
             <span>Specialty: ${oem.specialty}</span>
           </span>
-          <span class="catalog-oem-count-badge">
-            <i class="fa-solid fa-box-open"></i> ${totalProducts} Products / Lines across ${categories.length} Categories
-          </span>
         </div>
         <h2 class="catalog-oem-name">${oem.name}</h2>
         <p class="catalog-oem-desc">${oem.description}</p>
@@ -433,9 +420,6 @@ function renderCategoryCard(oem, cat) {
           loading="lazy" 
           onerror="this.onerror=null; this.src='/images/rf-filter.jpg';" 
         />
-        <div class="category-count-badge" style="background: ${oem.accentColor}; color: #ffffff;">
-          ${cat.products.length} ${cat.products.length === 1 ? 'Part' : 'Parts'}
-        </div>
       </div>
 
       <div class="category-card-content">
@@ -456,14 +440,14 @@ function renderCategoryCard(oem, cat) {
           ${cat.products.length > 3 ? `
             <div class="category-prod-preview-item" style="color: #94A3B8; font-style: italic;">
               <i class="fa-solid fa-ellipsis" style="color: #64748B;"></i>
-              <span>+${cat.products.length - 3} more product specifications</span>
+              <span>More product specifications available</span>
             </div>
           ` : ''}
         </div>
       </div>
 
       <div class="category-cta" style="color: ${oem.accentColor};">
-        <span>View All ${cat.products.length} Products</span>
+        <span>View All Products</span>
         <i class="fa-solid fa-arrow-right"></i>
       </div>
     </div>
@@ -509,7 +493,7 @@ function renderProductsLevel() {
       <div class="cpl-actions">
         <div class="cpl-counter-pill" style="border-color:${oem.accentColor}40; color:${oem.accentColor}; background:${oem.accentColor}12;">
           <i class="fa-solid fa-boxes-stacked"></i>
-          <span>${products.length} ${products.length === 1 ? 'Product Model' : 'Products &amp; Lines'}</span>
+          <span>Products &amp; Specifications</span>
         </div>
         
         <div class="cpl-view-toggle">
