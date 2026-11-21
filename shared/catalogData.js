@@ -2401,11 +2401,12 @@ export function getPopularProducts(catalog = CATALOG) {
   const flags = [
     { oemId: 'rogers-corporation', catId: 'rt-duroid', prodName: 'RT/duroid 5880' },
     { oemId: 'rogers-corporation', catId: 'ro400-series', prodName: 'RO4350B' },
-    { oemId: 'qorvo', catId: 'power-amplifiers', prodName: 'Power Amplifiers' },
-    { oemId: 'qorvo', catId: 'gan-hemts', prodName: 'GaN HEMTs' },
+    { oemId: 'qorvo', catId: 'beamforming-integrated-circuits', prodName: 'Beamforming Integrated Circuits' },
+    { oemId: 'minicircuits', catId: 'filters', prodName: 'Filters' },
+    { oemId: 'minicircuits', catId: 'test-solutions', prodName: 'Test Solutions' },
+    { oemId: 'minicircuits', catId: 'space-upscreening', prodName: 'Space Upscreening' },
     { oemId: 'ohmega-ticer', catId: 'rcm-series', prodName: 'OhmegaPly® RCM – 0.5A10PT' },
     { oemId: 'rfuw-engineering', catId: 'rf-limiters', prodName: 'RF Limiters' },
-    { oemId: 'minicircuits', catId: 'rf-mw-amplifiers', prodName: 'RF/MW Amplifiers' },
     { oemId: 'triteq', catId: 'harmonic-switched-filters', prodName: 'Harmonic Switched Filters' },
     { oemId: 'yttek', catId: 'hypersdr', prodName: 'HyperSDR' },
     { oemId: 'nee', catId: 'rf-microwave-pcb', prodName: 'RF/Microwave PCB' }
