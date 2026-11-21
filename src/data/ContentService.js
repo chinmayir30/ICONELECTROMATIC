@@ -904,6 +904,16 @@ export const ContentService = {
         const parsed = JSON.parse(local);
         if (pageKey === 'products') {
           if (Array.isArray(parsed)) {
+            const ev = parsed.find(o => o.id === 'evans');
+            const freshEv = CATALOG.find(o => o.id === 'evans');
+            if (ev && freshEv) {
+              ev.name = freshEv.name;
+              ev.shortName = freshEv.shortName;
+              ev.specialty = freshEv.specialty;
+              ev.category = freshEv.specialty;
+              ev.tagline = freshEv.tagline;
+              ev.description = freshEv.description;
+            }
             _memoryCache.set(pageKey, parsed);
             return parsed;
           }

@@ -6,6 +6,7 @@
 import { ContentService } from '../data/ContentService.js';
 import { CatalogService } from '../data/CatalogService.js';
 import { getRouteSearchParams } from '../router.js';
+import { CATALOG } from '../../shared/catalogData.js';
 
 let catalogData = null;
 let catalogNotice = '';
@@ -14,7 +15,22 @@ let catalogLoadPromise = null;
 const EXCLUDED_OEM_IDS = new Set(['fortify', 'spellman', 'aee-isarael']);
 
 function getAllOEMs() {
-  const oems = catalogData || ContentService.getData('products') || [];
+  const rawOems = catalogData || ContentService.getData('products') || CATALOG || [];
+  const freshEv = CATALOG.find(o => o.id === 'evans');
+  const oems = rawOems.map(oem => {
+    if (oem.id === 'evans' && freshEv) {
+      return {
+        ...oem,
+        name: freshEv.name,
+        shortName: freshEv.shortName,
+        specialty: freshEv.specialty,
+        category: freshEv.specialty,
+        tagline: freshEv.tagline,
+        description: freshEv.description
+      };
+    }
+    return oem;
+  });
   return oems.filter(o => !EXCLUDED_OEM_IDS.has(o.id));
 }
 
@@ -24,7 +40,22 @@ function getActiveOEMs() {
 
 function getActiveOEM(oemId) {
   if (EXCLUDED_OEM_IDS.has(oemId)) return null;
-  return getAllOEMs().find(o => o.id === oemId) || null;
+  const oem = getAllOEMs().find(o => o.id === oemId) || null;
+  if (oem && oem.id === 'evans') {
+    const freshEv = CATALOG.find(o => o.id === 'evans');
+    if (freshEv) {
+      return {
+        ...oem,
+        name: freshEv.name,
+        shortName: freshEv.shortName,
+        specialty: freshEv.specialty,
+        category: freshEv.specialty,
+        tagline: freshEv.tagline,
+        description: freshEv.description
+      };
+    }
+  }
+  return oem;
 }
 
 function getActiveCategories(oemId) {
@@ -322,7 +353,7 @@ function renderOEMCard(oem) {
           </div>
         </div>
 
-        <p class="oem-card-tagline">${oem.tagline}</p>
+        ${oem.tagline && oem.tagline !== oem.description ? `<p class="oem-card-tagline">${oem.tagline}</p>` : ''}
         <p class="oem-card-desc">${oem.description}</p>
 
         <!-- Categories preview pills -->
