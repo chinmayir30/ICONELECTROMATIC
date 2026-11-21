@@ -133,6 +133,20 @@ const INITIAL_CONTENT = {
         icon: 'fa-solid fa-microchip',
         color: 'red',
       },
+      {
+        id: 'hl-3',
+        title: 'Business Consultancy',
+        desc: 'Strategic Partnerships',
+        icon: 'fa-solid fa-handshake',
+        color: 'blue',
+      },
+      {
+        id: 'hl-4',
+        title: 'Product Supply and Logistics',
+        desc: 'Supply Chain & Logistics',
+        icon: 'fa-solid fa-truck-fast',
+        color: 'red',
+      },
     ],
     statsTitle: 'Quick Facts',
     statsSubtitle: 'Authentic Component Distribution',
@@ -920,6 +934,21 @@ export const ContentService = {
             ...defaults,
             ...parsed,
             careers: mergedCareers
+          };
+          _memoryCache.set(pageKey, merged);
+          return merged;
+        } else if (pageKey === 'about') {
+          const defaults = INITIAL_CONTENT.about;
+          let highlightCards = Array.isArray(parsed.highlightCards) ? [...parsed.highlightCards] : [...defaults.highlightCards];
+          defaults.highlightCards.forEach(defHl => {
+            if (!highlightCards.some(h => (h.id && h.id === defHl.id) || (h.title && h.title.trim().toLowerCase() === defHl.title.trim().toLowerCase()))) {
+              highlightCards.push(defHl);
+            }
+          });
+          const merged = {
+            ...defaults,
+            ...parsed,
+            highlightCards
           };
           _memoryCache.set(pageKey, merged);
           return merged;

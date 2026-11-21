@@ -30,9 +30,11 @@ export function renderAboutPage() {
   }));
 
   const highlightCards = (d.highlightCards || [
-    { title: 'Global Leader in RF & Electronic Solutions', desc: 'Providing mission-critical components, assemblies, and custom microwave engineering for advanced applications.', icon: 'fa-solid fa-tower-broadcast', color: 'red' },
+    { title: 'Global Leader in RF & Electronic Solutions', desc: 'Providing mission-critical components, assemblies, and custom microwave engineering for advanced applications.', icon: 'fa-solid fa-tower-broadcast', color: 'blue' },
     { title: 'Advanced Components, Consultancy & Bespoke Design Services', desc: 'End-to-end design-in engineering, RF simulation review, and custom-tailored fulfillment for client success.', icon: 'fa-solid fa-microchip', color: 'red' },
-  ]).map(c => ({ ...c, color: 'red' }));
+    { title: 'Business Consultancy', desc: 'Strategic Partnerships', icon: 'fa-solid fa-handshake', color: 'blue' },
+    { title: 'Product Supply and Logistics', desc: 'Supply Chain & Logistics', icon: 'fa-solid fa-truck-fast', color: 'red' },
+  ]).map(c => ({ ...c, color: c.color || 'red' }));
 
   const stats = (d.stats || [
     { target: '1500', suffix: '+', label: 'Products', icon: 'fa-solid fa-boxes-stacked', color: 'red' },
