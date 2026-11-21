@@ -43,7 +43,7 @@ const INITIAL_CONTENT = {
     youtubeUrl: '#',
   },
   home: {
-    heroTitle: 'ICON ELECTROMATIC turns complex high-frequency requirements into <span class="accent-red" style="color: var(--logo-red);">mission-ready hardware.</span>',
+    heroTitle: 'Icon Electromatic is a provider of world-class RF and microwave technologies through <span class="accent-red" style="color: var(--logo-red);">trusted representation and distribution.</span> Partnering with industry-leading suppliers, we bring innovative technologies, engineering support, and seamless supply-chain services to accelerate your success.',
     heroSubtitle: 'Delivering precision RF, microwave, and electronic components for defense, aerospace, SATCOM, and telecommunications.',
     heroBgVideo: '/icon-video.mp4',
     heroBgImage: '/images/hero-new-bg.png',
@@ -986,6 +986,9 @@ export const ContentService = {
             ...parsed,
             eventCards
           };
+          if (!merged.heroTitle || merged.heroTitle.includes('turns complex high-frequency')) {
+            merged.heroTitle = defaults.heroTitle;
+          }
           _memoryCache.set(pageKey, merged);
           return merged;
         } else {

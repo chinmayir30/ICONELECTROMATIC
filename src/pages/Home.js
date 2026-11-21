@@ -125,11 +125,11 @@ export function renderHomePage() {
       <div class="container" style="position:relative;z-index:3;width:100%;">
         <div class="hero-relay-content">
           <h1 class="hero-title-giant">
-            ${data.heroTitle || 'ICON ELECTROMATIC turns complex high-frequency requirements into <span class="accent-red" style="color: var(--logo-red);">mission-ready hardware.</span>'}
+            ${data.heroTitle || 'Icon Electromatic is a provider of world-class RF and microwave technologies through <span class="accent-red" style="color: var(--logo-red);">trusted representation and distribution.</span> Partnering with industry-leading suppliers, we bring innovative technologies, engineering support, and seamless supply-chain services to accelerate your success.'}
           </h1>
 
           <p class="hero-description-clean">
-            ${data.heroSubtitle || 'Delivering world-class RF and microwave technologies through trusted representation and distribution. Partnering with industry-leading suppliers, we bring innovative technologies, engineering support, and seamless supply-chain services to accelerate your success.'}
+            ${data.heroSubtitle || 'Delivering precision RF, microwave, and electronic components for defense, aerospace, SATCOM, and telecommunications.'}
           </p>
 
           <div class="hero-actions-row">
