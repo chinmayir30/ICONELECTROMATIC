@@ -1118,6 +1118,7 @@ export const ContentService = {
             category: a.category || 'Technical News',
             readTime: a.readTime || '5 min read',
             image: a.image || '',
+            sourceUrl: a.sourceUrl || '',
             summary: a.summary || '',
             content: a.content || '',
             tags: Array.isArray(a.tags) ? a.tags : [],

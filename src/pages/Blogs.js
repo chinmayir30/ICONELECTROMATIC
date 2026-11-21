@@ -17,19 +17,33 @@ function getActiveBlogOems() {
 
 function getBlogCmsData() {
   const cms = ContentService.getData('blogs');
+  let oemBlogs = OEM_BLOGS || [];
   if (cms && Array.isArray(cms.oemBlogs)) {
+    oemBlogs = (OEM_BLOGS || []).map(freshOem => {
+      const cached = cms.oemBlogs.find(b => b.oemId === freshOem.oemId);
+      if (!cached) return freshOem;
+      const freshArticles = freshOem.articles || [];
+      const cachedArticles = cached.articles || [];
+      const mergedArticles = [...freshArticles];
+      cachedArticles.forEach(ca => {
+        if (!mergedArticles.some(ma => ma.id === ca.id || ma.title === ca.title)) {
+          mergedArticles.push(ca);
+        }
+      });
+      return { ...cached, ...freshOem, articles: mergedArticles };
+    });
     return {
       ...cms,
       heroSubtitle: (cms.heroSubtitle || '').replace(/15\s+global/i, 'global'),
-      oemBlogs: cms.oemBlogs.filter(b => !EXCLUDED_OEM_IDS.has(b.oemId))
+      oemBlogs: oemBlogs.filter(b => !EXCLUDED_OEM_IDS.has(b.oemId))
     };
   }
   return {
-    heroTitle: 'OEM Technical News & Insights',
-    heroSubtitle: 'Direct technical bulletins, application notes, and product release updates from ICON Electromatic\'s global manufacturing partners.',
+    heroTitle: 'OEM Technical News & Engineering Bulletins',
+    heroSubtitle: 'Direct technical bulletins, engineering updates, and product release announcements from ICON Electromatic\'s global manufacturing partners.',
     trustBadge1: 'Technical Application Notes',
     trustBadge2: 'Manufacturer Engineering Bulletins',
-    trustBadge3: 'Verified OEM Insights',
+    trustBadge3: 'Direct OEM Insights',
     oemBlogs: (OEM_BLOGS || []).filter(b => !EXCLUDED_OEM_IDS.has(b.oemId))
   };
 }
@@ -222,10 +236,18 @@ function renderAllOemsBlogView() {
                     ${art.tags.map(t => `<span class="blog-tag-pill">#${t}</span>`).join('')}
                   </div>
 
-                  <button class="blog-article-btn read-article-trigger" data-art-id="${art.id}">
-                    <span>Read Full Technical Release</span>
-                    <i class="fa-solid fa-chevron-right" style="font-size:0.75rem;"></i>
-                  </button>
+                  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:auto;">
+                    <button class="blog-article-btn read-article-trigger" data-art-id="${art.id}">
+                      <span>Read Technical Release</span>
+                      <i class="fa-solid fa-chevron-right" style="font-size:0.75rem;"></i>
+                    </button>
+                    ${art.sourceUrl ? `
+                      <a href="${art.sourceUrl}" target="_blank" rel="noopener noreferrer" class="btn-relay-dark" style="font-size:0.78rem;padding:7px 12px;display:inline-flex;align-items:center;gap:6px;text-decoration:none;" title="Open original manufacturer article" onclick="event.stopPropagation();">
+                        <span>OEM Source</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.7rem;"></i>
+                      </a>
+                    ` : ''}
+                  </div>
                 </div>
               </div>
             `).join('')}
@@ -252,9 +274,14 @@ function renderAllOemsBlogView() {
           <span style="font-size:0.8rem;color:var(--text-gray-400);">
             <i class="fa-solid fa-shield-check" style="color:var(--success);margin-right:5px;"></i> Official Technical Dispatch
           </span>
-          <a class="btn-relay-red" id="modal-article-rfq-link" href="/contact?subject=technical">
-            <i class="fa-solid fa-paper-plane"></i> Inquire on this Technology
-          </a>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+            <a class="btn-relay-dark modal-source-btn" href="#" target="_blank" rel="noopener noreferrer" style="display:none;font-size:0.82rem;padding:8px 14px;">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i> Visit Official OEM Release
+            </a>
+            <a class="btn-relay-red" id="modal-article-rfq-link" href="/contact?subject=technical">
+              <i class="fa-solid fa-paper-plane"></i> Inquire on this Technology
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -342,10 +369,18 @@ function renderSingleOemBlogView(oem, blog, activeTab) {
                       ${art.tags.map(t => `<span class="blog-tag-pill">#${t}</span>`).join('')}
                     </div>
 
-                    <button class="blog-article-btn read-article-trigger" data-art-id="${art.id}">
-                      <span>Read Full Technical Release</span>
-                      <i class="fa-solid fa-chevron-right" style="font-size:0.75rem;"></i>
-                    </button>
+                    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:auto;">
+                      <button class="blog-article-btn read-article-trigger" data-art-id="${art.id}">
+                        <span>Read Technical Release</span>
+                        <i class="fa-solid fa-chevron-right" style="font-size:0.75rem;"></i>
+                      </button>
+                      ${art.sourceUrl ? `
+                        <a href="${art.sourceUrl}" target="_blank" rel="noopener noreferrer" class="btn-relay-dark" style="font-size:0.78rem;padding:7px 12px;display:inline-flex;align-items:center;gap:6px;text-decoration:none;" title="Open original manufacturer article" onclick="event.stopPropagation();">
+                          <span>OEM Source</span>
+                          <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.7rem;"></i>
+                        </a>
+                      ` : ''}
+                    </div>
                   </div>
                 </div>
               `).join('')}
@@ -387,13 +422,18 @@ function renderSingleOemBlogView(oem, blog, activeTab) {
           </button>
         </div>
         <div class="blog-modal-body" id="modal-article-body"></div>
-        <div class="blog-modal-footer">
+        <div class="blog-modal-footer" id="modal-article-footer">
           <span style="font-size:0.8rem;color:var(--text-gray-400);">
-            <i class="fa-solid fa-shield-check" style="color:var(--success);margin-right:5px;"></i> Official Technical Bulletin
+            <i class="fa-solid fa-shield-check" style="color:var(--success);margin-right:5px;"></i> Official Technical Dispatch
           </span>
-          <a class="btn-relay-red" id="modal-article-rfq-link" href="/contact?subject=technical">
-            <i class="fa-solid fa-paper-plane"></i> Inquire on this Technology
-          </a>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+            <a class="btn-relay-dark modal-source-btn" href="#" target="_blank" rel="noopener noreferrer" style="display:none;font-size:0.82rem;padding:8px 14px;">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i> Visit Official OEM Release
+            </a>
+            <a class="btn-relay-red" id="modal-article-rfq-link" href="/contact?subject=technical">
+              <i class="fa-solid fa-paper-plane"></i> Inquire on this Technology
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -479,6 +519,14 @@ export function initBlogsPage() {
     if (modalRfqLink) {
       modalRfqLink.href = `/contact?subject=technical&oem=${encodeURIComponent(article.oemName || '')}&product=${encodeURIComponent(article.title)}`;
     }
+    document.querySelectorAll('.modal-source-btn').forEach(btn => {
+      if (article.sourceUrl) {
+        btn.href = article.sourceUrl;
+        btn.style.display = 'inline-flex';
+      } else {
+        btn.style.display = 'none';
+      }
+    });
     articleModal.classList.add('open');
   }
 
