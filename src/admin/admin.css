@@ -3,7 +3,7 @@
    Brand Colors: Navy #0b2e59 · Red #e51e2a · White
    ────────────────────────────────────────────── */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Encode+Sans:wght@400;500;600;700;800;900&family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap');
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -18,7 +18,7 @@
   --a-text:    #1e293b;
   --a-muted:   #64748b;
   --a-success: #10b981;
-  --a-font:    'Inter', system-ui, sans-serif;
+  --a-font:    'Montserrat', 'Encode Sans', system-ui, sans-serif;
   --a-radius:  10px;
   --a-shadow:  0 2px 12px rgba(0,0,0,0.06);
 }
