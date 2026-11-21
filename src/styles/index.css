@@ -7538,7 +7538,11 @@ html[data-theme="light"],
 }
 
 .oem-card-title-header {
-  margin-bottom: 6px;
+  min-height: 88px;
+  margin-bottom: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 .oem-card-title-row {
@@ -7599,6 +7603,7 @@ html[data-theme="light"],
 }
 
 .oem-card-categories-preview {
+  margin-top: auto;
   margin-bottom: 16px;
   background: rgba(0,0,0,0.22);
   padding: 10px 12px;
@@ -11144,6 +11149,7 @@ html[data-theme="light"],
 
 /* Categories Preview Box */
 [data-theme="light"] .oem-card-categories-preview {
+  margin-top: auto !important;
   background: #f8fafc !important;
   border: 1px solid rgba(197, 31, 38, 0.15) !important;
   border-radius: 10px !important;

@@ -252,9 +252,10 @@ function renderOEMsLevel() {
               </option>
               ${specialties.map(spec => {
                 const count = oems.filter(o => o.specialty === spec).length;
+                const displayTitle = spec.length > 40 ? 'Capacitors (Hybrid Wet Tantalum & Ceramic)' : spec;
                 return `
                   <option value="${spec}" ${navState.activeFilter === spec ? 'selected' : ''}>
-                    ${spec} (${count})
+                    ${displayTitle} (${count})
                   </option>
                 `;
               }).join('')}
@@ -287,9 +288,10 @@ function renderOEMsLevel() {
           </button>
           ${specialties.map(spec => {
             const count = oems.filter(o => o.specialty === spec).length;
+            const displayTitle = spec.length > 40 ? 'Capacitors (Hybrid Wet Tantalum & Ceramic)' : spec;
             return `
               <button class="domain-filter-pill ${navState.activeFilter === spec ? 'active' : ''}" data-specialty="${spec}" title="${spec}">
-                <span class="pill-title">${spec}</span>
+                <span class="pill-title">${displayTitle}</span>
                 <span class="pill-badge">${count}</span>
               </button>
             `;
@@ -319,16 +321,19 @@ function renderOEMsLevel() {
 }
 
 function renderOEMCard(oem) {
+  const isEvans = oem.id === 'evans';
   const visibleCategories = (oem.categories || []).filter(c => c.visible !== false);
   const totalProducts = visibleCategories.reduce((acc, cat) => acc + (cat.products ? cat.products.filter(p => p.visible !== false).length : 0), 0);
   const totalCategories = visibleCategories.length;
   const params = buildNavParams('categories', oem.id);
 
   // Standardize preview categories to maximum 2-line footprint
-  let previewCats = visibleCategories.slice(0, 3);
-  const totalLength = previewCats.reduce((sum, c) => sum + c.name.length, 0);
-  if (totalLength > 36 && visibleCategories.length > 2) {
-    previewCats = visibleCategories.slice(0, 2);
+  let previewCats = isEvans ? visibleCategories : visibleCategories.slice(0, 3);
+  if (!isEvans) {
+    const totalLength = previewCats.reduce((sum, c) => sum + c.name.length, 0);
+    if (totalLength > 36 && visibleCategories.length > 2) {
+      previewCats = visibleCategories.slice(0, 2);
+    }
   }
   const remainingCount = visibleCategories.length - previewCats.length;
 
@@ -345,11 +350,18 @@ function renderOEMCard(oem) {
 
       <div class="oem-card-body">
         <div class="oem-card-title-header">
-          <h3 class="oem-card-name">${oem.name}</h3>
-          <div class="oem-specialty-row">
-            <span class="oem-specialty-pill" style="background: ${oem.accentColor}18; color: ${oem.accentColor}; border: 1px solid ${oem.accentColor}40;">
-              ${oem.specialty}
-            </span>
+          <h3 class="oem-card-name" style="${isEvans ? 'font-size: 1.05rem; line-height: 1.3;' : ''}">${oem.name}</h3>
+          <div class="oem-specialty-row" style="${isEvans ? 'display:flex;flex-wrap:wrap;gap:4px;min-height:28px;' : ''}">
+            ${isEvans ? `
+              <span class="oem-specialty-pill" style="background:${oem.accentColor}18;color:${oem.accentColor};border:1px solid ${oem.accentColor}40;font-size:0.68rem;padding:2px 7px;white-space:nowrap;">Hybrid Wet Tantalum</span>
+              <span class="oem-specialty-pill" style="background:${oem.accentColor}18;color:${oem.accentColor};border:1px solid ${oem.accentColor}40;font-size:0.68rem;padding:2px 7px;white-space:nowrap;">Multilayer Ceramic (MLCC)</span>
+              <span class="oem-specialty-pill" style="background:${oem.accentColor}18;color:${oem.accentColor};border:1px solid ${oem.accentColor}40;font-size:0.68rem;padding:2px 7px;white-space:nowrap;">Multilayer Polymer (MLP) Film</span>
+              <span class="oem-specialty-pill" style="background:${oem.accentColor}18;color:${oem.accentColor};border:1px solid ${oem.accentColor}40;font-size:0.68rem;padding:2px 7px;white-space:nowrap;">RF/High Frequency Ceramic</span>
+            ` : `
+              <span class="oem-specialty-pill" style="background: ${oem.accentColor}18; color: ${oem.accentColor}; border: 1px solid ${oem.accentColor}40;">
+                ${oem.specialty}
+              </span>
+            `}
           </div>
         </div>
 
