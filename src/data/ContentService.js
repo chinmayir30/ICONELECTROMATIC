@@ -941,6 +941,11 @@ export const ContentService = {
             if (!parsed.partners.some(p => p.id === 'transline-technology' || p.id === 'transline')) {
               parsed.partners.push(translinePartner);
             }
+            const qp = parsed.partners.find(p => p.id === 'quantic-eulex');
+            if (qp) {
+              qp.domain = 'Hybrid Wet Tantalum, MLCC, MLP Film & RF Ceramic';
+              qp.description = 'Quantic Evans & Eulex capacitor portfolio comprises: Evans (Hybrid Wet Tantalum), UTC (Multilayer Ceramic - MLCC), Paktron (Multilayer Polymer - MLP Film), and Eulex (RF/High Frequency Ceramic) for radar, SATCOM, aerospace, and space platforms.';
+            }
             _memoryCache.set(pageKey, parsed);
             return parsed;
           }
@@ -948,6 +953,11 @@ export const ContentService = {
             const list = parsed.filter(p => p.id !== 'fortify' && p.id !== '3dfortify');
             if (!list.some(p => p.id === 'transline-technology' || p.id === 'transline')) {
               list.push(translinePartner);
+            }
+            const qp = list.find(p => p.id === 'quantic-eulex');
+            if (qp) {
+              qp.domain = 'Hybrid Wet Tantalum, MLCC, MLP Film & RF Ceramic';
+              qp.description = 'Quantic Evans & Eulex capacitor portfolio comprises: Evans (Hybrid Wet Tantalum), UTC (Multilayer Ceramic - MLCC), Paktron (Multilayer Polymer - MLP Film), and Eulex (RF/High Frequency Ceramic) for radar, SATCOM, aerospace, and space platforms.';
             }
             const wrapped = {
               heroTitle: 'Authorized Technology Partners',
@@ -1066,7 +1076,7 @@ export const ContentService = {
         { id: 'tri-teq', name: 'Tri-TeQ', domain: 'Tunable Filters & RF Assemblies', category: 'components', accentColor: 'red', logoImg: '/images/oem-logos/TriTeq_logo_wb.png', description: 'Tri-TeQ is a leader in harmonic switch filter banks, high/low and tunable band-pass filters, and multifunction RF assemblies used in defence, SATCOM, and electronic warfare systems.', website: 'https://www.tri-teq.com' },
         { id: 'rfuw', name: 'RFuW Engineering', domain: 'High-Performance RF Switches & Modules', category: 'components', accentColor: 'red', logoImg: '/images/oem-logos/RFuW_Logo.png', description: 'RFuW Engineering specialises in rugged RF switches, limiters, and integrated microwave modules designed for high-power, wideband, and mission-critical aerospace and defence applications.', website: 'https://www.rfuw.com' },
         { id: 'yttek', name: 'YTTEK', domain: 'Software-Defined Radio (SDR) Platforms', category: 'semiconductors', accentColor: 'blue', logoImg: '/images/oem-logos/YTTEK_Logo_wb.png', description: 'YTTEK builds flexible and reconfigurable software-defined radio platforms supporting research, defence, and advanced wireless communication applications.', website: 'https://www.yttek.com' },
-        { id: 'quantic-eulex', name: 'Quantic Eulex / Evans', domain: 'Advanced Ceramic Microwave & Hybrid Capacitors', category: 'components', accentColor: 'blue', logoImg: '/images/oem-logos/Evans_logo.png', description: 'Quantic Eulex & Evans Hybrid Capacitors engineer high-energy, high-frequency ceramic capacitors and hybrid capacitor banks supporting radar, SATCOM, aerospace, and space platforms.', website: 'https://www.quanticdevices.com' },
+        { id: 'quantic-eulex', name: 'Quantic Eulex / Evans', domain: 'Hybrid Wet Tantalum, MLCC, MLP Film & RF Ceramic', category: 'components', accentColor: 'blue', logoImg: '/images/oem-logos/Evans_logo.png', description: 'Quantic Evans & Eulex capacitor portfolio comprises: Evans (Hybrid Wet Tantalum), UTC (Multilayer Ceramic - MLCC), Paktron (Multilayer Polymer - MLP Film), and Eulex (RF/High Frequency Ceramic) for radar, SATCOM, aerospace, and space platforms.', website: 'https://www.quanticdevices.com' },
         { id: 'quantic-ohmega', name: 'Quantic Ohmega-Ticer', domain: 'Embedded Thin-Film Resistive Materials', category: 'materials', accentColor: 'blue', logoImg: '/images/oem-logos/OhmegaTicer_Black.png', description: 'Ohmega-Ticer provides embedded thin-film resistive copper foils that enable compact, high-performance digital and RF PCB designs for defence, aerospace, and advanced electronics.', website: 'https://www.ohmega.com' },
         { id: 'thermosen', name: 'Thermosen Technologies', domain: 'Temperature Sensors for Hi-Rel Applications', category: 'sensors', accentColor: 'blue', logoImg: '/images/oem-logos/Thermosen_logo.png', description: 'Thermosen develops temperature sensing solutions focused on Hi-Rel, aerospace, and defence sectors, ensuring accurate thermal monitoring in extreme environments.', website: 'https://www.thermosen.com' },
         { id: 'powerfactor', name: 'PowerFactor Electronics (PowerRF)', domain: 'Power Electronics & RF Microwave Domains', category: 'components', accentColor: 'blue', logoImg: '/PICTURES/PowerRFlogo Vert Logo1.jpg', description: 'Specialized in R&D, design, testing, consultancy, and product development in Power Electronics and RF Microwave domains under the Make in India initiative.', website: 'https://powerrf.in' },

@@ -1601,8 +1601,8 @@ export const CATALOG = [
     name: "Evans",
     shortName: "Evans",
     specialty: "Ceramic Capacitors",
-    tagline: "High-Energy Density Capacitors & Eulex RF Ceramics",
-    description: "Quantic Evans and Eulex develop high-energy hybrid wet tantalum capacitors, multi-layer polymer (MLP) films, and ultra-high-frequency ceramic capacitors routinely tested to NASA EEE-INST-002 space standards.",
+    tagline: "Hybrid Wet Tantalum, MLCC, MLP Film & RF Ceramic Capacitors",
+    description: "Quantic Evans portfolio comprises Evans (Hybrid Wet Tantalum), UTC (Multilayer Ceramic - MLCC), Paktron (Multilayer Polymer - MLP Film), and Eulex (RF/High Frequency Ceramic) tested to NASA EEE-INST-002 space standards.",
     website: "https://www.evans-group.com",
     accentColor: "#3B82F6",
     glowColor: "rgba(59, 130, 246, 0.4)",
@@ -1610,67 +1610,6 @@ export const CATALOG = [
     logoImg: "/images/oem-logos/Evans_logo.png",
     logoSvg: "<svg viewBox=\"0 0 200 42\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"2\" y=\"2\" width=\"38\" height=\"38\" rx=\"9\" fill=\"rgba(37,99,235,0.2)\" stroke=\"#3B82F6\" stroke-width=\"1.8\"/><path d=\"M13 20h5m0-8v16m8-16v16m0-8h5\" stroke=\"#60A5FA\" stroke-width=\"2.5\" stroke-linecap=\"round\"/><text x=\"48\" y=\"20\" fill=\"#93C5FD\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"800\" font-size=\"10\" letter-spacing=\"1.4\">QUANTIC</text><text x=\"48\" y=\"34\" fill=\"#FFFFFF\" font-family=\"'Plus Jakarta Sans', sans-serif\" font-weight=\"900\" font-size=\"15\" letter-spacing=\"0.8\">EVANS / EULEX</text></svg>",
         categories: [
-      {
-        id: "eulex",
-        name: "Eulex",
-        description: "RF/High Frequency Ceramic Capacitors",
-        products: [
-          {
-            id: "xg1-series-binary-136",
-            name: "XG1 Series- Binary",
-            category: "Eulex",
-            description: "High-Q binary ceramic capacitor for precision frequency tuning in microwave circuits.",
-            applications: "Military & aerospace radar, satcom & EW, mmWave beamforming",
-            link: "https://www.evans-group.com/eulex",
-            image: "/images/products/image25.png"
-          },
-          {
-            id: "xg2-series-2-terminal-137",
-            name: "XG2 Series - 2 Terminal",
-            category: "Eulex",
-            description: "Ultra-compact two-terminal ceramic capacitor with tight tolerance and high self-resonance.",
-            applications: "Advanced broadband & RF systems, optical transceivers, automotive mmWave",
-            link: "https://www.evans-group.com/eulex",
-            image: "/images/products/image26.png"
-          },
-          {
-            id: "xg3-series-3-terminal-138",
-            name: "XG3 Series - 3 Terminal",
-            category: "Eulex",
-            description: "Three-terminal feedthrough ceramic capacitor engineered for noise suppression.",
-            applications: "Power supply decoupling, high-speed digital and RF signal filtering",
-            link: "https://www.evans-group.com/eulex",
-            image: "/images/products/image27.png"
-          },
-          {
-            id: "xq-series-ultra-high-q-139",
-            name: "XQ Series - Ultra-High Q",
-            category: "Eulex",
-            description: "Ultra-High Q RF capacitor featuring low ESR and exceptional dielectric stability.",
-            applications: "High-power RF amplifiers, matching networks, MRI and defense transceivers",
-            link: "https://www.evans-group.com/eulex",
-            image: "/images/products/image28.png"
-          },
-          {
-            id: "xv-series-vertical-layer-140",
-            name: "XV Series - Vertical Layer",
-            category: "Eulex",
-            description: "Vertical layer ceramic capacitor designed for ultra-broadband bypass and coupling.",
-            applications: "DC blocks, broadband amplifier bias tees, radar RF front-ends",
-            link: "https://www.evans-group.com/eulex",
-            image: "/images/products/image29.png"
-          },
-          {
-            id: "substrates-141",
-            name: "Substrates",
-            category: "Eulex",
-            description: "Precision engineered ceramic substrates with controlled dielectric properties.",
-            applications: "Thin-film hybrid circuits, MCMs, and multi-chip microwave modules",
-            link: "https://www.evans-group.com/eulex",
-            image: "/images/products/image30.png"
-          }
-        ]
-      },
       {
         id: "evans",
         name: "Evans",
@@ -1751,61 +1690,9 @@ export const CATALOG = [
         ]
       },
       {
-        id: "paktron",
-        name: "Paktron",
-        description: "Multi-layer Polymer (MLP) Stacked Film",
-        products: [
-          {
-            id: "angstor-150",
-            name: "Angstor",
-            category: "Paktron",
-            description: "Ultra-miniature stacked multi-layer polymer film capacitor with high ripple current capability.",
-            applications: "Wide Bandgap GaN/SiC power converters, VPX systems, space computing",
-            link: "https://www.evans-group.com/paktron",
-            image: "/images/products/image39.png"
-          },
-          {
-            id: "capstick-151",
-            name: "Capstick",
-            category: "Paktron",
-            description: "High-density stacked polymer film capacitor designed for low inductance high-frequency decoupling.",
-            applications: "SMPS power stages, GaN inverters, high-temperature avionics",
-            link: "https://www.evans-group.com/paktron",
-            image: "/images/products/image40.png"
-          },
-          {
-            id: "quencharc-rc-snubber-152",
-            name: "Quencharc RC Snubber",
-            category: "Paktron",
-            description: "Precision integrated RC snubber network for transient voltage suppression and arc suppression.",
-            applications: "Relay contact protection, inductive load switching, motor drives",
-            link: "https://www.evans-group.com/paktron",
-            image: "/images/products/image41.jpeg"
-          },
-          {
-            id: "new-high-voltage-mlp-153",
-            name: "New High Voltage MLP",
-            category: "Paktron",
-            description: "High voltage multi-layer polymer capacitor offering self-healing dielectric properties.",
-            applications: "EV power electronics, defense power distribution, high-voltage converters",
-            link: "https://www.evans-group.com/paktron",
-            image: "/images/products/image42.png"
-          },
-          {
-            id: "surfilm-154",
-            name: "Surfilm",
-            category: "Paktron",
-            description: "Surface-mount multi-layer polymer capacitor with ultra-low ESR and zero piezoelectric noise.",
-            applications: "Audio and precision instrumentation, radar IF processing, space sensors",
-            link: "https://www.evans-group.com/paktron",
-            image: "/images/products/image43.png"
-          }
-        ]
-      },
-      {
         id: "utc",
         name: "UTC",
-        description: "Multi-layer Ceramic (MLCC) Stacked Film",
+        description: "Multilayer Ceramic (MLCC)",
         products: [
           {
             id: "mlcc-low-and-mid-voltage-155",
@@ -1887,6 +1774,119 @@ export const CATALOG = [
             applications: "Primary AC power line filtering, aerospace ground power units, medical devices",
             link: "https://www.evans-group.com/utc",
             image: "/images/products/image52.png"
+          }
+        ]
+      },
+      {
+        id: "paktron",
+        name: "Paktron",
+        description: "Multilayer Polymer (MLP) Film",
+        products: [
+          {
+            id: "angstor-150",
+            name: "Angstor",
+            category: "Paktron",
+            description: "Ultra-miniature stacked multi-layer polymer film capacitor with high ripple current capability.",
+            applications: "Wide Bandgap GaN/SiC power converters, VPX systems, space computing",
+            link: "https://www.evans-group.com/paktron",
+            image: "/images/products/image39.png"
+          },
+          {
+            id: "capstick-151",
+            name: "Capstick",
+            category: "Paktron",
+            description: "High-density stacked polymer film capacitor designed for low inductance high-frequency decoupling.",
+            applications: "SMPS power stages, GaN inverters, high-temperature avionics",
+            link: "https://www.evans-group.com/paktron",
+            image: "/images/products/image40.png"
+          },
+          {
+            id: "quencharc-rc-snubber-152",
+            name: "Quencharc RC Snubber",
+            category: "Paktron",
+            description: "Precision integrated RC snubber network for transient voltage suppression and arc suppression.",
+            applications: "Relay contact protection, inductive load switching, motor drives",
+            link: "https://www.evans-group.com/paktron",
+            image: "/images/products/image41.jpeg"
+          },
+          {
+            id: "new-high-voltage-mlp-153",
+            name: "New High Voltage MLP",
+            category: "Paktron",
+            description: "High voltage multi-layer polymer capacitor offering self-healing dielectric properties.",
+            applications: "EV power electronics, defense power distribution, high-voltage converters",
+            link: "https://www.evans-group.com/paktron",
+            image: "/images/products/image42.png"
+          },
+          {
+            id: "surfilm-154",
+            name: "Surfilm",
+            category: "Paktron",
+            description: "Surface-mount multi-layer polymer capacitor with ultra-low ESR and zero piezoelectric noise.",
+            applications: "Audio and precision instrumentation, radar IF processing, space sensors",
+            link: "https://www.evans-group.com/paktron",
+            image: "/images/products/image43.png"
+          }
+        ]
+      },
+      {
+        id: "eulex",
+        name: "Eulex",
+        description: "RF/High Frequency Ceramic",
+        products: [
+          {
+            id: "xg1-series-binary-136",
+            name: "XG1 Series- Binary",
+            category: "Eulex",
+            description: "High-Q binary ceramic capacitor for precision frequency tuning in microwave circuits.",
+            applications: "Military & aerospace radar, satcom & EW, mmWave beamforming",
+            link: "https://www.evans-group.com/eulex",
+            image: "/images/products/image25.png"
+          },
+          {
+            id: "xg2-series-2-terminal-137",
+            name: "XG2 Series - 2 Terminal",
+            category: "Eulex",
+            description: "Ultra-compact two-terminal ceramic capacitor with tight tolerance and high self-resonance.",
+            applications: "Advanced broadband & RF systems, optical transceivers, automotive mmWave",
+            link: "https://www.evans-group.com/eulex",
+            image: "/images/products/image26.png"
+          },
+          {
+            id: "xg3-series-3-terminal-138",
+            name: "XG3 Series - 3 Terminal",
+            category: "Eulex",
+            description: "Three-terminal feedthrough ceramic capacitor engineered for noise suppression.",
+            applications: "Power supply decoupling, high-speed digital and RF signal filtering",
+            link: "https://www.evans-group.com/eulex",
+            image: "/images/products/image27.png"
+          },
+          {
+            id: "xq-series-ultra-high-q-139",
+            name: "XQ Series - Ultra-High Q",
+            category: "Eulex",
+            description: "Ultra-High Q RF capacitor featuring low ESR and exceptional dielectric stability.",
+            applications: "High-power RF amplifiers, matching networks, MRI and defense transceivers",
+            link: "https://www.evans-group.com/eulex",
+            image: "/images/products/image28.png"
+          },
+          {
+            id: "xv-series-vertical-layer-140",
+            name: "XV Series - Vertical Layer",
+            category: "Eulex",
+            description: "Vertical layer ceramic capacitor designed for ultra-broadband bypass and coupling.",
+            applications: "DC blocks, broadband amplifier bias tees, radar RF front-ends",
+            link: "https://www.evans-group.com/eulex",
+            image: "/images/products/image29.png"
+          },
+          {
+            id: "substrates-141",
+            name: "Substrates",
+            category: "Eulex",
+            description: "Precision engineered ceramic substrates with controlled dielectric properties.",
+            applications: "Thin-film hybrid circuits, MCMs, and multi-chip microwave modules",
+            link: "https://www.evans-group.com/eulex",
+            image: "/images/products/image30.png"
           }
         ]
       }

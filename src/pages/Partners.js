@@ -54,7 +54,29 @@ function renderPartnerCardMarkup(partner) {
       <div class="partner-stream-card-domain">${partner.domain || ''}</div>
 
       <!-- Description of the Partner Association -->
-      <p class="partner-stream-card-desc" style="margin-bottom:16px;">${partner.description || ''}</p>
+      <p class="partner-stream-card-desc" style="margin-bottom:14px;">${partner.description || ''}</p>
+
+      ${partner.id === 'quantic-eulex' ? `
+        <!-- Quantic Divisions Breakdown -->
+        <div class="partner-divisions-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:16px;background:rgba(255,255,255,0.03);padding:10px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.08);text-align:left;">
+          <div style="border-left:2px solid var(--logo-red);padding-left:8px;">
+            <strong style="color:var(--text-white);font-size:0.82rem;font-weight:700;display:block;line-height:1.2;">Evans</strong>
+            <span style="color:var(--text-gray-400);font-size:0.72rem;line-height:1.2;display:block;margin-top:2px;">Hybrid Wet Tantalum</span>
+          </div>
+          <div style="border-left:2px solid var(--logo-red);padding-left:8px;">
+            <strong style="color:var(--text-white);font-size:0.82rem;font-weight:700;display:block;line-height:1.2;">UTC</strong>
+            <span style="color:var(--text-gray-400);font-size:0.72rem;line-height:1.2;display:block;margin-top:2px;">Multilayer Ceramic (MLCC)</span>
+          </div>
+          <div style="border-left:2px solid var(--logo-red);padding-left:8px;">
+            <strong style="color:var(--text-white);font-size:0.82rem;font-weight:700;display:block;line-height:1.2;">Paktron</strong>
+            <span style="color:var(--text-gray-400);font-size:0.72rem;line-height:1.2;display:block;margin-top:2px;">Multilayer Polymer (MLP) Film</span>
+          </div>
+          <div style="border-left:2px solid var(--logo-red);padding-left:8px;">
+            <strong style="color:var(--text-white);font-size:0.82rem;font-weight:700;display:block;line-height:1.2;">Eulex</strong>
+            <span style="color:var(--text-gray-400);font-size:0.72rem;line-height:1.2;display:block;margin-top:2px;">RF/High Frequency Ceramic</span>
+          </div>
+        </div>
+      ` : ''}
 
       <!-- View Products Link Indicator -->
       <div class="partner-card-action-row" style="margin-top:auto;display:flex;align-items:center;gap:6px;font-size:0.85rem;font-weight:700;color:var(--logo-red-light);">
