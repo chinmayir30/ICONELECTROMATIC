@@ -6,13 +6,32 @@
 import { ContentService } from '../data/ContentService.js';
 import { CatalogService } from '../data/CatalogService.js';
 import { getRouteSearchParams } from '../router.js';
+import { CATALOG } from '../../shared/catalogData.js';
 
 let catalogData = null;
 let catalogNotice = '';
 let catalogLoadPromise = null;
 
+const EXCLUDED_OEM_IDS = new Set(['fortify', 'spellman', 'aee-isarael']);
+
 function getAllOEMs() {
-  return catalogData || ContentService.getData('products') || [];
+  const rawOems = catalogData || ContentService.getData('products') || CATALOG || [];
+  const freshEv = CATALOG.find(o => o.id === 'evans');
+  const oems = rawOems.map(oem => {
+    if (oem.id === 'evans' && freshEv) {
+      return {
+        ...oem,
+        name: freshEv.name,
+        shortName: freshEv.shortName,
+        specialty: freshEv.specialty,
+        category: freshEv.specialty,
+        tagline: freshEv.tagline,
+        description: freshEv.description
+      };
+    }
+    return oem;
+  });
+  return oems.filter(o => !EXCLUDED_OEM_IDS.has(o.id));
 }
 
 function getActiveOEMs() {
@@ -20,7 +39,23 @@ function getActiveOEMs() {
 }
 
 function getActiveOEM(oemId) {
-  return getAllOEMs().find(o => o.id === oemId) || null;
+  if (EXCLUDED_OEM_IDS.has(oemId)) return null;
+  const oem = getAllOEMs().find(o => o.id === oemId) || null;
+  if (oem && oem.id === 'evans') {
+    const freshEv = CATALOG.find(o => o.id === 'evans');
+    if (freshEv) {
+      return {
+        ...oem,
+        name: freshEv.name,
+        shortName: freshEv.shortName,
+        specialty: freshEv.specialty,
+        category: freshEv.specialty,
+        tagline: freshEv.tagline,
+        description: freshEv.description
+      };
+    }
+  }
+  return oem;
 }
 
 function getActiveCategories(oemId) {
@@ -101,22 +136,6 @@ function renderPageShell() {
             Authorized distributor for world-leading RF, microwave, mmWave, semiconductor, and Hi-Rel materials manufacturers.
             Explore authorized global OEM partners, multi-frequency categories, and specialized product lines.
           </p>
-
-          <!-- Trust & Capability Highlights matching Partners and Services -->
-          <div class="catalog-trust-strip" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:24px;margin-bottom:0;">
-            <div class="catalog-trust-pill">
-              <i class="fa-solid fa-industry" style="color:var(--logo-red-light);"></i>
-              <span><strong>${totalOEMs}</strong> Global OEM Partners</span>
-            </div>
-            <div class="catalog-trust-pill">
-              <i class="fa-solid fa-shapes" style="color:var(--logo-red-light);"></i>
-              <span><strong>${totalCats}</strong> Specialized Categories</span>
-            </div>
-            <div class="catalog-trust-pill">
-              <i class="fa-solid fa-microchip" style="color:#10B981;"></i>
-              <span><strong>${totalProds}</strong> Precision Products &amp; Lines</span>
-            </div>
-          </div>
         </div>
       </div>
     </section>
@@ -233,9 +252,10 @@ function renderOEMsLevel() {
               </option>
               ${specialties.map(spec => {
                 const count = oems.filter(o => o.specialty === spec).length;
+                const displayTitle = spec.length > 40 ? 'Capacitors (Hybrid Wet Tantalum & Ceramic)' : spec;
                 return `
                   <option value="${spec}" ${navState.activeFilter === spec ? 'selected' : ''}>
-                    ${spec} (${count})
+                    ${displayTitle} (${count})
                   </option>
                 `;
               }).join('')}
@@ -268,9 +288,10 @@ function renderOEMsLevel() {
           </button>
           ${specialties.map(spec => {
             const count = oems.filter(o => o.specialty === spec).length;
+            const displayTitle = spec.length > 40 ? 'Capacitors (Hybrid Wet Tantalum & Ceramic)' : spec;
             return `
               <button class="domain-filter-pill ${navState.activeFilter === spec ? 'active' : ''}" data-specialty="${spec}" title="${spec}">
-                <span class="pill-title">${spec}</span>
+                <span class="pill-title">${displayTitle}</span>
                 <span class="pill-badge">${count}</span>
               </button>
             `;
@@ -300,16 +321,19 @@ function renderOEMsLevel() {
 }
 
 function renderOEMCard(oem) {
+  const isEvans = oem.id === 'evans';
   const visibleCategories = (oem.categories || []).filter(c => c.visible !== false);
   const totalProducts = visibleCategories.reduce((acc, cat) => acc + (cat.products ? cat.products.filter(p => p.visible !== false).length : 0), 0);
   const totalCategories = visibleCategories.length;
   const params = buildNavParams('categories', oem.id);
 
   // Standardize preview categories to maximum 2-line footprint
-  let previewCats = visibleCategories.slice(0, 3);
-  const totalLength = previewCats.reduce((sum, c) => sum + c.name.length, 0);
-  if (totalLength > 36 && visibleCategories.length > 2) {
-    previewCats = visibleCategories.slice(0, 2);
+  let previewCats = isEvans ? visibleCategories : visibleCategories.slice(0, 3);
+  if (!isEvans) {
+    const totalLength = previewCats.reduce((sum, c) => sum + c.name.length, 0);
+    if (totalLength > 36 && visibleCategories.length > 2) {
+      previewCats = visibleCategories.slice(0, 2);
+    }
   }
   const remainingCount = visibleCategories.length - previewCats.length;
 
@@ -326,15 +350,22 @@ function renderOEMCard(oem) {
 
       <div class="oem-card-body">
         <div class="oem-card-title-header">
-          <h3 class="oem-card-name">${oem.name}</h3>
-          <div class="oem-specialty-row">
-            <span class="oem-specialty-pill" style="background: ${oem.accentColor}18; color: ${oem.accentColor}; border: 1px solid ${oem.accentColor}40;">
-              ${oem.specialty}
-            </span>
+          <h3 class="oem-card-name" style="${isEvans ? 'font-size: 1.05rem; line-height: 1.3;' : ''}">${oem.name}</h3>
+          <div class="oem-specialty-row" style="${isEvans ? 'display:flex;flex-wrap:wrap;gap:4px;min-height:28px;' : ''}">
+            ${isEvans ? `
+              <span class="oem-specialty-pill" style="background:${oem.accentColor}18;color:${oem.accentColor};border:1px solid ${oem.accentColor}40;font-size:0.68rem;padding:2px 7px;white-space:nowrap;">Hybrid Wet Tantalum</span>
+              <span class="oem-specialty-pill" style="background:${oem.accentColor}18;color:${oem.accentColor};border:1px solid ${oem.accentColor}40;font-size:0.68rem;padding:2px 7px;white-space:nowrap;">Multilayer Ceramic (MLCC)</span>
+              <span class="oem-specialty-pill" style="background:${oem.accentColor}18;color:${oem.accentColor};border:1px solid ${oem.accentColor}40;font-size:0.68rem;padding:2px 7px;white-space:nowrap;">Multilayer Polymer (MLP) Film</span>
+              <span class="oem-specialty-pill" style="background:${oem.accentColor}18;color:${oem.accentColor};border:1px solid ${oem.accentColor}40;font-size:0.68rem;padding:2px 7px;white-space:nowrap;">RF/High Frequency Ceramic</span>
+            ` : `
+              <span class="oem-specialty-pill" style="background: ${oem.accentColor}18; color: ${oem.accentColor}; border: 1px solid ${oem.accentColor}40;">
+                ${oem.specialty}
+              </span>
+            `}
           </div>
         </div>
 
-        <p class="oem-card-tagline">${oem.tagline}</p>
+        ${oem.tagline && oem.tagline !== oem.description ? `<p class="oem-card-tagline">${oem.tagline}</p>` : ''}
         <p class="oem-card-desc">${oem.description}</p>
 
         <!-- Categories preview pills -->
@@ -344,16 +375,6 @@ function renderOEMCard(oem) {
             ${previewCats.map(c => `<span class="preview-pill">${c.name}</span>`).join('')}
             ${remainingCount > 0 ? `<span class="preview-pill preview-pill-more">+${remainingCount} more</span>` : ''}
           </div>
-        </div>
-
-        <!-- Meta Counters -->
-        <div class="oem-card-meta">
-          <span class="oem-meta-badge" style="background: ${oem.accentColor}15; border-color: ${oem.accentColor}35; color: ${oem.accentColor};">
-            <i class="fa-solid fa-folder-tree"></i> ${totalCategories} ${totalCategories === 1 ? 'Category' : 'Categories'}
-          </span>
-          <span class="oem-meta-badge" style="background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.12); color: #E2E8F0;">
-            <i class="fa-solid fa-microchip"></i> ${totalProducts} ${totalProducts === 1 ? 'Product Line' : 'Products &amp; Lines'}
-          </span>
         </div>
       </div>
 
@@ -405,9 +426,6 @@ function renderCategoriesLevel() {
             <i class="fa-solid fa-industry"></i>
             <span>Specialty: ${oem.specialty}</span>
           </span>
-          <span class="catalog-oem-count-badge">
-            <i class="fa-solid fa-box-open"></i> ${totalProducts} Products / Lines across ${categories.length} Categories
-          </span>
         </div>
         <h2 class="catalog-oem-name">${oem.name}</h2>
         <p class="catalog-oem-desc">${oem.description}</p>
@@ -445,9 +463,6 @@ function renderCategoryCard(oem, cat) {
           loading="lazy" 
           onerror="this.onerror=null; this.src='/images/rf-filter.jpg';" 
         />
-        <div class="category-count-badge" style="background: ${oem.accentColor}; color: #ffffff;">
-          ${cat.products.length} ${cat.products.length === 1 ? 'Part' : 'Parts'}
-        </div>
       </div>
 
       <div class="category-card-content">
@@ -468,14 +483,14 @@ function renderCategoryCard(oem, cat) {
           ${cat.products.length > 3 ? `
             <div class="category-prod-preview-item" style="color: #94A3B8; font-style: italic;">
               <i class="fa-solid fa-ellipsis" style="color: #64748B;"></i>
-              <span>+${cat.products.length - 3} more product specifications</span>
+              <span>More product specifications available</span>
             </div>
           ` : ''}
         </div>
       </div>
 
       <div class="category-cta" style="color: ${oem.accentColor};">
-        <span>View All ${cat.products.length} Products</span>
+        <span>View All Products</span>
         <i class="fa-solid fa-arrow-right"></i>
       </div>
     </div>
@@ -521,7 +536,7 @@ function renderProductsLevel() {
       <div class="cpl-actions">
         <div class="cpl-counter-pill" style="border-color:${oem.accentColor}40; color:${oem.accentColor}; background:${oem.accentColor}12;">
           <i class="fa-solid fa-boxes-stacked"></i>
-          <span>${products.length} ${products.length === 1 ? 'Product Model' : 'Products &amp; Lines'}</span>
+          <span>Products &amp; Specifications</span>
         </div>
         
         <div class="cpl-view-toggle">

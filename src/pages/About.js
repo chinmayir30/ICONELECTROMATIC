@@ -30,9 +30,11 @@ export function renderAboutPage() {
   }));
 
   const highlightCards = (d.highlightCards || [
-    { title: 'Global Leader in RF & Electronic Solutions', desc: 'Providing mission-critical components, assemblies, and custom microwave engineering for advanced applications.', icon: 'fa-solid fa-tower-broadcast', color: 'red' },
+    { title: 'Global Leader in RF & Electronic Solutions', desc: 'Providing mission-critical components, assemblies, and custom microwave engineering for advanced applications.', icon: 'fa-solid fa-tower-broadcast', color: 'blue' },
     { title: 'Advanced Components, Consultancy & Bespoke Design Services', desc: 'End-to-end design-in engineering, RF simulation review, and custom-tailored fulfillment for client success.', icon: 'fa-solid fa-microchip', color: 'red' },
-  ]).map(c => ({ ...c, color: 'red' }));
+    { title: 'Business Consultancy', desc: 'Strategic Partnerships', icon: 'fa-solid fa-handshake', color: 'blue' },
+    { title: 'Product Supply and Logistics', desc: 'Supply Chain & Logistics', icon: 'fa-solid fa-truck-fast', color: 'red' },
+  ]).map(c => ({ ...c, color: c.color || 'red' }));
 
   const stats = (d.stats || [
     { target: '1500', suffix: '+', label: 'Products', icon: 'fa-solid fa-boxes-stacked', color: 'red' },
@@ -92,16 +94,6 @@ export function renderAboutPage() {
                 ${d.heroLead || 'Driven by decades of engineering expertise and global collaborations, Icon Electromatic Private Limited delivers advanced components and tailored solutions that transform design ambitions into reality.'}
               </p>
             </div>
-          </div>
-
-          <!-- Highlights Strip -->
-          <div class="services-trust-strip about-trust-strip" style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:24px;margin-bottom:0;padding-bottom:0;border-bottom:none;">
-            ${badges.map(b => `
-              <div style="background:${b.bg || 'rgba(225,29,72,0.08)'};border:1px solid ${b.border || 'rgba(225,29,72,0.25)'};border-radius:10px;padding:10px 18px;font-size:0.85rem;color:${b.color || '#FDA4AF'};display:flex;align-items:center;gap:8px;">
-                <i class="${b.icon || 'fa-solid fa-award'}" style="color:var(--logo-red-light);"></i>
-                <span>${b.text}</span>
-              </div>
-            `).join('')}
           </div>
         </div>
       </section>

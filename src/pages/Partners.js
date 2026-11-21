@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Partners Page — ICON ELECTROMATIC
  * High-End Dark Relay-styled layout matching authentic Icon Electromatic partners.
  * Connected to ContentService for dynamic CRUD, image upload, and reordering.
@@ -8,15 +8,15 @@ import { navigate } from '../router.js';
 
 // Helper: Running OEM Logos Ticker (Unconfined, full-width continuous flow of only large OEM logos)
 function renderRunningLogoTicker(partners) {
-  const tickerPartners = partners.filter(p => Boolean(p.logoImg));
+  const tickerPartners = partners.filter(p => Boolean(p.logoImg || p.logoSvg));
   if (!tickerPartners.length) return '';
   const loopList = [...tickerPartners, ...tickerPartners, ...tickerPartners];
   const itemsMarkup = loopList.map((p, idx) => {
-    const img = ContentService.resolveImg(p.logoImg);
+    const img = p.logoImg ? ContentService.resolveImg(p.logoImg) : null;
     return `
       <div class="oem-running-logo-item" data-partner-id="${p.id}" title="${p.name}">
         <div class="oem-running-logo-box">
-          <img src="${img}" alt="${p.name} Official Logo" class="oem-running-logo-img" loading="eager" />
+          ${img ? `<img src="${img}" alt="${p.name} Official Logo" class="oem-running-logo-img" loading="eager" />` : (p.logoSvg || '')}
         </div>
       </div>
     `;
@@ -67,10 +67,10 @@ function renderPartnerCardMarkup(partner) {
 
 export function renderPartnersPage() {
   const d = ContentService.getData('partners') || {};
-  const partners = Array.isArray(d) ? d : (d.partners || []);
+  const partners = (Array.isArray(d) ? d : (d.partners || [])).filter(p => p.id !== 'fortify' && p.id !== '3dfortify');
   const heroTitle = d.heroTitle || 'Our Global Technology Partners';
   const heroLead = d.heroLead || 'Icon Electromatic collaborates with a select group of globally recognised technology partners to deliver advanced RF, microwave, mmWave, semiconductor, and Hi-Rel solutions. Together, these partnerships enable reliable access to cutting-edge components, materials, and systems for mission-critical aerospace, defence, space, SATCOM, and next-generation communication applications.';
-  const trustBadge1 = d.trustBadge1 || '<strong>10+</strong> Global Technology Partners';
+  const trustBadge1 = d.trustBadge1 || '<strong>15+</strong> Global Technology Partners';
   const trustBadge2 = d.trustBadge2 || 'Space &amp; Mil-Spec Screening Support';
 
   return `
@@ -95,19 +95,6 @@ export function renderPartnersPage() {
               ${heroLead}
             </p>
           </div>
-
-          <!-- Trust Badges Strip -->
-          <div class="services-trust-strip partners-trust-strip" style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:24px;margin-bottom:0;padding-bottom:0;border-bottom:none;">
-            <div style="background:rgba(225,29,72,0.08);border:1px solid rgba(225,29,72,0.25);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#FDA4AF;display:flex;align-items:center;gap:8px;">
-              <i class="fa-solid fa-handshake-angle" style="color:var(--logo-red-light);"></i>
-              <span>${trustBadge1}</span>
-            </div>
-            <div style="background:rgba(225,29,72,0.08);border:1px solid rgba(225,29,72,0.25);border-radius:10px;padding:10px 18px;font-size:0.85rem;color:#FDA4AF;display:flex;align-items:center;gap:8px;">
-              <i class="fa-solid fa-certificate" style="color:var(--logo-red-light);"></i>
-              <span>${trustBadge2}</span>
-            </div>
-          </div>
-
         </div>
       </section>
 
@@ -141,6 +128,7 @@ const PARTNER_TO_OEM_MAP = {
   'thermosen': 'thermosen',
   'powerfactor': 'powerfactor',
   'nee': 'nee',
+  'transline': 'transline-technology',
   'transline-technology': 'transline-technology'
 };
 

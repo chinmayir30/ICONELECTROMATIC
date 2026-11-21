@@ -43,8 +43,8 @@ const INITIAL_CONTENT = {
     youtubeUrl: '#',
   },
   home: {
-    heroTitle: 'ICON ELECTROMATIC turns complex high-frequency requirements into <span class="accent-red" style="color: var(--logo-red);">mission-ready hardware.</span>',
-    heroSubtitle: 'Delivering precision RF, microwave, and electronic components for defense, aerospace, SATCOM, and telecommunications.',
+    heroTitle: 'World-Class RF & Microwave Technologies Through <span class="accent-red" style="color: var(--logo-red);">Trusted Representation & Distribution.</span>',
+    heroSubtitle: 'Partnering with industry-leading suppliers, we bring innovative technologies, engineering support, and seamless supply-chain services to accelerate your success.',
     heroBgVideo: '/icon-video.mp4',
     heroBgImage: '/images/hero-new-bg.png',
     ctaExploreText: 'Explore Products',
@@ -102,6 +102,27 @@ const INITIAL_CONTENT = {
     galleryTitle: 'Hardware & Systems Showcase',
     gallerySubtitle: 'High-Rel Components in Action',
     galleryLead: 'Precision microwave active devices, passives, waveguide transitions, and advanced materials.',
+    // Events: MAPCON 2027
+    eventsTitle: 'Events',
+    eventsSubtitle: 'MAPCON 2027',
+    eventsLead: 'ICON ELECTROMATIC is participating at MAPCON 2027, India’s premier IEEE conference on microwave, antennas, and propagation. Connect with our engineering team to explore advanced RF, microwave, and space-grade components.',
+    eventCards: [
+      {
+        id: 'evt-1',
+        image: '/images/defense-satcom.jpg',
+        badge: 'Exhibition Showcase',
+      },
+      {
+        id: 'evt-2',
+        image: '/images/timeline/pillar-global-partnerships.jpg',
+        badge: 'Partner Delegation',
+      },
+      {
+        id: 'evt-3',
+        image: '/images/timeline/domain-aerospace-defence.jpg',
+        badge: 'Engineering Hub',
+      },
+    ],
   },
   about: {
     heroEyebrow: 'ABOUT ICON ELECTROMATIC',
@@ -131,6 +152,20 @@ const INITIAL_CONTENT = {
         title: 'Advanced Components, Consultancy & Bespoke Design Services',
         desc: 'End-to-end design-in engineering, RF simulation review, and custom-tailored fulfillment for client success.',
         icon: 'fa-solid fa-microchip',
+        color: 'red',
+      },
+      {
+        id: 'hl-3',
+        title: 'Business Consultancy',
+        desc: 'Strategic Partnerships',
+        icon: 'fa-solid fa-handshake',
+        color: 'blue',
+      },
+      {
+        id: 'hl-4',
+        title: 'Product Supply and Logistics',
+        desc: 'Supply Chain & Logistics',
+        icon: 'fa-solid fa-truck-fast',
         color: 'red',
       },
     ],
@@ -420,7 +455,7 @@ const INITIAL_CONTENT = {
       { id: 'gal-4', title: 'Defense & SATCOM Earth Station Hardware', category: 'Systems', image: '/images/defense-satcom.jpg', caption: 'Ground terminal transceiver and feed assemblies' },
       { id: 'gal-5', title: 'Active Phased Array GaN MMIC Die', category: 'Semiconductors', image: '/images/gan-power-chip.jpg', caption: 'Beamformer front-end module on ceramic carrier' },
       { id: 'gal-6', title: 'High-Power PIN Diode RF Switch', category: 'Modules', image: '/images/rf-switch.jpg', caption: 'Fast-switching high-isolation multi-throw module' },
-      { id: 'gal-7', title: '3D Printed Metamaterial Dielectric Lens', category: 'Optics', image: '/images/dielectric-3d-lens.jpg', caption: 'Fortify custom dielectric GRIN RF lens' },
+      { id: 'gal-7', title: '3D Printed Metamaterial Dielectric Lens', category: 'Optics', image: '/images/dielectric-3d-lens.jpg', caption: 'Custom dielectric GRIN RF lens' },
       { id: 'gal-8', title: 'Precision Laboratory Attenuator Module', category: 'Test & Measurement', image: '/images/rf-attenuator.jpg', caption: 'DC to 40 GHz calibrated step attenuator' },
     ],
   },
@@ -520,7 +555,7 @@ const INITIAL_CONTENT = {
           icon: 'fa-solid fa-microchip',
           iconColor: '#60A5FA',
           title: 'Global OEM Partnerships',
-          description: 'Direct technical engagement with leaders like Rogers Corporation, Qorvo, Spellman, Fortify, and YTTEK.'
+          description: 'Direct technical engagement with leaders like Rogers Corporation, Qorvo, Mini-Circuits, and YTTEK.'
         },
         {
           id: 'ben-2',
@@ -869,6 +904,16 @@ export const ContentService = {
         const parsed = JSON.parse(local);
         if (pageKey === 'products') {
           if (Array.isArray(parsed)) {
+            const ev = parsed.find(o => o.id === 'evans');
+            const freshEv = CATALOG.find(o => o.id === 'evans');
+            if (ev && freshEv) {
+              ev.name = freshEv.name;
+              ev.shortName = freshEv.shortName;
+              ev.specialty = freshEv.specialty;
+              ev.category = freshEv.specialty;
+              ev.tagline = freshEv.tagline;
+              ev.description = freshEv.description;
+            }
             _memoryCache.set(pageKey, parsed);
             return parsed;
           }
@@ -879,28 +924,59 @@ export const ContentService = {
           }
           if (Array.isArray(parsed) && parsed.length > 0 && parsed[0].oemId) {
             const wrapped = {
-              heroTitle: 'OEM Technical News, Video Demos & Insights',
-              heroSubtitle: 'Direct technical bulletins, video demonstrations, application whitepapers, and product release updates from ICON Electromatic\'s 15 global manufacturing partners.',
-              trustBadge1: 'Application Whitepapers & Notes',
-              trustBadge2: 'Video Demos & Technical Webinars',
-              trustBadge3: 'Direct Manufacturer Bulletins',
+              heroTitle: 'OEM Technical News & Engineering Bulletins',
+              heroSubtitle: 'Direct technical bulletins, engineering updates, and product release announcements from ICON Electromatic\'s global manufacturing partners.',
+              trustBadge1: 'Technical Application Notes',
+              trustBadge2: 'Manufacturer Engineering Bulletins',
+              trustBadge3: 'Direct OEM Insights',
               oemBlogs: parsed
             };
             _memoryCache.set(pageKey, wrapped);
             return wrapped;
           }
         } else if (pageKey === 'partners') {
+          const translinePartner = {
+            id: 'transline-technology',
+            name: 'Transline Technology',
+            domain: 'High Frequency, Microwave & mmWave PCB Fabrication',
+            category: 'components',
+            accentColor: 'amber',
+            logoImg: '',
+            logoSvg: '<svg viewBox="0 0 220 42" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="38" height="38" rx="9" fill="rgba(245,158,11,0.2)" stroke="#F59E0B" stroke-width="1.8"/><path d="M12 21h8l4-9 4 18 4-9h8" stroke="#FBBF24" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><text x="48" y="21" fill="#FFFFFF" font-family="\'Plus Jakarta Sans\', sans-serif" font-weight="900" font-size="14.5" letter-spacing="0.5">TRANSLINE</text><text x="48" y="34" fill="#FBBF24" font-family="\'Plus Jakarta Sans\', sans-serif" font-weight="800" font-size="7.5" letter-spacing="1.5">RF/MW PCB TECH</text></svg>',
+            description: 'Transline Technology is an elite fabricator of advanced RF, microwave, and millimeter-wave printed circuit boards utilizing Rogers, PTFE, and hybrid dielectric stackups for aerospace and defense electronics.',
+            website: 'https://translinetech.com'
+          };
           if (parsed && Array.isArray(parsed.partners)) {
+            parsed.partners = parsed.partners.filter(p => p.id !== 'fortify' && p.id !== '3dfortify');
+            if (!parsed.partners.some(p => p.id === 'transline-technology' || p.id === 'transline')) {
+              parsed.partners.push(translinePartner);
+            }
+            const qp = parsed.partners.find(p => p.id === 'quantic-eulex');
+            if (qp) {
+              qp.name = 'Evans / UTC / Paktron / Eulex';
+              qp.domain = 'Hybrid Wet Tantalum, Multilayer Ceramic (MLCC), Multilayer Polymer (MLP) Film, RF/High Frequency Ceramic';
+              qp.description = 'Deliver power-dense, high-reliability capacitors engineered for mission-critical environments';
+            }
             _memoryCache.set(pageKey, parsed);
             return parsed;
           }
           if (Array.isArray(parsed)) {
+            const list = parsed.filter(p => p.id !== 'fortify' && p.id !== '3dfortify');
+            if (!list.some(p => p.id === 'transline-technology' || p.id === 'transline')) {
+              list.push(translinePartner);
+            }
+            const qp = list.find(p => p.id === 'quantic-eulex');
+            if (qp) {
+              qp.name = 'Evans / UTC / Paktron / Eulex';
+              qp.domain = 'Hybrid Wet Tantalum, Multilayer Ceramic (MLCC), Multilayer Polymer (MLP) Film, RF/High Frequency Ceramic';
+              qp.description = 'Deliver power-dense, high-reliability capacitors engineered for mission-critical environments';
+            }
             const wrapped = {
               heroTitle: 'Authorized Technology Partners',
               heroLead: 'We represent a diverse portfolio of OEMs across sectors, industries and application.<br />To know more about their products, make an enquiry or request samples just get in touch with us.',
-              trustBadge1: '10+ Global Technology Partners',
+              trustBadge1: '15+ Global Technology Partners',
               trustBadge2: 'Space & Mil-Spec Screening Support',
-              partners: parsed
+              partners: list
             };
             _memoryCache.set(pageKey, wrapped);
             return wrapped;
@@ -921,6 +997,38 @@ export const ContentService = {
             ...parsed,
             careers: mergedCareers
           };
+          _memoryCache.set(pageKey, merged);
+          return merged;
+        } else if (pageKey === 'about') {
+          const defaults = INITIAL_CONTENT.about;
+          let highlightCards = Array.isArray(parsed.highlightCards) ? [...parsed.highlightCards] : [...defaults.highlightCards];
+          defaults.highlightCards.forEach(defHl => {
+            if (!highlightCards.some(h => (h.id && h.id === defHl.id) || (h.title && h.title.trim().toLowerCase() === defHl.title.trim().toLowerCase()))) {
+              highlightCards.push(defHl);
+            }
+          });
+          const merged = {
+            ...defaults,
+            ...parsed,
+            highlightCards
+          };
+          _memoryCache.set(pageKey, merged);
+          return merged;
+        } else if (pageKey === 'home') {
+          const defaults = INITIAL_CONTENT.home;
+          let eventCards = Array.isArray(parsed.eventCards) ? [...parsed.eventCards] : [...defaults.eventCards];
+          if (eventCards.length === 0) {
+            eventCards = [...defaults.eventCards];
+          }
+          const merged = {
+            ...defaults,
+            ...parsed,
+            eventCards
+          };
+          if (!merged.heroTitle || merged.heroTitle.includes('turns complex high-frequency') || merged.heroTitle.includes('Icon Electromatic is a provider')) {
+            merged.heroTitle = defaults.heroTitle;
+            merged.heroSubtitle = defaults.heroSubtitle;
+          }
           _memoryCache.set(pageKey, merged);
           return merged;
         } else {
@@ -980,31 +1088,35 @@ export const ContentService = {
         { id: 'tri-teq', name: 'Tri-TeQ', domain: 'Tunable Filters & RF Assemblies', category: 'components', accentColor: 'red', logoImg: '/images/oem-logos/TriTeq_logo_wb.png', description: 'Tri-TeQ is a leader in harmonic switch filter banks, high/low and tunable band-pass filters, and multifunction RF assemblies used in defence, SATCOM, and electronic warfare systems.', website: 'https://www.tri-teq.com' },
         { id: 'rfuw', name: 'RFuW Engineering', domain: 'High-Performance RF Switches & Modules', category: 'components', accentColor: 'red', logoImg: '/images/oem-logos/RFuW_Logo.png', description: 'RFuW Engineering specialises in rugged RF switches, limiters, and integrated microwave modules designed for high-power, wideband, and mission-critical aerospace and defence applications.', website: 'https://www.rfuw.com' },
         { id: 'yttek', name: 'YTTEK', domain: 'Software-Defined Radio (SDR) Platforms', category: 'semiconductors', accentColor: 'blue', logoImg: '/images/oem-logos/YTTEK_Logo_wb.png', description: 'YTTEK builds flexible and reconfigurable software-defined radio platforms supporting research, defence, and advanced wireless communication applications.', website: 'https://www.yttek.com' },
-        { id: 'quantic-eulex', name: 'Quantic Eulex / Evans', domain: 'Advanced Ceramic Microwave & Hybrid Capacitors', category: 'components', accentColor: 'blue', logoImg: '/images/oem-logos/Evans_logo.png', description: 'Quantic Eulex & Evans Hybrid Capacitors engineer high-energy, high-frequency ceramic capacitors and hybrid capacitor banks supporting radar, SATCOM, aerospace, and space platforms.', website: 'https://www.quanticdevices.com' },
+        { id: 'quantic-eulex', name: 'Evans / UTC / Paktron / Eulex', domain: 'Hybrid Wet Tantalum, Multilayer Ceramic (MLCC), Multilayer Polymer (MLP) Film, RF/High Frequency Ceramic', category: 'components', accentColor: 'blue', logoImg: '/images/oem-logos/Evans_logo.png', description: 'Deliver power-dense, high-reliability capacitors engineered for mission-critical environments', website: 'https://www.quanticdevices.com' },
         { id: 'quantic-ohmega', name: 'Quantic Ohmega-Ticer', domain: 'Embedded Thin-Film Resistive Materials', category: 'materials', accentColor: 'blue', logoImg: '/images/oem-logos/OhmegaTicer_Black.png', description: 'Ohmega-Ticer provides embedded thin-film resistive copper foils that enable compact, high-performance digital and RF PCB designs for defence, aerospace, and advanced electronics.', website: 'https://www.ohmega.com' },
         { id: 'thermosen', name: 'Thermosen Technologies', domain: 'Temperature Sensors for Hi-Rel Applications', category: 'sensors', accentColor: 'blue', logoImg: '/images/oem-logos/Thermosen_logo.png', description: 'Thermosen develops temperature sensing solutions focused on Hi-Rel, aerospace, and defence sectors, ensuring accurate thermal monitoring in extreme environments.', website: 'https://www.thermosen.com' },
-        { id: 'fortify', name: 'Fortify', domain: 'Dielectric 3D Printing for RF & Microwave Devices', category: 'materials', accentColor: 'blue', logoImg: '/images/oem-logos/Fortify_Logo_Black_Bg.png', description: 'Fortify enables advanced dielectric 3D printing materials for RF and microwave components, supporting complex geometries, rapid prototyping, and next-generation device development.', website: 'https://www.fortify3d.com' },
         { id: 'powerfactor', name: 'PowerFactor Electronics (PowerRF)', domain: 'Power Electronics & RF Microwave Domains', category: 'components', accentColor: 'blue', logoImg: '/PICTURES/PowerRFlogo Vert Logo1.jpg', description: 'Specialized in R&D, design, testing, consultancy, and product development in Power Electronics and RF Microwave domains under the Make in India initiative.', website: 'https://powerrf.in' },
         { id: 'nee', name: 'NEE International (New Era Electronics)', domain: 'Application PCBs for Microwave & Satellite Communication', category: 'sensors', accentColor: 'red', logoImg: '/images/oem-logos/NEE_Logo_wb.png', description: 'NEE International is a leading fabricator of microwave and satellite communication PCBs, supporting high-frequency and space-grade electronic applications.', website: 'https://neeinternational.com' },
+        { id: 'transline-technology', name: 'Transline Technology', domain: 'High Frequency, Microwave & mmWave PCB Fabrication', category: 'components', accentColor: 'amber', logoImg: '', logoSvg: '<svg viewBox="0 0 220 42" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="38" height="38" rx="9" fill="rgba(245,158,11,0.2)" stroke="#F59E0B" stroke-width="1.8"/><path d="M12 21h8l4-9 4 18 4-9h8" stroke="#FBBF24" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><text x="48" y="21" fill="#FFFFFF" font-family="\'Plus Jakarta Sans\', sans-serif" font-weight="900" font-size="14.5" letter-spacing="0.5">TRANSLINE</text><text x="48" y="34" fill="#FBBF24" font-family="\'Plus Jakarta Sans\', sans-serif" font-weight="800" font-size="7.5" letter-spacing="1.5">RF/MW PCB TECH</text></svg>', description: 'Transline Technology is an elite fabricator of advanced RF, microwave, and millimeter-wave printed circuit boards utilizing Rogers, PTFE, and hybrid dielectric stackups for aerospace and defense electronics.', website: 'https://translinetech.com' },
       ];
       const initial = {
         heroTitle: 'Authorized Technology Partners',
         heroLead: 'We represent a diverse portfolio of OEMs across sectors, industries and application.<br />To know more about their products, make an enquiry or request samples just get in touch with us.',
-        trustBadge1: '10+ Global Technology Partners',
+        trustBadge1: '15+ Global Technology Partners',
         trustBadge2: 'Space & Mil-Spec Screening Support',
         partners: initialPartners
       };
-      localStorage.setItem('cms_partners', JSON.stringify(initial));
+      try {
+        if (typeof localStorage !== 'undefined') {
+          localStorage.setItem('cms_partners', JSON.stringify(initial));
+        }
+      } catch (_) {}
       return initial;
     }
 
     if (pageKey === 'blogs') {
       const initial = {
-        heroTitle: 'OEM Technical News, Video Demos & Insights',
-        heroSubtitle: 'Direct technical bulletins, video demonstrations, application whitepapers, and product release updates from ICON Electromatic\'s 15 global manufacturing partners.',
-        trustBadge1: 'Application Whitepapers & Notes',
-        trustBadge2: 'Video Demos & Technical Webinars',
-        trustBadge3: 'Direct Manufacturer Bulletins',
+        heroTitle: 'OEM Technical News & Engineering Bulletins',
+        heroSubtitle: 'Direct technical bulletins, engineering updates, and product release announcements from ICON Electromatic\'s global manufacturing partners.',
+        trustBadge1: 'Technical Application Notes',
+        trustBadge2: 'Manufacturer Engineering Bulletins',
+        trustBadge3: 'Direct OEM Insights',
         oemBlogs: (OEM_BLOGS || []).map(b => ({
           oemId: b.oemId,
           officialWebsite: b.officialWebsite || '',
@@ -1018,6 +1130,7 @@ export const ContentService = {
             category: a.category || 'Technical News',
             readTime: a.readTime || '5 min read',
             image: a.image || '',
+            sourceUrl: a.sourceUrl || '',
             summary: a.summary || '',
             content: a.content || '',
             tags: Array.isArray(a.tags) ? a.tags : [],

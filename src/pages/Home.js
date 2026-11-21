@@ -28,9 +28,6 @@ function filterPopularProducts(products, filter) {
   if (filter === 'ohmega') {
     return products.filter(p => p.oemId === 'ohmega-ticer');
   }
-  if (filter === 'fortify') {
-    return products.filter(p => p.oemId === 'fortify');
-  }
   if (filter === 'components') {
     return products.filter(p => p.oemId === 'minicircuits' || p.oemId === 'rfuw-engineering' || p.oemId === 'triteq');
   }
@@ -45,16 +42,36 @@ export function renderHomePage() {
   const data = ContentService.getData('home');
   const contact = ContentService.getData('contact');
   const blogs = ContentService.getData('blogs');
+  const eventCards = data.eventCards || [
+    {
+      id: 'evt-1',
+      image: '/images/defense-satcom.jpg',
+      badge: 'Exhibition Showcase',
+    },
+    {
+      id: 'evt-2',
+      image: '/images/timeline/pillar-global-partnerships.jpg',
+      badge: 'Partner Delegation',
+    },
+    {
+      id: 'evt-3',
+      image: '/images/timeline/domain-aerospace-defence.jpg',
+      badge: 'Engineering Hub',
+    },
+  ];
 
   const rawStats = data.stats || [
     { value: '160+', label: 'VERIFIED COMPONENTS' },
-    { value: '13+', label: 'OEM PARTNERS' },
+    { value: '15+', label: 'OEM PARTNERS' },
     { value: 'DHL GoGreen Plus', label: 'CERTIFIED (IESPL)' }
   ];
 
   const statsList = rawStats.map(st => {
     if (st.value === '100%' || (st.label && st.label.toUpperCase().includes('ROHS'))) {
       return { value: 'DHL GoGreen Plus', label: 'CERTIFIED (IESPL)' };
+    }
+    if (st.label && st.label.toUpperCase().includes('OEM PARTNERS') && (st.value === '13+' || st.value === '13')) {
+      return { ...st, value: '15+' };
     }
     return st;
   });
@@ -107,12 +124,12 @@ export function renderHomePage() {
 
       <div class="container" style="position:relative;z-index:3;width:100%;">
         <div class="hero-relay-content">
-          <h1 class="hero-title-giant" style="font-size: clamp(2.2rem, 4.5vw, 4.2rem);">
-            ${data.heroTitle || 'ICON ELECTROMATIC turns complex high-frequency requirements into <span class="accent-red" style="color: var(--logo-red);">mission-ready hardware.</span>'}
+          <h1 class="hero-title-giant">
+            ${data.heroTitle || 'World-Class RF & Microwave Technologies Through <span class="accent-red" style="color: var(--logo-red);">Trusted Representation & Distribution.</span>'}
           </h1>
 
           <p class="hero-description-clean">
-            ${data.heroSubtitle || 'Delivering world-class RF and microwave technologies through trusted representation and distribution. Partnering with industry-leading suppliers, we bring innovative technologies, engineering support, and seamless supply-chain services to accelerate your success.'}
+            ${data.heroSubtitle || 'Partnering with industry-leading suppliers, we bring innovative technologies, engineering support, and seamless supply-chain services to accelerate your success.'}
           </p>
 
           <div class="hero-actions-row">
@@ -187,7 +204,6 @@ export function renderHomePage() {
           <button class="filter-chip-dark" data-filter="rogers">Rogers Laminates</button>
           <button class="filter-chip-dark" data-filter="qorvo">Qorvo GaN &amp; ICs</button>
           <button class="filter-chip-dark" data-filter="ohmega">Ohmega-Ticer</button>
-          <button class="filter-chip-dark" data-filter="fortify">Fortify 3D Optics</button>
           <button class="filter-chip-dark" data-filter="components">Mini-Circuits &amp; RFuW</button>
           <button class="filter-chip-dark" data-filter="sensors">Sensors &amp; PCB</button>
         </div>
@@ -243,6 +259,33 @@ export function renderHomePage() {
                   </div>
                 </div>
               </article>
+            `;
+          }).join('')}
+        </div>
+      </div>
+    </section>
+
+    <!-- EVENTS: MAPCON 2027 -->
+    <section class="events-dark-section">
+      <div class="container">
+        <div class="section-head-minimal" style="margin-bottom:var(--space-10);">
+          <h2 class="section-tag-mono red-section-title" style="font-size: 2.75rem; font-weight: 800; letter-spacing: 0.05em; margin: 0; line-height: 1.2;">${data.eventsTitle || 'Events'}</h2>
+          <h3 class="section-h2" style="font-size: 2rem; font-weight: 600; line-height: 1.3; margin-top: 8px; margin-bottom: 16px;">${data.eventsSubtitle || 'MAPCON 2027'}</h3>
+          <p class="section-lead" style="font-size: 1.25rem; max-width: 800px; margin: 0;">
+            ${data.eventsLead || 'ICON ELECTROMATIC is participating at MAPCON 2027, India’s premier IEEE conference on microwave, antennas, and propagation. Connect with our engineering team to explore advanced RF, microwave, and space-grade components.'}
+          </p>
+        </div>
+
+        <div class="events-grid-dark">
+          ${eventCards.map(evt => {
+            const img = ContentService.resolveImg(evt.image || '/images/defense-satcom.jpg');
+            return `
+              <div class="event-card-relay">
+                <div class="event-card-img-wrap">
+                  <img src="${img}" alt="MAPCON 2027" loading="lazy" />
+                  <span class="event-badge-tag">${evt.badge || 'Event Showcase'}</span>
+                </div>
+              </div>
             `;
           }).join('')}
         </div>
