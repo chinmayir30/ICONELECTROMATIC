@@ -23,14 +23,7 @@ function getBlogCmsData() {
       const cached = cms.oemBlogs.find(b => b.oemId === freshOem.oemId);
       if (!cached) return freshOem;
       const freshArticles = freshOem.articles || [];
-      const cachedArticles = cached.articles || [];
-      const mergedArticles = [...freshArticles];
-      cachedArticles.forEach(ca => {
-        if (!mergedArticles.some(ma => ma.id === ca.id || ma.title === ca.title)) {
-          mergedArticles.push(ca);
-        }
-      });
-      return { ...cached, ...freshOem, articles: mergedArticles };
+      return { ...cached, ...freshOem, articles: freshArticles };
     });
     return {
       ...cms,

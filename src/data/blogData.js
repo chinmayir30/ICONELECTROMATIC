@@ -1,4 +1,4 @@
-﻿/**
+/**
  * OEM Technical Blogs, News, Videos & Resources Data — ICON ELECTROMATIC
  * Comprehensive engineering news, video releases, whitepapers, and official links
  * covering all 15 manufacturing partner OEMs.
@@ -133,38 +133,6 @@ export const OEM_BLOGS = [
           <p>Icon Electromatic is an authorized distributor and technical representative for Qorvo’s advanced wireless and RF solutions across India and Southeast Asia.</p>
         `,
         tags: ['UWB', 'Healthcare RTLS', 'Indoor Positioning', 'Qorvo Wireless', 'Asset Tracking']
-      },
-      {
-        id: 'qorvo-art-1',
-        title: 'Qorvo Launches 100W X-Band GaN Power Amplifier with >48% Power-Added Efficiency',
-        date: 'September 2026',
-        category: 'Semiconductor Breakthrough',
-        readTime: '6 min read',
-        image: '/images/gan-power-chip.jpg',
-        summary: 'Targeting next-generation active electronically scanned arrays (AESA), Qorvo’s latest GaN-on-SiC MMIC provides 100W pulsed output power in an ultracompact surface-mount package.',
-        content: `
-          <p>Modern military radar and airborne surveillance payloads demand massive radiated RF power within strict thermal and size envelopes. Qorvo has unveiled its new generation of X-band (8.5 to 10.5 GHz) gallium nitride on silicon carbide (GaN-on-SiC) high-power amplifiers.</p>
-          <h4>Key Performance Metrics:</h4>
-          <ul>
-            <li><strong>Saturated Output Power:</strong> Exceeds 50 dBm (100 Watts) across the full 8.5–10.5 GHz band under pulsed radar conditions.</li>
-            <li><strong>Power-Added Efficiency (PAE):</strong> Greater than 48% at nominal bias, significantly reducing cooling payload requirements for phased array tiles.</li>
-            <li><strong>Integrated Protection:</strong> Built-in gate pulse sequencing and RF power overdrive detectors ensure fail-safe operation in dense RF emitter environments.</li>
-          </ul>
-        `,
-        tags: ['X-Band Radar', 'GaN MMIC', 'AESA', 'Defense']
-      },
-      {
-        id: 'qorvo-art-2',
-        title: 'Dual-Polarization Ka-Band Beamforming ICs Revolutionize LEO Satellite Terminals',
-        date: 'August 2026',
-        category: 'SATCOM Innovation',
-        readTime: '5 min read',
-        image: '/images/gan-power-chip.jpg',
-        summary: 'Qorvo integrated 8-channel transmit/receive beamformers with 6-bit phase and 6-bit amplitude control, enabling dynamic satellite tracking without mechanical gimbals.',
-        content: `
-          <p>Low-Earth-Orbit (LEO) satellite communications require electronically steered phased arrays capable of maintaining multi-gigabit user links across rapid orbital overhead passes. Qorvo’s Ka-band beamforming ASICs integrate bidirectional amplifiers, phase shifters, and attenuators into a single monolithic die.</p>
-        `,
-        tags: ['Ka-Band', 'Beamforming', 'LEO Satellites', 'Phased Array']
       }
     ],
     videos: [
@@ -247,19 +215,6 @@ export const OEM_BLOGS = [
           <p>Icon Electromatic provides engineers with direct access to Mini-Circuits catalog inventory, S-parameters, evaluation boards, and custom synthesis support.</p>
         `,
         tags: ['Thin-Film Filters', 'Mini-Circuits', 'Ceramic Substrates', 'Microwave Filters', 'Bandpass']
-      },
-      {
-        id: 'mini-art-1',
-        title: 'Mini-Circuits Expands Ultra-Wideband Connectorized Amplifiers Covering 0.5 to 40 GHz',
-        date: 'September 2026',
-        category: 'Product Release',
-        readTime: '4 min read',
-        image: '/images/rf-filter.jpg',
-        summary: 'New ZX60 and ZVE series instrumentation-grade amplifiers deliver +22 dBm P1dB, low 2.8 dB noise figure, and hermetic ruggedized packaging for lab and field telemetry.',
-        content: `
-          <p>Mini-Circuits has announced the latest additions to its field-proven coaxial amplifier portfolio. Incorporating proprietary GaAs and GaN MMIC designs, these plug-and-play modules streamline test benches and military comms testing.</p>
-        `,
-        tags: ['Wideband Amplifier', 'Test Bench', 'Coaxial', 'Instrumentation']
       }
     ],
     videos: [
@@ -326,19 +281,6 @@ export const OEM_BLOGS = [
           <p>Icon Electromatic supplies genuine Ohmega-Ticer resistor foils and provides engineering support for PCB fabricators across the region.</p>
         `,
         tags: ['Ohmega-Ticer', 'Embedded Resistors', 'OhmegaPly', 'TCR Foil', 'PCB Signal Integrity']
-      },
-      {
-        id: 'ohmega-art-1',
-        title: 'OhmegaPly® RCM Foils Eliminate Surface Resistors in 100 Gbps High-Speed Backplanes',
-        date: 'September 2026',
-        category: 'Embedded Passives',
-        readTime: '5 min read',
-        image: '/images/rf-microwave-pcb.jpg',
-        summary: 'By embedding thin-film nickel-phosphorous resistors directly into internal PCB copper layers, parasitic inductance is reduced to near zero, enabling pristine digital eye diagrams.',
-        content: `
-          <p>Surface-mount chip resistors introduce substantial solder joint parasitic capacitance and lead inductance that degrade signal integrity in high-speed PAM4 and 112G SerDes channels. OhmegaPly® RCM (Resistor-Conductor-Material) allows resistors to be etched internally on planar copper foils, clearing top-layer routing space.</p>
-        `,
-        tags: ['Embedded Resistors', 'Thin Film', 'High-Speed Digital', 'Signal Integrity']
       }
     ],
     videos: [
@@ -405,19 +347,6 @@ export const OEM_BLOGS = [
           <p>Icon Electromatic distributes RFuW Engineering limiters, switches, and custom receiver protector modules for defense and aerospace programs.</p>
         `,
         tags: ['RFuW Engineering', 'Receiver Protector', 'PIN Diode Limiter', 'SMA Connector', 'Radar Front-End']
-      },
-      {
-        id: 'rfuw-art-1',
-        title: 'RFuW Releases 100W SMT Limiter Series Protecting Sensitive LNAs up to 18 GHz',
-        date: 'August 2026',
-        category: 'RF Protection',
-        readTime: '4 min read',
-        image: '/images/gan-power-chip.jpg',
-        summary: 'MSL1 surface-mount limiters withstand continuous 100W CW power and 500W peak pulsed power while clamping flat leakage below +13 dBm to safeguard sensitive receiver front-ends.',
-        content: `
-          <p>Radar receiver protection requires instantaneous clamping when exposed to co-site transmitter leakage or external electronic countermeasure (ECM) pulses. RFuW Engineering’s multi-stage diode limiters eliminate bulky coaxial hardware with tiny SMT quad-flat packages.</p>
-        `,
-        tags: ['Receiver Protection', 'PIN Diode', 'LNA Limiter', 'SMT']
       }
     ],
     videos: [
@@ -540,19 +469,6 @@ export const OEM_BLOGS = [
           <p>Icon Electromatic is the authorized regional partner for YTTEK software-defined radio hardware, development kits, and satellite communication transceivers.</p>
         `,
         tags: ['YTTEK', 'HyperSDR', 'GSaaS', 'Satellite Modem', 'Software Defined Radio']
-      },
-      {
-        id: 'yttek-art-1',
-        title: 'HyperSDR 4x4 Transceiver Platform Reaches 100 kHz to 18 GHz Instantaneous Coverage',
-        date: 'August 2026',
-        category: 'SDR Hardware',
-        readTime: '6 min read',
-        image: '/images/rf-microwave-pcb.jpg',
-        summary: 'Featuring onboard Xilinx Ultrascale+ RFSoC and direct RF sampling converters, HyperSDR enables instantaneous spectrum monitoring and multi-channel beamforming experimentation.',
-        content: `
-          <p>Traditional SDRs rely on multi-stage analog downconversion that introduces phase imbalances and local oscillator leakage. YTTEK’s HyperSDR platform integrates 14-bit ADCs and DACs operating directly up to 18 GHz, streamlining electronic warfare (EW) and cognitive radio development.</p>
-        `,
-        tags: ['HyperSDR', 'RFSoC', 'Direct RF Sampling', 'Electronic Warfare']
       }
     ],
     videos: [
@@ -619,19 +535,6 @@ export const OEM_BLOGS = [
           <p>Icon Electromatic partners with Thermosen to deliver calibrated, industrial-grade RTDs and thermocouple assemblies with traceable test certifications.</p>
         `,
         tags: ['Thermosen', 'Temperature Sensors', 'RTD Pt100', 'Thermocouples', 'Industrial Automation']
-      },
-      {
-        id: 'thermosen-art-1',
-        title: 'Thermosen Miniaturized Platinum RTD Sensors Provide 0.05°C Precision in GaN Thermal Feedback',
-        date: 'June 2026',
-        category: 'Sensors & Telemetry',
-        readTime: '3 min read',
-        image: '/images/gan-power-chip.jpg',
-        summary: 'Micro-footprint SMD resistance temperature detectors (RTDs) mounted directly adjacent to GaN amplifier MMICs provide real-time junction temperature tracking.',
-        content: `
-          <p>Proper thermal protection of GaN MMICs requires sensing temperatures within millimeters of active device gates. Thermosen’s platinum thin-film sensors withstand reflow temperatures up to 350°C and maintain linear accuracy across -70°C to +300°C.</p>
-        `,
-        tags: ['RTD Sensor', 'Thermal Feedback', 'GaN Protection', 'Precision Sensing']
       }
     ],
     videos: [
@@ -697,19 +600,6 @@ export const OEM_BLOGS = [
           <p>Icon Electromatic offers Tecdia precision microelectronics components across India and ASEAN regions with engineering consultation.</p>
         `,
         tags: ['Tecdia', 'Single-Layer Capacitors', 'Sub-THz', 'Wire Bonding', 'Microwave Passives']
-      },
-      {
-        id: 'tecdia-art-1',
-        title: 'TecDia Introduces Sub-THz Single Layer Capacitors with Self-Resonance Above 60 GHz',
-        date: 'July 2026',
-        category: 'Passive Components',
-        readTime: '4 min read',
-        image: '/images/gan-power-chip.jpg',
-        summary: 'Custom high-dielectric ceramics with gold wire-bondable terminations eliminate multi-layer parasitic resonances, providing ultra-clean DC bypass up to E-band.',
-        content: `
-          <p>Traditional multi-layer ceramic capacitors (MLCC) exhibit self-resonant frequencies below 10 GHz due to internal electrode geometry. TecDia single-layer capacitors (SLC) utilize polished monolithic dielectric blocks that push parasitic resonance out past 60 GHz for mmWave MMIC biasing.</p>
-        `,
-        tags: ['Single Layer Capacitor', 'DC Bypass', 'Wire Bonding', 'Sub-THz']
       }
     ],
     videos: [
@@ -776,19 +666,6 @@ export const OEM_BLOGS = [
           <p>Icon Electromatic supplies genuine Quantic Evans hybrid capacitors with screening certification and factory test reports.</p>
         `,
         tags: ['Evans Capacitors', 'Hybrid Tantalum', 'Radar Pulse Power', 'Quantic', 'Energy Density']
-      },
-      {
-        id: 'evans-art-1',
-        title: 'Evans Hybrid Capacitors Deliver 10x Volumetric Energy Density for Airborne Radar Pulse Discharge',
-        date: 'July 2026',
-        category: 'Energy Storage',
-        readTime: '4 min read',
-        image: '/images/gan-power-chip.jpg',
-        summary: 'Hermetically sealed tantalum hybrid capacitors provide hundreds of millifarads in tiny hermetic square cans, smoothing bus voltage drops during radar pulse bursts.',
-        content: `
-          <p>Active phased array radar modules place enormous transient current demands on aircraft 28V DC bus architectures during multi-kilowatt RF pulse events. Evans Hybrid Capacitors combine an electrochemical cathode with a high-voltage tantalum anode, delivering the highest energy density of any capacitor technology available today.</p>
-        `,
-        tags: ['Hybrid Capacitor', 'Pulse Discharge', 'Tantalum', 'Radar Power']
       }
     ],
     videos: [
@@ -854,19 +731,6 @@ export const OEM_BLOGS = [
           <p>Icon Electromatic works closely with NEE International to provide high-precision microwave PCB fabrication and leadframe etching services for defense, automotive, and space programs.</p>
         `,
         tags: ['NEE International', 'Automotive Radar', '77 GHz PCB', 'PTFE Lamination', 'IATF 16949']
-      },
-      {
-        id: 'nee-art-1',
-        title: 'NEE International Advances Burr-Free Chemical Etching for Ultra-Thin Microwave Leadframes',
-        date: 'June 2026',
-        category: 'Precision Metal Etching',
-        readTime: '3 min read',
-        image: '/images/rf-microwave-pcb.jpg',
-        summary: 'Chemical machining of Kovar, copper, and beryllium-copper foils down to 12 micron thicknesses without introducing mechanical stamping stress or burrs.',
-        content: `
-          <p>High-frequency microwave housings and hybrid microelectronic packages require leadframes and RF shielding covers with zero edge burrs to prevent dielectric short circuits. NEE International’s photochemical etching processes deliver micron-level edge straightness and tight feature tolerances.</p>
-        `,
-        tags: ['Chemical Etching', 'Leadframes', 'Kovar', 'Micro-Machining']
       }
     ],
     videos: [
