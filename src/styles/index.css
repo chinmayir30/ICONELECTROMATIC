@@ -2237,16 +2237,6 @@ body[data-page="blog"] .logo-container img,
   border-top: 1px solid var(--border-subtle);
 }
 
-.events-container-relay {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 var(--space-6);
-}
-
-.events-header-row {
-  margin-bottom: var(--space-10);
-}
-
 .events-grid-dark {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

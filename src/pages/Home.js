@@ -271,15 +271,13 @@ export function renderHomePage() {
 
     <!-- EVENTS: MAPCON 2027 -->
     <section class="events-dark-section">
-      <div class="events-container-relay">
-        <div class="events-header-row">
-          <div>
-            <h2 class="section-tag-mono red-section-title" style="font-size: 2.75rem; font-weight: 800; letter-spacing: 0.05em; margin: 0; line-height: 1.2;">${data.eventsTitle || 'Events'}</h2>
-            <h3 class="section-h2" style="font-size: 2rem; font-weight: 600; line-height: 1.3; margin-top: 8px; margin-bottom: 0;">${data.eventsSubtitle || 'MAPCON 2027'}</h3>
-            <p class="section-lead" style="margin-top: 12px; max-width: 820px; font-size: 1.15rem; line-height: 1.6; color: var(--text-gray-300);">
-              ${data.eventsLead || 'ICON ELECTROMATIC is participating at MAPCON 2027, India’s premier IEEE conference on microwave, antennas, and propagation. Connect with our engineering team to explore advanced RF, microwave, and space-grade components.'}
-            </p>
-          </div>
+      <div class="container">
+        <div class="section-head-minimal" style="margin-bottom:var(--space-10);">
+          <h2 class="section-tag-mono red-section-title" style="font-size: 2.75rem; font-weight: 800; letter-spacing: 0.05em; margin: 0; line-height: 1.2;">${data.eventsTitle || 'Events'}</h2>
+          <h3 class="section-h2" style="font-size: 2rem; font-weight: 600; line-height: 1.3; margin-top: 8px; margin-bottom: 16px;">${data.eventsSubtitle || 'MAPCON 2027'}</h3>
+          <p class="section-lead" style="font-size: 1.25rem; max-width: 800px; margin: 0;">
+            ${data.eventsLead || 'ICON ELECTROMATIC is participating at MAPCON 2027, India’s premier IEEE conference on microwave, antennas, and propagation. Connect with our engineering team to explore advanced RF, microwave, and space-grade components.'}
+          </p>
         </div>
 
         <div class="events-grid-dark">
@@ -288,7 +286,7 @@ export function renderHomePage() {
             return `
               <div class="event-card-relay">
                 <div class="event-card-img-wrap">
-                  <img src="${img}" alt="${evt.badge || 'Event Photo'}" loading="lazy" />
+                  <img src="${img}" alt="MAPCON 2027" loading="lazy" />
                   <span class="event-badge-tag">${evt.badge || 'Event Showcase'}</span>
                 </div>
               </div>
