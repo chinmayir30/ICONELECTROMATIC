@@ -1,4 +1,4 @@
-﻿/* ==========================================================================
+/* ==========================================================================
    ICON ELECTROMATIC — High-End Dark Cinematic Aesthetic
    Inspired by the "Relay" Framer template reference
    Brand Palette from Official Logo: Deep Black, Electric Blue (#2563EB), Vibrant Red (#E11D48)
@@ -527,10 +527,10 @@ body[data-page="blog"] .logo-container img,
 }
 
 .hero-title-giant {
-  font-size: clamp(2.8rem, 5.5vw, 4.75rem);
-  font-weight: 800;
-  line-height: 1.05;
-  letter-spacing: -0.04em;
+  font-size: clamp(2.2rem, 4.2vw, 3.85rem);
+  font-weight: 700;
+  line-height: 1.22;
+  letter-spacing: -0.015em;
   color: var(--text-white);
   margin-bottom: var(--space-6);
   text-shadow: 0 4px 30px rgba(0, 0, 0, 0.95), 0 2px 8px rgba(0, 0, 0, 0.8);

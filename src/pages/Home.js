@@ -107,7 +107,7 @@ export function renderHomePage() {
 
       <div class="container" style="position:relative;z-index:3;width:100%;">
         <div class="hero-relay-content">
-          <h1 class="hero-title-giant" style="font-size: clamp(2.2rem, 4.5vw, 4.2rem);">
+          <h1 class="hero-title-giant">
             ${data.heroTitle || 'ICON ELECTROMATIC turns complex high-frequency requirements into <span class="accent-red" style="color: var(--logo-red);">mission-ready hardware.</span>'}
           </h1>
 
