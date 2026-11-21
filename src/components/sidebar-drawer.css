@@ -47,7 +47,7 @@
 }
 
 .header-sidebar-toggle:hover {
-  border-color: #e11d48;
+  border-color: #C51F26;
   background: rgba(30, 41, 59, 0.95);
   box-shadow: 0 0 14px rgba(225, 29, 72, 0.35);
   transform: translateY(-1px);
@@ -68,7 +68,7 @@
 }
 
 .header-sidebar-toggle:hover .sidebar-bar:nth-child(2) {
-  background: #e11d48;
+  background: #C51F26;
   width: 15px;
 }
 
@@ -85,7 +85,7 @@
 }
 
 [data-theme="light"] .header-sidebar-toggle:hover {
-  border-color: #e11d48;
+  border-color: #C51F26;
   background: #fff5f5;
   box-shadow: 0 0 14px rgba(225, 29, 72, 0.25);
 }
@@ -95,7 +95,7 @@
 }
 
 [data-theme="light"] .header-sidebar-toggle:hover .sidebar-bar:nth-child(2) {
-  background: #e11d48;
+  background: #C51F26;
 }
 
 [data-theme="light"] .header-sidebar-toggle:hover .sidebar-bar:nth-child(1),
@@ -105,13 +105,13 @@
 
 /* Active State on Toggle Button */
 .header-sidebar-toggle.active {
-  border-color: #e11d48;
+  border-color: #C51F26;
   background: rgba(225, 29, 72, 0.15);
 }
 
 .header-sidebar-toggle.active .sidebar-bar:nth-child(1) {
   transform: translateY(7px) rotate(45deg);
-  background: #e11d48;
+  background: #C51F26;
 }
 
 .header-sidebar-toggle.active .sidebar-bar:nth-child(2) {
@@ -121,7 +121,7 @@
 
 .header-sidebar-toggle.active .sidebar-bar:nth-child(3) {
   transform: translateY(-7px) rotate(-45deg);
-  background: #e11d48;
+  background: #C51F26;
 }
 
 /* ─── 2. Sidebar Drawer Overlay (Backdrop) ────────────────────────────────── */
@@ -259,8 +259,8 @@ body.sidebar-drawer-open {
 }
 
 .drawer-close-btn:hover {
-  background: #e11d48;
-  border-color: #e11d48;
+  background: #C51F26;
+  border-color: #C51F26;
   color: #ffffff;
   transform: rotate(90deg);
   box-shadow: 0 0 12px rgba(225, 29, 72, 0.45);
@@ -273,8 +273,8 @@ body.sidebar-drawer-open {
 }
 
 [data-theme="light"] .drawer-close-btn:hover {
-  background: #e11d48;
-  border-color: #e11d48;
+  background: #C51F26;
+  border-color: #C51F26;
   color: #ffffff;
 }
 
@@ -359,7 +359,7 @@ body.sidebar-drawer-open {
 }
 
 .drawer-nav-item:hover .drawer-chevron {
-  color: #e11d48;
+  color: #C51F26;
   transform: translateX(2px);
 }
 
@@ -383,7 +383,7 @@ body.sidebar-drawer-open {
   top: 8px;
   bottom: 8px;
   width: 3.5px;
-  background: #e11d48;
+  background: #C51F26;
   border-radius: 4px;
 }
 
@@ -447,7 +447,7 @@ body.sidebar-drawer-open {
 
 .drawer-employee-item .employee-icon,
 .drawer-employee-item .drawer-icon {
-  background: #e11d48 !important;
+  background: #C51F26 !important;
   color: #ffffff !important;
   box-shadow: 0 2px 6px rgba(225, 29, 72, 0.4);
 }
@@ -463,19 +463,19 @@ body.sidebar-drawer-open {
   text-transform: uppercase;
   letter-spacing: 0.04em;
   background: rgba(225, 29, 72, 0.25);
-  color: #fb7185;
+  color: #DE3841;
   border: 1px solid rgba(225, 29, 72, 0.45);
 }
 
 .drawer-employee-item:hover {
   background: linear-gradient(135deg, rgba(225, 29, 72, 0.25), rgba(37, 99, 235, 0.2));
-  border-color: #e11d48 !important;
+  border-color: #C51F26 !important;
   box-shadow: 0 4px 16px rgba(225, 29, 72, 0.4);
   transform: translateX(3px);
 }
 
 .drawer-employee-item:hover .drawer-employee-badge {
-  background: #e11d48;
+  background: #C51F26;
   color: #ffffff;
 }
 
@@ -494,7 +494,7 @@ body.sidebar-drawer-open {
 
 [data-theme="light"] .drawer-employee-item:hover {
   background: linear-gradient(135deg, #ffe4e6, #dbeafe);
-  border-color: #e11d48 !important;
+  border-color: #C51F26 !important;
   box-shadow: 0 4px 14px rgba(225, 29, 72, 0.2);
 }
 
