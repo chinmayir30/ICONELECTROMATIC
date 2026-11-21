@@ -455,7 +455,7 @@ const INITIAL_CONTENT = {
       { id: 'gal-4', title: 'Defense & SATCOM Earth Station Hardware', category: 'Systems', image: '/images/defense-satcom.jpg', caption: 'Ground terminal transceiver and feed assemblies' },
       { id: 'gal-5', title: 'Active Phased Array GaN MMIC Die', category: 'Semiconductors', image: '/images/gan-power-chip.jpg', caption: 'Beamformer front-end module on ceramic carrier' },
       { id: 'gal-6', title: 'High-Power PIN Diode RF Switch', category: 'Modules', image: '/images/rf-switch.jpg', caption: 'Fast-switching high-isolation multi-throw module' },
-      { id: 'gal-7', title: '3D Printed Metamaterial Dielectric Lens', category: 'Optics', image: '/images/dielectric-3d-lens.jpg', caption: 'Fortify custom dielectric GRIN RF lens' },
+      { id: 'gal-7', title: '3D Printed Metamaterial Dielectric Lens', category: 'Optics', image: '/images/dielectric-3d-lens.jpg', caption: 'Custom dielectric GRIN RF lens' },
       { id: 'gal-8', title: 'Precision Laboratory Attenuator Module', category: 'Test & Measurement', image: '/images/rf-attenuator.jpg', caption: 'DC to 40 GHz calibrated step attenuator' },
     ],
   },
@@ -555,7 +555,7 @@ const INITIAL_CONTENT = {
           icon: 'fa-solid fa-microchip',
           iconColor: '#60A5FA',
           title: 'Global OEM Partnerships',
-          description: 'Direct technical engagement with leaders like Rogers Corporation, Qorvo, Spellman, Fortify, and YTTEK.'
+          description: 'Direct technical engagement with leaders like Rogers Corporation, Qorvo, Mini-Circuits, and YTTEK.'
         },
         {
           id: 'ben-2',
@@ -915,7 +915,7 @@ export const ContentService = {
           if (Array.isArray(parsed) && parsed.length > 0 && parsed[0].oemId) {
             const wrapped = {
               heroTitle: 'OEM Technical News, Video Demos & Insights',
-              heroSubtitle: 'Direct technical bulletins, video demonstrations, application whitepapers, and product release updates from ICON Electromatic\'s 15 global manufacturing partners.',
+              heroSubtitle: 'Direct technical bulletins, video demonstrations, application whitepapers, and product release updates from ICON Electromatic\'s global manufacturing partners.',
               trustBadge1: 'Application Whitepapers & Notes',
               trustBadge2: 'Video Demos & Technical Webinars',
               trustBadge3: 'Direct Manufacturer Bulletins',
@@ -1069,7 +1069,7 @@ export const ContentService = {
     if (pageKey === 'blogs') {
       const initial = {
         heroTitle: 'OEM Technical News, Video Demos & Insights',
-        heroSubtitle: 'Direct technical bulletins, video demonstrations, application whitepapers, and product release updates from ICON Electromatic\'s 15 global manufacturing partners.',
+        heroSubtitle: 'Direct technical bulletins, video demonstrations, application whitepapers, and product release updates from ICON Electromatic\'s global manufacturing partners.',
         trustBadge1: 'Application Whitepapers & Notes',
         trustBadge2: 'Video Demos & Technical Webinars',
         trustBadge3: 'Direct Manufacturer Bulletins',

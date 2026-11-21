@@ -34,11 +34,9 @@ function findOem(query) {
     if (oem.id === 'rfuw-engineering' && (q.includes('rfuw') || q.includes('rf&w'))) return oem;
     if (oem.id === 'triteq' && (q.includes('tri-teq') || q.includes('triteq'))) return oem;
     if (oem.id === 'nee' && (q.includes('new england etching') || q.includes('nee') || q.includes('new england'))) return oem;
-    if (oem.id === 'aee-isarael' && (q.includes('aee') || q.includes('pids') || q.includes('perimeter'))) return oem;
     if (oem.id === 'transline-technology' && q.includes('transline')) return oem;
     if (oem.id === 'evans' && (q.includes('eulex') || q.includes('paktron') || q.includes('evans capacitor'))) return oem;
     if (oem.id === 'tecdia' && (q.includes('tecdia') || q.includes('single layer cap'))) return oem;
-    if (oem.id === 'fortify' && (q.includes('radix') || q.includes('fluxcore') || q.includes('3d print') || q.includes('dielectric lens'))) return oem;
   }
   return null;
 }
@@ -184,19 +182,17 @@ export function getBotReply(userText) {
   ) {
     return `
       <div>
-        ICON Electromatic is the specialized engineering distributor for <strong>15 global technology OEMs</strong>:
+        ICON Electromatic is the specialized engineering distributor for leading global technology OEMs:
         <br/><br/>
         <ul style="padding-left:16px;margin:0 0 10px;font-size:0.8rem;line-height:1.6;color:var(--text-gray-300);">
           <li><strong>Rogers Corporation</strong> — High Frequency PTFE Laminates</li>
           <li><strong>Qorvo</strong> — GaN HEMTs, Power Amplifiers &amp; Front-End Modules</li>
-          <li><strong>Fortify</strong> — 3D Printed Low-Loss RF Dielectric Optics</li>
           <li><strong>Ohmega Ticer</strong> — Thin-Film Embedded Resistor Foils</li>
           <li><strong>Mini-Circuits</strong> — Broadline RF/MW Components &amp; Adapters</li>
           <li><strong>RFuW Engineering</strong> — High-Power Limiters &amp; Switches</li>
           <li><strong>Tri-TeQ</strong> — Harmonic Switched Filters</li>
           <li><strong>YTTEK</strong> — Ultra-Wideband Software Defined Radios (HyperSDR)</li>
-          <li><strong>Spellman</strong> — High Voltage Power Supplies</li>
-          <li><strong>Thermosen, TecDia, Evans, NEE, PowerFactor (PowerRF), AEE Israel, Transline Technology</strong></li>
+          <li><strong>Thermosen, TecDia, Evans, NEE, PowerFactor (PowerRF), Transline Technology</strong></li>
         </ul>
         <div style="display:flex;flex-wrap:wrap;gap:6px;">
           <button class="chat-action-badge" style="background:rgba(37,99,235,0.15);border-color:rgba(37,99,235,0.4);color:var(--logo-blue-light);" data-route="/products">
@@ -314,7 +310,7 @@ export function getBotReply(userText) {
   // Fallback
   return `
     <div>
-      Thank you for your inquiry. You can ask me about any of our <strong>15 authorized OEMs</strong> (e.g. <em>Rogers, Qorvo, Fortify, Mini-Circuits, Ohmega-Ticer</em>), specific <strong>categories</strong> (e.g. <em>RT/Duroid, Power Amplifiers, 3D RF Optics</em>), or target models.
+      Thank you for your inquiry. You can ask me about any of our <strong>authorized OEMs</strong> (e.g. <em>Rogers, Qorvo, Mini-Circuits, Ohmega-Ticer</em>), specific <strong>categories</strong> (e.g. <em>RT/Duroid, Power Amplifiers</em>), or target models.
       <br/><br/>
       For custom specifications or commercial quotes, please connect directly with our engineering team:
       <div style="margin-top:8px;">
@@ -351,17 +347,17 @@ export function renderChatbot() {
         <div class="chat-bubble-bot">
           👋 Welcome to <strong>ICON ELECTROMATIC</strong>. 
           <br/><br/>
-          I can assist you with information about our <strong>15 authorized OEMs</strong>, component categories (Laminates, GaN Amplifiers, 3D RF Optics, Limiters, SDRs), and flagship models.
+          I can assist you with information about our <strong>authorized OEMs</strong>, component categories (Laminates, GaN Amplifiers, Limiters, SDRs), and flagship models.
           <br/><br/>
           <em>What component or manufacturer can I assist you with today?</em>
         </div>
       </div>
 
       <div class="chat-quick-chips">
-        <button class="chat-chip" data-q="All 15 OEMs">All 15 OEMs</button>
+        <button class="chat-chip" data-q="All OEMs">All OEMs</button>
         <button class="chat-chip" data-q="Rogers Laminates">Rogers Laminates</button>
         <button class="chat-chip" data-q="Qorvo GaN & ICs">Qorvo GaN &amp; ICs</button>
-        <button class="chat-chip" data-q="Fortify 3D Optics">Fortify 3D Optics</button>
+        <button class="chat-chip" data-q="Mini-Circuits">Mini-Circuits</button>
         <button class="chat-chip" data-q="Request a Quote">Request Quote</button>
       </div>
 

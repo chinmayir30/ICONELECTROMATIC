@@ -9,31 +9,42 @@ import { OEM_BLOGS } from '../data/blogData.js';
 import { ContentService } from '../data/ContentService.js';
 import { getRouteSearchParams, navigate } from '../router.js';
 
+const EXCLUDED_OEM_IDS = new Set(['fortify', 'spellman', 'aee-isarael']);
+
+function getActiveBlogOems() {
+  return CATALOG.filter(o => o.visible !== false && !EXCLUDED_OEM_IDS.has(o.id));
+}
+
 function getBlogCmsData() {
   const cms = ContentService.getData('blogs');
   if (cms && Array.isArray(cms.oemBlogs)) {
-    return cms;
+    return {
+      ...cms,
+      heroSubtitle: (cms.heroSubtitle || '').replace(/15\s+global/i, 'global'),
+      oemBlogs: cms.oemBlogs.filter(b => !EXCLUDED_OEM_IDS.has(b.oemId))
+    };
   }
   return {
     heroTitle: 'OEM Technical News, Video Demos & Insights',
-    heroSubtitle: 'Direct technical bulletins, video demonstrations, application whitepapers, and product release updates from ICON Electromatic\'s 15 global manufacturing partners.',
+    heroSubtitle: 'Direct technical bulletins, video demonstrations, application whitepapers, and product release updates from ICON Electromatic\'s global manufacturing partners.',
     trustBadge1: 'Application Whitepapers & Notes',
     trustBadge2: 'Video Demos & Technical Webinars',
     trustBadge3: 'Direct Manufacturer Bulletins',
-    oemBlogs: (OEM_BLOGS || [])
+    oemBlogs: (OEM_BLOGS || []).filter(b => !EXCLUDED_OEM_IDS.has(b.oemId))
   };
 }
 
 function getActiveOemBlogs() {
   const data = getBlogCmsData();
-  return (data.oemBlogs || []).filter(b => b.visible !== false);
+  return (data.oemBlogs || []).filter(b => b.visible !== false && !EXCLUDED_OEM_IDS.has(b.oemId));
 }
 
 function getActiveBlogDataForOem(oemId) {
+  if (EXCLUDED_OEM_IDS.has(oemId)) return null;
   const cms = getBlogCmsData();
   const oemBlogs = cms.oemBlogs || [];
   const oem = CATALOG.find(o => o.id === oemId);
-  if (!oem) return null;
+  if (!oem || oem.visible === false) return null;
   const blog = oemBlogs.find(b => b.oemId === oemId) || {
     oemId,
     officialWebsite: oem.website || '#',
@@ -51,8 +62,9 @@ function getAllActiveArticles() {
   const oemBlogs = getActiveOemBlogs();
   const list = [];
   oemBlogs.forEach(b => {
+    if (EXCLUDED_OEM_IDS.has(b.oemId)) return;
     const oem = CATALOG.find(o => o.id === b.oemId);
-    if (!oem) return;
+    if (!oem || oem.visible === false) return;
     (b.articles || []).filter(a => a.visible !== false).forEach(art => {
       list.push({ ...art, oemName: oem.name, oemShort: oem.shortName, oemId: oem.id, oemAccent: oem.accentColor, oemLogo: oem.logoSvg });
     });
@@ -64,8 +76,9 @@ function getAllActiveVideos() {
   const oemBlogs = getActiveOemBlogs();
   const list = [];
   oemBlogs.forEach(b => {
+    if (EXCLUDED_OEM_IDS.has(b.oemId)) return;
     const oem = CATALOG.find(o => o.id === b.oemId);
-    if (!oem) return;
+    if (!oem || oem.visible === false) return;
     (b.videos || []).filter(v => v.visible !== false).forEach(vid => {
       list.push({ ...vid, oemName: oem.name, oemShort: oem.shortName, oemId: oem.id, oemAccent: oem.accentColor, oemLogo: oem.logoSvg });
     });
@@ -103,6 +116,7 @@ function renderAllOemsBlogView() {
   const cmsData = getBlogCmsData();
   const allArticles = getAllActiveArticles();
   const allVideos = getAllActiveVideos();
+  const activeBlogOems = getActiveBlogOems();
 
   return `
     <div class="blogs-page-wrap" style="min-height:100vh;">
@@ -122,7 +136,7 @@ function renderAllOemsBlogView() {
               ${cmsData.heroTitle || 'OEM Technical News, Video Demos &amp; Insights'}
             </h1>
             <p class="page-lead-unified">
-              ${cmsData.heroSubtitle || 'Direct technical bulletins, video demonstrations, application whitepapers, and product release updates from ICON Electromatic\'s 15 global manufacturing partners.'}
+              ${cmsData.heroSubtitle || 'Direct technical bulletins, video demonstrations, application whitepapers, and product release updates from ICON Electromatic\'s global manufacturing partners.'}
             </p>
           </div>
         </div>
@@ -134,9 +148,9 @@ function renderAllOemsBlogView() {
           <!-- Quick Filter Chips by OEM -->
           <div class="blogs-oem-selector-bar">
             <button class="blogs-oem-chip active" data-filter="all">
-              <i class="fa-solid fa-layer-group"></i> All 15 OEMs
+              <i class="fa-solid fa-layer-group"></i> All ${activeBlogOems.length} OEMs
             </button>
-          ${CATALOG.map(oem => `
+          ${activeBlogOems.map(oem => `
             <button class="blogs-oem-chip" data-oem-select="${oem.id}">
               <span style="width:8px;height:8px;border-radius:50%;background:${oem.accentColor};display:inline-block;"></span>
               ${oem.shortName}
@@ -156,9 +170,9 @@ function renderAllOemsBlogView() {
           </div>
         </div>
 
-        <!-- 15 OEMs Grid -->
+        <!-- OEMs Grid -->
         <div class="blogs-oem-grid">
-          ${CATALOG.map(oem => {
+          ${activeBlogOems.map(oem => {
             const counts = getActiveOemContentCount(oem.id);
             return `
               <div class="blogs-oem-card" data-oem-id="${oem.id}" style="--oem-accent:${oem.accentColor};--oem-glow:${oem.glowColor};">

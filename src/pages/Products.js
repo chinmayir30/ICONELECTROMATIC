@@ -11,8 +11,11 @@ let catalogData = null;
 let catalogNotice = '';
 let catalogLoadPromise = null;
 
+const EXCLUDED_OEM_IDS = new Set(['fortify', 'spellman', 'aee-isarael']);
+
 function getAllOEMs() {
-  return catalogData || ContentService.getData('products') || [];
+  const oems = catalogData || ContentService.getData('products') || [];
+  return oems.filter(o => !EXCLUDED_OEM_IDS.has(o.id));
 }
 
 function getActiveOEMs() {
@@ -20,6 +23,7 @@ function getActiveOEMs() {
 }
 
 function getActiveOEM(oemId) {
+  if (EXCLUDED_OEM_IDS.has(oemId)) return null;
   return getAllOEMs().find(o => o.id === oemId) || null;
 }
 

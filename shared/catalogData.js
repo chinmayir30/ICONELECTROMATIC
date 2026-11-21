@@ -2134,6 +2134,7 @@ export const CATALOG = [
   },
   {
     id: "fortify",
+    visible: false,
     name: "Fortify",
     shortName: "Fortify",
     specialty: "3D Printed Dielectric Parts",
@@ -2319,6 +2320,7 @@ export const CATALOG = [
   },
   {
     id: "spellman",
+    visible: false,
     name: "Spellman",
     shortName: "Spellman",
     specialty: "high voltage power supplies",
@@ -2351,6 +2353,7 @@ export const CATALOG = [
   },
   {
     id: "aee-isarael",
+    visible: false,
     name: "AEE ISARAEL",
     shortName: "AEE Israel",
     specialty: "Perimeter Intrusion Detection System (PIDS)",
@@ -2401,7 +2404,6 @@ export function getPopularProducts(catalog = CATALOG) {
     { oemId: 'qorvo', catId: 'power-amplifiers', prodName: 'Power Amplifiers' },
     { oemId: 'qorvo', catId: 'gan-hemts', prodName: 'GaN HEMTs' },
     { oemId: 'ohmega-ticer', catId: 'rcm-series', prodName: 'OhmegaPly® RCM – 0.5A10PT' },
-    { oemId: 'fortify', catId: '3d-printed-dielectric-parts', prodName: 'Radix™ 2.8 Dielectric Lens Material' },
     { oemId: 'rfuw-engineering', catId: 'rf-limiters', prodName: 'RF Limiters' },
     { oemId: 'minicircuits', catId: 'rf-mw-amplifiers', prodName: 'RF/MW Amplifiers' },
     { oemId: 'triteq', catId: 'harmonic-switched-filters', prodName: 'Harmonic Switched Filters' },

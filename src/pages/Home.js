@@ -28,9 +28,6 @@ function filterPopularProducts(products, filter) {
   if (filter === 'ohmega') {
     return products.filter(p => p.oemId === 'ohmega-ticer');
   }
-  if (filter === 'fortify') {
-    return products.filter(p => p.oemId === 'fortify');
-  }
   if (filter === 'components') {
     return products.filter(p => p.oemId === 'minicircuits' || p.oemId === 'rfuw-engineering' || p.oemId === 'triteq');
   }
@@ -207,7 +204,6 @@ export function renderHomePage() {
           <button class="filter-chip-dark" data-filter="rogers">Rogers Laminates</button>
           <button class="filter-chip-dark" data-filter="qorvo">Qorvo GaN &amp; ICs</button>
           <button class="filter-chip-dark" data-filter="ohmega">Ohmega-Ticer</button>
-          <button class="filter-chip-dark" data-filter="fortify">Fortify 3D Optics</button>
           <button class="filter-chip-dark" data-filter="components">Mini-Circuits &amp; RFuW</button>
           <button class="filter-chip-dark" data-filter="sensors">Sensors &amp; PCB</button>
         </div>
