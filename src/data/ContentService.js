@@ -926,16 +926,18 @@ export const ContentService = {
           }
         } else if (pageKey === 'partners') {
           if (parsed && Array.isArray(parsed.partners)) {
+            parsed.partners = parsed.partners.filter(p => p.id !== 'fortify' && p.id !== '3dfortify');
             _memoryCache.set(pageKey, parsed);
             return parsed;
           }
           if (Array.isArray(parsed)) {
+            const list = parsed.filter(p => p.id !== 'fortify' && p.id !== '3dfortify');
             const wrapped = {
               heroTitle: 'Authorized Technology Partners',
               heroLead: 'We represent a diverse portfolio of OEMs across sectors, industries and application.<br />To know more about their products, make an enquiry or request samples just get in touch with us.',
               trustBadge1: '15+ Global Technology Partners',
               trustBadge2: 'Space & Mil-Spec Screening Support',
-              partners: parsed
+              partners: list
             };
             _memoryCache.set(pageKey, wrapped);
             return wrapped;
@@ -1046,7 +1048,6 @@ export const ContentService = {
         { id: 'quantic-eulex', name: 'Quantic Eulex / Evans', domain: 'Advanced Ceramic Microwave & Hybrid Capacitors', category: 'components', accentColor: 'blue', logoImg: '/images/oem-logos/Evans_logo.png', description: 'Quantic Eulex & Evans Hybrid Capacitors engineer high-energy, high-frequency ceramic capacitors and hybrid capacitor banks supporting radar, SATCOM, aerospace, and space platforms.', website: 'https://www.quanticdevices.com' },
         { id: 'quantic-ohmega', name: 'Quantic Ohmega-Ticer', domain: 'Embedded Thin-Film Resistive Materials', category: 'materials', accentColor: 'blue', logoImg: '/images/oem-logos/OhmegaTicer_Black.png', description: 'Ohmega-Ticer provides embedded thin-film resistive copper foils that enable compact, high-performance digital and RF PCB designs for defence, aerospace, and advanced electronics.', website: 'https://www.ohmega.com' },
         { id: 'thermosen', name: 'Thermosen Technologies', domain: 'Temperature Sensors for Hi-Rel Applications', category: 'sensors', accentColor: 'blue', logoImg: '/images/oem-logos/Thermosen_logo.png', description: 'Thermosen develops temperature sensing solutions focused on Hi-Rel, aerospace, and defence sectors, ensuring accurate thermal monitoring in extreme environments.', website: 'https://www.thermosen.com' },
-        { id: 'fortify', name: 'Fortify', domain: 'Dielectric 3D Printing for RF & Microwave Devices', category: 'materials', accentColor: 'blue', logoImg: '/images/oem-logos/Fortify_Logo_Black_Bg.png', description: 'Fortify enables advanced dielectric 3D printing materials for RF and microwave components, supporting complex geometries, rapid prototyping, and next-generation device development.', website: 'https://www.fortify3d.com' },
         { id: 'powerfactor', name: 'PowerFactor Electronics (PowerRF)', domain: 'Power Electronics & RF Microwave Domains', category: 'components', accentColor: 'blue', logoImg: '/PICTURES/PowerRFlogo Vert Logo1.jpg', description: 'Specialized in R&D, design, testing, consultancy, and product development in Power Electronics and RF Microwave domains under the Make in India initiative.', website: 'https://powerrf.in' },
         { id: 'nee', name: 'NEE International (New Era Electronics)', domain: 'Application PCBs for Microwave & Satellite Communication', category: 'sensors', accentColor: 'red', logoImg: '/images/oem-logos/NEE_Logo_wb.png', description: 'NEE International is a leading fabricator of microwave and satellite communication PCBs, supporting high-frequency and space-grade electronic applications.', website: 'https://neeinternational.com' },
       ];
@@ -1057,7 +1058,11 @@ export const ContentService = {
         trustBadge2: 'Space & Mil-Spec Screening Support',
         partners: initialPartners
       };
-      localStorage.setItem('cms_partners', JSON.stringify(initial));
+      try {
+        if (typeof localStorage !== 'undefined') {
+          localStorage.setItem('cms_partners', JSON.stringify(initial));
+        }
+      } catch (_) {}
       return initial;
     }
 
