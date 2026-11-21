@@ -242,7 +242,7 @@ test('setDefaultSeo provides distinct titles and descriptions for primary websit
   assert.equal(adminSeo.noindex, true);
 });
 
-test('SITEMAP VERIFICATION: public/sitemap.xml covers all 169 catalog products and 7 core pages with 0 hash fragments', async () => {
+test('SITEMAP VERIFICATION: public/sitemap.xml covers all active catalog products and 7 core pages with 0 hash fragments', async () => {
   const fs = await import('fs');
   const path = await import('path');
   const sitemapPath = path.resolve('../public/sitemap.xml');
@@ -254,20 +254,23 @@ test('SITEMAP VERIFICATION: public/sitemap.xml covers all 169 catalog products a
   assert.ok(!xmlContent.includes('/admin'), 'Sitemap must not expose admin routes');
 
   const locMatches = [...xmlContent.matchAll(/<loc>(.*?)<\/loc>/g)].map(m => m[1]);
-  assert.equal(locMatches.length, 176, `Expected exactly 176 URLs (7 core + 169 products), found ${locMatches.length}`);
 
-  // Verify all 169 products exist in sitemap
+  // Verify all active (visible) products exist in sitemap
   let catalogProdCount = 0;
   CATALOG.forEach(oem => {
+    if (oem.visible === false) return;
     (oem.categories || []).forEach(cat => {
+      if (cat.visible === false) return;
       (cat.products || []).forEach(prod => {
+        if (prod.visible === false) return;
         catalogProdCount++;
         const expectedUrl = `https://iconelectromatic.com/product/${encodeURIComponent(prod.id)}`;
         assert.ok(locMatches.includes(expectedUrl), `Missing product in sitemap: ${expectedUrl}`);
       });
     });
   });
-  assert.equal(catalogProdCount, 169);
+  assert.equal(catalogProdCount, 159);
+  assert.equal(locMatches.length, 7 + catalogProdCount, `Expected exactly ${7 + catalogProdCount} URLs (7 core + ${catalogProdCount} active products), found ${locMatches.length}`);
 });
 
 test('ROBOTS.TXT VERIFICATION: public/robots.txt disallows admin and references sitemap without fragments', async () => {
@@ -339,7 +342,7 @@ test('DYNAMIC SITEMAP ENDPOINT: GET /sitemap.xml and GET /api/sitemap.xml return
       assert.ok(!xml.includes('/admin'), 'Must not expose admin URLs');
 
       const locs = [...xml.matchAll(/<loc>(.*?)<\/loc>/g)].map(m => m[1]);
-      assert.ok(locs.length >= 176, `Expected at least 176 URLs (7 core + 169 products), got ${locs.length}`);
+      assert.ok(locs.length >= 166, `Expected at least 166 URLs (7 core + 159 active products), got ${locs.length}`);
     }
   });
 });
