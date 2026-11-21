@@ -102,6 +102,27 @@ const INITIAL_CONTENT = {
     galleryTitle: 'Hardware & Systems Showcase',
     gallerySubtitle: 'High-Rel Components in Action',
     galleryLead: 'Precision microwave active devices, passives, waveguide transitions, and advanced materials.',
+    // Events: MAPCON 2027
+    eventsTitle: 'Events',
+    eventsSubtitle: 'MAPCON 2027',
+    eventsLead: 'ICON ELECTROMATIC is participating at MAPCON 2027, India’s premier IEEE conference on microwave, antennas, and propagation. Connect with our engineering team to explore advanced RF, microwave, and space-grade components.',
+    eventCards: [
+      {
+        id: 'evt-1',
+        image: '/images/defense-satcom.jpg',
+        badge: 'Exhibition Showcase',
+      },
+      {
+        id: 'evt-2',
+        image: '/images/timeline/pillar-global-partnerships.jpg',
+        badge: 'Partner Delegation',
+      },
+      {
+        id: 'evt-3',
+        image: '/images/timeline/domain-aerospace-defence.jpg',
+        badge: 'Engineering Hub',
+      },
+    ],
   },
   about: {
     heroEyebrow: 'ABOUT ICON ELECTROMATIC',
@@ -949,6 +970,19 @@ export const ContentService = {
             ...defaults,
             ...parsed,
             highlightCards
+          };
+          _memoryCache.set(pageKey, merged);
+          return merged;
+        } else if (pageKey === 'home') {
+          const defaults = INITIAL_CONTENT.home;
+          let eventCards = Array.isArray(parsed.eventCards) ? [...parsed.eventCards] : [...defaults.eventCards];
+          if (eventCards.length === 0) {
+            eventCards = [...defaults.eventCards];
+          }
+          const merged = {
+            ...defaults,
+            ...parsed,
+            eventCards
           };
           _memoryCache.set(pageKey, merged);
           return merged;

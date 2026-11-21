@@ -957,12 +957,14 @@ function renderHomePageEditor() {
   const d = ContentService.getData('home') || {};
   const stats = d.stats || [];
   const caps = d.capabilities || [];
+  const eventCards = d.eventCards || [];
 
   return `
     <div class="a-subtabs-nav">
       <button type="button" class="a-subtab-btn ${currentSubTab === 'fields' ? 'active' : ''}" data-subtab="fields"><i class="fa-solid fa-pen-to-square"></i> Hero &amp; Section Texts</button>
       <button type="button" class="a-subtab-btn ${currentSubTab === 'stats' ? 'active' : ''}" data-subtab="stats"><i class="fa-solid fa-chart-simple"></i> Hero Stats Bar (${stats.length})</button>
       <button type="button" class="a-subtab-btn ${currentSubTab === 'capabilities' ? 'active' : ''}" data-subtab="capabilities"><i class="fa-solid fa-boxes-stacked"></i> Core Capabilities Cards (${caps.length})</button>
+      <button type="button" class="a-subtab-btn ${currentSubTab === 'events' ? 'active' : ''}" data-subtab="events"><i class="fa-solid fa-calendar-days"></i> Events Photo Cards (${eventCards.length})</button>
     </div>
 
     ${currentSubTab === 'fields' ? `
@@ -1019,6 +1021,11 @@ function renderHomePageEditor() {
             <div class="a-field"><label class="a-label">Title</label><input class="a-input" name="insightsTitle" value="${d.insightsTitle || 'Insights'}"></div>
             <div class="a-field"><label class="a-label">Subtitle</label><input class="a-input" name="insightsSubtitle" value="${d.insightsSubtitle || 'Latest Blogs'}"></div>
             <div class="a-field span2"><label class="a-label">Lead</label><textarea class="a-textarea" name="insightsLead">${d.insightsLead || ''}</textarea></div>
+
+            <div class="a-section-divider span2">Events &amp; Exhibitions Section (MAPCON 2027)</div>
+            <div class="a-field"><label class="a-label">Section Tag / Eyebrow</label><input class="a-input" name="eventsTitle" value="${d.eventsTitle || 'Events'}"></div>
+            <div class="a-field"><label class="a-label">Event Heading / Subtitle</label><input class="a-input" name="eventsSubtitle" value="${d.eventsSubtitle || 'MAPCON 2027'}"></div>
+            <div class="a-field span2"><label class="a-label">Event Description</label><textarea class="a-textarea" name="eventsLead">${d.eventsLead || 'ICON ELECTROMATIC is participating at MAPCON 2027, India’s premier IEEE conference on microwave, antennas, and propagation. Connect with our engineering team to explore advanced RF, microwave, and space-grade components.'}</textarea></div>
           </div>
         </div>
 
@@ -1099,6 +1106,8 @@ function renderHomePageEditor() {
         </div>
       </div>
     ` : ''}
+
+    ${currentSubTab === 'events' ? renderCardsManagerTab('Event Photo Cards', eventCards, 'eventcard', ['image', 'badge']) : ''}
   `;
 }
 
@@ -1246,6 +1255,15 @@ function bindHomeTabEvents() {
       }
     });
   });
+
+  // Events Cards management
+  bindUniversalCardActions('home', d, 'eventCards', 'eventcard', () => `
+    ${renderImageUploadField('image', 'Event Photo', '/images/defense-satcom.jpg', 'Upload or enter photo URL')}
+    <div class="a-field" style="margin-top:12px;"><label class="a-label">Badge Tag (e.g. Exhibition Showcase)</label><input class="a-input" name="badge" required /></div>
+  `, (card) => `
+    ${renderImageUploadField('image', 'Event Photo', card.image || '', 'Upload or enter photo URL')}
+    <div class="a-field" style="margin-top:12px;"><label class="a-label">Badge Tag</label><input class="a-input" name="badge" value="${card.badge || ''}" required /></div>
+  `);
 }
 
 // ─── ABOUT US PAGE EDITOR ────────────────────────────────────────────────────
